@@ -8,9 +8,51 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var languageEngine: LanguageEngine
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView {
+            List {
+                Text("\(languageEngine.getCurrentLanguage())")
+                NavigationLink(destination: VerbCubeView(vccsh: VerbCubeConjugatedStringHandlerStruct(languageEngine: languageEngine, d1: .Person, d2: .Verb))){
+                    Text("JumpLingua Verb Cube")
+                }.frame(width: 200, height: 50)
+                .padding(.leading, 10)
+                .background(Color.orange)
+                .cornerRadius(10)
+                
+                NavigationLink(destination: QuizCubeOptionsView2()){
+                    Text("Quiz Cube Options")
+                }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+                
+                NavigationLink(destination: NewQuizCubeView(vccsh: QuizCubeConjugatedStringHandlerStruct(languageEngine: languageEngine, d1: .Person, d2: .Tense))){
+                    Text("JumpLingua Quiz Cube")
+                }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+
+//                NavigationLink(destination: FilteredVerbListView()){
+//                    Text("Filtered Verb List")
+//                }.frame(width: 200, height: 50)
+//                    .padding(.leading, 10)
+//                    .background(Color.orange)
+//                    .cornerRadius(10)
+
+                NavigationLink(destination: VerbSelectionView()){
+                    Text("Verb selection view")
+                }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+
+
+
+            }.navigationTitle("Verb cubes")
+        }
     }
 }
 
