@@ -9,56 +9,56 @@ import SwiftUI
 //import Dot
 import JumpLinguaHelpers
 
+enum QuizCubeDifficulty : String {
+    case easy, medium, hard, max
+    static var quizCubeDifficultyAll = [QuizCubeDifficulty.easy, .medium, .hard, .max]
+}
+
 struct QuizCubeOptionsView2: View {
    
     @EnvironmentObject var languageEngine: LanguageEngine
+//    @EnvironmentObject var quizCubeWatcher: QuizCubeWatcher
     
     // MARK: - Observed
 //    @StateObject private var observed = Observed()
     
     // MARK: - Environments
     @Environment(\.dismiss) private var dismiss
-    @State var activeQuizCubeConfiguration = ActiveVerbCubeConfiguration.PersonTense
+//    @State var activeQuizCubeConfiguration = ActiveVerbCubeConfiguration.PersonTense
     @State var quizCubeVerbs = [Verb]()
     @State var quizCubeTenses = [Tense]()
     @State var configSelected = ActiveVerbCubeConfiguration.PersonTense
+    @State var quizCubeVerb = Verb()
     @State var tenseToggle = [false, false, false, false, false]
+    @State var quizCubeTense = Tense.present
+    @State var quizCubePerson = Person.S1
+    @State var quizLevel = QuizCubeDifficulty.easy
     
     var body: some View {
-        VStack{
+        ScrollView {
+            QuizLevel(quizLevel: $quizLevel)
             ConfigRadioButtons(selected: self.$configSelected)
-            //TenseToggles(tenseToggle: $tenseToggle)
             .toggleStyle(SwitchToggleStyle(tint: Color(.purple)))
             if configSelected == .PersonTense || configSelected == .TensePerson {
-                withAnimation { VerbRadioButtons(verbList: languageEngine.getQuizVerbs()) }
+                withAnimation { VerbRadioButtons(selectedVerb: $quizCubeVerb) }
             }
             if configSelected == .VerbTense || configSelected == .TenseVerb {
-                PersonRadioButtons()
+                PersonRadioButtons(selectedPerson: quizCubePerson)
             }
             if configSelected == .VerbPerson || configSelected == .PersonVerb {
-                TenseRadioButtons()
+                TenseRadioButtons(selectedTense: quizCubeTense)
             }
-            
-            
             Spacer()
-            Button(action: {
-                setTenses()
-                if languageEngine.getTenseList().count < 1 {
-                    Alert(title: Text("No tenses found!"))
-                } else {
-                    dismiss()
-                }
-                    
-            }){
-                Text("OK").padding(.vertical).padding(.horizontal, 25).foregroundColor(.white)
-            }
-            .background(
-                LinearGradient(gradient: .init(colors:  [Color.black.opacity(0.2), Color.black.opacity(0.2)]), startPoint: .leading, endPoint: .trailing) )
-            .clipShape(Capsule())
+            HStack{
+                NavigationLink(destination: QuizCubeView2(languageEngine: languageEngine, qchc: QuizCubeHandlerClass(languageEngine: languageEngine))){
+                    Text("Open Quiz Cube")
+                }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
 
+            }
         }.onAppear{
-            quizCubeTenses = languageEngine.getQuizTenseList()
-            fillTenseToggles()
         }
     }
     
@@ -81,73 +81,121 @@ struct QuizCubeOptionsView2: View {
         if quizCubeTenses.count > 0{
             languageEngine.setQuizTenseList(list: quizCubeTenses)
         }
-        
+    }
+    
+    func setConfiguration(){
+        languageEngine.setQuizCubeConfiguration(config: configSelected)
+    }
+    
+    func setVerb(){
+        languageEngine.setQuizCubeVerb(verb: quizCubeVerb)
+    }
+    
+    func processUserChoices(){
+        setTenses()
+        setConfiguration()
+        setVerb()
+        switch configSelected {
+        case .PersonTense, .TensePerson:
+            languageEngine.setQuizCubeVerb(verb: quizCubeVerb)
+        case .VerbPerson, .PersonVerb:
+            languageEngine.setQuizCubeTense(tense: quizCubeTense)
+        case .VerbTense, .TenseVerb:
+            languageEngine.setQuizCubePerson(person: quizCubePerson)
+        case .None:
+            break
+        }
+//
     }
 }
 
-struct TenseToggles : View {
-    @Binding var tenseToggle: [Bool]
-//    @Binding var presentToggle: Bool
-//
-    var body : some View {
+struct QuizLevel : View {
+    @EnvironmentObject var languageEngine: LanguageEngine
+    @Binding var quizLevel : QuizCubeDifficulty
+    var quizLevelList = QuizCubeDifficulty.quizCubeDifficultyAll
+    var body: some View {
         ZStack{
             Image("white cube").frame(width: 100, height:100).opacity(0.3)
-            VStack(spacing: 4){
-                Toggle(isOn: $tenseToggle[0], label: {Text("Present")})
-                Toggle(isOn: $tenseToggle[1], label: {Text("Preterite")})
-                Toggle(isOn: $tenseToggle[2], label: {Text("Imperfect")})
-                Toggle(isOn: $tenseToggle[3],  label: {Text("Future")})
-                Toggle(isOn: $tenseToggle[4],  label: {Text("Conditional")})
+            VStack(alignment: .leading, spacing: 2){
+                VStack{
+                    Text("Select the difficulty for your QuizCube:")
+                    HStack{
+                        Text("You selected:")
+                        Text("\(quizLevel.rawValue)").bold()
+                    }
+                }.foregroundColor(.black)
+                Divider()
+                ForEach(quizLevelList, id: \.self){ ql in
+                    Button(action: {
+                        quizLevel = ql
+                        languageEngine.setQuizLevel(quizLevel: quizLevel)
+                    }) {
+                        Text("\(ql.rawValue)")
+                            .font(.caption)
+                        Spacer()
+                        ZStack{
+                            Circle().fill(Color.red.opacity(0.5)).frame(width: 12, height: 12)
+                            if self.quizLevel == ql {
+                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 12, height: 12)
+                            }
+                        }
+                    }
+                }
             }
-            .padding(horizontal: 12, vertical: 6)
-            //        .toggleStyle(CheckboxToggleStyle())
-            .toggleStyle(CustomToggleStyle(basicSize: 40))
-            .font(.caption)
+            
         }
         .padding(.vertical)
         .padding(.horizontal,25)
-        //        .padding(.bottom, (UIApplication.shared.windows.last?.safeAreaInsets.bottom)! + 15)
-        .background(Color.white)
-        .foregroundColor(.black)
+//        .padding(.bottom, (UIApplication.shared.windows.last?.safeAreaInsets.bottom)! + 15)
+        .background(Color.yellow)
         .cornerRadius(30)
     }
 }
 
 struct VerbRadioButtons : View {
     @EnvironmentObject var languageEngine: LanguageEngine
-    let verbList : [Verb]
     
-    @State var selected = Verb()
-    
+    @Binding var selectedVerb: Verb
+
     var body: some View {
         ZStack{
             Image("white cube").frame(width: 100, height:100).opacity(0.3)
             VStack(alignment: .leading, spacing: 2){
                 VStack{
-                    Text("Select one verb for your QuizCube:")
                     HStack{
-                        Text("Your selection:")
-                        Text("\(selected.getWordAtLanguage(language: languageEngine.getCurrentLanguage()))").bold()
+                        NavigationLink(destination: VerbSelectionView()){
+                            Text("Select")
+                        }.frame(width: 50, height: 20)
+                            .padding(.leading, 10)
+                            .background(Color.orange)
+                            .cornerRadius(10)
+                        Text("Select one verb for your QuizCube:")
+                        HStack{
+                            Text("Your selection:")
+                            Text("\(selectedVerb.getWordAtLanguage(language: languageEngine.getCurrentLanguage()))").bold()
+                        }
                     }
                 }.foregroundColor(.black)
                 Divider()
-                ForEach(verbList, id: \.self){ verb in
+                ForEach(languageEngine.getQuizVerbs(), id: \.self){ verb in
                     Button(action: {
-                        selected = verb
+                        selectedVerb = verb
+                        languageEngine.setQuizCubeVerb(verb: verb)
                     }) {
                         Text(verb.getWordAtLanguage(language: languageEngine.getCurrentLanguage()))
+                            .font(.caption)
                         Spacer()
                         ZStack{
-                            Circle().fill(Color.red.opacity(0.5)).frame(width: 18, height: 18)
-                            if self.selected == verb {
-                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 18, height: 18)
+                            Circle().fill(Color.red.opacity(0.5)).frame(width: 12, height: 12)
+                            if selectedVerb == verb {
+                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 12, height: 12)
                             }
                         }
                     }
                 }
-                Divider()
-                Text("Your QuizCube will test you for all persons and all tenses, but only your selected verb").multilineTextAlignment(.center)
             }
+        }
+        .onAppear{
         }
         .padding(.vertical)
         .padding(.horizontal,25)
@@ -160,7 +208,7 @@ struct VerbRadioButtons : View {
 
 struct TenseRadioButtons : View {
     @EnvironmentObject var languageEngine: LanguageEngine
-    @State var selectedTense = Tense.present
+    @State var selectedTense : Tense
     
     var body: some View {
         ZStack{
@@ -177,19 +225,19 @@ struct TenseRadioButtons : View {
                 ForEach(languageEngine.getQuizTenseList(), id: \.self){ tense in
                     Button(action: {
                         selectedTense = tense
+                        languageEngine.setQuizCubeTense(tense: tense)
                     }) {
                         Text("\(tense.rawValue)")
+                            .font(.caption)
                         Spacer()
                         ZStack{
-                            Circle().fill(Color.red.opacity(0.5)).frame(width: 18, height: 18)
+                            Circle().fill(Color.red.opacity(0.5)).frame(width: 12, height: 12)
                             if self.selectedTense == tense {
-                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 18, height: 18)
+                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 12, height: 12)
                             }
                         }
                     }
                 }
-                Divider()
-                Text("Your QuizCube will test you for all persons and all active verbs, but only your selected tense").multilineTextAlignment(.center)
             }
         }
         .padding(.vertical)
@@ -202,7 +250,7 @@ struct TenseRadioButtons : View {
 
 struct PersonRadioButtons : View {
     @EnvironmentObject var languageEngine: LanguageEngine
-    @State var selected = Person.S1
+    @State var selectedPerson : Person
     var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     
     var body: some View {
@@ -213,26 +261,26 @@ struct PersonRadioButtons : View {
                     Text("Select one person for your QuizCube:")
                     HStack{
                         Text("Your selection:")
-                        Text("\(selected.getMaleString())").bold()
+                        Text("\(selectedPerson.getMaleString())").bold()
                     }
                 }.foregroundColor(.black)
                 Divider()
                 ForEach(personList, id: \.self){ person in
                     Button(action: {
-                        selected = person
+                        selectedPerson = person
+                        languageEngine.setQuizCubePerson(person: person)
                     }) {
                         Text("\(person.getMaleString())")
+                            .font(.caption)
                         Spacer()
                         ZStack{
-                            Circle().fill(Color.red.opacity(0.5)).frame(width: 18, height: 18)
-                            if self.selected == person {
-                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 18, height: 18)
+                            Circle().fill(Color.red.opacity(0.5)).frame(width: 12, height: 12)
+                            if self.selectedPerson == person {
+                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 12, height: 12)
                             }
                         }
                     }
                 }
-                Divider()
-                Text("Your QuizCube will test you for all tenses and all active verbs, but only your selected person").multilineTextAlignment(.center)
             }
             
         }
@@ -245,7 +293,10 @@ struct PersonRadioButtons : View {
 }
 
 
+
+
 struct ConfigRadioButtons : View {
+    @EnvironmentObject var languageEngine: LanguageEngine
     @Binding var selected : ActiveVerbCubeConfiguration
     @State var selectedConfigurationString = ActiveVerbCubeConfiguration.PersonTense.getString()
     
@@ -263,15 +314,16 @@ struct ConfigRadioButtons : View {
                     Button(action: {
                         selected = config
                         selectedConfigurationString = config.getString()
+                        languageEngine.setQuizCubeConfiguration(config: selected)
                     }) {
-                        Text(config.getString())
+                        Text(config.getString()).font(.caption)
                         //                        .font( self.selected = config ? Font.bold : Font.caption)
                         Spacer()
                         ZStack{
                             
-                            Circle().fill(Color.red.opacity(0.5)).frame(width: 18, height: 18)
+                            Circle().fill(Color.red.opacity(0.5)).frame(width: 12, height: 12)
                             if self.selected == config {
-                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 18, height: 18)
+                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 12, height: 12)
                             }
                         }
                     }

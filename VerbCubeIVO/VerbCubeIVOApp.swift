@@ -11,13 +11,10 @@ import Dot
 @main
 struct VerbCubeIVOApp: App {
     @StateObject private var tabs = Tabs(count: 3)
-    
+    @StateObject var languageEngine = LanguageEngine(load: true)
     
     var body: some Scene {
         WindowGroup {
-            let languageEngine = LanguageEngine()
-            
-            
             ContentView()
                 .environmentObject(languageEngine)
                 .environment(\.colorScheme, .dark)

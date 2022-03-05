@@ -1,8 +1,17 @@
 //
-//  QuizCubeConjugationStringHandlerStruct.swift
+//  VerbCubeHandlerClass.swift
 //  VerbCubeIVO
 //
-//  Created by Charles Diggins on 2/23/22.
+//  Created by Charles Diggins on 3/4/22.
+//
+
+import Foundation
+
+//
+//  VerbCubeConjugationStringHandler.swift
+//  VerbCubeConjugationStringHandler
+//
+//  Created by Charles Diggins on 2/16/22.
 //
 
 import Foundation
@@ -10,8 +19,9 @@ import JumpLinguaHelpers
 import Dot
 import SwiftUI
 
-struct QuizCubeConjugatedStringHandlerStruct {
-    var languageEngine: LanguageEngine
+class VerbCubeHandlerClass {
+    @ObservedObject var languageEngine: LanguageEngine
+    
     var vcDimension1 : VerbCubeDimension
     var vcDimension2 : VerbCubeDimension
     
@@ -28,16 +38,14 @@ struct QuizCubeConjugatedStringHandlerStruct {
     var conjStringArrayDimension2 = 0
     var currentTense = Tense.present
     var currentPerson = Person.P1
-    var currentVerb = Verb()
+//    var currentVerb = Verb()
     var verbCount = 6
     var verticalSwipeDimension = VerbCubeDimension.Person
     var horizontalSwipeDimension = VerbCubeDimension.Person
     var cornerWord = ""
     private var currentShowVerbType = ShowVerbType.NONE
-    var verbs = [Verb]()
-    var tenses = [Tense.present, .preterite, .imperfect, .future, .conditional]
+    var tenses = [Tense]()
     var persons = [Person.S1, .S2, .S3, .P1, .P2, .P3]
-    var verbIndex = 0
     
     init(languageEngine: LanguageEngine, d1 : VerbCubeDimension, d2 : VerbCubeDimension ){
         self.languageEngine = languageEngine
@@ -47,87 +55,82 @@ struct QuizCubeConjugatedStringHandlerStruct {
         initializeVerbCube()
     }
     
-    mutating func initializeVerbCube(){
+    func initializeVerbCube(){
         currentLanguage = languageEngine.getCurrentLanguage()
         setDimensions()
-        verbs =  languageEngine.getQuizVerbs()
-        currentVerb = verbs[verbIndex]
+        setTenses(tenses: languageEngine.getQuizTenseList())
         fillCellData()
     }
     
-    mutating func setDimensions(){
+    func setDimensions(){
         switch vcDimension1 {
         case .Person :
+            conjStringArrayDimension1 = persons.count
             if vcDimension2 == .Tense {
                 vcCurrentDimension = .Verb
                 horizontalSwipeDimension = .Verb
                 verticalSwipeDimension = .Verb
+                conjStringArrayDimension2 = languageEngine.getQuizTenseList().count
             }
             else if vcDimension2 == .Verb {
+                conjStringArrayDimension2 = languageEngine.getQuizVerbs().count
                 vcCurrentDimension = .Tense
                 horizontalSwipeDimension = .Tense
                 verticalSwipeDimension = .Verb
             }
         case .Tense:
+            conjStringArrayDimension1 = languageEngine.getQuizTenseList().count
             if vcDimension2 == .Person {
+                conjStringArrayDimension2 = 6
                 vcCurrentDimension = .Verb
                 horizontalSwipeDimension = .Verb
                 verticalSwipeDimension = .Verb
             }
             else if vcDimension2 == .Verb {
+                conjStringArrayDimension2 = languageEngine.getQuizVerbs().count
                 vcCurrentDimension = .Person
                 horizontalSwipeDimension = .Person
                 verticalSwipeDimension = .Verb
             }
         case .Verb:
+            conjStringArrayDimension1 = languageEngine.getQuizVerbs().count
             if vcDimension2 == .Person {
+                conjStringArrayDimension2 = 6
                 vcCurrentDimension = .Tense
                 horizontalSwipeDimension = .Tense
                 verticalSwipeDimension = .Verb
             }
             else if vcDimension2 == .Tense {
+                conjStringArrayDimension2 = languageEngine.getQuizTenseList().count
                 vcCurrentDimension = .Person
                 horizontalSwipeDimension = .Person
                 verticalSwipeDimension = .Verb
             }
         }
-        
+    
+    }
+    
+    func setTenses(tenses : [Tense]){
+        self.tenses = tenses
     }
     
     //should not need these to be set, but for the sake of completeness I added this function
-    mutating  func setPersons(persons : [Person]){
+    func setPersons(persons : [Person]){
         self.persons = persons
     }
     
-    mutating  func setCurrentPerson(person : Person){
+    func setCurrentPerson(person : Person){
         self.currentPerson = person
     }
     
-    mutating func setCurrentTense(tense : Tense){
+    func setCurrentTense(tense : Tense){
         self.currentTense = tense
     }
     
-    mutating func setCurrentVerb(verb : Verb){
-        self.currentVerb = verb
-    }
-    
-    mutating func setNextVerb(){
-        if verbIndex < verbs.count - 1 {verbIndex += 1}
-        else {verbIndex = 0}
-        currentVerb = verbs[verbIndex]
-    }
-
-    mutating func setPreviousVerb(){
-        if verbIndex > 0 { verbIndex -= 1}
-        else {verbIndex = verbs.count - 1}
-        currentVerb = verbs[verbIndex]
-    }
-
-
     func dumpConjugateStringArray(){
         print("\ndumpConjugateStringArray: \(vcDimension1) by \(vcDimension2)")
         switch vcCurrentDimension {
-        case .Verb: print("Current verb: \(currentVerb.getWordStringAtLanguage(language: currentLanguage))")
+        case .Verb: print("Current verb: \(languageEngine.getCurrentVerbCubeVerb().getWordStringAtLanguage(language: currentLanguage))")
         case .Person: print("Current person: \(currentPerson.rawValue)")
         case .Tense: print("Current tense: \(currentTense.rawValue)")
         }
@@ -137,11 +140,11 @@ struct QuizCubeConjugatedStringHandlerStruct {
         cornerWord
     }
     func getHeaderStringList()->[String]{
-        return headerStringList
+       return headerStringList
     }
     
     func getFirstColumnStringList()->[String]{
-        return firstColumnStringList
+       return firstColumnStringList
     }
     
     func getFirstColumnStringValue(i: Int)->String{
@@ -178,12 +181,12 @@ struct QuizCubeConjugatedStringHandlerStruct {
         return d3
     }
     
-    mutating func setShowVerbType(currentVerbType: ShowVerbType ){
+    func setShowVerbType(currentVerbType: ShowVerbType ){
         self.currentShowVerbType = currentVerbType
         fillCellData()
     }
     
-    mutating func getCurrentShowVerbType()->ShowVerbType{
+    func getCurrentShowVerbType()->ShowVerbType{
         currentShowVerbType
     }
     
@@ -193,14 +196,14 @@ struct QuizCubeConjugatedStringHandlerStruct {
         }
         return VerbCubeCellInfo()
     }
-    
+      
     func fillStringList(inputList: [String], vcd: VerbCubeDimension)->[String] {
         var list = inputList
         list.removeAll()
         switch vcd {
         case .Verb:
-            for j in 0..<verbs.count {
-                list.append(verbs[j].getWordAtLanguage(language: languageEngine.getCurrentLanguage()))
+            for j in 0..<languageEngine.getVerbCubeBlock().count {
+                list.append(languageEngine.getVerbCubeBlockVerb(i:j).getWordAtLanguage(language: languageEngine.getCurrentLanguage()))
             }
         case .Tense:
             for j in 0..<tenses.count {list.append(tenses[j].rawValue)}
@@ -210,11 +213,11 @@ struct QuizCubeConjugatedStringHandlerStruct {
         return list
     }
     
-    func fillCornerWord(vcd: VerbCubeDimension)->String {
+     func fillCornerWord(vcd: VerbCubeDimension)->String {
         var str = ""
         switch vcd {
         case .Verb:
-            str = currentVerb.getWordAtLanguage(language: languageEngine.getCurrentLanguage())
+            str = languageEngine.getCurrentVerbCubeVerb().getWordAtLanguage(language: languageEngine.getCurrentLanguage())
         case .Tense:
             str = currentTense.rawValue
         case .Person:
@@ -224,12 +227,12 @@ struct QuizCubeConjugatedStringHandlerStruct {
         
     }
     
-    mutating func fillCellData(){
+    func fillCellData(){
         cellDataArray.removeAll()
         verbCubeCellInfoArray.removeAll()
-        
+   
         let tense = currentTense
-        let verb = currentVerb
+        let verb = languageEngine.getCurrentVerbCubeVerb()
         let person = currentPerson
         
         firstColumnStringList = fillStringList(inputList: firstColumnStringList, vcd: vcDimension1)
@@ -245,41 +248,43 @@ struct QuizCubeConjugatedStringHandlerStruct {
             switch vcDimension2 {
             case .Verb: break
             case .Tense:  // verb vs tense
-                conjStringArrayDimension1 = verbs.count
+                conjStringArrayDimension1 = languageEngine.getVerbCubeBlock().count
                 conjStringArrayDimension2 = tenses.count
                 verbCubeCellInfoArray = Array(repeating: Array(repeating: VerbCubeCellInfo(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
                 cellDataArray = Array(repeating: Array(repeating: CellData(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
-                for i in 0..<verbs.count {
+                for i in 0..<languageEngine.getVerbCubeBlock().count {
                     for j in 0..<tenses.count {
                         cellColor = Color.white
-                        wordString = languageEngine.createAndConjugateAgnosticVerb(verb: verbs[i], tense: tenses[j], person: person)
-                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: verbs[i], tense: tenses[j], person: person)
+                        wordString = languageEngine.createAndConjugateAgnosticVerb(verb: languageEngine.getVerbCubeBlockVerb(i:i), tense: tenses[j], person: person)
+                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: languageEngine.getVerbCubeBlockVerb(i:i), tense: tenses[j], person: person)
                         verbCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        if languageEngine.isVerbType(verb: verbs[i], tense: tenses[j], person: person, verbType: currentShowVerbType){
+                        if languageEngine.isVerbType(verb: languageEngine.getVerbCubeBlockVerb(i:i), tense: tenses[j], person: person, verbType: currentShowVerbType){
                             verbCubeCellInfoArray[i][j].showVerbType = currentShowVerbType
                             cellColor = getComputedBackgroundColor(showVerbType: verbCubeCellInfoArray[i][j].showVerbType!)
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Person:  // verb vs person
-                conjStringArrayDimension1 = verbs.count
+                conjStringArrayDimension1 = languageEngine.getVerbCubeBlock().count
                 conjStringArrayDimension2 = persons.count
                 cellDataArray = Array(repeating: Array(repeating: CellData(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
                 verbCubeCellInfoArray = Array(repeating: Array(repeating: VerbCubeCellInfo(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
-                for i in 0..<verbs.count {
+                for i in 0..<languageEngine.getVerbCubeBlock().count {
                     for j in 0..<persons.count {
                         cellColor = Color.white
-                        wordString = languageEngine.createAndConjugateAgnosticVerb(verb: verbs[i], tense: tense, person: persons[j])
-                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: verbs[i], tense: tense, person: persons[j])
+                        wordString = languageEngine.createAndConjugateAgnosticVerb(verb: languageEngine.getVerbCubeBlock()[i], tense: tense, person: persons[j])
+                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: languageEngine.getVerbCubeBlockVerb(i:i), tense: tense, person: persons[j])
                         verbCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        if languageEngine.isVerbType(verb: verbs[i], tense: tense, person: persons[j], verbType: currentShowVerbType){
+                        if languageEngine.isVerbType(verb: languageEngine.getVerbCubeBlockVerb(i:i), tense: tense, person: persons[j], verbType: currentShowVerbType){
                             verbCubeCellInfoArray[i][j].showVerbType = currentShowVerbType
                             cellColor = getComputedBackgroundColor(showVerbType: verbCubeCellInfoArray[i][j].showVerbType!)
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }
@@ -303,25 +308,27 @@ struct QuizCubeConjugatedStringHandlerStruct {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Verb:  //tense vs verb
                 conjStringArrayDimension1 = tenses.count
-                conjStringArrayDimension2 = verbs.count
+                conjStringArrayDimension2 = languageEngine.getVerbCubeBlock().count
                 cellDataArray = Array(repeating: Array(repeating: CellData(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
                 verbCubeCellInfoArray = Array(repeating: Array(repeating: VerbCubeCellInfo(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
                 for i in 0..<tenses.count {
-                    for j in 0..<verbs.count {
+                    for j in 0..<languageEngine.getVerbCubeBlock().count {
                         cellColor = Color.white
-                        wordString =  languageEngine.createAndConjugateAgnosticVerb(verb: verbs[j], tense: tenses[i], person: person)
-                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: verbs[j], tense: tenses[i], person: person)
+                        wordString =  languageEngine.createAndConjugateAgnosticVerb(verb: languageEngine.getVerbCubeBlockVerb(i:j), tense: tenses[i], person: person)
+                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: languageEngine.getVerbCubeBlockVerb(i:j), tense: tenses[i], person: person)
                         verbCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        if languageEngine.isVerbType(verb: verbs[j], tense: tenses[i], person: person, verbType: currentShowVerbType){
+                        if languageEngine.isVerbType(verb: languageEngine.getVerbCubeBlockVerb(i:j), tense: tenses[i], person: person, verbType: currentShowVerbType){
                             verbCubeCellInfoArray[i][j].showVerbType = currentShowVerbType
                             cellColor = getComputedBackgroundColor(showVerbType: verbCubeCellInfoArray[i][j].showVerbType!)
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }
@@ -341,35 +348,37 @@ struct QuizCubeConjugatedStringHandlerStruct {
                         verbCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         if languageEngine.isVerbType(verb: verb, tense: tenses[j], person: persons[i], verbType: currentShowVerbType)
                         {
-                        verbCubeCellInfoArray[i][j].showVerbType = currentShowVerbType
-                        cellColor = getComputedBackgroundColor(showVerbType: verbCubeCellInfoArray[i][j].showVerbType!)
-                        colorCellCount += 1
-                        }
-                        cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        //                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
-                    }
-                }
-            case .Verb:  //person vs verb
-                conjStringArrayDimension1 = persons.count
-                conjStringArrayDimension2 = verbs.count
-                cellDataArray = Array(repeating: Array(repeating: CellData(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
-                verbCubeCellInfoArray = Array(repeating: Array(repeating: VerbCubeCellInfo(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
-                for i in 0..<persons.count {
-                    for j in 0..<verbs.count {
-                        cellColor = Color.white
-                        wordString =  languageEngine.createAndConjugateAgnosticVerb(verb: verbs[j], tense: tense, person: persons[i])
-                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: verbs[j], tense: tense, person: persons[i])
-                        verbCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        if languageEngine.isVerbType(verb: verbs[j], tense: tense, person: persons[i], verbType: currentShowVerbType){
                             verbCubeCellInfoArray[i][j].showVerbType = currentShowVerbType
                             cellColor = getComputedBackgroundColor(showVerbType: verbCubeCellInfoArray[i][j].showVerbType!)
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                    }
+                }
+            case .Verb:  //person vs verb
+                conjStringArrayDimension1 = persons.count
+                conjStringArrayDimension2 = languageEngine.getVerbCubeBlock().count
+                cellDataArray = Array(repeating: Array(repeating: CellData(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
+                verbCubeCellInfoArray = Array(repeating: Array(repeating: VerbCubeCellInfo(), count : conjStringArrayDimension2), count : conjStringArrayDimension1)
+                for i in 0..<persons.count {
+                    for j in 0..<languageEngine.getVerbCubeBlock().count {
+                        cellColor = Color.white
+                        wordString =  languageEngine.createAndConjugateAgnosticVerb(verb: languageEngine.getVerbCubeBlockVerb(i:j), tense: tense, person: persons[i])
+                        verbCubeCellInfoArray[i][j].setConjugationInfo(verb: languageEngine.getVerbCubeBlockVerb(i:j), tense: tense, person: persons[i])
+                        verbCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
+                        if languageEngine.isVerbType(verb: languageEngine.getVerbCubeBlockVerb(i:j), tense: tense, person: persons[i], verbType: currentShowVerbType){
+                            verbCubeCellInfoArray[i][j].showVerbType = currentShowVerbType
+                            cellColor = getComputedBackgroundColor(showVerbType: verbCubeCellInfoArray[i][j].showVerbType!)
+                            colorCellCount += 1
+                        }
+                        cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }
         }
     }
-    
 }
+
+

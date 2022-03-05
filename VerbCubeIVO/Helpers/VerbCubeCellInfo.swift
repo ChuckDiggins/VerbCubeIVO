@@ -10,12 +10,12 @@ import SwiftUI
 import JumpLinguaHelpers
 import Dot
 
-class VerbCubeCellInfo : ObservableObject{
+struct VerbCubeCellInfo {
     var verb: Verb
     var tense: Tense
     var person: Person
-    @Published var showVerbType = ShowVerbType(rawValue: "")
-    @Published var showVerbColor = Color.white
+    var showVerbType = ShowVerbType(rawValue: "")
+    var showVerbColor = Color.white
     
     init(){
         verb = Verb()
@@ -24,13 +24,13 @@ class VerbCubeCellInfo : ObservableObject{
         showVerbType = .NONE
     }
     
-    func setConjugationInfo(verb: Verb, tense: Tense, person: Person){
+    mutating func setConjugationInfo(verb: Verb, tense: Tense, person: Person){
         self.verb = verb
         self.tense = tense
         self.person = person
     }
     
-    func setShowVerbType(showVerbType: ShowVerbType){
+    mutating func setShowVerbType(showVerbType: ShowVerbType){
         showVerbColor = getComputedBackgroundColor(showVerbType: showVerbType)
     }
     

@@ -10,8 +10,8 @@ import SwiftUI
 import JumpLinguaHelpers
 
 
-struct NewQuizCubeView: View {
-    @EnvironmentObject var languageEngine: LanguageEngine
+struct QuizCubeView: View {
+    @ObservedObject var languageEngine: LanguageEngine
     @State public var vccsh : QuizCubeConjugatedStringHandlerStruct
     public var verbCount = 6
     @State var isSwiping = true
@@ -19,105 +19,15 @@ struct NewQuizCubeView: View {
     @State var specialVerbString = ""
     @State var showVerbType = ShowVerbType.NONE
     @State var showVerbTypeColor = Color.red
+    @State private var useAlert = false
     
     var body: some View {
         NavigationView{
             VStack(spacing: 0){
-                HStack{
-                    Text("Highlight:")
-                    Text(showVerbType.rawValue)
-                        .foregroundColor(showVerbTypeColor)
-                    HStack{
-                        Button(action: {
-                            vccsh.setShowVerbType(currentVerbType: .NONE)
-                            showVerbType = vccsh.getCurrentShowVerbType()
-                            showVerbTypeColor = .red
-                        }){
-                            Text("🔴")
-                        }
-                        Button(action: {
-                            vccsh.setShowVerbType(currentVerbType: .STEM)
-                            showVerbType = vccsh.getCurrentShowVerbType()
-                            showVerbTypeColor = .yellow
-                        }){
-                            Text("🟡")
-                        }
-                        Button(action: {
-                            vccsh.setShowVerbType(currentVerbType: .ORTHO)
-                            showVerbType = vccsh.getCurrentShowVerbType()
-                            showVerbTypeColor = .green
-                        }){
-                            Text("🟢")
-                        }
-                        Button(action: {
-                            vccsh.setShowVerbType(currentVerbType: .IRREG)
-                            showVerbType = vccsh.getCurrentShowVerbType()
-                            showVerbTypeColor = .blue
-                        }){
-                            Text("🔵")
-                        }
-                    }
-                    Spacer()
-                    CubeTypeButtons(changeVerbCubeDimension: resetCube)
-                }
                 ShowCube(vccsh: vccsh)
-                HStack{
-                //swipeButtons ... to do
-                    
-                    Spacer()
-                    Button(action: { swipeUp()}){
-                        Image(systemName: "arrowtriangle.up")
-                    }
-                    Text(vccsh.verticalSwipeDimension.rawValue ).foregroundColor(Color.black)
-                    Button(action: { swipeDown()}){
-                        Image(systemName: "arrowtriangle.down")
-                    }
-                    Spacer()
-                    Button(action: {
-                        swipeLeft()
-                    }){
-                        Image(systemName: "arrowtriangle.backward")
-                    }
-                    Text(vccsh.horizontalSwipeDimension.rawValue).foregroundColor(Color.black)
-                    Button(action: {
-                        swipeRight()
-                    }){
-                        Image(systemName: "arrowtriangle.forward")
-                    }
-                    Spacer()
-                    
-                }.background(Color.yellow)
-                    
-                    .padding(10)
             }.navigationBarTitle("Quiz Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)")
                 
         }
-        .gesture(DragGesture()
-        .onChanged { gesture in
-            if self.isSwiping {
-                self.startPos = gesture.location
-                self.isSwiping.toggle()
-            }
-        }
-                    .onEnded { gesture in
-            let xDist =  abs(gesture.location.x - self.startPos.x)
-            let yDist =  abs(gesture.location.y - self.startPos.y)
-            if self.startPos.y <  gesture.location.y && yDist > xDist {
-                swipeDown()
-            }
-            else if self.startPos.y >  gesture.location.y && yDist > xDist {
-                swipeUp()
-            }
-            
-            else if self.startPos.x > gesture.location.x && yDist < xDist {
-                swipeLeft()
-            }
-            else if self.startPos.x < gesture.location.x && yDist < xDist {
-                swipeRight()
-            }
-            self.isSwiping.toggle()
-        }
-        )
     }
     
     struct VerbTypeButtons: View {
@@ -232,7 +142,7 @@ struct NewQuizCubeView: View {
                         ForEach((0..<vccsh.conjStringArrayDimension2), id:\.self) {jndex in
                             QuizCubeCellView(vcci: vccsh.getVerbCubeCellInfo(i: index, j: jndex),
                                                         columnWidth: CGFloat(600/vccsh.getHeaderStringList().count),
-                                                        cellData: vccsh.getCellData(i: index, j: jndex))
+                                             cellData: vccsh.getCellData(i: index, j: jndex), useAlert: true)
                                                        
                         }
                         Spacer()
@@ -246,19 +156,16 @@ struct NewQuizCubeView: View {
 }
 
 
-extension NewQuizCubeView {
-
-    func resetCube(d1: VerbCubeDimension, d2: VerbCubeDimension){
-        let currentVerbType = vccsh.getCurrentShowVerbType()
-        let currentVerb = vccsh.currentVerb
-        vccsh = QuizCubeConjugatedStringHandlerStruct(languageEngine: languageEngine, d1: d1, d2: d2)
-        vccsh.currentVerb = currentVerb
-        vccsh.setShowVerbType(currentVerbType: currentVerbType)
-        
-    }
+extension QuizCubeView {
+//
+//    func resetCube(d1: VerbCubeDimension, d2: VerbCubeDimension){
+//        let currentVerbType = vccsh.getCurrentShowVerbType()
+//        vccsh = QuizCubeConjugatedStringHandlerStruct(languageEngine: languageEngine, quizCubeWatcher: quizCubeWatcher)
+//        vccsh.setShowVerbType(currentVerbType: currentVerbType)
+//    }
 
 }
-extension NewQuizCubeView {
+extension QuizCubeView {
     func dontShowVerbTypes(){
         specialVerbString = ""
         print(specialVerbString)
@@ -274,7 +181,7 @@ extension NewQuizCubeView {
     }
 }
 
-extension NewQuizCubeView {
+extension QuizCubeView {
     func swipeUp(){
         setPreviousVerbs()
     }
@@ -308,38 +215,42 @@ extension NewQuizCubeView {
     }
     
     func setPreviousTense() {
-        vccsh.setCurrentTense(tense: languageEngine.getPreviousTense())
-        vccsh.fillCellData()
+//        vccsh.setCurrentTense(tense: languageEngine.getPreviousTense())
+//        vccsh.fillCellData()
     }
     
     func setNextTense() {
-        vccsh.setCurrentTense(tense: languageEngine.getNextTense())
-        vccsh.fillCellData()
+//        vccsh.setCurrentTense(tense: languageEngine.getNextTense())
+//        vccsh.fillCellData()
     }
     
     func setNextVerbs() {
-        if vccsh.vcCurrentDimension == .Verb {
-            vccsh.setNextVerb()
-        }
-        vccsh.fillCellData()
+//        if vccsh.vcCurrentDimension == .Verb {
+//            languageEngine.setNextVerbCubeVerb()
+//        } else {
+//            languageEngine.setNextVerbCubeBlockVerbs()
+//        }
+//        vccsh.fillCellData()
     }
     
     func setPreviousVerbs() {
-        if vccsh.vcCurrentDimension == .Verb {
-            vccsh.setPreviousVerb()
-        }
-        vccsh.fillCellData()
+//        if vccsh.vcCurrentDimension == .Verb {
+//            languageEngine.setPreviousVerbCubeVerb()
+//        } else {
+//            languageEngine.setPreviousCubeBlockVerbs()
+//        }
+//        vccsh.fillCellData()
     }
     
     
     func setPreviousPerson(){
-        vccsh.setCurrentPerson(person: languageEngine.getPreviousPerson())
-        vccsh.fillCellData()
+//        vccsh.setCurrentPerson(person: languageEngine.getPreviousPerson())
+//        vccsh.fillCellData()
     }
     
     func setNextPerson(){
-        vccsh.setCurrentPerson(person: languageEngine.getNextPerson())
-        vccsh.fillCellData()
+//        vccsh.setCurrentPerson(person: languageEngine.getNextPerson())
+//        vccsh.fillCellData()
     }
 
     

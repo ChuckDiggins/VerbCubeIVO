@@ -72,7 +72,6 @@ extension QuizCubeOptionsView {
                 Text(configSelected.getString())
             }
             Text("Present tense: \(presentToggle)")
-//            TenseToggles(presentToggle: $presentToggle)
             VStack{
                 Toggle(isOn: $presentToggle, label: {Text("Present")})
                 Toggle(isOn: $preteriteToggle, label: {Text("Preterite")})

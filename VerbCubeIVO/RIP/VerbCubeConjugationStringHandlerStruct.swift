@@ -11,9 +11,10 @@ import Dot
 import SwiftUI
 
 struct VerbCubeConjugatedStringHandlerStruct {
-    var languageEngine: LanguageEngine
-    var vcDimension1 : VerbCubeDimension
-    var vcDimension2 : VerbCubeDimension
+    @ObservedObject var languageEngine: LanguageEngine
+    
+    var vcDimension1 = VerbCubeDimension.Person
+    var vcDimension2 = VerbCubeDimension.Tense
     
     var vcCurrentDimension = VerbCubeDimension.Person
     var currentLanguage = LanguageType.Spanish
@@ -37,52 +38,67 @@ struct VerbCubeConjugatedStringHandlerStruct {
     var tenses = [Tense]()
     var persons = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     
-    init(languageEngine: LanguageEngine, d1 : VerbCubeDimension, d2 : VerbCubeDimension ){
+    init(languageEngine: LanguageEngine ){
         self.languageEngine = languageEngine
-        currentLanguage = .Spanish
+        currentLanguage = languageEngine.getCurrentLanguage()
+        initializeVerbCube()
+    }
+    
+    init(languageEngine: LanguageEngine, d1:  VerbCubeDimension, d2: VerbCubeDimension){
+        self.languageEngine = languageEngine
         vcDimension1 = d1
         vcDimension2 = d2
+        currentLanguage = languageEngine.getCurrentLanguage()
         initializeVerbCube()
     }
     
     mutating func initializeVerbCube(){
         currentLanguage = languageEngine.getCurrentLanguage()
         setDimensions()
-        setTenses(tenses: languageEngine.getTenseList())
+        setTenses(tenses: languageEngine.getQuizTenseList())
         fillCellData()
     }
     
     mutating func setDimensions(){
         switch vcDimension1 {
         case .Person :
+            conjStringArrayDimension1 = persons.count
             if vcDimension2 == .Tense {
                 vcCurrentDimension = .Verb
                 horizontalSwipeDimension = .Verb
                 verticalSwipeDimension = .Verb
+                conjStringArrayDimension2 = languageEngine.getQuizTenseList().count
             }
             else if vcDimension2 == .Verb {
+                conjStringArrayDimension2 = languageEngine.getQuizVerbs().count
                 vcCurrentDimension = .Tense
                 horizontalSwipeDimension = .Tense
                 verticalSwipeDimension = .Verb
             }
         case .Tense:
+            conjStringArrayDimension1 = languageEngine.getQuizTenseList().count
             if vcDimension2 == .Person {
+                conjStringArrayDimension2 = 6
                 vcCurrentDimension = .Verb
                 horizontalSwipeDimension = .Verb
                 verticalSwipeDimension = .Verb
             }
             else if vcDimension2 == .Verb {
+                conjStringArrayDimension2 = languageEngine.getQuizVerbs().count
                 vcCurrentDimension = .Person
                 horizontalSwipeDimension = .Person
                 verticalSwipeDimension = .Verb
             }
         case .Verb:
+            conjStringArrayDimension1 = languageEngine.getQuizVerbs().count
             if vcDimension2 == .Person {
+                conjStringArrayDimension2 = 6
                 vcCurrentDimension = .Tense
                 horizontalSwipeDimension = .Tense
                 verticalSwipeDimension = .Verb
             }
             else if vcDimension2 == .Tense {
+                conjStringArrayDimension2 = languageEngine.getQuizTenseList().count
                 vcCurrentDimension = .Person
                 horizontalSwipeDimension = .Person
                 verticalSwipeDimension = .Verb
@@ -213,7 +229,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
         verbCubeCellInfoArray.removeAll()
    
         let tense = currentTense
-        let verb = languageEngine.getCurrentVerb()
+        let verb = languageEngine.getCurrentVerbCubeVerb()
         let person = currentPerson
         
         firstColumnStringList = fillStringList(inputList: firstColumnStringList, vcd: vcDimension1)
@@ -245,6 +261,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Person:  // verb vs person
@@ -264,6 +281,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }
@@ -287,6 +305,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Verb:  //tense vs verb
@@ -306,6 +325,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }
@@ -330,7 +350,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-//                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Verb:  //person vs verb
@@ -350,6 +370,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
+                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }

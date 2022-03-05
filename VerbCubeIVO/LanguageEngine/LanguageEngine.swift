@@ -10,13 +10,6 @@ import JumpLinguaHelpers
 import Dot
 
 class LanguageEngine : ObservableObject {
-//    @Published private var currentLanguage = LanguageType.Agnostic
-//    @Published private var currentVerb = Verb()
-//    @Published private var currentTense = Tense.present
-//    @Published private var currentPerson = Person.S1
-//    @Published private var tenseList = Array<Tense>()
-//    @Published private var morphStructManager = MorphStructManager(verbPhrase: "", tense: .present)
-//
     private var currentLanguage = LanguageType.Agnostic
     private var currentVerb = Verb()
     private var currentTense = Tense.present
@@ -26,12 +19,12 @@ class LanguageEngine : ObservableObject {
     private var currentVerbIndex = 0
     private var currentTenseIndex = 0
     private var currentPersonIndex = 0
-    private var startingVerbCubeListIndex = 0
     
+    var tenseList = [Tense.present, .preterite, .imperfect, .conditional, .presentSubjunctive]
     private var verbList = [Verb]()
     
     private var currentFilteredVerbIndex = 0
-    private var filteredVerbList = [Verb]()
+    var filteredVerbList = [Verb]()
     
     private var verbModelConjugation : VerbModelConjugation!
     private var spanishVerbModelConjugation = RomanceVerbModelConjugation()
@@ -41,17 +34,31 @@ class LanguageEngine : ObservableObject {
     private var verbModelManager = VerbModelManager()
     private var tenseManager = TenseManager()
     private var wsp : ViperWordStringParser!
-    private var verbCubeVerbIndex = 0
-    private var verbCubeList = [Verb]()
-    private let verbBlockCount: Int = 6
-    private var verbCubeBlockIndex = 0
-    private var verbCubeBlock = [Verb(), Verb(), Verb(), Verb(), Verb(), Verb()]
     
-    private var quizCubeList1 = [Verb]()
-    private var tenseList = [Tense.present, .preterite, .imperfect, .conditional, .presentSubjunctive]
-    private var quizTenseList = [Tense.present, .preterite, .imperfect, .future, .conditional]
     
-    init() {
+    var startingVerbCubeListIndex = 0
+    var verbCubeVerbIndex = 0
+    @Published var verbCubeList = [Verb]()
+    let verbBlockCount: Int = 6
+    var verbCubeBlockIndex = 0
+    var verbCubeBlock = [Verb(), Verb(), Verb(), Verb(), Verb(), Verb()]
+    var quizCubeBlock = [Verb]()
+    @Published var quizCubeVerbList = [Verb]()
+    @Published var quizCubeVerb = Verb()
+    var quizCubeTense = Tense.present
+    var quizCubePerson = Person.S1
+    
+    var quizTenseList = [Tense.present, .preterite, .imperfect, .future, .conditional]
+    var quizCubeConfiguration = ActiveVerbCubeConfiguration.PersonVerb
+    var quizCubeDifficulty = QuizCubeDifficulty.easy
+    
+    init(){
+        
+    }
+ 
+
+    
+    init(load: Bool) {
         verbModelConjugation = VerbModelConjugation(currentLanguage: currentLanguage)
         wsp = ViperWordStringParser(language: currentLanguage,
                                       span: spanishVerbModelConjugation,
@@ -62,8 +69,8 @@ class LanguageEngine : ObservableObject {
         filteredVerbList = verbList
         fillVerbCubeLists()   //verb cube list is a list of all the filtered verbs
         setPreviousCubeBlockVerbs()  //verbCubeBlock is a block of verbBlockCount verbs
-        fillQuizCubeList()
-       
+        fillQuizCubeVerbList()
+        fillQuizCubeBlock()
         currentLanguage = .Spanish  //pick one
 //        testLogic(tense: .preterite)
     }
@@ -161,7 +168,7 @@ class LanguageEngine : ObservableObject {
             break
         }
         
-        print("verb: \(verb.getWordStringAtLanguage(language: currentLanguage)), \(vmm.modelName)")
+//        print("verb: \(verb.getWordStringAtLanguage(language: currentLanguage)), \(vmm.modelName)")
         //Since this is a new bVerb
         verb.setBVerb(bVerb: bVerb)
         for p in 0..<6 {
@@ -220,12 +227,6 @@ extension LanguageEngine{
 extension LanguageEngine{
     enum verbSelectionType {
         case AR, ER, IR, Stem, Ortho, Irregular, Special
-    }
-    
-    func getVerbs()->[Verb]{
-        var verbs = [Verb]()
-        
-        return verbs
     }
     
     func examineVerbs(){
@@ -339,14 +340,12 @@ extension LanguageEngine{
     }
     
     func checkForStemChanging(verb: BSpanishVerb, tense: Tense, person: Person)->Bool{
-        var stemFrom = ""
-        var stemTo = ""
         
         if verb.isStemChanging() {
             if (tense == .present || tense == .presentSubjunctive) && verb.isPersonStem(person: person) {
                 if verb.isOrthoPresent(tense: tense, person: person){ return false }  //tener - tengo
-                stemFrom = verb.m_stemFrom
-                stemTo = verb.m_stemTo
+//                var stemFrom = verb.m_stemFrom
+//                var stemTo = verb.m_stemTo
 //                    print("\(verbWord) is stem changing for tense \(tense.rawValue), person \(person.rawValue) ")
                 return true
             }
@@ -434,109 +433,4 @@ extension LanguageEngine{
         filteredVerbList.append(verb)
     }
 }
-
-extension LanguageEngine{
-    
-    func getQuizVerb(i: Int)->Verb{
-        if i < verbCubeList.count && i >= 0 {
-            return verbCubeList[i]
-        }
-        return Verb()
-    }
-    
-    func getQuizVerbs()->[Verb]{
-        return quizCubeList1
-    }
-    
-    
-    func fillQuizCubeList(){
-        for verb in verbList {
-            let bVerb = verb.getBVerb()
-            if !bVerb.isPhrasalVerb(){
-                quizCubeList1.append(verb)
-            }
-            if quizCubeList1.count > 4 { break }
-        }
-    }
-    
-    func fillVerbCubeLists(){
-        verbCubeList.removeAll()
-        for verb in filteredVerbList {
-            let bVerb = verb.getBVerb()
-            if !bVerb.isPhrasalVerb(){
-                verbCubeList.append(verb)
-            }
-        }
-        print("fillVerbCubeLists: filteredVerbList count = \(filteredVerbList.count), verbCubeList count = \(verbCubeList.count)")
-    }
-    
-    func setNextVerbCubeVerb(){
-        verbCubeVerbIndex += 1
-        
-        if (verbCubeVerbIndex >= verbCubeList.count ){
-            verbCubeVerbIndex = 0
-        }
-        print("setNextVerbCubeVerb: verbCubeList count = \(verbCubeList.count)")
-    }
-    
-    func setPreviousVerbCubeVerb(){
-        verbCubeVerbIndex -= 1
-        
-        if (verbCubeVerbIndex < 0 ){
-            verbCubeVerbIndex = verbCubeList.count - 1
-        }
-        print("setPreviousVerbCubeVerb: verbCubeList count = \(verbCubeList.count)")
-    }
-    
-    func getCurrentVerbCubeVerb()->Verb{
-        return verbCubeList[verbCubeVerbIndex]
-        print("getCurrentVerbCubeVerb: verbCubeList count = \(verbCubeList.count)")
-    }
-    
-    func setPreviousCubeBlockVerbs(){
-        verbCubeBlock.removeAll()
-        startingVerbCubeListIndex = startingVerbCubeListIndex - verbBlockCount
-        if (startingVerbCubeListIndex < 0 ){
-            startingVerbCubeListIndex = 0
-        }
-        for i in 0 ..< verbBlockCount {
-            verbCubeBlock.append (verbCubeList[startingVerbCubeListIndex + i])
-        }
-        print("setPreviousCubeBlockVerbs: verbCubeList count = \(verbCubeList.count)")
-    }
-    
-    func setNextVerbCubeBlockVerbs(){
-        verbCubeBlock.removeAll()
-        startingVerbCubeListIndex = startingVerbCubeListIndex + verbBlockCount
-        if (startingVerbCubeListIndex+verbBlockCount >= verbCubeList.count ){
-            startingVerbCubeListIndex = verbCubeList.count - verbBlockCount - 1
-        }
-        for i in 0 ..< verbBlockCount {
-            verbCubeBlock.append (verbCubeList[startingVerbCubeListIndex + i])
-        }
-        print("setNextVerbCubeBlockVerbs: verbCubeList count = \(verbCubeList.count)")
-    }
-    
-    
-    func getVerbCubeBlock()->[Verb]{
-        print("getVerbCubeBlock: verbCubeList count = \(verbCubeList.count)")
-        return verbCubeBlock
-    }
-    
-    func getVerbCubeBlockVerb(i: Int)->Verb{
-        if i >= 0 && i < verbCubeBlock.count {
-            return verbCubeBlock[i]
-        }
-        return Verb()
-    }
-    
-    func getQuizTenseList()->[Tense]{
-        return quizTenseList
-    }
-    
-    func setQuizTenseList(list: [Tense]){
-        quizTenseList = list
-    }
-}
-
 

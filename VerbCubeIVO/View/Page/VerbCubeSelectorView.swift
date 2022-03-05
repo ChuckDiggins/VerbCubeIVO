@@ -30,7 +30,7 @@ struct VerbCubeSelectorView: View {
 //                        .background(Color.orange)
 //                        .cornerRadius(10)
 //                    
-//                    NavigationLink(destination: NewQuizCubeView(vccsh: QuizCubeConjugatedStringHandlerStruct(languageEngine: languageEngine, d1: .Person, d2: .Tense))){
+//                    NavigationLink(destination: QuizCubeView(vccsh: QuizCubeConjugatedStringHandlerStruct(languageEngine: languageEngine, d1: .Person, d2: .Tense))){
 //                        Text("The Quiz Cube")
 //                    }.frame(width: 200, height: 50)
 //                        .padding(.leading, 10)
