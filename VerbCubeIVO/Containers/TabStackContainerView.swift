@@ -27,7 +27,7 @@ struct TabsStackContainer: View {
                 EmptyView()
 //                GeneralVerbCubeView(VerbCubeConjugatedStringHandler(languageEngine: languageEngine, d1: .Verb, d2: .Person))
             case 2:
-                ProfileView()
+              EmptyView()
             default: EmptyView()
             }
         }, items: { tag in

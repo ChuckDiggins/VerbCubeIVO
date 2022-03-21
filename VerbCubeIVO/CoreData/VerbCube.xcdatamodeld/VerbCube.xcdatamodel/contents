@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20083" systemVersion="21E5222a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AgnosticWord" representedClassName="AgnosticWord" syncable="YES">
+        <attribute name="english" optional="YES" attributeType="String"/>
+        <attribute name="french" optional="YES" attributeType="String"/>
+        <attribute name="spanish" optional="YES" attributeType="String"/>
+        <attribute name="wordType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <elements>
+        <element name="AgnosticWord" positionX="-63" positionY="-18" width="128" height="89"/>
+    </elements>
+</model>

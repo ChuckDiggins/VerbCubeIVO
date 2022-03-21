@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import JumpLinguaHelpers
 
 enum ActiveVerbCubeConfiguration  {
     case PersonTense, TensePerson, VerbPerson, PersonVerb, VerbTense, TenseVerb, None

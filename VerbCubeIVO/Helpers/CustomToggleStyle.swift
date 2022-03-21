@@ -48,6 +48,7 @@ struct CustomToggleStyle : ToggleStyle {
         var isOn : Bool = false
         var basicSize = 60.0
         var color: Color
+        @State private var animationAmount = 1.0
         
         var body: some View {
             RoundedRectangle(cornerRadius: 5)
@@ -58,7 +59,11 @@ struct CustomToggleStyle : ToggleStyle {
                         .fill(isOn ? color : color.opacity(0.2))
                         .frame(width: basicSize/2.0, height: basicSize/3.0),
                     alignment: isOn ? .trailing : .leading  )
-                .animation(.linear(duration: 0.2))
+                .animation(
+                                    .easeInOut(duration: 1)
+                                        .repeatForever(autoreverses: false),
+                                    value: animationAmount
+                                )
         }
     }
 

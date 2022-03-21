@@ -8,63 +8,79 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var languageEngine: LanguageEngine
-
+    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @State var isVerbCubeActive = false
+   
     var body: some View {
         NavigationView {
             List {
-                Text("\(languageEngine.getCurrentLanguage())")
-                NavigationLink(destination: VerbCubeView(vccsh: VerbCubeConjugatedStringHandlerStruct(languageEngine: languageEngine))){
-                    Text("JumpLingua Verb Cube")
-                }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-                
-//                NavigationLink(destination: VerbCubeView2(vccsh: VerbCubeHandlerClass(languageEngine: languageEngine, d1: .Person, d2: .Verb))){
-//                    Text("JumpLingua Verb Cube 2")
+//                NavigationLink(destination: VerbCubeDispatcher()){
+//                    Text("Verb Cube Dispatcher")
+//                }.frame(width: 200, height: 50)
+//                    .padding(.leading, 10)
+//                    .background(Color.green)
+//                    .cornerRadius(10)
+
+//                Text("\(languageViewModel.getCurrentLanguage())")
+//                NavigationLink(destination: VerbCubeView(languageViewModel: languageViewModel, vccsh: VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1:  .Verb, d2: .Person)), isActive: $isVerbCubeActive){
+//                    Text("Verb Cube")
 //                }.frame(width: 200, height: 50)
 //                .padding(.leading, 10)
 //                .background(Color.orange)
 //                .cornerRadius(10)
 //                
-                NavigationLink(destination: QuizCubeOptionsView2()){
-                    Text("JumpLingua Quiz Cube")
-                }.frame(width: 200, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.orange)
-                    .cornerRadius(10)
-                
-//                NavigationLink(destination: QuizCubeView(vccsh: QuizCubeConjugatedStringHandlerStruct(languageEngine: languageEngine))){
-//                    Text("JumpLingua Quiz Cube")
+//////
+//                
+////
+//                NavigationLink(destination: WordCollectionScreen(languageViewModel: languageViewModel)){
+//                    Text("Word collections")
 //                }.frame(width: 200, height: 50)
 //                    .padding(.leading, 10)
 //                    .background(Color.orange)
 //                    .cornerRadius(10)
-
-//                NavigationLink(destination: FilteredVerbListView()){
-//                    Text("Filtered Verb List")
+//
+//
+//                NavigationLink(destination: VerbSelectionViewLazy(languageEngine: languageViewModel.getLanguageEngine())){
+//                    Text("LAZY Verb selection view")
 //                }.frame(width: 200, height: 50)
 //                    .padding(.leading, 10)
 //                    .background(Color.orange)
 //                    .cornerRadius(10)
-
-                NavigationLink(destination: VerbSelectionView()){
-                    Text("Verb selection view")
-                }.frame(width: 200, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.orange)
-                    .cornerRadius(10)
-
-
+////
+//                NavigationLink(destination: VerbMorphView()){
+//                                    Text("Verb Morph View")
+//                                }.frame(width: 200, height: 50)
+//                                .padding(.leading, 10)
+//                                .background(Color.orange)
+//                                .cornerRadius(10)
+////
+//                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
+//                                    Text("Analyze User Verb")
+//                                }.frame(width: 200, height: 50)
+//                                .padding(.leading, 10)
+//                                .background(Color.orange)
+//                                .cornerRadius(10)
+//////
+//                NavigationLink(destination: LanguagePreferencesTenseView(languageViewModel: languageViewModel)){
+//                                    Text("Preferences")
+//                                }.frame(width: 200, height: 50)
+//                                .padding(.leading, 10)
+//                                .background(Color.orange)
+//                                .cornerRadius(10)
+////
+//
 
             }.navigationTitle("Verb cubes")
+                .navigationViewStyle(StackNavigationViewStyle())
+                .onAppear{
+//                    isVerbCubeActive = true
+                }
         }
     }
 }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

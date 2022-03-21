@@ -45,6 +45,8 @@ func getComputedBackgroundColor(showVerbType: ShowVerbType)->Color{
     case .STEM: return .yellow
     case .ORTHO: return .green
     case .IRREG: return .blue
+    case .REFLEXIVE: return .purple
     case .SPECIAL: return .orange
+    case .PHRASAL: return .white
     }
 }

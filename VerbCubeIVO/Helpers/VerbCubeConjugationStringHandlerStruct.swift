@@ -1,13 +1,4 @@
 //
-//  VerbCubeHandlerClass.swift
-//  VerbCubeIVO
-//
-//  Created by Charles Diggins on 3/4/22.
-//
-
-import Foundation
-
-//
 //  VerbCubeConjugationStringHandler.swift
 //  VerbCubeConjugationStringHandler
 //
@@ -19,15 +10,14 @@ import JumpLinguaHelpers
 import Dot
 import SwiftUI
 
-class VerbCubeHandlerClass {
+struct VerbCubeConjugatedStringHandlerStruct {
 //    @ObservedObject var languageEngine: LanguageEngine
     @ObservedObject var languageViewModel: LanguageViewModel
     
-    var vcDimension1 : VerbCubeDimension
-    var vcDimension2 : VerbCubeDimension
+    var vcDimension1 = VerbCubeDimension.Person
+    var vcDimension2 = VerbCubeDimension.Tense
     
     var vcCurrentDimension = VerbCubeDimension.Person
-    var currentLanguage = LanguageType.Spanish
     var showStringArray = [[String]]()
     var verbCubeCellInfoArray = [[VerbCubeCellInfo]]()
     var cellDataArray = [[CellData]]()
@@ -47,23 +37,28 @@ class VerbCubeHandlerClass {
     private var currentShowVerbType = ShowVerbType.NONE
     var tenses = [Tense]()
     var persons = [Person.S1, .S2, .S3, .P1, .P2, .P3]
+    var diagnosticPrint = false
     
-    init(languageViewModel: LanguageViewModel, d1 : VerbCubeDimension, d2 : VerbCubeDimension ){
+//    init(languageEngine: LanguageEngine ){
+//        self.languageViewModel = languageViewModel
+//        currentLanguage = languageViewModel.getCurrentLanguage()
+//        initializeVerbCube()
+//    }
+//    
+    init(languageViewModel: LanguageViewModel, d1:  VerbCubeDimension, d2: VerbCubeDimension){
         self.languageViewModel = languageViewModel
-        currentLanguage = .Spanish
         vcDimension1 = d1
         vcDimension2 = d2
         initializeVerbCube()
     }
     
-    func initializeVerbCube(){
-        currentLanguage = languageViewModel.getCurrentLanguage()
+    mutating func initializeVerbCube(){
         setDimensions()
         setTenses(tenses: languageViewModel.getQuizTenseList())
         fillCellData()
     }
     
-    func setDimensions(){
+    mutating func setDimensions(){
         switch vcDimension1 {
         case .Person :
             conjStringArrayDimension1 = persons.count
@@ -111,27 +106,27 @@ class VerbCubeHandlerClass {
     
     }
     
-    func setTenses(tenses : [Tense]){
+    mutating  func setTenses(tenses : [Tense]){
         self.tenses = tenses
     }
     
     //should not need these to be set, but for the sake of completeness I added this function
-    func setPersons(persons : [Person]){
+    mutating  func setPersons(persons : [Person]){
         self.persons = persons
     }
     
-    func setCurrentPerson(person : Person){
+    mutating  func setCurrentPerson(person : Person){
         self.currentPerson = person
     }
     
-    func setCurrentTense(tense : Tense){
+    mutating func setCurrentTense(tense : Tense){
         self.currentTense = tense
     }
     
     func dumpConjugateStringArray(){
         print("\ndumpConjugateStringArray: \(vcDimension1) by \(vcDimension2)")
         switch vcCurrentDimension {
-        case .Verb: print("Current verb: \(languageViewModel.getCurrentVerbCubeVerb().getWordStringAtLanguage(language: currentLanguage))")
+        case .Verb: print("Current verb: \(languageViewModel.getCurrentVerbCubeVerb().getWordStringAtLanguage(language: languageViewModel.getCurrentLanguage()))")
         case .Person: print("Current person: \(currentPerson.rawValue)")
         case .Tense: print("Current tense: \(currentTense.rawValue)")
         }
@@ -182,12 +177,12 @@ class VerbCubeHandlerClass {
         return d3
     }
     
-    func setShowVerbType(currentVerbType: ShowVerbType ){
+    mutating func setShowVerbType(currentVerbType: ShowVerbType ){
         self.currentShowVerbType = currentVerbType
         fillCellData()
     }
     
-    func getCurrentShowVerbType()->ShowVerbType{
+    mutating func getCurrentShowVerbType()->ShowVerbType{
         currentShowVerbType
     }
     
@@ -209,7 +204,7 @@ class VerbCubeHandlerClass {
         case .Tense:
             for j in 0..<tenses.count {list.append(tenses[j].rawValue)}
         case .Person:
-            for j in 0..<persons.count { list.append(persons[j].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))}
+            for j in 0..<persons.count { list.append(persons[j].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))}
         }
         return list
     }
@@ -222,16 +217,27 @@ class VerbCubeHandlerClass {
         case .Tense:
             str = currentTense.rawValue
         case .Person:
-            str = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)
+            str = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)
         }
         return str
         
     }
     
-    func fillCellData(){
+    mutating func setDiagnosticPrint(flag: Bool){
+        diagnosticPrint = flag
+    }
+    
+    func printDiagnostic(i: Int, j: Int){
+        if diagnosticPrint {
+            print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString))")
+        }
+    }
+    
+    mutating func fillCellData(){
         cellDataArray.removeAll()
         verbCubeCellInfoArray.removeAll()
-   
+        setDiagnosticPrint(flag: true)
+        
         let tense = currentTense
         let verb = languageViewModel.getCurrentVerbCubeVerb()
         let person = currentPerson
@@ -265,7 +271,8 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                        printDiagnostic(i: i, j: j)
+                        
                     }
                 }
             case .Person:  // verb vs person
@@ -285,7 +292,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                        printDiagnostic(i: i, j: j)
                     }
                 }
             }
@@ -309,7 +316,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                        printDiagnostic(i: i, j: j)
                     }
                 }
             case .Verb:  //tense vs verb
@@ -329,7 +336,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                        printDiagnostic(i: i, j: j)
                     }
                 }
             }
@@ -354,7 +361,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                        printDiagnostic(i: i, j: j)
                     }
                 }
             case .Verb:  //person vs verb
@@ -374,12 +381,11 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+                        printDiagnostic(i: i, j: j)
                     }
                 }
             }
         }
     }
 }
-
 

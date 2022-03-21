@@ -28,6 +28,7 @@ extension LanguageEngine{
     
     
     func fillQuizCubeVerbList(){
+        quizCubeVerbList.removeAll()
         for verb in filteredVerbList {
             let bVerb = verb.getBVerb()
             if !bVerb.isPhrasalVerb(){
@@ -39,6 +40,7 @@ extension LanguageEngine{
     }
     
     func fillQuizCubeBlock(){
+        quizCubeBlock.removeAll()
         for verb in filteredVerbList {
             let bVerb = verb.getBVerb()
             if !bVerb.isPhrasalVerb(){

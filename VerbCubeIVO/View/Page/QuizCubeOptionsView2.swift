@@ -15,8 +15,9 @@ enum QuizCubeDifficulty : String {
 }
 
 struct QuizCubeOptionsView2: View {
-   
-    @EnvironmentObject var languageEngine: LanguageEngine
+//
+//    @EnvironmentObject var languageEngine: LanguageEngine
+    @EnvironmentObject var languageViewModel: LanguageViewModel
 //    @EnvironmentObject var quizCubeWatcher: QuizCubeWatcher
     
     // MARK: - Observed
@@ -33,9 +34,18 @@ struct QuizCubeOptionsView2: View {
     @State var quizCubeTense = Tense.present
     @State var quizCubePerson = Person.S1
     @State var quizLevel = QuizCubeDifficulty.easy
+    @State var alertToggle = false
+    @State var isQuizCubeActive = false
     
     var body: some View {
+        HStack{
+            Toggle(isOn: $alertToggle){  Text("Quiz mode").padding(5).background(Color.purple)  }
+            Text("Mode:")
+            Text(alertToggle ? "Use alerts" : "Use text edit").background(Color.purple).padding()
+            Spacer()
+        }
         ScrollView {
+            
             QuizLevel(quizLevel: $quizLevel)
             ConfigRadioButtons(selected: self.$configSelected)
             .toggleStyle(SwitchToggleStyle(tint: Color(.purple)))
@@ -44,13 +54,18 @@ struct QuizCubeOptionsView2: View {
             }
             if configSelected == .VerbTense || configSelected == .TenseVerb {
                 PersonRadioButtons(selectedPerson: quizCubePerson)
+                    .animation(
+                                        .easeInOut(duration: 1)
+                                            .repeatForever(autoreverses: false),
+                                        value: 1.0
+                                    )
             }
             if configSelected == .VerbPerson || configSelected == .PersonVerb {
                 TenseRadioButtons(selectedTense: quizCubeTense)
             }
             Spacer()
             HStack{
-                NavigationLink(destination: QuizCubeView2(languageEngine: languageEngine, qchc: QuizCubeHandlerClass(languageEngine: languageEngine))){
+                NavigationLink(destination: QuizCubeView2(languageViewModel: languageViewModel, qchc: QuizCubeHandlerClass(languageViewModel: languageViewModel), useCellAlert: alertToggle ), isActive: $isQuizCubeActive){
                     Text("Open Quiz Cube")
                 }.frame(width: 200, height: 50)
                     .padding(.leading, 10)
@@ -59,6 +74,7 @@ struct QuizCubeOptionsView2: View {
 
             }
         }.onAppear{
+//            isQuizCubeActive = true
         }
     }
     
@@ -79,16 +95,16 @@ struct QuizCubeOptionsView2: View {
         if tenseToggle[3] {quizCubeTenses.append(.future)}
         if tenseToggle[4] {quizCubeTenses.append(.conditional)}
         if quizCubeTenses.count > 0{
-            languageEngine.setQuizTenseList(list: quizCubeTenses)
+            languageViewModel.setQuizTenseList(list: quizCubeTenses)
         }
     }
     
     func setConfiguration(){
-        languageEngine.setQuizCubeConfiguration(config: configSelected)
+        languageViewModel.setQuizCubeConfiguration(config: configSelected)
     }
     
     func setVerb(){
-        languageEngine.setQuizCubeVerb(verb: quizCubeVerb)
+        languageViewModel.setQuizCubeVerb(verb: quizCubeVerb)
     }
     
     func processUserChoices(){
@@ -97,11 +113,11 @@ struct QuizCubeOptionsView2: View {
         setVerb()
         switch configSelected {
         case .PersonTense, .TensePerson:
-            languageEngine.setQuizCubeVerb(verb: quizCubeVerb)
+            languageViewModel.setQuizCubeVerb(verb: quizCubeVerb)
         case .VerbPerson, .PersonVerb:
-            languageEngine.setQuizCubeTense(tense: quizCubeTense)
+            languageViewModel.setQuizCubeTense(tense: quizCubeTense)
         case .VerbTense, .TenseVerb:
-            languageEngine.setQuizCubePerson(person: quizCubePerson)
+            languageViewModel.setQuizCubePerson(person: quizCubePerson)
         case .None:
             break
         }
@@ -110,7 +126,9 @@ struct QuizCubeOptionsView2: View {
 }
 
 struct QuizLevel : View {
-    @EnvironmentObject var languageEngine: LanguageEngine
+//    @EnvironmentObject var languageEngine: LanguageEngine
+    @EnvironmentObject var languageViewModel: LanguageViewModel
+    
     @Binding var quizLevel : QuizCubeDifficulty
     var quizLevelList = QuizCubeDifficulty.quizCubeDifficultyAll
     var body: some View {
@@ -128,7 +146,7 @@ struct QuizLevel : View {
                 ForEach(quizLevelList, id: \.self){ ql in
                     Button(action: {
                         quizLevel = ql
-                        languageEngine.setQuizLevel(quizLevel: quizLevel)
+                        languageViewModel.setQuizLevel(quizLevel: quizLevel)
                     }) {
                         Text("\(ql.rawValue)")
                             .font(.caption)
@@ -153,36 +171,35 @@ struct QuizLevel : View {
 }
 
 struct VerbRadioButtons : View {
-    @EnvironmentObject var languageEngine: LanguageEngine
-    
+//    @EnvironmentObject var languageEngine: LanguageEngine
+    @EnvironmentObject var languageViewModel: LanguageViewModel
     @Binding var selectedVerb: Verb
 
     var body: some View {
         ZStack{
             Image("white cube").frame(width: 100, height:100).opacity(0.3)
             VStack(alignment: .leading, spacing: 2){
-                VStack{
-                    HStack{
-                        NavigationLink(destination: VerbSelectionView()){
-                            Text("Select")
-                        }.frame(width: 50, height: 20)
-                            .padding(.leading, 10)
-                            .background(Color.orange)
-                            .cornerRadius(10)
-                        Text("Select one verb for your QuizCube:")
-                        HStack{
-                            Text("Your selection:")
-                            Text("\(selectedVerb.getWordAtLanguage(language: languageEngine.getCurrentLanguage()))").bold()
-                        }
-                    }
-                }.foregroundColor(.black)
-                Divider()
-                ForEach(languageEngine.getQuizVerbs(), id: \.self){ verb in
+//                VStack{
+//                    HStack{
+//                        NavigationLink(destination: VerbSelectionViewLazy()){
+//                            Text("Select")
+//                        }.frame(width: 50, height: 20)
+//                            .padding(5)
+//                            .background(Color.orange)
+//                            .cornerRadius(10)
+//                        HStack{
+//                            Text("Your selection:")
+//                            Text("\(selectedVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
+//                        }
+//                    }
+//                }.foregroundColor(.black)
+//                Divider()
+                ForEach(languageViewModel.getQuizVerbs(), id: \.self){ verb in
                     Button(action: {
                         selectedVerb = verb
-                        languageEngine.setQuizCubeVerb(verb: verb)
+                        languageViewModel.setQuizCubeVerb(verb: verb)
                     }) {
-                        Text(verb.getWordAtLanguage(language: languageEngine.getCurrentLanguage()))
+                        Text(verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))
                             .font(.caption)
                         Spacer()
                         ZStack{
@@ -196,6 +213,7 @@ struct VerbRadioButtons : View {
             }
         }
         .onAppear{
+            selectedVerb = languageViewModel.getVerbCubeVerb(index: 0)
         }
         .padding(.vertical)
         .padding(.horizontal,25)
@@ -207,7 +225,7 @@ struct VerbRadioButtons : View {
 
 
 struct TenseRadioButtons : View {
-    @EnvironmentObject var languageEngine: LanguageEngine
+    @EnvironmentObject var languageViewModel: LanguageViewModel
     @State var selectedTense : Tense
     
     var body: some View {
@@ -222,10 +240,10 @@ struct TenseRadioButtons : View {
                     }
                 }.foregroundColor(.black)
                 Divider()
-                ForEach(languageEngine.getQuizTenseList(), id: \.self){ tense in
+                ForEach(languageViewModel.getQuizTenseList(), id: \.self){ tense in
                     Button(action: {
                         selectedTense = tense
-                        languageEngine.setQuizCubeTense(tense: tense)
+                        languageViewModel.setQuizCubeTense(tense: tense)
                     }) {
                         Text("\(tense.rawValue)")
                             .font(.caption)
@@ -249,7 +267,8 @@ struct TenseRadioButtons : View {
 }
 
 struct PersonRadioButtons : View {
-    @EnvironmentObject var languageEngine: LanguageEngine
+//    @EnvironmentObject var languageEngine: LanguageEngine
+    @EnvironmentObject var languageViewModel: LanguageViewModel
     @State var selectedPerson : Person
     var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     
@@ -261,16 +280,16 @@ struct PersonRadioButtons : View {
                     Text("Select one person for your QuizCube:")
                     HStack{
                         Text("Your selection:")
-                        Text("\(selectedPerson.getMaleString())").bold()
+                        Text("\(selectedPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))").bold()
                     }
                 }.foregroundColor(.black)
                 Divider()
                 ForEach(personList, id: \.self){ person in
                     Button(action: {
                         selectedPerson = person
-                        languageEngine.setQuizCubePerson(person: person)
+                        languageViewModel.setQuizCubePerson(person: person)
                     }) {
-                        Text("\(person.getMaleString())")
+                        Text("\(person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))")
                             .font(.caption)
                         Spacer()
                         ZStack{
@@ -296,7 +315,8 @@ struct PersonRadioButtons : View {
 
 
 struct ConfigRadioButtons : View {
-    @EnvironmentObject var languageEngine: LanguageEngine
+//    @EnvironmentObject var languageEngine: LanguageEngine
+    @EnvironmentObject var languageViewModel: LanguageViewModel
     @Binding var selected : ActiveVerbCubeConfiguration
     @State var selectedConfigurationString = ActiveVerbCubeConfiguration.PersonTense.getString()
     
@@ -314,7 +334,7 @@ struct ConfigRadioButtons : View {
                     Button(action: {
                         selected = config
                         selectedConfigurationString = config.getString()
-                        languageEngine.setQuizCubeConfiguration(config: selected)
+                        languageViewModel.setQuizCubeConfiguration(config: selected)
                     }) {
                         Text(config.getString()).font(.caption)
                         //                        .font( self.selected = config ? Font.bold : Font.caption)

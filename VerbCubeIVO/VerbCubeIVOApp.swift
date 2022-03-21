@@ -7,20 +7,19 @@
 
 import SwiftUI
 import Dot
+import JumpLinguaHelpers
 
 @main
 struct VerbCubeIVOApp: App {
     @StateObject private var tabs = Tabs(count: 3)
-    @StateObject var languageEngine = LanguageEngine(load: true)
+//    @StateObject var languageEngine = LanguageEngine(language: .Spanish)
+    @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(languageEngine)
-                .environment(\.colorScheme, .dark)
-                
-            //                TabsStackContainer(tabs: tabs)
-            //                GeneralVerbCubeView(VerbCubeConjugatedStringHandler(languageEngine: languageEngine, d1: .Tense, d2: .Person))
+            CircleButtonNavigationView()
+                .environmentObject(languageViewModel)
+
             Spacer()
             
         }

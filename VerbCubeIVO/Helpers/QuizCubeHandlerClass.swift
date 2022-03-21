@@ -11,7 +11,8 @@ import Dot
 import SwiftUI
 
 class QuizCubeHandlerClass : ObservableObject {
-    @ObservedObject var languageEngine: LanguageEngine
+//    @ObservedObject var languageEngine: LanguageEngine
+    @ObservedObject var languageViewModel: LanguageViewModel
     var vcDimension1 = VerbCubeDimension.Person
     var vcDimension2 = VerbCubeDimension.Verb
     var vcCurrentDimension = VerbCubeDimension.Person
@@ -19,7 +20,7 @@ class QuizCubeHandlerClass : ObservableObject {
     var showStringArray = [[String]]()
     var quizCubeCellInfoArray = [[VerbCubeCellInfo]]()
     var cellDataArray = [[QuizCellData]]()
-    var headerStringList = [String]()
+    private var headerStringList = [String]()
     var firstColumnStringList = [String]()
     var conjStringArrayDimension1 = 0
     var conjStringArrayDimension2 = 0
@@ -34,23 +35,23 @@ class QuizCubeHandlerClass : ObservableObject {
     var verbIndex = 0
     var diagnosticPrint = false
     
-    init(languageEngine: LanguageEngine){
-        self.languageEngine = languageEngine
+    init(languageViewModel: LanguageViewModel){
+        self.languageViewModel = languageViewModel
         currentLanguage = .Spanish
         initializeQuizCube()
     }
     
     func initializeQuizCube(){
-        currentLanguage = languageEngine.getCurrentLanguage()
+        currentLanguage = languageViewModel.getCurrentLanguage()
         setDimensions()
-        verbs =  languageEngine.getQuizCubeBlock()
-        tenses = languageEngine.getQuizTenseList()
+        verbs =  languageViewModel.getQuizCubeBlock()
+        tenses = languageViewModel.getQuizTenseList()
         fillCellData()
 //        fillQuizCorrectData()
     }
     
     func setDimensions(){
-        let result = getVerbCubeDimensions(activeConfig: languageEngine.getQuizCubeConfiguration())
+        let result = getVerbCubeDimensions(activeConfig: languageViewModel.getQuizCubeConfiguration())
         vcDimension1 = result.0
         vcDimension2 = result.1
         
@@ -61,16 +62,16 @@ class QuizCubeHandlerClass : ObservableObject {
                 vcCurrentDimension = .Verb
                 horizontalSwipeDimension = .Verb
                 verticalSwipeDimension = .Verb
-                conjStringArrayDimension2 = languageEngine.getQuizTenseList().count
+                conjStringArrayDimension2 = languageViewModel.getQuizTenseList().count
             }
             else if vcDimension2 == .Verb {
-                conjStringArrayDimension2 = languageEngine.getQuizCubeBlock().count
+                conjStringArrayDimension2 = languageViewModel.getQuizCubeBlock().count
                 vcCurrentDimension = .Tense
                 horizontalSwipeDimension = .Tense
                 verticalSwipeDimension = .Verb
             }
         case .Tense:
-            conjStringArrayDimension1 = languageEngine.getQuizTenseList().count
+            conjStringArrayDimension1 = languageViewModel.getQuizTenseList().count
             if vcDimension2 == .Person {
                 conjStringArrayDimension2 = 6
                 vcCurrentDimension = .Verb
@@ -78,13 +79,13 @@ class QuizCubeHandlerClass : ObservableObject {
                 verticalSwipeDimension = .Verb
             }
             else if vcDimension2 == .Verb {
-                conjStringArrayDimension2 = languageEngine.getQuizCubeBlock().count
+                conjStringArrayDimension2 = languageViewModel.getQuizCubeBlock().count
                 vcCurrentDimension = .Person
                 horizontalSwipeDimension = .Person
                 verticalSwipeDimension = .Verb
             }
         case .Verb:
-            conjStringArrayDimension1 = languageEngine.getQuizCubeBlock().count
+            conjStringArrayDimension1 = languageViewModel.getQuizCubeBlock().count
             if vcDimension2 == .Person {
                 conjStringArrayDimension2 = 6
                 vcCurrentDimension = .Tense
@@ -92,7 +93,7 @@ class QuizCubeHandlerClass : ObservableObject {
                 verticalSwipeDimension = .Verb
             }
             else if vcDimension2 == .Tense {
-                conjStringArrayDimension2 = languageEngine.getQuizTenseList().count
+                conjStringArrayDimension2 = languageViewModel.getQuizTenseList().count
                 vcCurrentDimension = .Person
                 horizontalSwipeDimension = .Person
                 verticalSwipeDimension = .Verb
@@ -159,7 +160,7 @@ class QuizCubeHandlerClass : ObservableObject {
     func dumpVerbCubeCellInfo(){
         for i in 0 ..< conjStringArrayDimension1 {
             for j in 0 ..< conjStringArrayDimension2 {
-                print("dumpVerbCubeCellInfo: quizCubeCellInfoArray[\(i)][\(j)] - verb \(quizCubeCellInfoArray[i][j].verb.getWordAtLanguage(language: languageEngine.getCurrentLanguage())), person: \(quizCubeCellInfoArray[i][j].person.getMaleString()), tense: \(quizCubeCellInfoArray[i][j].tense.rawValue)")
+                print("dumpVerbCubeCellInfo: quizCubeCellInfoArray[\(i)][\(j)] - verb \(quizCubeCellInfoArray[i][j].verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())), person: \(quizCubeCellInfoArray[i][j].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)), tense: \(quizCubeCellInfoArray[i][j].tense.rawValue)")
             }
         }
     }
@@ -177,13 +178,13 @@ class QuizCubeHandlerClass : ObservableObject {
         list.removeAll()
         switch vcd {
         case .Verb:
-            for j in 0..<languageEngine.getQuizVerbs().count {
-                list.append(languageEngine.getQuizVerbs()[j].getWordAtLanguage(language: languageEngine.getCurrentLanguage()))
+            for j in 0..<languageViewModel.getQuizCubeBlock().count {
+                list.append(languageViewModel.getQuizCubeBlock()[j].getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))
             }
         case .Tense:
-            for j in 0..<languageEngine.getQuizTenseList().count {list.append(languageEngine.getQuizTenseList()[j].rawValue)}
+            for j in 0..<languageViewModel.getQuizTenseList().count {list.append(languageViewModel.getQuizTenseList()[j].rawValue)}
         case .Person:
-            for j in 0..<persons.count { list.append(persons[j].getMaleString())}
+            for j in 0..<persons.count { list.append(persons[j].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))}
         }
         return list
     }
@@ -192,11 +193,11 @@ class QuizCubeHandlerClass : ObservableObject {
         var str = ""
         switch vcd {
         case .Verb:
-            str = languageEngine.getQuizCubeVerb().getWordAtLanguage(language: languageEngine.getCurrentLanguage())
+            str = languageViewModel.getQuizCubeVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
         case .Tense:
-            str = languageEngine.getQuizCubeTense().rawValue
+            str = languageViewModel.getQuizCubeTense().rawValue
         case .Person:
-            str = languageEngine.getQuizCubePerson().getMaleString()
+            str = languageViewModel.getQuizCubePerson().getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)
         }
         return str
         
@@ -217,7 +218,7 @@ class QuizCubeHandlerClass : ObservableObject {
     
     func fillCellData(){
 //       turnOnDiagnosticPrint()
-        let quizCubeDifficulty = languageEngine.getQuizLevel()
+        let quizCubeDifficulty = languageViewModel.getQuizLevel()
         var blankIncrement = 1
         switch quizCubeDifficulty{
         case .easy: blankIncrement = 9
@@ -229,12 +230,12 @@ class QuizCubeHandlerClass : ObservableObject {
         cellDataArray.removeAll()
         quizCubeCellInfoArray.removeAll()
 
-        let tense = languageEngine.getQuizCubeTense()
-        let verb = languageEngine.getQuizCubeVerb()
-        let person = languageEngine.getQuizCubePerson()
+        let tense = languageViewModel.getQuizCubeTense()
+        let verb = languageViewModel.getQuizCubeVerb()
+        let person = languageViewModel.getQuizCubePerson()
         var blank = false
-        tenses = languageEngine.getQuizTenseList()
-        verbs = languageEngine.getQuizCubeBlock()
+        tenses = languageViewModel.getQuizTenseList()
+        verbs = languageViewModel.getQuizCubeBlock()
         firstColumnStringList = fillStringList(inputList: firstColumnStringList, vcd: vcDimension1)
         headerStringList = fillStringList(inputList: headerStringList, vcd: vcDimension2)
         
@@ -256,7 +257,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
-                        wordString = languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                        wordString = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
                         if diagnosticPrint { dumpCell(i:i, j:j) }
                         
@@ -267,7 +268,7 @@ class QuizCubeHandlerClass : ObservableObject {
                     for j in 0..<persons.count {
                         let verb = verbs[i]
                         let person = persons[j]
-                        wordString = languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                        wordString = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
@@ -284,7 +285,7 @@ class QuizCubeHandlerClass : ObservableObject {
                     for j in 0..<persons.count {
                         let tense = tenses[i]
                         let person = persons[j]
-                        wordString =  languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                        wordString =  languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
@@ -297,7 +298,7 @@ class QuizCubeHandlerClass : ObservableObject {
                     for j in 0..<verbs.count {
                         let tense = tenses[i]
                         let verb = verbs[j]
-                        wordString =  languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                        wordString =  languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
@@ -314,7 +315,7 @@ class QuizCubeHandlerClass : ObservableObject {
                     for j in 0..<tenses.count {
                         let person = persons[i]
                         let tense = tenses[j]
-                        wordString = languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                        wordString = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
@@ -327,7 +328,7 @@ class QuizCubeHandlerClass : ObservableObject {
                     for j in 0..<verbs.count {
                         let person = persons[i]
                         let verb = verbs[j]
-                        wordString =  languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                        wordString =  languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
@@ -341,7 +342,7 @@ class QuizCubeHandlerClass : ObservableObject {
     }
     
     func dumpCell(i: Int, j: Int){
-        print("quizCubeCellInfoArray[\(i)][\(j)] - verb \(quizCubeCellInfoArray[i][j].verb.getWordAtLanguage(language: languageEngine.getCurrentLanguage())), person: \(quizCubeCellInfoArray[i][j].person.getMaleString()), tense: \(quizCubeCellInfoArray[i][j].tense.rawValue)")
+        print("quizCubeCellInfoArray[\(i)][\(j)] - verb \(quizCubeCellInfoArray[i][j].verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())), person: \(quizCubeCellInfoArray[i][j].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)), tense: \(quizCubeCellInfoArray[i][j].tense.rawValue)")
         print("cellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString)")
     }
     

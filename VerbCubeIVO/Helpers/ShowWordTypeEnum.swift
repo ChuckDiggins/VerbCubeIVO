@@ -8,5 +8,5 @@
 import Foundation
 
 enum ShowVerbType : String {
-    case STEM, ORTHO, IRREG, SPECIAL, NONE
+    case STEM, ORTHO, IRREG, SPECIAL, REFLEXIVE, PHRASAL, NONE
 }

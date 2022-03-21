@@ -10,7 +10,7 @@ import JumpLinguaHelpers
 
 
 struct VerbCubeView: View {
-    @EnvironmentObject var languageEngine: LanguageEngine
+    @ObservedObject var languageViewModel: LanguageViewModel
     @State public var vccsh : VerbCubeConjugatedStringHandlerStruct
     public var verbCount = 6
     @State var isSwiping = true
@@ -20,8 +20,9 @@ struct VerbCubeView: View {
     @State var showVerbTypeColor = Color.red
     
     var body: some View {
-        NavigationView{
+//        NavigationView{
             VStack(spacing: 0){
+//                Text("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)").font(.largeTitle)
                 HStack{
                     Text("Highlight:")
                     Text(showVerbType.rawValue)
@@ -86,10 +87,13 @@ struct VerbCubeView: View {
                     Spacer()
                     
                 }.background(Color.yellow)
-                    
                     .padding(10)
-            }.navigationBarTitle("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)")
-        }
+                Spacer()
+            }
+//            .navigationViewStyle(StackNavigationViewStyle())
+                .navigationTitle(Text("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)"))
+        
+//        }
         .gesture(DragGesture()
         .onChanged { gesture in
             if self.isSwiping {
@@ -165,7 +169,7 @@ struct VerbCubeView: View {
         
         var body: some View {
             HStack{
-                ForEach(0..<data.count){i in
+                ForEach(0..<data.count, id:\.self){i in
                     Button(action: {
                         setAllInactive()
                         active[i] = true
@@ -180,11 +184,13 @@ struct VerbCubeView: View {
                             break
                         }
                     }){
-                        Text(data[i]).foregroundColor(active[i] ? .yellow : .white)
+                        Text(data[i]).foregroundColor(active[i] ? .yellow : .systemCyan)
                     }
                 }
-            }
+            }.background(.black).opacity(0.8)
+                .padding()
         }
+        
         func setAllInactive(){
             for i in 0..<active.count {
                 active[i] = false
@@ -254,7 +260,7 @@ extension VerbCubeView {
     
     func changeVerbCubeDimension(d1: VerbCubeDimension, d2: VerbCubeDimension){
         let currentVerbType = vccsh.getCurrentShowVerbType()
-        vccsh = VerbCubeConjugatedStringHandlerStruct(languageEngine: languageEngine, d1: d1, d2: d2)
+        vccsh = VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1: d1, d2: d2)
         vccsh.setShowVerbType(currentVerbType: currentVerbType)
     }
 
@@ -309,49 +315,49 @@ extension VerbCubeView {
     }
     
     func setPreviousTense() {
-        vccsh.setCurrentTense(tense: languageEngine.getPreviousTense())
+        vccsh.setCurrentTense(tense: languageViewModel.getPreviousTense())
         vccsh.fillCellData()
     }
     
     func setNextTense() {
-        vccsh.setCurrentTense(tense: languageEngine.getNextTense())
+        vccsh.setCurrentTense(tense: languageViewModel.getNextTense())
         vccsh.fillCellData()
     }
     
     func setNextVerbs() {
         if vccsh.vcCurrentDimension == .Verb {
-            languageEngine.setNextVerbCubeVerb()
+            languageViewModel.setNextVerbCubeVerb()
         } else {
-            languageEngine.setNextVerbCubeBlockVerbs()
+            languageViewModel.setNextVerbCubeBlockVerbs()
         }
         vccsh.fillCellData()
     }
     
     func setPreviousVerbs() {
         if vccsh.vcCurrentDimension == .Verb {
-            languageEngine.setPreviousVerbCubeVerb()
+            languageViewModel.setPreviousVerbCubeVerb()
         } else {
-            languageEngine.setPreviousCubeBlockVerbs()
+            languageViewModel.setPreviousCubeBlockVerbs()
         }
         vccsh.fillCellData()
     }
     
     
     func setPreviousPerson(){
-        vccsh.setCurrentPerson(person: languageEngine.getPreviousPerson())
+        vccsh.setCurrentPerson(person: languageViewModel.getPreviousPerson())
         vccsh.fillCellData()
     }
     
     func setNextPerson(){
-        vccsh.setCurrentPerson(person: languageEngine.getNextPerson())
+        vccsh.setCurrentPerson(person: languageViewModel.getNextPerson())
         vccsh.fillCellData()
     }
 
     
     func fillVerbCubeConjugatedStrings(){
-        vccsh.setTenses(tenses: languageEngine.getTenseList())
-        languageEngine.setPreviousCubeBlockVerbs()
-        languageEngine.getCurrentVerbCubeVerb()
+        vccsh.setTenses(tenses: languageViewModel.getTenseList())
+        languageViewModel.setPreviousCubeBlockVerbs()
+        languageViewModel.getCurrentVerbCubeVerb()
         vccsh.fillCellData()
 //        vccsh?.dumpConjugateStringArray()
     }

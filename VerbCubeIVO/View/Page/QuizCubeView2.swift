@@ -13,25 +13,27 @@ import JumpLinguaHelpers
 
 
 struct QuizCubeView2: View {
-    @ObservedObject var languageEngine: LanguageEngine
+//    @ObservedObject var languageEngine: LanguageEngine
+    @ObservedObject var languageViewModel: LanguageViewModel
     @ObservedObject var qchc : QuizCubeHandlerClass
-    @State var useCellAlert : Bool = true
+    @State var useCellAlert : Bool
 
     var body: some View {
-        NavigationView{
+//        NavigationView{
             VStack(spacing: 0){
-                ShowCube(qchc: qchc)
+                ShowCube(qchc: qchc, useCellAlert: useCellAlert)
             }.navigationBarTitle("Quiz Cube - \(qchc.vcDimension1.rawValue) v \(qchc.vcDimension2.rawValue)")
                 
-        }
+//        }
     }
     
     struct ShowCube: View {
         var qchc : QuizCubeHandlerClass
+        var useCellAlert : Bool
         var body: some View {
             VStack (spacing: 0){
                 CreateLineOfHeaderCells(qchc: qchc)
-                CreateGridOfConjugatedCells(qchc: qchc, useCellAlert: true)
+                CreateGridOfConjugatedCells(qchc: qchc, useCellAlert: useCellAlert)
             }
         }
     }
