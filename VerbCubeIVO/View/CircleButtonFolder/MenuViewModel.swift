@@ -15,7 +15,7 @@ class MenuViewModel : ObservableObject{
         MenuItem(color: .purple, icon: "tray.full", menuView: AnyView(CollectionsWrapper()), selected: true),
         MenuItem(color: .red, icon: "cube.box.fill", menuView: AnyView(GeneralCubeWrapper()), selected: true),
         MenuItem(color: .blue, icon: "hare.fill", menuView: AnyView(ExerciseWrapper()), selected: true),
-//        MenuItem(color: .orange, icon: "square.fill", menuView: AnyView(EmptyView()), selected: true),
+        MenuItem(color: .orange, icon: "folder.circle.fill", menuView: AnyView(DataToRealmView()), selected: true),
     ]
     
     var selectedMenu: MenuItem {

@@ -43,6 +43,13 @@
 		6EAD601927D6916A00027A49 /* RomanceVerbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD601827D6916A00027A49 /* RomanceVerbModel.swift */; };
 		6EAD601B27D6917B00027A49 /* FrenchCreateVerbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD601A27D6917B00027A49 /* FrenchCreateVerbModel.swift */; };
 		6EAD602327D69CBB00027A49 /* VerbModelJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD602227D69CBB00027A49 /* VerbModelJson.swift */; };
+		6EB757DB27E8FE9C005ADA66 /* RealmWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB757DA27E8FE9C005ADA66 /* RealmWord.swift */; };
+		6EB757DE27E8FF51005ADA66 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB757DD27E8FF51005ADA66 /* Realm */; };
+		6EB757E027E8FF51005ADA66 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB757DF27E8FF51005ADA66 /* RealmSwift */; };
+		6EB757E227E90115005ADA66 /* JSONtoRealmConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB757E127E90115005ADA66 /* JSONtoRealmConverter.swift */; };
+		6EB757E427E90913005ADA66 /* DataToRealmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB757E327E90913005ADA66 /* DataToRealmView.swift */; };
+		6EB757E627E90ED8005ADA66 /* LanguageEngineRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */; };
+		6EB757F527EA8C28005ADA66 /* RealmWordCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB757F427EA8C28005ADA66 /* RealmWordCollection.swift */; };
 		6EC3085F27D3CD630056F8F7 /* LanguageEngineQuizCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC3085E27D3CD630056F8F7 /* LanguageEngineQuizCube.swift */; };
 		6EC3086127D3FD100056F8F7 /* VerbSelectionViewLazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC3086027D3FD100056F8F7 /* VerbSelectionViewLazy.swift */; };
 		6ECB854827E52AA30092033B /* VerbsOfAFeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECB854727E52AA30092033B /* VerbsOfAFeather.swift */; };
@@ -108,6 +115,11 @@
 		6EAD601827D6916A00027A49 /* RomanceVerbModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RomanceVerbModel.swift; path = ../../../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/RomanceVerbModel.swift; sourceTree = "<group>"; };
 		6EAD601A27D6917B00027A49 /* FrenchCreateVerbModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FrenchCreateVerbModel.swift; path = ../../../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/FrenchCreateVerbModel.swift; sourceTree = "<group>"; };
 		6EAD602227D69CBB00027A49 /* VerbModelJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerbModelJson.swift; path = ../../../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/JSON/VerbModelJson.swift; sourceTree = "<group>"; };
+		6EB757DA27E8FE9C005ADA66 /* RealmWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWord.swift; sourceTree = "<group>"; };
+		6EB757E127E90115005ADA66 /* JSONtoRealmConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONtoRealmConverter.swift; sourceTree = "<group>"; };
+		6EB757E327E90913005ADA66 /* DataToRealmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataToRealmView.swift; sourceTree = "<group>"; };
+		6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineRealm.swift; sourceTree = "<group>"; };
+		6EB757F427EA8C28005ADA66 /* RealmWordCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWordCollection.swift; sourceTree = "<group>"; };
 		6EC3085E27D3CD630056F8F7 /* LanguageEngineQuizCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineQuizCube.swift; sourceTree = "<group>"; };
 		6EC3086027D3FD100056F8F7 /* VerbSelectionViewLazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbSelectionViewLazy.swift; sourceTree = "<group>"; };
 		6ECB854727E52AA30092033B /* VerbsOfAFeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbsOfAFeather.swift; sourceTree = "<group>"; };
@@ -147,6 +159,8 @@
 			files = (
 				6EA80F2227BDB2CD00D6061F /* SFSafeSymbols in Frameworks */,
 				6E6CA06927C40B2000CCD8BE /* JumpLinguaHelpers in Frameworks */,
+				6EB757DE27E8FF51005ADA66 /* Realm in Frameworks */,
+				6EB757E027E8FF51005ADA66 /* RealmSwift in Frameworks */,
 				6EA80F1F27BDB2C000D6061F /* Dot in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,6 +194,7 @@
 				6E69297627D25E76003BCD71 /* LanguageEngineVerbCube.swift */,
 				6EC3085E27D3CD630056F8F7 /* LanguageEngineQuizCube.swift */,
 				6ECCD47427D8295D0049B9CA /* LanguageEngineFiltered.swift */,
+				6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */,
 			);
 			path = LanguageEngine;
 			sourceTree = "<group>";
@@ -289,6 +304,17 @@
 			path = VerbConjugation;
 			sourceTree = "<group>";
 		};
+		6EB757D927E8FE6C005ADA66 /* RealmDB */ = {
+			isa = PBXGroup;
+			children = (
+				6EB757DA27E8FE9C005ADA66 /* RealmWord.swift */,
+				6EB757E127E90115005ADA66 /* JSONtoRealmConverter.swift */,
+				6EB757E327E90913005ADA66 /* DataToRealmView.swift */,
+				6EB757F427EA8C28005ADA66 /* RealmWordCollection.swift */,
+			);
+			path = RealmDB;
+			sourceTree = "<group>";
+		};
 		6ECCD45527D7A8500049B9CA /* JSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +356,7 @@
 		6ED2A5B527BDADC400164F80 /* VerbCubeIVO */ = {
 			isa = PBXGroup;
 			children = (
+				6EB757D927E8FE6C005ADA66 /* RealmDB */,
 				6ECCD45527D7A8500049B9CA /* JSON */,
 				6EAD601527D6910900027A49 /* VerbConjugation */,
 				6E69298027D2DC6A003BCD71 /* RIP */,
@@ -389,6 +416,8 @@
 				6EA80F1E27BDB2C000D6061F /* Dot */,
 				6EA80F2127BDB2CD00D6061F /* SFSafeSymbols */,
 				6E6CA06827C40B2000CCD8BE /* JumpLinguaHelpers */,
+				6EB757DD27E8FF51005ADA66 /* Realm */,
+				6EB757DF27E8FF51005ADA66 /* RealmSwift */,
 			);
 			productName = VerbCubeIVO;
 			productReference = 6ED2A5B327BDADC400164F80 /* VerbCubeIVO.app */;
@@ -422,6 +451,7 @@
 				6EA80F1D27BDB2C000D6061F /* XCRemoteSwiftPackageReference "Dot" */,
 				6EA80F2027BDB2CD00D6061F /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				6E6CA06727C40B2000CCD8BE /* XCRemoteSwiftPackageReference "JumpLinguaHelpers" */,
+				6EB757DC27E8FF51005ADA66 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 6ED2A5B427BDADC400164F80 /* Products */;
 			projectDirPath = "";
@@ -450,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E90F38F27CAB14B0026AB56 /* AnalyzeFilteredVerbView.swift in Sources */,
+				6EB757DB27E8FE9C005ADA66 /* RealmWord.swift in Sources */,
 				6EA80F1927BDB27800D6061F /* LanguageEngine.swift in Sources */,
 				6E229CA227C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift in Sources */,
 				6EF1762527E142310010B8DA /* MenuViewModel.swift in Sources */,
@@ -461,6 +492,7 @@
 				6EA29CAB27E792F100CE0372 /* WordCellButton.swift in Sources */,
 				6EAD5FF027D42A8200027A49 /* ViewExtender.swift in Sources */,
 				6ECCD47527D8295D0049B9CA /* LanguageEngineFiltered.swift in Sources */,
+				6EB757E227E90115005ADA66 /* JSONtoRealmConverter.swift in Sources */,
 				6E69297D27D2C6D1003BCD71 /* QuizCubeHandlerClass.swift in Sources */,
 				6ECCD47727D900700049B9CA /* VerbMorphView.swift in Sources */,
 				6EA80F2A27BDB96C00D6061F /* LanguageEngineContainer.swift in Sources */,
@@ -478,6 +510,7 @@
 				6E69297727D25E76003BCD71 /* LanguageEngineVerbCube.swift in Sources */,
 				6E69297527D152E0003BCD71 /* CustomActionSheet.swift in Sources */,
 				6ECCD45D27D7B0170049B9CA /* Word.swift in Sources */,
+				6EB757E627E90ED8005ADA66 /* LanguageEngineRealm.swift in Sources */,
 				6E90F38B27CAAEA50026AB56 /* FilteredRowView.swift in Sources */,
 				6E6CA07127C5441800CCD8BE /* VerbCubeCellInfo.swift in Sources */,
 				6E229CA027C68A26009F8E02 /* ShowWordTypeEnum.swift in Sources */,
@@ -490,6 +523,7 @@
 				6EF1761E27E141560010B8DA /* CircleButtonNavigationView.swift in Sources */,
 				6EAD601B27D6917B00027A49 /* FrenchCreateVerbModel.swift in Sources */,
 				6E90F38D27CAAEA50026AB56 /* FilteredVerbListView.swift in Sources */,
+				6EB757F527EA8C28005ADA66 /* RealmWordCollection.swift in Sources */,
 				6ECCD48E27DC03100049B9CA /* LanguageEngineViewQuizCube.swift in Sources */,
 				6ECCD45927D7A9DC0049B9CA /* JSONVerbs.swift in Sources */,
 				6ECCD46927D7D4790049B9CA /* JSONWordCollectionStructs.swift in Sources */,
@@ -497,6 +531,7 @@
 				6ED2A5B927BDADC400164F80 /* ContentView.swift in Sources */,
 				6ECCD47F27DBDE630049B9CA /* LanguagePreferencesTenseView.swift in Sources */,
 				6EAD601727D6912C00027A49 /* SpanishCreateVerbModel.swift in Sources */,
+				6EB757E427E90913005ADA66 /* DataToRealmView.swift in Sources */,
 				6EA80F3327BDBE0600D6061F /* VerbCubeXYZ.swift in Sources */,
 				6E69297F27D2CA63003BCD71 /* QuizCubeView2.swift in Sources */,
 				6E69297927D2745A003BCD71 /* QuizCubeWatcher.swift in Sources */,
@@ -741,6 +776,14 @@
 				kind = branch;
 			};
 		};
+		6EB757DC27E8FF51005ADA66 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.19.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -758,6 +801,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6EA80F2027BDB2CD00D6061F /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
 			productName = SFSafeSymbols;
+		};
+		6EB757DD27E8FF51005ADA66 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EB757DC27E8FF51005ADA66 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		6EB757DF27E8FF51005ADA66 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EB757DC27E8FF51005ADA66 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

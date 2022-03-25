@@ -8,6 +8,7 @@
 import Foundation
 import JumpLinguaHelpers
 import Dot
+import RealmSwift
 
 class LanguageEngine : ObservableObject {
     @Published private var currentLanguage = LanguageType.Agnostic
@@ -40,7 +41,6 @@ class LanguageEngine : ObservableObject {
 //    private var wsp : ViperWordStringParser!
     private var m_wsp : WordStringParser!
     
-    
     var startingVerbCubeListIndex = 0
     var verbCubeVerbIndex = 0
     @Published var verbCubeList = [Verb]()
@@ -57,12 +57,16 @@ class LanguageEngine : ObservableObject {
     var quizCubeConfiguration = ActiveVerbCubeConfiguration.PersonVerb
     var quizCubeDifficulty = QuizCubeDifficulty.easy
     
+    var realm : Realm
+    
     init(){
-        
+        realm = try! Realm()
     }
  
     init(language: LanguageType) {
         currentLanguage = language
+        realm = try! Realm()
+        
         verbModelConjugation = VerbModelConjugation(currentLanguage: currentLanguage)
 //        wsp = ViperWordStringParser(language: currentLanguage,
 //                                      span: spanishVerbModelConjugation,
@@ -92,6 +96,10 @@ class LanguageEngine : ObservableObject {
 //        testLogic(tense: .preterite)
     }
 
+    func getWordCollections()->[dWordCollection] {
+        return getWordCollectionList()
+    }
+    
     func setLanguage(language: LanguageType){
         currentLanguage = language
         m_wsp.m_language = language
@@ -152,6 +160,7 @@ class LanguageEngine : ObservableObject {
         for index in 0..<criticalVerbForms.count() {
             var cs = criticalVerbForms.at(index:index)
             cs.verbForm = createAndConjugateAgnosticVerb(verb: verb, tense: cs.tense, person: cs.person)
+            cs.verbForm += " " + residualPhrase
             putCriticalStruct(index: index, criticalStruct: cs)
             print("\(cs.person.getSubjectString(language: getCurrentLanguage(), gender: .masculine)), \(cs.verbForm), \(cs.tense.rawValue), \(cs.comment)")
         }
@@ -225,7 +234,22 @@ class LanguageEngine : ObservableObject {
 //    func createAndConjugateCriticalTenses()->[String]{
 //        return 
 //    }
-//    
+//
+    
+    func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{
+        var vmm = VerbModelManager()
+        var bRomanceVerb = BRomanceVerb()
+        switch currentLanguage {
+        case .Spanish:
+            bRomanceVerb = vmm.createSpanishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        case .French:
+            bRomanceVerb = vmm.createFrenchBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        default:
+            break
+        }
+        return bRomanceVerb
+    }
+    
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense, person: Person)->String{
         var vmm = VerbModelManager()
         
@@ -382,20 +406,24 @@ extension LanguageEngine{
         }
     }
     
+    //être d'accord avec
+    
     func getRomanceVerb(verb: Verb)->BRomanceVerb{
         var vmm = VerbModelManager()
         let vu = VerbUtilities()
         
         switch currentLanguage {
         case .Spanish:
-            let ending = vu.determineVerbEnding(verbWord: verb.spanish)
+            var result = vu.analyzeSpanishWordPhrase(testString: verb.spanish)
+            let ending = vu.determineVerbEnding(verbWord: result.0)
             if ending == .AR || ending == .ER || ending == .IR || ending == .accentIR || ending == .umlautIR {
                 let verbWord = verb.getWordAtLanguage(language: currentLanguage)
                 let bSpanishVerb = vmm.createSpanishBVerb(verbPhrase: verbWord)
                 return bSpanishVerb
             }
         case .French:
-            let ending = vu.determineVerbEnding(verbWord: verb.french)
+            var result = vu.analyzeFrenchWordPhrase(phraseString: verb.french)
+            let ending = vu.determineVerbEnding(verbWord: result.0)
             if ending == .ER || ending == .IR || ending == .RE  {
                 let verbWord = verb.getWordAtLanguage(language: currentLanguage)
                 let bFrenchVerb = vmm.createFrenchBVerb(verbPhrase: verbWord)

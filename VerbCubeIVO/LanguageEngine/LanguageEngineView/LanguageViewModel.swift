@@ -8,7 +8,10 @@
 
 import SwiftUI
 import JumpLinguaHelpers
+import RealmSwift
 
+//émouvoir
+//déchoir
 class LanguageViewModel : ObservableObject {
     var insertQueQuiBeforeSubjunctive = true
     var useFeminineSubjectPronouns = true
@@ -26,6 +29,10 @@ class LanguageViewModel : ObservableObject {
         languageEngine = LanguageEngine(language: language)
     }
 
+    func getRealm()->Realm{
+        return languageEngine.realm
+    }
+    
     func changeLanguage(){
         languageEngine.changeLanguage()
         currentLanguage = languageEngine.getCurrentLanguage()
@@ -157,6 +164,10 @@ class LanguageViewModel : ObservableObject {
         languageEngine.createAndConjugateCurrentFilteredVerb()
     }
     
+    func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{
+        languageEngine.createAndConjugateAgnosticVerb(verb: verb)
+    }
+    
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense){
         languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense)
     }
@@ -199,6 +210,10 @@ class LanguageViewModel : ObservableObject {
             
     func countVerbsOfSelectedType(showVerbType: ShowVerbType)->Int{
         languageEngine.countVerbsOfSelectedType(showVerbType: showVerbType)
+    }
+    
+    func getWordCollections()->[dWordCollection] {
+        languageEngine.getWordCollections()
     }
 }
 

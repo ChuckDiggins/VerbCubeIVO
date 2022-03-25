@@ -259,7 +259,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
                         wordString = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
-                        if diagnosticPrint { dumpCell(i:i, j:j) }
+//                        if diagnosticPrint { dumpCell(i:i, j:j) }
                         
                     }
                 }
@@ -273,7 +273,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
-                        if diagnosticPrint { dumpCell(i:i, j:j) }
+//                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
                 }
             }
@@ -290,7 +290,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
-                        if diagnosticPrint { dumpCell(i:i, j:j) }
+//                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
                 }
             case .Verb:  //tense vs verb
@@ -303,7 +303,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
-                        if diagnosticPrint { dumpCell(i:i, j:j) }
+//                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
                 }
             }
@@ -320,7 +320,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
-                        if diagnosticPrint { dumpCell(i:i, j:j) }
+//                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
                 }
             case .Verb:  //person vs verb
@@ -333,7 +333,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
                         blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
-                        if diagnosticPrint { dumpCell(i:i, j:j) }
+//                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
                 }
             }
@@ -341,10 +341,10 @@ class QuizCubeHandlerClass : ObservableObject {
         }
     }
     
-    func dumpCell(i: Int, j: Int){
-        print("quizCubeCellInfoArray[\(i)][\(j)] - verb \(quizCubeCellInfoArray[i][j].verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())), person: \(quizCubeCellInfoArray[i][j].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)), tense: \(quizCubeCellInfoArray[i][j].tense.rawValue)")
-        print("cellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString)")
-    }
+//    func dumpCell(i: Int, j: Int){
+//        print("quizCubeCellInfoArray[\(i)][\(j)] - verb \(quizCubeCellInfoArray[i][j].verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())), person: \(quizCubeCellInfoArray[i][j].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)), tense: \(quizCubeCellInfoArray[i][j].tense.rawValue)")
+//        print("cellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString)")
+//    }
     
 }
 

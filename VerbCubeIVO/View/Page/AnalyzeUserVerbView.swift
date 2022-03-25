@@ -19,6 +19,8 @@ struct AnalyzeUserVerbView: View {
     
     @State var newVerbString = ""
     @State var currentVerb = Verb()
+    @State var residualPhrase = ""
+    
 //    @Binding var isPresented = false
     @State var criticalVerbForms = [String]()
     @State var comment0 = "First person singular, present tense"
@@ -77,7 +79,8 @@ struct AnalyzeUserVerbView: View {
                             if isValidVerb(language: languageViewModel.getCurrentLanguage(), verbString: newVerbString) {
                                 let result =  analyze(newVerbString: newVerbString)
                                 currentVerb = result.0
-                                isAnalyzed = result.1
+                                residualPhrase = result.1
+                                isAnalyzed = result.2
                                 hideKeyboard()
                             }
                         }
@@ -100,7 +103,8 @@ struct AnalyzeUserVerbView: View {
                                     Button(action: {
                                         let result =  analyze(newVerbString: newVerbString)
                                         currentVerb = result.0
-                                        isAnalyzed = result.1
+                                        residualPhrase = result.1
+                                        isAnalyzed = result.2
                                         hideKeyboard()
                                     }, label: {
                                         Text("Analyze ")
@@ -114,7 +118,7 @@ struct AnalyzeUserVerbView: View {
                                 var subjunctiveString = ""
                                 ForEach (0 ..< vsList.count, id:\.self) { i in
                                     CriticalFormView(comment: vsList[i].comment,
-                                                     person: vsList[i].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3),
+                                                     person: vsList[i].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: VerbUtilities().startsWithVowelSound(characterArray: vsList[i].verbForm), useUstedForm: languageViewModel.useUstedForS3),
                                                      cvf: isAnalyzed ? vsList[i].verbForm : "",
                                                      subjunctiveString: languageViewModel.getSubjunctiveTerm(tense: vsList[i].tense)
                                                      )
@@ -122,28 +126,15 @@ struct AnalyzeUserVerbView: View {
 
                                 VStack{
                                     if currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()).count > 2 {
-                                        Text("Bescherelle id: \(languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleID())")
-                                        Text("Bescherelle model verb: \(languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleModelVerb())")
-                                        Text(languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleInfo())
-                                        if languageViewModel.isVerbType(verb : currentVerb, verbType: .STEM) {
-                                            Text("Verb is stem changing")
-                                        }
-                                        if languageViewModel.isVerbType(verb : currentVerb, verbType: .ORTHO) {
-                                            Text("Verb is orthographic changing")
-                                        }
-                                        if languageViewModel.isVerbType(verb : currentVerb, verbType: .IRREG) {
-                                            Text("Verb is irregular")
-                                        }
-                                        if languageViewModel.isVerbType(verb : currentVerb, verbType: .SPECIAL) {
-                                            Text("Verb is special")
-                                        }
-                                        
-                                        Text("Verbs of a feather count \(findVerbsLike(verb: currentVerb))")
+                                        let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
+                                       
+                                        Text("Bescherelle id: \(brv.getBescherelleID())")
+                                        Text("Bescherelle model verb: \(brv.getBescherelleModelVerb())")
                                     }
                                 }.padding()
                                     .foregroundColor(.black)
                                 
-                                NavigationLink(destination: AnalyzeFilteredVerbView(verb: currentVerb)){
+                                NavigationLink(destination: AnalyzeFilteredVerbView(verb: currentVerb, residualPhrase: residualPhrase)){
                                     HStack{
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
@@ -168,42 +159,6 @@ struct AnalyzeUserVerbView: View {
         
     }
     
-    func findVerbsLike(verb: Verb)->Int{
-        let vList = languageViewModel.findVerbsLike(verb: currentVerb)
-        print("Verbs of a feather for \(verb):")
-        for v in vList {
-            print("verb: \(v.spanish)")
-        }
-        return vList.count
-    }
-    
-//struct  VerbInfoView : View {
-////    @EnvironmentObject var languageEngine : LanguageEngine
-//    @EnvironmentObject var languageViewModel: LanguageViewModel
-//    let verb: Verb
-//
-//    var body : some View {
-//        if verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()).count > 2 {
-//            Text("Bescherelle id: \(languageViewModel.getRomanceVerb(verb: verb).getBescherelleID())")
-//            Text("Bescherelle model verb: \(languageViewModel.getRomanceVerb(verb: verb).getBescherelleModelVerb())")
-//            Text(languageViewModel.getRomanceVerb(verb: verb).getBescherelleInfo())
-//            if languageViewModel.isVerbType(verb : verb, verbType: .STEM) {
-//                Text("Verb is stem changing")
-//            }
-//            if languageViewModel.isVerbType(verb : verb, verbType: .ORTHO) {
-//                Text("Verb is orthographic changing")
-//            }
-//            if languageViewModel.isVerbType(verb : verb, verbType: .IRREG) {
-//                Text("Verb is irregular")
-//            }
-//            if languageViewModel.isVerbType(verb : verb, verbType: .SPECIAL) {
-//                Text("Verb is special")
-//            }
-//        }
-//    }
-//}
-//
-//
     struct  CriticalFormView : View {
         let comment: String
         let person: String
@@ -229,20 +184,23 @@ struct AnalyzeUserVerbView: View {
         }
     }
 
-    func analyze(newVerbString: String)-> (Verb, Bool) {
+    func analyze(newVerbString: String)-> (Verb, String, Bool) {
         let vu = VerbUtilities()
         var verb = Verb()
         var reconstructedVerbString = ""
+        var residualPhrase = ""
+        
         switch languageViewModel.getCurrentLanguage(){
         case .Spanish:
             let result = vu.analyzeSpanishWordPhrase(testString: newVerbString)
             //reconstruct the verb phrase, eliminating spaces, erroneous symbols, etc.
             reconstructedVerbString = result.0
             if result.isReflexive {  reconstructedVerbString += "se" }
-            if result.residualPhrase.count > 0 { reconstructedVerbString += " " + result.residualPhrase }
+//            if result.residualPhrase.count > 0 { reconstructedVerbString += " " + result.residualPhrase }
             //make it into a Verb
+            residualPhrase = result.2
             verb = Verb(spanish: reconstructedVerbString, french: "", english: "")
-            languageViewModel.fillCriticalVerbForms(verb: verb, residualPhrase: result.2, isReflexive: result.3)
+            languageViewModel.fillCriticalVerbForms(verb: verb, residualPhrase: residualPhrase, isReflexive: result.3)
             print("Verb: \(reconstructedVerbString), verbEnding: \(result.1.rawValue), residualPhrase: \(result.2), isReflexive: \(result.3)")
         case .French:
             let result = vu.analyzeFrenchWordPhrase(phraseString: newVerbString)
@@ -252,14 +210,15 @@ struct AnalyzeUserVerbView: View {
                 if startsWithVowelSound { reconstructedVerbString = "s'" + reconstructedVerbString}
                 else { reconstructedVerbString = "se " + reconstructedVerbString }
             }
-            if result.residualPhrase.count > 0 { reconstructedVerbString += " " + result.residualPhrase }
+            residualPhrase = result.2
+//            if result.residualPhrase.count > 0 { reconstructedVerbString += " " + result.residualPhrase }
             verb = Verb(spanish: "", french:  reconstructedVerbString, english:  "")
-            languageViewModel.fillCriticalVerbForms(verb: verb, residualPhrase: result.2, isReflexive: result.3)
+            languageViewModel.fillCriticalVerbForms(verb: verb, residualPhrase: residualPhrase, isReflexive: result.3)
             print("Verb: \(result.0), verbEnding: \(result.1.rawValue), residualPhrase: \(result.2), isReflexive: \(result.3)")
         default:
-            return (verb, false)
+            return (verb, residualPhrase, false)
         }
-        return (verb, true)
+        return (verb, residualPhrase, true)
     }
     
     func blankOutCvfs(){

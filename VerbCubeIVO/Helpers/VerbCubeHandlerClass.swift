@@ -265,7 +265,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+//                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Person:  // verb vs person
@@ -285,7 +285,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+//                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }
@@ -309,7 +309,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+//                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Verb:  //tense vs verb
@@ -329,7 +329,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+//                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }
@@ -354,7 +354,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+//                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             case .Verb:  //person vs verb
@@ -374,7 +374,7 @@ class VerbCubeHandlerClass {
                             colorCellCount += 1
                         }
                         cellDataArray[i][j] = CellData(cellString: wordString, cellColor: cellColor, colorString: cellColor.description)
-                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
+//                        print("CellDataArray[\(i)][\(j)] - cellString \(cellDataArray[i][j].cellString), cellColor: \(cellDataArray[i][j].cellColor)")
                     }
                 }
             }

@@ -25,23 +25,39 @@ struct VerbsOfAFeather: View {
     @State private var activeList = [Bool]()
     @State private var activeCount = 0
 
+    //à
     fileprivate func BirdsOfAFeatherList() -> some View {
         return VStack{
             Text("Your verb: \(currentVerb.getWordAtLanguage(language: currentLanguage))").font(.title2)
-            Text("Bescherelle id: \(languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleID())")
-            Text("Bescherelle model verb: \(languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleModelVerb())")
-            Divider()
-            Text("The following \(getActiveCount()) verbs with the same conjugation pattern were found:").bold()
-
-            let gridFixSize = CGFloat(200.0)
-            let gridItems = [GridItem(.fixed(gridFixSize)),
-//                                         GridItem(.fixed(gridFixSize)),
-                                         GridItem(.fixed(gridFixSize))]
-            LazyVGrid(columns: gridItems, spacing: 5){
-                ForEach(0..<featherVerbList.count){ index in
-                    WordCellButton(wordText: featherVerbList[index].getWordAtLanguage(language: currentLanguage), isActive:
-                                    activeList[index] )
+            
+            if isAnalyzed {
+                let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
+                Text("Bescherelle id: \(brv.getBescherelleID())")
+                Text("Bescherelle model verb: \(brv.getBescherelleModelVerb())")
+                Divider()
+                Text("The following \(getActiveCount()) verbs with the same conjugation pattern were found:").bold()
+                
+                let gridFixSize = CGFloat(200.0)
+                let gridItems = [GridItem(.fixed(gridFixSize)),
+                                 //                                         GridItem(.fixed(gridFixSize)),
+                                 GridItem(.fixed(gridFixSize))]
+                ScrollView{
+                    LazyVGrid(columns: gridItems, spacing: 5){
+                        ForEach(0..<featherVerbList.count){ index in
+                            Button(featherVerbList[index].getWordAtLanguage(language: currentLanguage)){
+                                activeList[index].toggle()
+                            }
+                            .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+                            .background(activeList[index] ? .green : .red)
+                            .foregroundColor(activeList[index] ? .black : .yellow)
+                            .cornerRadius(8)
+                            .font(Font.callout)
+                            //                        WordCellButton(wordText: featherVerbList[index].getWordAtLanguage(language: currentLanguage), isActive:
+                            //                                        activeList[index] )
+                        }
+                    }
                 }
+                
             }
         }
     }
@@ -72,6 +88,8 @@ struct VerbsOfAFeather: View {
                 currentLanguage = languageViewModel.getCurrentLanguage()
                 languageString = currentLanguage.rawValue
                 newVerbString = ""
+                isAnalyzed = false
+                isNameValid = false
             }){
                 Text(currentLanguage.rawValue)
                     .frame(width: 100, height: 50)
