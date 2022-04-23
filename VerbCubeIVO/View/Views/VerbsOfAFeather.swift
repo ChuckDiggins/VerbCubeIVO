@@ -24,16 +24,23 @@ struct VerbsOfAFeather: View {
     @State private var featherVerbList = [Verb]()
     @State private var activeList = [Bool]()
     @State private var activeCount = 0
+    @State private var languageChanged = false
+    @State private var modelNumberString = ""
+    @State private var brv = BRomanceVerb()
 
     //à
     fileprivate func BirdsOfAFeatherList() -> some View {
         return VStack{
-            Text("Your verb: \(currentVerb.getWordAtLanguage(language: currentLanguage))").font(.title2)
-            
+            Text("Your verb: \(currentVerb.getWordAtLanguage(language: currentLanguage))").font(.caption)
             if isAnalyzed {
-                let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
-                Text("Bescherelle id: \(brv.getBescherelleID())")
-                Text("Bescherelle model verb: \(brv.getBescherelleModelVerb())")
+                VStack{
+                Text("Verb model information:")
+                Text(modelNumberString)
+                Text("Model verb: \(brv.getBescherelleModelVerb())")
+                }
+//                .frame(width: 400, height: 150)
+                .background(.linearGradient(colors: [.blue, .green], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .font(.caption)
                 Divider()
                 Text("The following \(getActiveCount()) verbs with the same conjugation pattern were found:").bold()
                 
@@ -43,7 +50,7 @@ struct VerbsOfAFeather: View {
                                  GridItem(.fixed(gridFixSize))]
                 ScrollView{
                     LazyVGrid(columns: gridItems, spacing: 5){
-                        ForEach(0..<featherVerbList.count){ index in
+                        ForEach(0..<featherVerbList.count, id: \.self){ index in
                             Button(featherVerbList[index].getWordAtLanguage(language: currentLanguage)){
                                 activeList[index].toggle()
                             }
@@ -56,6 +63,7 @@ struct VerbsOfAFeather: View {
                             //                                        activeList[index] )
                         }
                     }
+                    .padding()
                 }
                 
             }
@@ -75,28 +83,38 @@ struct VerbsOfAFeather: View {
         currentVerb = result.0
         featherVerbList = result.1
         activeList.removeAll()
+        brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
+        modelNumberString = "Model number: \(brv.getBescherelleID())"
         for _ in 0..<featherVerbList.count{
             activeList.append(true)}
         isAnalyzed = true
         hideKeyboard()
     }
     
+    fileprivate func changeLanguage() {
+        languageViewModel.changeLanguage()
+        currentLanguage = languageViewModel.getCurrentLanguage()
+        languageString = currentLanguage.rawValue
+        newVerbString = ""
+        isAnalyzed = false
+        isNameValid = false
+    }
+    
     var body : some View {
 //        NavigationView{
             Button(action: {
-                languageViewModel.changeLanguage()
-                currentLanguage = languageViewModel.getCurrentLanguage()
-                languageString = currentLanguage.rawValue
-                newVerbString = ""
-                isAnalyzed = false
-                isNameValid = false
+                withAnimation(.easeInOut(duration: 1.0)){
+                    languageChanged.toggle()
+                }
+                changeLanguage()
             }){
                 Text(currentLanguage.rawValue)
-                    .frame(width: 100, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.orange)
-                    .cornerRadius(10)
-                    .foregroundColor(.black)
+                    .frame(width: 100, height: 30)
+                    .padding(10)
+                    .foregroundColor(.white)
+                    .background(languageChanged ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .shadow(radius: 3)
             }
             
             //        .buttonStyle(.bordered)
@@ -111,6 +129,8 @@ struct VerbsOfAFeather: View {
                         print("OnCommit")
                     }
                     .disableAutocorrection(true)
+                    .background(Color.black).opacity(0.8)
+                    .foregroundColor(.yellow)
                     .modifier(NeumorphicTextfieldModifier())
                     //            neumorphicTextField()
                     .onChange(of: newVerbString){ (value) in
@@ -147,14 +167,21 @@ struct VerbsOfAFeather: View {
                                     .cornerRadius(10)
                             })
                             
-                            if getActiveCount() > 5 {
+                            if getActiveCount() > 2 {
                                 Button(action: {
-                                    var activeVerbList = [Verb]()
-                                    for i in 0..<featherVerbList.count { activeVerbList.append(featherVerbList[i])}
-                                        languageViewModel.setFilteredVerbList(verbList: activeVerbList)
-                                        saveAndExit()
+                                    saveFeatherListToActiveList()
+                                    languageViewModel.createWordCollection(verbList: languageViewModel.getFilteredVerbs(), collectionName: "Model number: \(brv.getBescherelleID())")
                                 }, label: {
-                                    Text("Load Verb Cube ")
+                                    Text("Create Word Collection")
+                                        .padding(.all, 2 )
+                                        .background(Color.orange)
+                                        .cornerRadius(10)
+                                })
+                                Button(action: {
+                                    saveFeatherListToActiveList()
+                                    saveAndExit()
+                                }, label: {
+                                    Text("Save as active")                                              
                                         .padding(.all, 2 )
                                         .background(Color.orange)
                                         .cornerRadius(10)
@@ -162,6 +189,15 @@ struct VerbsOfAFeather: View {
                             }
                         }
                         
+                    }
+                    if getActiveCount() > 12 {
+                        Button{
+                            featherVerbList = selectRandom12()
+                            languageViewModel.setFilteredVerbList(verbList: featherVerbList)
+                            saveAndExit()
+                        } label: {
+                            Text("Random 12")
+                        }
                     }
                 }
                 if isAnalyzed {
@@ -177,6 +213,21 @@ struct VerbsOfAFeather: View {
 //        }
     }
     
+    func saveFeatherListToActiveList(){
+        var activeVerbList = [Verb]()
+        for i in 0..<featherVerbList.count {
+            if activeList[i] { activeVerbList.append(featherVerbList[i]) }
+        }
+        languageViewModel.setFilteredVerbList(verbList: activeVerbList)
+    }
+    
+    func selectRandom12()->[Verb]{
+        var randomVerbList = [Verb]()
+        randomVerbList = featherVerbList.shuffled()
+        for i in 0..<12 { featherVerbList[i] = randomVerbList[i] }
+        return featherVerbList
+    }
+    
     func saveAndExit(){
         languageViewModel.fillVerbCubeLists()
         languageViewModel.setPreviousCubeBlockVerbs()
@@ -189,7 +240,6 @@ struct VerbsOfAFeather: View {
         let vu = VerbUtilities()
         var verb = Verb()
         var verbList = [Verb]()
-        var reconstructedVerbString = ""
         switch languageViewModel.getCurrentLanguage(){
         case .Spanish:
             let result = vu.analyzeSpanishWordPhrase(testString: newVerbString)
@@ -206,17 +256,22 @@ struct VerbsOfAFeather: View {
     }
     
     func findVerbsLike(verb: Verb)->[Verb]{
-        let vList = languageViewModel.findVerbsLike(verb: verb)
+        var vList = languageViewModel.findVerbsLike(verb: verb)
         print("Found \(vList.count) words in findVerbLike")
         var i = 0
+        var targetVerbFound = false
         for v in vList {
-//            let vStr = v.getWordAtLanguage(language: currentLanguage)
+            if v.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())==verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()) {
+                targetVerbFound = true
+            }
             print("Verb: \(i). \(v.getWordAtLanguage(language: currentLanguage))")
             i += 1
         }
+        if !targetVerbFound {
+            vList.append(verb)
+        }
         return vList
     }
-    
     
     func isValidVerb(language: LanguageType, verbString: String)->Bool{
         let vu = VerbUtilities()

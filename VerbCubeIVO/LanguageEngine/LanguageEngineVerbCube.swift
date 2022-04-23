@@ -19,6 +19,7 @@ extension LanguageEngine{
                 verbCubeList.append(verb)
             }
         }
+        verbBlockCount = min(6, verbCubeList.count)
         startingVerbCubeListIndex = 0
         verbCubeVerbIndex = 0
         print("fillVerbCubeLists: filteredVerbList count = \(filteredVerbList.count), verbCubeList count = \(verbCubeList.count)")
@@ -46,7 +47,6 @@ extension LanguageEngine{
     }
     
     func getCurrentVerbCubeVerb()->Verb{
-        print ("verbCubeList: \(verbCubeList.count)")
         return verbCubeList[verbCubeVerbIndex]
     }
     
@@ -65,7 +65,8 @@ extension LanguageEngine{
         verbCubeBlock.removeAll()
         startingVerbCubeListIndex = startingVerbCubeListIndex + verbBlockCount
         if (startingVerbCubeListIndex+verbBlockCount >= verbCubeList.count ){
-            startingVerbCubeListIndex = verbCubeList.count - verbBlockCount - 1
+//            startingVerbCubeListIndex = verbCubeList.count - verbBlockCount - 1
+            startingVerbCubeListIndex = verbCubeList.count - verbBlockCount
         }
         if startingVerbCubeListIndex < 0 { startingVerbCubeListIndex = 0 }
         for i in 0 ..< verbBlockCount {

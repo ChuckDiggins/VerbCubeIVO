@@ -44,7 +44,7 @@ class LanguageEngine : ObservableObject {
     var startingVerbCubeListIndex = 0
     var verbCubeVerbIndex = 0
     @Published var verbCubeList = [Verb]()
-    let verbBlockCount: Int = 6
+    var verbBlockCount: Int = 6
     var verbCubeBlockIndex = 0
     var verbCubeBlock = [Verb(), Verb(), Verb(), Verb(), Verb(), Verb()]
     var quizCubeBlock = [Verb]()
@@ -57,15 +57,15 @@ class LanguageEngine : ObservableObject {
     var quizCubeConfiguration = ActiveVerbCubeConfiguration.PersonVerb
     var quizCubeDifficulty = QuizCubeDifficulty.easy
     
-    var realm : Realm
+//    var realm : Realm
     
     init(){
-        realm = try! Realm()
+//        realm = try! Realm()
     }
  
     init(language: LanguageType) {
         currentLanguage = language
-        realm = try! Realm()
+//        realm = try! Realm()
         
         verbModelConjugation = VerbModelConjugation(currentLanguage: currentLanguage)
 //        wsp = ViperWordStringParser(language: currentLanguage,
@@ -84,6 +84,9 @@ class LanguageEngine : ObservableObject {
         
         loadVerbsFromJSON()
         createVerbList()
+//        getVerbsOfPatternGroups(patternType: .e2ie)
+//        getVerbsOfPatternGroups(patternType: .c2z)
+//        getVerbsOfPatternGroups(patternType: .g2gu)
         filteredVerbList = verbList
         fillVerbCubeLists()   //verb cube list is a list of all the filtered verbs
         setPreviousCubeBlockVerbs()  //verbCubeBlock is a block of verbBlockCount verbs
@@ -142,6 +145,7 @@ class LanguageEngine : ObservableObject {
     }
     
     func loadVerbsFromJSON(){
+        jsonDictionaryManager.useJsonStarterFiles(useThem: false)
         jsonDictionaryManager.setWordStringParser(wsp: m_wsp)
         jsonDictionaryManager.loadJsonWords()
     }
@@ -212,6 +216,14 @@ class LanguageEngine : ObservableObject {
         return morphStructManager.getFinalVerbForm(person: person)
     }
     
+    func getFinalVerbForms(person: Person, verbList: [Verb])->[String]{
+        var conjugatedStringList = [String]()
+        for verb in verbList {
+            conjugatedStringList.append(createAndConjugateAgnosticVerb(verb: verb, tense: getCurrentTense(), person: person))
+        }
+        return conjugatedStringList
+    }
+    
     func getVerbPhrase()->String{
         return morphStructManager.verbPhrase
     }
@@ -235,6 +247,36 @@ class LanguageEngine : ObservableObject {
 //        return 
 //    }
 //
+    
+    //returns the part of the verb that is actually affected by model morphing
+    //  for example, "seguir" will return "eguir" - because seguir -> sigo
+    
+    func getModelStringAtTensePerson(bVerb: BRomanceVerb, tense: Tense, person: Person)->(String, String){
+        let finalForm = conjugateRomanceVerb(bVerb: bVerb, tense: tense, person: person)
+        let infinitive = bVerb.m_verbWord
+        let vu = VerbUtilities()
+        var matchIndex = 0
+        for i in 0..<infinitive.count {
+            let str1 = vu.getStringCharacterAt(input: infinitive, charIndex: i)
+            let str2 = vu.getStringCharacterAt(input: finalForm, charIndex: i)
+            if  str1 != str2 {
+                break
+            }
+            matchIndex = i
+        }
+        let removeCount = infinitive.count - matchIndex - 1
+        var rootString = infinitive
+        rootString.removeLast(removeCount)
+        var modelString = infinitive
+        modelString.removeFirst(matchIndex+1)
+        return (rootString, modelString)
+    }
+    
+    func conjugateRomanceVerb(bVerb: BRomanceVerb, tense: Tense, person: Person)->String{
+        let ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
+        morphStructManager.set(index: person.getIndex(), ms: ms)
+        return morphStructManager.getFinalVerbForm(person: person)
+    }
     
     func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{
         var vmm = VerbModelManager()
@@ -267,12 +309,30 @@ class LanguageEngine : ObservableObject {
         
         let ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
         morphStructManager.set(index: person.getIndex(), ms: ms)
-        var str = morphStructManager.getFinalVerbForm(person: person)
-        return str
+        return morphStructManager.getFinalVerbForm(person: person)
     }
     
     func createAndConjugateCurrentFilteredVerb(){
         createAndConjugateAgnosticVerb(verb: getCurrentFilteredVerb(), tense: currentTense)
+    }
+    
+    func createConjugatedMorphStruct(verb: Verb, tense: Tense, person: Person)->MorphStruct{
+        var vmm = VerbModelManager()
+        
+        var bVerb = verb.getBVerb()
+        bVerb.m_isPassive = verb.m_isPassive
+        switch currentLanguage {
+        case .Spanish:
+            bVerb = vmm.createSpanishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        case .French:
+            bVerb = vmm.createFrenchBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        case .English:
+            bVerb = vmm.createEnglishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage), separable: .both)
+        default:
+            break
+        }
+        verb.setBVerb(bVerb: bVerb)
+        return bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true, isPassive: verb.isPassive() )
     }
     
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense){
@@ -303,6 +363,16 @@ class LanguageEngine : ObservableObject {
     }
     
     //bruñir
+    
+    func verbsOfAFeather(verbList: [Verb])->Bool {
+        let targetID = getRomanceVerb(verb: verbList[0]).getBescherelleID()
+        for v in verbList {
+            let rv = getRomanceVerb(verb: v)
+            let id = rv.getBescherelleID()
+            if id != targetID { return false }
+        }
+        return true
+    }
     
     func findVerbsLike(verb: Verb)->[Verb]{
         
@@ -414,7 +484,7 @@ extension LanguageEngine{
         
         switch currentLanguage {
         case .Spanish:
-            var result = vu.analyzeSpanishWordPhrase(testString: verb.spanish)
+            let result = vu.analyzeSpanishWordPhrase(testString: verb.spanish)
             let ending = vu.determineVerbEnding(verbWord: result.0)
             if ending == .AR || ending == .ER || ending == .IR || ending == .accentIR || ending == .umlautIR {
                 let verbWord = verb.getWordAtLanguage(language: currentLanguage)
@@ -422,7 +492,7 @@ extension LanguageEngine{
                 return bSpanishVerb
             }
         case .French:
-            var result = vu.analyzeFrenchWordPhrase(phraseString: verb.french)
+            let result = vu.analyzeFrenchWordPhrase(phraseString: verb.french)
             let ending = vu.determineVerbEnding(verbWord: result.0)
             if ending == .ER || ending == .IR || ending == .RE  {
                 let verbWord = verb.getWordAtLanguage(language: currentLanguage)
@@ -436,16 +506,16 @@ extension LanguageEngine{
     }
     
     func getRomanceVerbEnding(verb: Verb)->VerbEnding{
-        var vmm = VerbModelManager()
+        let vu = VerbUtilities()
         switch currentLanguage {
         case .Spanish:
             let verbWord = verb.getWordAtLanguage(language: currentLanguage)
-            let bSpanishVerb = vmm.createSpanishBVerb(verbPhrase: verbWord)
-            return bSpanishVerb.m_verbEnding
+            let result = vu.analyzeSpanishWordPhrase(testString: verbWord)
+            return result.1
         case .French:
             let verbWord = verb.getWordAtLanguage(language: currentLanguage)
-            let bFrenchVerb = vmm.createFrenchBVerb(verbPhrase: verbWord)
-            return bFrenchVerb.m_verbEnding
+            let result = vu.analyzeFrenchWordPhrase(phraseString: verbWord)
+            return result.1
         default:
             return VerbEnding.none
         }
@@ -457,6 +527,7 @@ extension LanguageEngine{
 
     func isVerbType(verb : Verb, verbType: ShowVerbType)->Bool{
         let bRomanceVerb = getRomanceVerb(verb: verb)
+        
         if verbType == .NONE { return false }
         
         switch verbType{
@@ -534,7 +605,6 @@ extension LanguageEngine{
         case .Agnostic:
             return false
         }
-        return false
     }
     
     func checkForStemChangingSpanish(verb: BSpanishVerb, tense: Tense, person: Person)->Bool{
@@ -542,9 +612,9 @@ extension LanguageEngine{
         if verb.isStemChanging() {
             if (tense == .present || tense == .presentSubjunctive) && verb.isPersonStem(person: person) {
                 if verb.isOrthoPresent(tense: tense, person: person){ return false }  //tener - tengo
-//                var stemFrom = verb.m_stemFrom
-//                var stemTo = verb.m_stemTo
-//                    print("\(verbWord) is stem changing for tense \(tense.rawValue), person \(person.rawValue) ")
+                let stemFrom = verb.m_stemFrom
+                let stemTo = verb.m_stemTo
+                print("\(verb.spanish) is stem changing for tense \(tense.rawValue), person \(person.rawValue)\n stemFrom - \(stemFrom), stemTo - \(stemTo)")
                 return true
             }
         }
@@ -558,7 +628,8 @@ extension LanguageEngine{
     
     func checkForStemChangingFrench(verb: BFrenchVerb, tense: Tense, person: Person)->Bool{
         
-        if verb.isStemChanging() {
+//        if verb.isStemChanging() {
+        if verb.m_presentStemChanging || verb.m_presentSubjStemChanging {
             if (tense == .present || tense == .presentSubjunctive) && verb.isPersonStem(person: person) {
                 if verb.isOrthoPresent(tense: tense, person: person){ return false }  //tener - tengo
 //                var stemFrom = verb.m_stemFrom
@@ -635,10 +706,12 @@ extension LanguageEngine{
         print("\nlanguageEngine: getVerbsOfSelectedEnding:")
         print("Language: \(currentLanguage.rawValue)")
         for verb in verbList {
-            var rve = getRomanceVerbEnding(verb: verb)
-            print("verb: \(verb.getWordAtLanguage(language: .Spanish)), \(verb.getWordAtLanguage(language: .French)), \(verb.getWordAtLanguage(language: .English)) ...verbEnding = \(rve.rawValue)")
-            if  rve == verbEnding {
-                verbs.append(verb)
+            let rve = getRomanceVerbEnding(verb: verb)
+            if rve != .none {
+                print("verb: \(verb.getWordAtLanguage(language: .Spanish)), \(verb.getWordAtLanguage(language: .French)), \(verb.getWordAtLanguage(language: .English)) ...verbEnding = \(rve.rawValue)")
+                if  rve == verbEnding {
+                    verbs.append(verb)
+                }
             }
         }
         return verbs
@@ -650,6 +723,92 @@ extension LanguageEngine{
             if isVerbType(verb : verb, verbType: showVerbType) { count += 1 }
         }
         return count
+    }
+    
+    func getVerbsOfPatternGroups(patternType: SpecialPatternType){
+        var newVerbList = verbList
+        newVerbList = getVerbsOfPattern(verbList: newVerbList, thisPattern: SpecialPatternStruct(tense: .present, spt: patternType))
+    }
+    
+    func getVerbsOfPattern(verbList: [Verb], thisPattern: SpecialPatternStruct)->[Verb]{
+        var newVerbList = [Verb]()
+        var targetTense = thisPattern.tense
+        var targetPattern = thisPattern.pattern
+        
+        var vmm = VerbModelManager()
+        for verb in verbList {
+            switch currentLanguage {
+            case .Spanish:
+                let verbWord = verb.getWordAtLanguage(language: currentLanguage)
+                let bSpanishVerb = vmm.createSpanishBVerb(verbPhrase: verbWord)
+//                print("verb: \(verbWord) - specialPattern count = \(bSpanishVerb.m_specialPatternList.count)")
+                for spt in bSpanishVerb.m_specialPatternList {
+                    let tense = spt.tense
+                    let pattern = spt.pattern
+                    if spt.tense == thisPattern.tense && spt.pattern.rawValue == thisPattern.pattern.rawValue {
+                        newVerbList.append(verb)
+                        print("verb: \(verbWord) - has tense \(tense.rawValue), pattern \(pattern.rawValue) ")
+                    }
+                }
+            case .French:
+                let verbWord = verb.getWordAtLanguage(language: currentLanguage)
+                let bFrenchVerb = vmm.createFrenchBVerb(verbPhrase: verbWord)
+                for spt in bFrenchVerb.m_specialPatternList {
+                    if spt.tense == thisPattern.tense && spt.pattern.rawValue == thisPattern.pattern.rawValue { newVerbList.append(verb) }
+                }
+            default:
+                break
+            }
+        }
+
+        return newVerbList
+    }
+    
+    func showSpecialPatterns(newVerbList: [Verb]){
+        var vmm = VerbModelManager()
+        for verb in newVerbList {
+            switch currentLanguage {
+            case .Spanish:
+                let verbWord = verb.getWordAtLanguage(language: currentLanguage)
+                let bSpanishVerb = vmm.createSpanishBVerb(verbPhrase: verbWord)
+                if bSpanishVerb.m_specialPatternList.count > 0 {
+                    for spt in bSpanishVerb.m_specialPatternList {
+                        print("verb: \(verbWord) --> \(spt.tense.rawValue) ... \(spt.pattern.rawValue)")
+                    }
+                }
+            case .French:
+                let verbWord = verb.getWordAtLanguage(language: currentLanguage)
+                let bFrenchVerb = vmm.createSpanishBVerb(verbPhrase: verbWord)
+                if bFrenchVerb.m_specialPatternList.count > 0 {
+                    for spt in bFrenchVerb.m_specialPatternList {
+                        print("verb: \(verbWord) --> \(spt.tense.rawValue) ... \(spt.pattern.rawValue)")
+                    }
+                }
+            default: break
+            }
+        }
+    }
+    
+    func unConjugate(verbForm : String)->[VTP]{
+        var vtpList = [VTP]()
+        var conjugateForm = ""
+        let tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future, .presentSubjunctive, .imperfectSubjunctiveRA, .imperfectSubjunctiveSE, .imperative]
+        var count = 0
+        for v in verbList {
+            for tense in tenseList {
+                for person in Person.all {
+                    let ms = createConjugatedMorphStruct(verb: v, tense: tense, person: person)
+                    conjugateForm = ms.finalVerbForm()
+                    if conjugateForm == verbForm {
+                        vtpList.append(VTP(verb: v, tense: tense, person: person))
+                        print("\(count) verb forms were searched")
+                        print("target form: \(verbForm): found: \(v.getWordAtLanguage(language: currentLanguage)), tense: \(tense.rawValue), person:\(person.rawValue)")
+                    }
+                    count += 1
+                }
+            }
+        }
+        return vtpList
     }
 }
 

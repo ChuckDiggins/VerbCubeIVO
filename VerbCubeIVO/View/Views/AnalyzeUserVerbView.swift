@@ -36,21 +36,36 @@ struct AnalyzeUserVerbView: View {
     @State private var isAnalyzed = false
     @State private var languageString = "Agnostic"
     @State private var currentLanguage = LanguageType.Agnostic
+    @State private var languageChanged = false
+    @State private var modelID  = 0
+    @State private var modelVerb = ""
+    
+    fileprivate func changeLanguage() {
+        languageViewModel.changeLanguage()
+        currentLanguage = languageViewModel.getCurrentLanguage()
+        languageString = currentLanguage.rawValue
+        newVerbString = ""
+        isAnalyzed = false
+        isNameValid = false
+    }
     
     var body : some View {
         VStack{
             VStack {
                 Button(action: {
-                    languageViewModel.changeLanguage()
-                    currentLanguage = languageViewModel.getCurrentLanguage()
-                    languageString = currentLanguage.rawValue
-                    newVerbString = ""
+                    withAnimation(.easeInOut(duration: 1.0)){
+                        languageChanged.toggle()
+                    }
+                    changeLanguage()
                 }){
                     Text(currentLanguage.rawValue)
+                        .frame(width: 100, height: 30)
+                        .padding(10)
+                        .foregroundColor(.white)
+                        .background(languageChanged ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .shadow(radius: 3)
                 }
-                .background(.yellow)
-                .foregroundColor(.black)
-                .buttonStyle(.bordered)
             }
             VStack {
                 VStack {
@@ -65,7 +80,6 @@ struct AnalyzeUserVerbView: View {
                         }
                         .disableAutocorrection(true)
                         .modifier(NeumorphicTextfieldModifier())
-                        //            neumorphicTextField()
                         .onChange(of: newVerbString){ (value) in
                             if isValidVerb(language: languageViewModel.getCurrentLanguage(), verbString: value) {
                                 isNameValid = true
@@ -93,9 +107,6 @@ struct AnalyzeUserVerbView: View {
                             })
                         }
                     }
-                    //                        Text(newVerbString)
-//                            .bold()
-//                            .foregroundColor(isNameValid ? Color(.systemGray2) : .red)
                         
                         if isNameValid {
                             VStack{
@@ -115,33 +126,38 @@ struct AnalyzeUserVerbView: View {
                                     })
                                 }
                                 let vsList = languageViewModel.getCriticalVerbForms()
-                                var subjunctiveString = ""
                                 ForEach (0 ..< vsList.count, id:\.self) { i in
                                     CriticalFormView(comment: vsList[i].comment,
                                                      person: vsList[i].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: VerbUtilities().startsWithVowelSound(characterArray: vsList[i].verbForm), useUstedForm: languageViewModel.useUstedForS3),
                                                      cvf: isAnalyzed ? vsList[i].verbForm : "",
                                                      subjunctiveString: languageViewModel.getSubjunctiveTerm(tense: vsList[i].tense)
                                                      )
+                                    .padding(3)
                                 }
 
                                 VStack{
                                     if currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()).count > 2 {
-                                        let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
-                                       
-                                        Text("Bescherelle id: \(brv.getBescherelleID())")
-                                        Text("Bescherelle model verb: \(brv.getBescherelleModelVerb())")
+                                        VStack{
+                                            Text("Verb model:  \(modelID) - \(modelVerb) ")
+                                                .frame(maxWidth: .infinity)
+                                                .padding()
+                                                .font(.callout)
+                                                .background(.linearGradient(colors: [.blue, .green], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                                .clipShape(Capsule())
+                                        }
                                     }
                                 }.padding()
-                                    .foregroundColor(.black)
+                                    
                                 
-                                NavigationLink(destination: AnalyzeFilteredVerbView(verb: currentVerb, residualPhrase: residualPhrase)){
+                                NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase)){
                                     HStack{
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
                                     }
                                 }.frame(width: 200, height: 50)
                                 .padding(.leading, 10)
-                                .background(Color.orange)
+                                .buttonStyle(.bordered)
+                                    .tint(.black)
                                 .cornerRadius(10)
                             }
                         }
@@ -157,6 +173,12 @@ struct AnalyzeUserVerbView: View {
         .padding(.all, 8)
         Spacer()
         
+    }
+    
+    func setBescherelleModelInfo() {
+        let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
+        modelID = brv.getBescherelleID()
+        modelVerb = brv.getBescherelleModelVerb()
     }
     
     struct  CriticalFormView : View {
@@ -177,7 +199,7 @@ struct AnalyzeUserVerbView: View {
                 HStack{
                     Text(subjunctiveString)
                     Text(person)
-                    Text(cvf.count > 3 ? cvf : "...").bold()
+                    Text(cvf.count > 1 ? cvf : "...").bold()
                     Spacer()
                 }
             }
@@ -205,7 +227,7 @@ struct AnalyzeUserVerbView: View {
         case .French:
             let result = vu.analyzeFrenchWordPhrase(phraseString: newVerbString)
             reconstructedVerbString = result.0
-            var startsWithVowelSound = vu.startsWithVowelSound(characterArray: reconstructedVerbString)
+            let startsWithVowelSound = vu.startsWithVowelSound(characterArray: reconstructedVerbString)
             if result.isReflexive {
                 if startsWithVowelSound { reconstructedVerbString = "s'" + reconstructedVerbString}
                 else { reconstructedVerbString = "se " + reconstructedVerbString }
@@ -218,6 +240,8 @@ struct AnalyzeUserVerbView: View {
         default:
             return (verb, residualPhrase, false)
         }
+        currentVerb = verb
+        setBescherelleModelInfo()
         return (verb, residualPhrase, true)
     }
     
@@ -249,8 +273,9 @@ func isValidVerb(language: LanguageType, verbString: String)->Bool{
     let vu = VerbUtilities()
     switch language{
     case .Spanish:
+       if verbString == "ir" { return true}
         let result = vu.analyzeSpanishWordPhrase(testString: verbString)
-        if result.0.count > 3 {
+        if result.0.count > 2 {
             if result.1 == .AR || result.1 == .ER || result.1 == .IR || result.1 == .accentIR { return true }
         }
         return false
@@ -278,10 +303,8 @@ extension View {
 struct NeumorphicTextfieldModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
-            //.textFieldStyle(RoundedBorderTextFieldStyle())
             .font(.system(size: 18, weight: .bold))
             .foregroundColor(.accentColor)
-            .keyboardType(.emailAddress)
             .autocapitalization(.none)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)

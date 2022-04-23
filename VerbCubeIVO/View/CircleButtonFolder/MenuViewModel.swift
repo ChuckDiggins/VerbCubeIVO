@@ -11,11 +11,12 @@ class MenuViewModel : ObservableObject{
     var verbCubeIsActive = false
     
     @Published var menus: [MenuItem] = [
-        MenuItem(color: .green, icon: "person.fill", menuView: AnyView(UserSelectionWrapper()), selected: true),
+        MenuItem(color: .green, icon: "pencil.circle.fill", menuView: AnyView(QuizWrapper()), selected: true),
         MenuItem(color: .purple, icon: "tray.full", menuView: AnyView(CollectionsWrapper()), selected: true),
         MenuItem(color: .red, icon: "cube.box.fill", menuView: AnyView(GeneralCubeWrapper()), selected: true),
         MenuItem(color: .blue, icon: "hare.fill", menuView: AnyView(ExerciseWrapper()), selected: true),
-        MenuItem(color: .orange, icon: "folder.circle.fill", menuView: AnyView(DataToRealmView()), selected: true),
+//        MenuItem(color: .orange, icon: "folder.circle.fill", menuView: AnyView(FocusView()), selected: true),
+//        MenuItem(color: .orange, icon: "folder.circle.fill", menuView: AnyView(WordCollectionListView()), selected: true),
     ]
     
     var selectedMenu: MenuItem {

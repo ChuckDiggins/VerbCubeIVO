@@ -38,6 +38,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
     var tenses = [Tense]()
     var persons = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     var diagnosticPrint = false
+    var verbCubeWidth : Int = 660
     
 //    init(languageEngine: LanguageEngine ){
 //        self.languageViewModel = languageViewModel
@@ -104,6 +105,10 @@ struct VerbCubeConjugatedStringHandlerStruct {
             }
         }
     
+    }
+    
+    func getColumnWidth() -> CGFloat {
+        return CGFloat(verbCubeWidth/getHeaderStringList().count)
     }
     
     mutating  func setTenses(tenses : [Tense]){

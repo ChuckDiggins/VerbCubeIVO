@@ -51,7 +51,7 @@ struct VerbSelectionViewLazy: View {
                 }
             }
 
-            NavigationLink(destination: FilteredVerbListView()){
+            NavigationLink(destination: FilteredVerbListView(languageEngine: languageEngine)){
                 HStack{
                     Text("Language: \(languageEngine.getCurrentLanguage().rawValue)")
                     Spacer()
@@ -71,7 +71,6 @@ struct VerbSelectionViewLazy: View {
                 ForEach(0..<verbFilters.count, id:\.self){ index in
                     VerbFilterButton(verbFilters: verbFilters, index: index,
                                  backgroundColor: verbFilters[index].color, foregroundColor: .black, fontSize: Font.subheadline, function: showFilteredVerbs)
-                    .opacity( verbFilters[index].isSelected ? 1.0 : 0.7)
                 }
             }
             Spacer()
@@ -83,7 +82,6 @@ struct VerbSelectionViewLazy: View {
         .onAppear() {
             verbIDEnding = getVerbIDEndings()
             verbFilters = getVerbFilters()
-//            languageEngine = languageViewModel.getLanguageEngine()
             
             print("LazyVerbSelection: language = \(languageEngine.getCurrentLanguage().rawValue)")
             initializeVerbEndings(languageEngine: languageEngine)

@@ -35,6 +35,7 @@ struct VerbCubeCellView: View {
     
     // MARK: - Body
     var cellColor : Color
+    
 //    @State private var columnWidth : CGFloat = 100
     var columnWidth : CGFloat
     
@@ -46,8 +47,8 @@ struct VerbCubeCellView: View {
     var body: some View {
         Text(cellString)
             .frame(width: columnWidth, height: 30, alignment: .center)
-            .background(cellColor.opacity(0.5))
-            .foregroundColor(Color.white)
+            .background(cellColor.opacity(0.9))
+            .foregroundColor(Color.black)
             .border(Color.black)
     }
 }

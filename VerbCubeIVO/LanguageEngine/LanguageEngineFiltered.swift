@@ -69,5 +69,13 @@ extension LanguageEngine{
         let wcList = wcManager.getCollectionList()
         return wcList
     }
+    
+    func createWordCollection(verbList: [Verb], collectionName: String){
+        var wcManager = lessonBundlePhraseCollectionManager.wordCollectionManager
+        wcManager.append(collection: dWordCollection(collectionName: collectionName, wordList: verbList))
+        print("word collection: <\(collectionName)> created with word count: \(verbList.count)")
+    }
+    
+    
 }
 

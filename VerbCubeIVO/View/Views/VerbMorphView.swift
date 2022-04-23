@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
 import JumpLinguaHelpers
 
 struct TextMorphStructManager {
@@ -35,7 +34,7 @@ struct TextMorphStructManager {
     }
 }
 
-struct TextMorphStruct {
+struct TextMorphStruct : Identifiable, Hashable{
     let id = UUID()
     var morphString: [String]
     var morphColor: [Color]
@@ -86,7 +85,7 @@ struct TextMorphStruct {
 
 
 struct VerbMorphView: View {
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject var languageViewModel: LanguageViewModel
     
     //@EnvironmentObject var currentVerbAndTense : CurrentVerbAndTense
 
@@ -343,9 +342,8 @@ struct VerbMorphView: View {
             showNewVerb(person: person)
         }
 //        print("Current verb string = \(currentVerbString)")
-        let agnosticVerb = languageViewModel.getCurrentFilteredVerb()
-        let bVerb = agnosticVerb.getBVerb()
-        let isStem = bVerb.m_stemChanging
+//        let agnosticVerb = languageViewModel.getCurrentFilteredVerb()
+//        let bVerb = agnosticVerb.getBVerb()
 //        print("\nsetCurrentAgnosticVerb:  agnosticVerb: \(agnosticVerb.spanish) ... isStemChanging = \(bVerb.m_stemChanging)")
         
     }
@@ -401,12 +399,6 @@ struct VerbMorphView: View {
     }
     
     
-}
-
-struct VerbMorphView_Previews: PreviewProvider {
-    static var previews: some View {
-        VerbMorphView()
-    }
 }
 
 /*

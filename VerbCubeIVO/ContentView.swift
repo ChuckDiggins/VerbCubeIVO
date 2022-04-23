@@ -12,8 +12,8 @@ struct ContentView: View {
     @State var isVerbCubeActive = false
    
     var body: some View {
-        NavigationView {
-            List {
+        VStack {
+//            List {
 //                NavigationLink(destination: VerbCubeDispatcher()){
 //                    Text("Verb Cube Dispatcher")
 //                }.frame(width: 200, height: 50)
@@ -61,20 +61,20 @@ struct ContentView: View {
 //                                .background(Color.orange)
 //                                .cornerRadius(10)
 //////
-//                NavigationLink(destination: LanguagePreferencesTenseView(languageViewModel: languageViewModel)){
-//                                    Text("Preferences")
-//                                }.frame(width: 200, height: 50)
-//                                .padding(.leading, 10)
-//                                .background(Color.orange)
-//                                .cornerRadius(10)
+                NavigationLink(destination: DragDropVerbSubjectView()){
+                                    Text("DragDrop")
+                                }.frame(width: 200, height: 50)
+                                .padding(.leading, 10)
+                                .background(Color.orange)
+                                .cornerRadius(10)
 ////
 //
 
-            }.navigationTitle("Verb cubes")
-                .navigationViewStyle(StackNavigationViewStyle())
-                .onAppear{
-//                    isVerbCubeActive = true
-                }
+//            }.navigationTitle("Verb cubes")
+//                .navigationViewStyle(StackNavigationViewStyle())
+//                .onAppear{
+////                    isVerbCubeActive = true
+//                }
         }
     }
 }

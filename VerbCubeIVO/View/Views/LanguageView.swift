@@ -9,7 +9,7 @@ import SwiftUI
 import JumpLinguaHelpers
 
 struct LanguageView: View {
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject var languageViewModel: LanguageViewModel
     @State private var currentLanguage = LanguageType.Spanish
     
     var body: some View {

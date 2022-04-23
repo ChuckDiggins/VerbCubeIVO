@@ -15,22 +15,17 @@ import RealmSwift
 class LanguageViewModel : ObservableObject {
     var insertQueQuiBeforeSubjunctive = true
     var useFeminineSubjectPronouns = true
-    var useUstedForS3 = true
+    var useUstedForS3 = false
     var useVoceForm = false
     var useAlertMode = true
     
     @Published var spt = SubjectPronounType.maleInformal
     
     @Published var languageEngine = LanguageEngine()
-//    @Published var currentLanguage = LanguageType.Spanish
    var currentLanguage = LanguageType.Spanish
     
     init(language: LanguageType){
         languageEngine = LanguageEngine(language: language)
-    }
-
-    func getRealm()->Realm{
-        return languageEngine.realm
     }
     
     func changeLanguage(){
@@ -66,6 +61,10 @@ class LanguageViewModel : ObservableObject {
     func getSubjectGender()->Gender{
         if spt == .femaleFormal || spt == .femaleInformal { return .feminine }
         return .masculine
+    }
+    
+    func verbsOfAFeather(verbList: [Verb])->Bool{
+        return languageEngine.verbsOfAFeather(verbList:verbList)
     }
     
     func findVerbsLike(verb: Verb)->[Verb]{
@@ -128,9 +127,18 @@ class LanguageViewModel : ObservableObject {
         languageEngine.getMorphStructManager()
     }
     
+    func createConjugatedMorphStruct(verb: Verb, tense: Tense, person: Person)->MorphStruct{
+        return languageEngine.createConjugatedMorphStruct(verb: verb, tense: tense, person: person)
+    }
+    
     func getFinalVerbForm(person: Person)->String{
         languageEngine.getFinalVerbForm(person: person)
     }
+    
+    func getFinalVerbForms(person: Person, verbList: [Verb])->[String]{
+        return languageEngine.getFinalVerbForms(person: person, verbList: verbList)
+    }
+    
     
     func getVerbPhrase()->String{
         languageEngine.getVerbPhrase()
@@ -154,6 +162,10 @@ class LanguageViewModel : ObservableObject {
 
     func fillCriticalVerbForms(verb: Verb, residualPhrase: String, isReflexive: Bool){
         languageEngine.fillCriticalVerbForms(verb: verb, residualPhrase:residualPhrase, isReflexive: isReflexive)
+    }
+    
+    func getModelStringAtTensePerson(bVerb: BRomanceVerb, tense: Tense, person: Person)->(String, String){
+        return languageEngine.getModelStringAtTensePerson(bVerb: bVerb, tense: tense, person: person)
     }
     
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense, person: Person)->String{
@@ -214,6 +226,14 @@ class LanguageViewModel : ObservableObject {
     
     func getWordCollections()->[dWordCollection] {
         languageEngine.getWordCollections()
+    }
+    
+    func createWordCollection(verbList: [Verb], collectionName: String){
+        languageEngine.createWordCollection(verbList: verbList, collectionName: collectionName)
+    }
+    
+    func unConjugate(verbForm : String)->[VTP]{
+        return languageEngine.unConjugate(verbForm: verbForm)
     }
 }
 

@@ -7,42 +7,6 @@
 
 import SwiftUI
 
-struct UserSelectionWrapper: View {
-//    @EnvironmentObject var languageViewModel: LanguageViewModel
-    
-    var body: some View {
-        VStack{
-            Text("User Settings").font(.largeTitle)
-                .foregroundColor(.yellow)
-            HStack{
-                NavigationLink(
-                    destination: TenseSelectionView(),
-                    label: {
-                        Text("Tenses")
-                    })
-                .frame(width: 100, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-                NavigationLink(
-                    destination: LanguageView(),
-                    label: {
-                        Text("Language")
-                    })
-                .frame(width: 100, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-            }
-            Spacer()
-            Text("To enter program, click on circle below").font(.caption)
-                .foregroundColor(.yellow)
-            Spacer()
-        }.foregroundColor(.black)
-            .navigationViewStyle(StackNavigationViewStyle())
-    }
-}
-
 struct GeneralCubeWrapper: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel
     var body: some View {
@@ -57,7 +21,7 @@ struct GeneralCubeWrapper: View {
             VStack{
                 Text("Quiz Cube")
                 HStack{
-                    NavigationLink(destination: QuizCubeOptionsView2()){
+                    NavigationLink(destination: QuizCubeOptionsView2(languageViewModel: languageViewModel)){
                         Text("Options")
                     }.frame(width: 100, height: 50)
                         .padding(.leading, 10)
@@ -75,25 +39,34 @@ struct GeneralCubeWrapper: View {
     }
 }
 
-//struct QuizCubeWrapper: View{
-//    @EnvironmentObject var languageViewModel: LanguageViewModel
-//
-//    var body: some View {
-//        VStack{
-//            QuizCubeView2(languageViewModel: languageViewModel, qchc: QuizCubeHandlerClass(languageViewModel: languageViewModel), useCellAlert: languageViewModel.useAlertMode )
-//        }.navigationViewStyle(StackNavigationViewStyle())
-//    }
-//}
-//
-//struct VerbCubeWrapper: View {
-//    @EnvironmentObject var languageViewModel: LanguageViewModel
-//
-//    var body: some View {
-//        VStack{
-//            VerbCubeView(languageViewModel: languageViewModel, vccsh: VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1:  .Verb, d2: .Person))
-//        }.navigationViewStyle(StackNavigationViewStyle())
-//    }
-//}
+struct QuizWrapper: View{
+    @EnvironmentObject var languageViewModel: LanguageViewModel
+
+    var body: some View {
+        VStack{
+//            QuizVerbView(languageViewModel: languageViewModel)
+//            FocusView(languageViewModel: languageViewModel)
+            NavigationLink(destination: QuizVerbView(languageViewModel: languageViewModel)){
+                Text("Quiz Verb 6 Persons")
+            }.frame(width: 200, height: 50)
+                .padding(.leading, 10)
+                .background(Color.orange)
+                .cornerRadius(10)
+                .padding(10)
+            
+            NavigationLink(destination: QuizVerbSingleView(languageViewModel: languageViewModel)){
+                Text("Quiz Verb - Single Person")
+            }.frame(width: 200, height: 50)
+                .padding(.leading, 10)
+                .background(Color.orange)
+                .cornerRadius(10)
+                .padding(10)
+            
+        }.navigationViewStyle(StackNavigationViewStyle())
+    }
+
+
+}
 
 struct CollectionsWrapper: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel
@@ -132,45 +105,60 @@ struct ExerciseWrapper: View {
     
     var body: some View {
         VStack{
-            Text("Show how to conjugate any active verb")
-            NavigationLink(destination: VerbMorphView()){
-                                Text("Verb Morph View")
-                            }.frame(width: 200, height: 50)
-                            .padding(.leading, 10)
-                            .background(Color.orange)
-                            .cornerRadius(10)
-            Spacer()
-            Text("Analyze any verb or verb phrase")
-            NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
-                                Text("Analyze User Verb")
-                            }.frame(width: 200, height: 50)
-                            .padding(.leading, 10)
-                            .background(Color.orange)
-                            .cornerRadius(10)
-            Text("Verbs of a Feather")
-            NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel)){
-                                Text("Verbs of a Feather")
-                            }.frame(width: 200, height: 50)
-                            .padding(.leading, 10)
-                            .background(Color.orange)
-                            .cornerRadius(10)
-            Spacer()
             VStack{
-                Text("What is an Active verb?")
-                HStack{
-                    Text("Every verb in dictionary is active.  You can select active verbs by going to collections" )
-                    ZStack{
-                        Circle()
-                        .fill(.purple)
-                        .frame(width: 20, height: 20)
-                        Text(Image(systemSymbol: .tray) )
-                            .foregroundColor(.white)
-                    }
-                    
+                Text("Show how to conjugate any active verb")
+                NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
+                    Text("Verb Morph View")
+                }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+            }
+            Spacer()
+            HStack(){
+                VStack{
+//                    Text("Verbs of a Feather")
+                    NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel)){
+                        Text("Verbs of a Feather")
+                    }.frame(width: 150, height: 50)
+                        .padding(.leading, 10)
+                        .background(Color.orange)
+                        .cornerRadius(10)
                 }
+                .padding(20)
+                VStack{
+//                    Text("Conjugate Feather Verbs")
+                    NavigationLink(destination: FeatherVerbMorphView(languageViewModel: languageViewModel)){
+                        Text("Feather Morph")
+                    }.frame(width: 150, height: 50)
+                        .padding(.leading, 10)
+                        .background(Color.orange)
+                        .cornerRadius(10)
+                }
+            }
+            .padding(20)
+            VStack{
+                Text("Analyze any verb or verb phrase")
+                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
+                    Text("Analyze User Verb")
+                }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+            }
+            .padding(20)
+            VStack{
+                Text("Unconjugate")
+                NavigationLink(destination: UnconjugateView(languageViewModel: languageViewModel)){
+                    Text("Find the verbs")
+                }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
             }
             Spacer()
         }.navigationViewStyle(StackNavigationViewStyle())
+            
     }
 }
 

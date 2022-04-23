@@ -8,29 +8,42 @@
 import SwiftUI
 
 struct CircleButtonNavigationView: View {
+    @EnvironmentObject var appState: AppState
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @State private var isActivated = false
     @ObservedObject var menuVM = MenuViewModel()
+    @State private var scale: CGFloat = 1
+    
     
     var body: some View {
-        NavigationView {
-        ZStack {
-            menuVM.selectedMenu.menuView
+//        NavigationView {
             ZStack {
-                Color.black.opacity(isActivated ? 0.2 : 0.0)
-                VStack {
-                    Spacer()
-                    ZStack{
-                        ForEach(0..<menuVM.menus.count) { i in
-                            MenuButton(isActivated: self.$isActivated, menuVM: self.menuVM, currentItemIndex: i)
+                menuVM.selectedMenu.menuView
+                ZStack {
+                    Color.black.opacity(isActivated ? 0.2 : 0.0)
+                    VStack {
+                        Spacer()
+                        ZStack{
+                            ForEach(0..<menuVM.menus.count, id: \.self) { i in
+                                MenuButton(isActivated: self.$isActivated, menuVM: self.menuVM, currentItemIndex: i)
+                            }
+                            SelectedMenuButton(isActivated: self.$isActivated, menuItem: menuVM.selectedMenu)
                         }
-                        SelectedMenuButton(isActivated: self.$isActivated, menuItem: menuVM.selectedMenu)
                     }
                 }
             }
-        }
-        .edgesIgnoringSafeArea(isActivated ? .all : .trailing)
-        .animation(.spring())
-        }
+            .edgesIgnoringSafeArea(isActivated ? .all : .trailing)
+            .animation(.spring(), value: scale)
+            .navigationBarItems(leading: Button(action : {
+                            appState.hasOnboarded = false
+                            self.mode.wrappedValue.dismiss()
+                
+                        }){
+                            Image(systemName: "arrow.left")
+                        })
+           
+//        }
+//        .navigationViewStyle(StackNavigationViewStyle())
         
     }
 }

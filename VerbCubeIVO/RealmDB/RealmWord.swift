@@ -14,6 +14,7 @@ class RealmWord : Object, ObjectKeyIdentifiable {
     @Persisted var french: String
     @Persisted var english: String
     @Persisted var wordType:  WordType
+//    @Persisted(originProperty: "realmWords") var wordCollection: LinkingObjects<RealmWordCollection>
     
     enum WordType: Int, PersistableEnum {
         case adjective

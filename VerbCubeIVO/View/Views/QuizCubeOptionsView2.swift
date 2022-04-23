@@ -15,13 +15,7 @@ enum QuizCubeDifficulty : String {
 }
 
 struct QuizCubeOptionsView2: View {
-//
-//    @EnvironmentObject var languageEngine: LanguageEngine
-    @EnvironmentObject var languageViewModel: LanguageViewModel
-//    @EnvironmentObject var quizCubeWatcher: QuizCubeWatcher
-    
-    // MARK: - Observed
-//    @StateObject private var observed = Observed()
+    @ObservedObject var languageViewModel: LanguageViewModel
     
     // MARK: - Environments
     @Environment(\.dismiss) private var dismiss
@@ -362,8 +356,3 @@ struct ConfigRadioButtons : View {
 }
 
 
-struct QuizCubeOptionsView2_Previews: PreviewProvider {
-    static var previews: some View {
-        QuizCubeOptionsView2()
-    }
-}

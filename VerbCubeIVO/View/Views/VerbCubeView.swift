@@ -212,17 +212,18 @@ struct VerbCubeView: View {
     
     struct CreateLineOfHeaderCells: View {
         var vccsh : VerbCubeConjugatedStringHandlerStruct
+        
         var body: some View {
             //show the verb conjugations here
             HStack(spacing: 0){
                 //first cell is actually a button
                 
-                VerbCubeCellView(cellColor: .yellow, columnWidth: CGFloat(600/vccsh.getHeaderStringList().count), cellString: vccsh.getCornerWord())
+                VerbCubeCellView(cellColor: .yellow, columnWidth: vccsh.getColumnWidth(), cellString: vccsh.getCornerWord())
                 
                 //these cells are the headers
                 
                 ForEach(vccsh.getHeaderStringList(), id:\.self) { str in
-                    VerbCubeCellView(cellColor: .green, columnWidth: CGFloat(600/vccsh.getHeaderStringList().count), cellString: str)
+                    VerbCubeCellView(cellColor: .green, columnWidth: vccsh.getColumnWidth(), cellString: str)
                 }
                 Spacer()
             }
@@ -237,10 +238,10 @@ struct VerbCubeView: View {
             VStack(spacing: 0){
                 ForEach((0..<vccsh.conjStringArrayDimension1), id:\.self) { index in
                     HStack(spacing: 0){
-                        VerbCubeCellView(cellColor: .blue, columnWidth: CGFloat(600/vccsh.getHeaderStringList().count), cellString: vccsh.getFirstColumnStringValue(i: index) )
+                        VerbCubeCellView(cellColor: .blue, columnWidth: vccsh.getColumnWidth(), cellString: vccsh.getFirstColumnStringValue(i: index) )
                         ForEach((0..<vccsh.conjStringArrayDimension2), id:\.self) {jndex in
                             InteractiveVerbCubeCellView(vcci: vccsh.getVerbCubeCellInfo(i: index, j: jndex),
-                                                        columnWidth: CGFloat(600/vccsh.getHeaderStringList().count),
+                                                        columnWidth: vccsh.getColumnWidth(),
                                                         cellData: vccsh.getCellData(i: index, j: jndex))
                                                        
                         }
@@ -251,6 +252,7 @@ struct VerbCubeView: View {
         }
     }
 
+    
     
 }
 
