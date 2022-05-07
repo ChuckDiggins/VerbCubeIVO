@@ -53,6 +53,7 @@ struct InteractiveVerbCubeCellView: View {
                     .border(Color.black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
+                    .font(.footnote)
 
             }.onAppear{didAppear()}
             .onDisappear { didDisappear() }
@@ -81,7 +82,7 @@ extension InteractiveVerbCubeCellView {
 extension InteractiveVerbCubeCellView {
     func alertView(){
         let alert = UIAlertController(title: "Verb: \(vcci.verb.getWordAtLanguage(language: .Spanish)) ", message: "Subject \(vcci.person.getMaleString()), \(vcci.tense.rawValue) tense", preferredStyle: .alert)
-        print("cellWord = \(cellData.cellString), cell color = \(cellData.cellColor), cell colorString = \(cellData.colorString)")
+//        print("cellWord = \(cellData.cellString), cell color = \(cellData.cellColor), cell colorString = \(cellData.colorString)")
         
         let ok = UIAlertAction(title: "OK", style: .default){ (_) in
         }

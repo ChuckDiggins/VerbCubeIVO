@@ -14,6 +14,7 @@ struct VerbCubeCellInfo {
     var verb: Verb
     var tense: Tense
     var person: Person
+    var modelString = ""
     var showVerbType = ShowVerbType(rawValue: "")
     var showVerbColor = Color.white
     

@@ -38,6 +38,10 @@ class LanguageViewModel : ObservableObject {
         currentLanguage = languageEngine.getCurrentLanguage()
     }
 
+    func getVerbList()->[Verb]{
+        return languageEngine.getVerbList()
+    }
+    
     func getSubjunctiveTerm(tense: Tense)->String{
         if  tense == .presentSubjunctive || tense == .imperfectSubjunctiveRA  || tense == .imperfectSubjunctiveSE {
             if currentLanguage == .Spanish { return "que"}
@@ -65,10 +69,6 @@ class LanguageViewModel : ObservableObject {
     
     func verbsOfAFeather(verbList: [Verb])->Bool{
         return languageEngine.verbsOfAFeather(verbList:verbList)
-    }
-    
-    func findVerbsLike(verb: Verb)->[Verb]{
-        return languageEngine.findVerbsLike(verb:verb)
     }
     
     func getCurrentLanguage()->LanguageType{
@@ -163,11 +163,7 @@ class LanguageViewModel : ObservableObject {
     func fillCriticalVerbForms(verb: Verb, residualPhrase: String, isReflexive: Bool){
         languageEngine.fillCriticalVerbForms(verb: verb, residualPhrase:residualPhrase, isReflexive: isReflexive)
     }
-    
-    func getModelStringAtTensePerson(bVerb: BRomanceVerb, tense: Tense, person: Person)->(String, String){
-        return languageEngine.getModelStringAtTensePerson(bVerb: bVerb, tense: tense, person: person)
-    }
-    
+
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense, person: Person)->String{
         languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
     }

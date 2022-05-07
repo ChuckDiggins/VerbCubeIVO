@@ -50,6 +50,7 @@ struct VerbCubeCellView: View {
             .background(cellColor.opacity(0.9))
             .foregroundColor(Color.black)
             .border(Color.black)
+            .font(.footnote)
     }
 }
 

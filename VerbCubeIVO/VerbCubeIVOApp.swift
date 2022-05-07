@@ -25,21 +25,23 @@ struct VerbCubeIVOApp: App {
     
     var body: some Scene {
         WindowGroup {
+            
             NavigationView {
-                if appState.hasOnboarded {
-                    CircleButtonNavigationView()
-                        .environmentObject(languageViewModel)
-                        .environmentObject(appState)
-                        .onAppear{
-                            print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
-                            UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
-                        }
-                } else {
-                    OnboardingFlowView()
-                        .environmentObject(languageViewModel)
-                        .environmentObject(appState)
-                        
-                }
+                TabBarClassic(languageViewModel: languageViewModel)
+//                if appState.hasOnboarded {
+//                    CircleButtonNavigationView()
+//                        .environmentObject(languageViewModel)
+//                        .environmentObject(appState)
+//                        .onAppear{
+//                            print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
+//                            UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+//                        }
+//                } else {
+//                    OnboardingFlowView()
+//                        .environmentObject(languageViewModel)
+//                        .environmentObject(appState)
+//
+//                }
                 
                 Spacer()
             }

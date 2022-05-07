@@ -21,9 +21,6 @@ struct UnconjugateView: View {
     @State var unconjugateMessage = ""
     @State var fontSize : CGFloat = 12
     @State var isAnalyzed : Bool = false
-    let screenFrame = LinearGradient(gradient: Gradient(colors: [.systemTeal, .yellow]),
-                                     startPoint: .leading, endPoint: .bottomTrailing)
-    
     
     var body: some View {
         ZStack{
@@ -37,7 +34,7 @@ struct UnconjugateView: View {
             .ignoresSafeArea()
             
             VStack{
-                let gridFixSize = CGFloat(60.0)
+                let gridFixSize = CGFloat(50.0)
                 let gridItems = [GridItem(.fixed(gridFixSize*2)),
                                  GridItem(.fixed(gridFixSize)),
                                  GridItem(.fixed(gridFixSize)),
@@ -84,10 +81,25 @@ struct UnconjugateView: View {
                         .background(Color.orange)
                         .cornerRadius(10)
                 }
-                .padding(10)
                 
-                if isAnalyzed {
+//                if isAnalyzed {
                     VStack{
+                        if ( unconjugateMessage.count > 0 ){
+                            HStack{
+                                Text(unconjugateMessage)
+                                    .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+                                    .background(Color.blue)
+                                    .foregroundColor(.yellow)
+                                    .cornerRadius(8)
+                                    .font(.system(size: fontSize))
+                                Text(verbFormToUnconjugate)
+                                    .frame(minWidth: 50, maxWidth: 100, minHeight: 30)
+                                    .background(Color.black)
+                                    .foregroundColor(.yellow)
+                                    .cornerRadius(8)
+                                    .font(.system(size: fontSize * 1.2))
+                            }
+                        }
                         Text("Target word: \(verbFormToUnconjugate)")
                             .font(.headline)
                         
@@ -107,32 +119,16 @@ struct UnconjugateView: View {
                                     WordCell(wordText: vtpList[i].person.getSubjectString(language: languageViewModel.currentLanguage, gender: .masculine),  backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize*0.7))
                                 }
                             }
-                            //                    .background(Color.yellow)
-                            //                        .foregroundColor(.black)
                         }
+                        
                     }
-                    .padding(20)
-                    
-                    if ( unconjugateMessage.count > 0 ){
-                        HStack{
-                            Text(unconjugateMessage)
-                                .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                                .background(Color.blue)
-                                .foregroundColor(.yellow)
-                                .cornerRadius(8)
-                                .font(.system(size: fontSize))
-                            Text(verbFormToUnconjugate)
-                                .frame(minWidth: 50, maxWidth: 100, minHeight: 30)
-                                .background(Color.black)
-                                .foregroundColor(.yellow)
-                                .cornerRadius(8)
-                                .font(.system(size: fontSize * 1.2))
-                        }
-                    }
-                    
                 }
                 Spacer()
-            }
+                
+                //                }
+                
+//            }
+            
             
         }
         .accentColor(.black)

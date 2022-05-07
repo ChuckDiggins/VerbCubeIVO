@@ -32,6 +32,7 @@ struct QuizCubeView2: View {
         var useCellAlert : Bool
         var body: some View {
             VStack (spacing: 0){
+                Text("Click on empty cell and type in your answer. Push return. Wrong=🟨, Right=🟩")
                 CreateLineOfHeaderCells(qchc: qchc)
                 CreateGridOfConjugatedCells(qchc: qchc, useCellAlert: useCellAlert)
             }

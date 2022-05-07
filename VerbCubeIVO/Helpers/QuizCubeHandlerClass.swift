@@ -19,6 +19,7 @@ class QuizCubeHandlerClass : ObservableObject {
     var currentLanguage = LanguageType.Spanish
     var showStringArray = [[String]]()
     var quizCubeCellInfoArray = [[VerbCubeCellInfo]]()
+    var isBlankArray = [[Bool]]()
     var cellDataArray = [[QuizCellData]]()
     private var headerStringList = [String]()
     var firstColumnStringList = [String]()
@@ -203,7 +204,59 @@ class QuizCubeHandlerClass : ObservableObject {
         
     }
     
-    func isBlank(blankIncrement: Int, i: Int, j: Int)->Bool{
+    func fillIsBlankArray(){
+        isBlankArray.removeAll()
+        let quizCubeDifficulty = languageViewModel.getQuizLevel()
+        var blankCount = 1
+        switch quizCubeDifficulty{
+        case .easy: blankCount = 1
+        case .medium: blankCount = 2
+        case .hard: blankCount = 3
+        case .max: blankCount = 4
+        }
+        
+        
+        isBlankArray = Array(repeating: Array(repeating:false, count : conjStringArrayDimension2), count : conjStringArrayDimension1)
+        
+//        print("\nfillIsBlankArray: conjStringArrayDimension1=\(conjStringArrayDimension1), conjStringArrayDimension2=\(conjStringArrayDimension2)  ")
+//        print(" quizCubeDifficulty = \(quizCubeDifficulty.rawValue), blankCount = \(blankCount)")
+        for j in 0 ..< conjStringArrayDimension2 {
+            let rowBlank = getBlanksInRow(blankCount: blankCount, cellCount: conjStringArrayDimension1)
+            for i in 0 ..< conjStringArrayDimension1 {
+                isBlankArray[i][j] = rowBlank[i]
+//                print("isBlankArray[\(i)][\(j)] = \(isBlankArray[i][j]) -- rowBlank[\(i)] = \(rowBlank[i])")
+            }
+        }
+  
+    }
+    
+    func getBlanksInRow(blankCount: Int, cellCount: Int)->[Bool]{
+        var blankArray = [Bool]()
+        var blankCountSoFar = 0
+        for _ in 0..<cellCount { blankArray.append(false) }
+        
+        for _ in 0..<cellCount {
+            let randomIndex = Int.random(in: 0..<cellCount)
+            if !blankArray[randomIndex] {
+                blankArray[randomIndex] = true
+                blankCountSoFar += 1
+                if blankCountSoFar == blankCount { return blankArray}
+            }
+        }
+        
+        return blankArray
+    }
+    
+    func isBlank(i: Int, j: Int)->Bool{
+        let quizCubeDifficulty = languageViewModel.getQuizLevel()
+        var blankIncrement = 1
+        switch quizCubeDifficulty{
+        case .easy: blankIncrement = 9
+        case .medium: blankIncrement = 7
+        case .hard: blankIncrement = 4
+        case .max: blankIncrement = 1
+        }
+        
         let cellNum = i * conjStringArrayDimension1 + j
         if cellNum % blankIncrement == 0 {
             return true
@@ -217,16 +270,7 @@ class QuizCubeHandlerClass : ObservableObject {
     }
     
     func fillCellData(){
-//       turnOnDiagnosticPrint()
-        let quizCubeDifficulty = languageViewModel.getQuizLevel()
-        var blankIncrement = 1
-        switch quizCubeDifficulty{
-        case .easy: blankIncrement = 9
-        case .medium: blankIncrement = 7
-        case .hard: blankIncrement = 4
-        case .max: blankIncrement = 1
-        }
-        
+        fillIsBlankArray()
         cellDataArray.removeAll()
         quizCubeCellInfoArray.removeAll()
 
@@ -256,7 +300,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         let tense = tenses[j]
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
+                        blank = isBlankArray[i][j]
                         wordString = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
 //                        if diagnosticPrint { dumpCell(i:i, j:j) }
@@ -271,7 +315,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         wordString = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
+                        blank = isBlankArray[i][j]
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
 //                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
@@ -288,7 +332,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         wordString =  languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
+                        blank = isBlankArray[i][j]
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
 //                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
@@ -301,7 +345,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         wordString =  languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
+                        blank = isBlankArray[i][j]
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
 //                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
@@ -318,7 +362,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         wordString = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
+                        blank = isBlankArray[i][j]
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
 //                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }
@@ -331,7 +375,7 @@ class QuizCubeHandlerClass : ObservableObject {
                         wordString =  languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].setConjugationInfo(verb: verb, tense: tense, person: person)
                         quizCubeCellInfoArray[i][j].showVerbType = ShowVerbType.NONE
-                        blank = isBlank(blankIncrement: blankIncrement, i:i, j:j)
+                        blank = isBlankArray[i][j]
                         cellDataArray[i][j] = QuizCellData(i: i, j: j, cellString: wordString, isBlank: blank)
 //                        if diagnosticPrint { dumpCell(i:i, j:j) }
                     }

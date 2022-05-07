@@ -29,6 +29,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
     var conjStringArrayDimension2 = 0
     var currentTense = Tense.present
     var currentPerson = Person.P1
+    var verbModelString = ""
 //    var currentVerb = Verb()
     var verbCount = 6
     var verticalSwipeDimension = VerbCubeDimension.Person

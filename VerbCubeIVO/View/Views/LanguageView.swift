@@ -10,7 +10,7 @@ import JumpLinguaHelpers
 
 struct LanguageView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
-    @State private var currentLanguage = LanguageType.Spanish
+    @Binding var currentLanguage : LanguageType
     
     var body: some View {
         VStack{

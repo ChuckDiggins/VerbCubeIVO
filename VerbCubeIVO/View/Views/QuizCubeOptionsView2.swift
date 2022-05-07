@@ -30,47 +30,102 @@ struct QuizCubeOptionsView2: View {
     @State var quizLevel = QuizCubeDifficulty.easy
     @State var alertToggle = false
     @State var isQuizCubeActive = false
-    
+    @State var selectedTab: Int = 0
+    @State var configurationChoiceString = ""
     var body: some View {
-        HStack{
-            Toggle(isOn: $alertToggle){  Text("Quiz mode").padding(5).background(Color.purple)  }
-            Text("Mode:")
-            Text(alertToggle ? "Use alerts" : "Use text edit").background(Color.purple).padding()
-            Spacer()
+        VStack{
+            Text("Current settings:")
+            Text("Configuration = \(configSelected.getString())")
+            Text(configurationChoiceString)
+            Text("Quiz difficulty level = \(quizLevel.rawValue)")
+            if alertToggle {
+                Text("Quiz interaction type = Use alerts")}
+            else {
+                Text("Quiz interaction type = Use text editor")}
         }
-        ScrollView {
-            
-            QuizLevel(quizLevel: $quizLevel)
-            ConfigRadioButtons(selected: self.$configSelected)
-            .toggleStyle(SwitchToggleStyle(tint: Color(.purple)))
-            if configSelected == .PersonTense || configSelected == .TensePerson {
-                withAnimation { VerbRadioButtons(selectedVerb: $quizCubeVerb) }
-            }
-            if configSelected == .VerbTense || configSelected == .TenseVerb {
-                PersonRadioButtons(selectedPerson: quizCubePerson)
-                    .animation(
-                                        .easeInOut(duration: 1)
-                                            .repeatForever(autoreverses: false),
-                                        value: 1.0
-                                    )
-            }
-            if configSelected == .VerbPerson || configSelected == .PersonVerb {
-                TenseRadioButtons(selectedTense: quizCubeTense)
-            }
-            Spacer()
-            HStack{
-                NavigationLink(destination: QuizCubeView2(languageViewModel: languageViewModel, qchc: QuizCubeHandlerClass(languageViewModel: languageViewModel), useCellAlert: alertToggle ), isActive: $isQuizCubeActive){
-                    Text("Open Quiz Cube")
-                }.frame(width: 200, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.orange)
-                    .cornerRadius(10)
+        NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel)){
+            Text("Verbs of a Feather")
+        }.frame(width: 150, height: 50)
+            .padding(.leading, 10)
+            .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+            .cornerRadius(10)
+            .foregroundColor(.yellow)
 
+        TabView (selection: $selectedTab) {
+            ConfigView(languageViewModel: languageViewModel, configSelected: $configSelected,
+                       quizCubeVerb: $quizCubeVerb, quizCubeTense: $quizCubeTense, quizCubePerson: $quizCubePerson, configurationChoiceString: $configurationChoiceString)
+                .tabItem{
+                    Image(systemName: "doc.text.fill")
+                    Text("Config")
+                }.tag(0)
+            QuizLevelView(languageViewModel: languageViewModel, quizLevel: $quizLevel)
+                .tabItem{
+                    Image(systemName: "flag.fill")
+                    Text("QuizLevel")
+                }.tag(2)
+            AlertToggleView(alertToggle: $alertToggle)
+                .tabItem{
+                    Image(systemName: "house.fill")
+                    Text("Alert")
+                }.tag(1)
+            
+            
+        }
+        HStack{
+            NavigationLink(destination: QuizCubeView2(languageViewModel: languageViewModel, qchc: QuizCubeHandlerClass(languageViewModel: languageViewModel), useCellAlert: alertToggle ), isActive: $isQuizCubeActive){
+                Text("Open Quiz Cube")
+            }.frame(width: 200, height: 50)
+                .padding(.leading, 10)
+                .background(Color.orange)
+                .cornerRadius(10)
+
+        }
+        Spacer()
+        
+    }
+    struct ConfigView : View {
+        @ObservedObject var languageViewModel: LanguageViewModel
+        @Binding var configSelected : ActiveVerbCubeConfiguration
+        @Binding var quizCubeVerb : Verb
+        @Binding var quizCubeTense : Tense
+        @Binding var quizCubePerson : Person
+        @Binding var configurationChoiceString: String
+        
+        var body: some View {
+            VStack{
+                
+                ConfigRadioButtons(languageViewModel: languageViewModel, selected: self.$configSelected)
+                    .toggleStyle(SwitchToggleStyle(tint: Color(.purple)))
+                if configSelected == .PersonTense || configSelected == .TensePerson {
+                    withAnimation { VerbRadioButtons(languageViewModel: languageViewModel, selectedVerb: $quizCubeVerb, configurationChoiceString: $configurationChoiceString) }
+                }
+                if configSelected == .VerbTense || configSelected == .TenseVerb {
+                    PersonRadioButtons(languageViewModel: languageViewModel, selectedPerson: quizCubePerson, configurationChoiceString: $configurationChoiceString)
+                        .animation(
+                            .easeInOut(duration: 1)
+                            .repeatForever(autoreverses: false),
+                            value: 1.0
+                        )
+                }
+                if configSelected == .VerbPerson || configSelected == .PersonVerb {
+                    TenseRadioButtons(languageViewModel: languageViewModel, selectedTense: quizCubeTense, configurationChoiceString: $configurationChoiceString)
+                }
             }
-        }.onAppear{
-//            isQuizCubeActive = true
         }
     }
+    
+    struct AlertToggleView : View {
+        @Binding var alertToggle : Bool
+        var body: some View {
+            HStack{
+                Toggle(isOn: $alertToggle){  Text("Quiz mode").padding(5).background(Color.purple)  }
+                Text("Mode:")
+                Text(alertToggle ? "Use alerts" : "Use text edit").background(Color.purple).padding()
+                Spacer()
+            }
+        }
+    }
+   
     
     func fillTenseToggles(){
         for t in quizCubeTenses {
@@ -119,9 +174,9 @@ struct QuizCubeOptionsView2: View {
     }
 }
 
-struct QuizLevel : View {
+struct QuizLevelView : View {
 //    @EnvironmentObject var languageEngine: LanguageEngine
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject  var languageViewModel: LanguageViewModel
     
     @Binding var quizLevel : QuizCubeDifficulty
     var quizLevelList = QuizCubeDifficulty.quizCubeDifficultyAll
@@ -165,33 +220,22 @@ struct QuizLevel : View {
 }
 
 struct VerbRadioButtons : View {
+    
 //    @EnvironmentObject var languageEngine: LanguageEngine
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject  var languageViewModel: LanguageViewModel
     @Binding var selectedVerb: Verb
+    @Binding var configurationChoiceString: String
 
     var body: some View {
         ZStack{
             Image("white cube").frame(width: 100, height:100).opacity(0.3)
+            
             VStack(alignment: .leading, spacing: 2){
-//                VStack{
-//                    HStack{
-//                        NavigationLink(destination: VerbSelectionViewLazy()){
-//                            Text("Select")
-//                        }.frame(width: 50, height: 20)
-//                            .padding(5)
-//                            .background(Color.orange)
-//                            .cornerRadius(10)
-//                        HStack{
-//                            Text("Your selection:")
-//                            Text("\(selectedVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
-//                        }
-//                    }
-//                }.foregroundColor(.black)
-//                Divider()
                 ForEach(languageViewModel.getQuizVerbs(), id: \.self){ verb in
                     Button(action: {
                         selectedVerb = verb
                         languageViewModel.setQuizCubeVerb(verb: verb)
+                        createSelectedConfiguationString()
                     }) {
                         Text(verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))
                             .font(.caption)
@@ -208,6 +252,7 @@ struct VerbRadioButtons : View {
         }
         .onAppear{
             selectedVerb = languageViewModel.getVerbCubeVerb(index: 0)
+            createSelectedConfiguationString()
         }
         .padding(.vertical)
         .padding(.horizontal,25)
@@ -215,12 +260,17 @@ struct VerbRadioButtons : View {
         .background(Color.green)
         .cornerRadius(30)
     }
+    
+    func createSelectedConfiguationString(){
+        configurationChoiceString = "SelectedVerb: \(selectedVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))"
+    }
 }
 
 
 struct TenseRadioButtons : View {
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject   var languageViewModel: LanguageViewModel
     @State var selectedTense : Tense
+    @Binding var configurationChoiceString: String
     
     var body: some View {
         ZStack{
@@ -238,6 +288,7 @@ struct TenseRadioButtons : View {
                     Button(action: {
                         selectedTense = tense
                         languageViewModel.setQuizCubeTense(tense: tense)
+                        configurationChoiceString = "Selected tense: \(selectedTense.rawValue)"
                     }) {
                         Text("\(tense.rawValue)")
                             .font(.caption)
@@ -250,6 +301,9 @@ struct TenseRadioButtons : View {
                         }
                     }
                 }
+            }.onAppear{
+                selectedTense = languageViewModel.getQuizCubeTense()
+                createSelectedConfiguationString()
             }
         }
         .padding(.vertical)
@@ -258,12 +312,17 @@ struct TenseRadioButtons : View {
         .background(Color.orange)
         .cornerRadius(30)
     }
+    func createSelectedConfiguationString(){
+        configurationChoiceString = "SelectedTense: \(selectedTense.rawValue)"
+    }
 }
 
 struct PersonRadioButtons : View {
 //    @EnvironmentObject var languageEngine: LanguageEngine
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject  var languageViewModel: LanguageViewModel
     @State var selectedPerson : Person
+    @Binding var configurationChoiceString: String
+    
     var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     
     var body: some View {
@@ -282,6 +341,7 @@ struct PersonRadioButtons : View {
                     Button(action: {
                         selectedPerson = person
                         languageViewModel.setQuizCubePerson(person: person)
+                        createSelectedConfiguationString()
                     }) {
                         Text("\(person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))")
                             .font(.caption)
@@ -294,6 +354,9 @@ struct PersonRadioButtons : View {
                         }
                     }
                 }
+            }.onAppear{
+                selectedPerson = languageViewModel.getQuizCubePerson()
+                createSelectedConfiguationString()
             }
             
         }
@@ -303,14 +366,18 @@ struct PersonRadioButtons : View {
         .background(Color.yellow)
         .cornerRadius(30)
     }
-}
+    
+    func createSelectedConfiguationString(){
+        configurationChoiceString = "SelectedPerson: \(selectedPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))"
+    }
 
+}
 
 
 
 struct ConfigRadioButtons : View {
 //    @EnvironmentObject var languageEngine: LanguageEngine
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject  var languageViewModel: LanguageViewModel
     @Binding var selected : ActiveVerbCubeConfiguration
     @State var selectedConfigurationString = ActiveVerbCubeConfiguration.PersonTense.getString()
     

@@ -78,6 +78,7 @@ struct QuizCubeCellView: View {
                     .border(Color.black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
+                    .font(.footnote)
             }.onAppear{
                 didAppear()
             }
