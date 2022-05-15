@@ -27,6 +27,7 @@ class LanguageEngine : ObservableObject {
     var currentFilteredVerbIndex = 0
     @Published var filteredVerbList = [Verb]()
     
+    private var behavioralVerbModel = BehavioralVerbModel()
     var criticalVerbForms = CriticalVerbForms()
     private var verbModelConjugation : VerbModelConjugation!
     var spanishVerbModelConjugation = RomanceVerbModelConjugation()
@@ -98,6 +99,10 @@ class LanguageEngine : ObservableObject {
 //        testLogic(tense: .preterite)
     }
 
+    func getBehavioralVerbModel()->BehavioralVerbModel{
+        return behavioralVerbModel
+    }
+    
     func testPatternModelListLogic(){
         var verb = Verb(spanish : "seguir", french : "seguir", english: "follow")
         let verbStr = conjugateAsRegularVerb(verb: verb, tense: .present, person: .S1)

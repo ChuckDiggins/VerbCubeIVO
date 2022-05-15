@@ -194,7 +194,7 @@ struct CollectionsWrapper: View {
                 .cornerRadius(10)
                 .padding(10)
             Text("Customize verb list top focus on your preferred verbs")
-            NavigationLink(destination: VerbSelectionViewLazy(languageEngine: languageViewModel.getLanguageEngine())){
+            NavigationLink(destination: VerbSelectionViewLazy(languageEngine: languageViewModel.getLanguageEngine(), languageViewModel: languageViewModel)){
                 Text("Verb selection view")
             }.frame(width: 200, height: 50)
                 .padding(.leading, 10)

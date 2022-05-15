@@ -13,7 +13,7 @@ import JumpLinguaHelpers
 struct VerbSelectionViewLazy: View {
     @StateObject var languageEngine: LanguageEngine
 //    @State var languageEngine = LanguageEngine()
-    @EnvironmentObject var languageViewModel: LanguageViewModel
+    @ObservedObject var languageViewModel: LanguageViewModel
 
     @Environment(\.dismiss) private var dismiss
     
@@ -51,7 +51,7 @@ struct VerbSelectionViewLazy: View {
                 }
             }
 
-            NavigationLink(destination: FilteredVerbListView(languageEngine: languageEngine)){
+            NavigationLink(destination: FilteredVerbListView(languageViewModel: languageViewModel, languageEngine: languageEngine)){
                 HStack{
                     Text("Language: \(languageEngine.getCurrentLanguage().rawValue)")
                     Spacer()

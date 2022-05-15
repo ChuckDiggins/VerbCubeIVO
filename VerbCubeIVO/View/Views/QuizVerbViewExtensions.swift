@@ -92,8 +92,6 @@ extension QuizVerbView {
                         }
                     Image(systemName: studentAnswer[i] == correctAnswer[i]  ? "checkmark.square" : "square")
                         .foregroundColor(studentAnswer[i] == correctAnswer[i] ? .green : .yellow)
-                    
-                    self.Print("StudentLineViewSimple: student: \(studentAnswer[i]), correct: \(correctAnswer[i]), focusedField: \(String(describing: focusedField?.rawValue))")
                 }
             }
         }

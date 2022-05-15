@@ -10,12 +10,24 @@ import Foundation
 import JumpLinguaHelpers
 
 extension LanguageViewModel{
+    func findModelForThisVerbString(verbWord: String)->RomanceVerbModel{
+        return languageEngine.findModelForThisVerbString(verbWord: verbWord)
+    }
+    
     func findVerbsOfDifferentModel(modelID: Int, inputVerbList: [Verb])->[Verb]{
         return languageEngine.findVerbsOfDifferentModel(modelID: modelID, inputVerbList: inputVerbList)
     }
     
     func findVerbsFromSameModel(verb: Verb)->[Verb]{
         return languageEngine.findVerbsFromSameModel(verb: verb)
+    }
+    
+    func getPatternsForVerb(verb: Verb, tense: Tense)->[SpecialPatternStruct]{
+        return languageEngine.getPatternsForVerb(verb: verb, tense: tense)
+    }
+    
+    func findVerbsFromSamePatternsAsVerb(verb: Verb, tense: Tense)->[Verb]{
+        return languageEngine.findVerbsFromSamePatternsAsVerb(verb: verb, tense: tense)
     }
     
     func findVerbsOfSameModel(modelID: Int, inputVerbList: [Verb])->[Verb]{

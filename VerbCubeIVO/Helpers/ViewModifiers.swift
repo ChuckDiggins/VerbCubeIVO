@@ -12,12 +12,40 @@ struct TextModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
             .frame(minWidth: 0, maxWidth: 300)
+            .foregroundColor(.white)
+            .padding(.horizontal)
+            .font(.headline)
+            .background(.blue)
+            .cornerRadius(10)
+    }
+}
+
+
+struct BlueButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(minWidth: 0, maxWidth: 300)
             .padding()
             .foregroundColor(.white)
             .padding(.horizontal)
             .font(.headline)
-            .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-            .cornerRadius(10)
+            .background(Color.blue)
+            .border(Color(red: 7/255, green: 42/255, blue: 171/255),
+                    width: 5)
+    }
+}
+
+struct GreenButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(minWidth: 0, maxWidth: 300)
+            .padding()
+            .foregroundColor(.white)
+            .padding(.horizontal)
+            .font(.headline)
+            .background(Color.blue)
+            .border(Color(red: 7/255, green: 42/255, blue: 171/255),
+                    width: 5)
     }
 }
 

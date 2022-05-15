@@ -16,6 +16,10 @@ struct SimilarModelsTo {
 
 extension LanguageEngine{
     
+    func findModelForThisVerbString(verbWord: String)->RomanceVerbModel{
+        return spanishVerbModelConjugation.getVerbModel(verbWord: verbWord)
+    }
+    
     func setSimilarModels(){
         var encontrarSimilarModel = SimilarModelsTo(targetNum: 58, similarModelList: [56, 53, 35])
         var pedirSimilarModel = SimilarModelsTo(targetNum: 55, similarModelList: [35, 75, 61])
@@ -114,8 +118,8 @@ extension LanguageEngine{
     
     func getVerbsOfDifferentPattern(verbList: [Verb], thisPattern: SpecialPatternStruct)->[Verb]{
         var newVerbList = [Verb]()
-        var targetTense = thisPattern.tense
-        var targetPattern = thisPattern.pattern
+        let targetTense = thisPattern.tense
+        let targetPattern = thisPattern.pattern
         
         var vmm = VerbModelManager()
         for verb in verbList {
@@ -154,6 +158,42 @@ extension LanguageEngine{
             if id != targetModelID {
                 newVerbList.append(verb)
             }
+        }
+        return newVerbList
+    }
+    
+    func getPatternsForVerb(verb: Verb, tense: Tense)->[SpecialPatternStruct]{
+        var targetPatternStructList = [SpecialPatternStruct]()
+        var vmm = VerbModelManager()
+        switch getCurrentLanguage() {
+        case .Spanish:
+            let verbWord = verb.getWordAtLanguage(language: getCurrentLanguage())
+            let bSpanishVerb = vmm.createSpanishBVerb(verbPhrase: verbWord)
+            if bSpanishVerb.m_specialPatternList.count > 0 {
+                for spStruct in bSpanishVerb.m_specialPatternList {
+                    if spStruct.tense == tense { targetPatternStructList.append(spStruct)}
+                }
+            }
+        case .French:
+            let verbWord = verb.getWordAtLanguage(language: getCurrentLanguage())
+            let bFrenchVerb = vmm.createSpanishBVerb(verbPhrase: verbWord)
+            if bFrenchVerb.m_specialPatternList.count > 0 {
+                for spStruct in bFrenchVerb.m_specialPatternList {
+                    if spStruct.tense == tense { targetPatternStructList.append(spStruct)}
+                }
+            }
+        default: break
+        }
+        return targetPatternStructList
+    }
+    
+    func findVerbsFromSamePatternsAsVerb(verb: Verb, tense: Tense)->[Verb]{
+        var newVerbList = [Verb]()
+        var patternStructList = getPatternsForVerb(verb: verb, tense: tense)
+        
+        newVerbList = getFilteredVerbs()
+        for spt in patternStructList {
+            newVerbList = getVerbsOfPattern(verbList: newVerbList, thisPattern: spt)
         }
         return newVerbList
     }

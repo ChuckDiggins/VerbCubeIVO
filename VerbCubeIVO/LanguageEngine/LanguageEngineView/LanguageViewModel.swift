@@ -231,6 +231,10 @@ class LanguageViewModel : ObservableObject {
     func unConjugate(verbForm : String)->[VTP]{
         return languageEngine.unConjugate(verbForm: verbForm)
     }
+    
+    func getBehavioralVerbModel()->BehavioralVerbModel{
+        languageEngine.getBehavioralVerbModel()
+    }
 }
 
 
