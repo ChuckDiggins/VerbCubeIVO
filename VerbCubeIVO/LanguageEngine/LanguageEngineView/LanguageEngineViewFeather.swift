@@ -10,6 +10,15 @@ import Foundation
 import JumpLinguaHelpers
 
 extension LanguageViewModel{
+    
+    func getCurrentVerbModel()->RomanceVerbModel{
+        languageEngine.getCurrentVerbModel()
+    }
+    
+    func setVerbsForCurrentVerbModel(modelID: Int){
+        languageEngine.setVerbsForCurrentVerbModel(modelID: modelID)
+    }
+    
     func findModelForThisVerbString(verbWord: String)->RomanceVerbModel{
         return languageEngine.findModelForThisVerbString(verbWord: verbWord)
     }

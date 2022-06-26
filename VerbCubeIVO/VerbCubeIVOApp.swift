@@ -27,7 +27,8 @@ struct VerbCubeIVOApp: App {
         WindowGroup {
             
             NavigationView {
-                TabBarClassic(languageViewModel: languageViewModel)
+                ScrollViewVC(languageViewModel: languageViewModel)
+//                TabBarClassic(languageViewModel: languageViewModel)
 //                if appState.hasOnboarded {
 //                    CircleButtonNavigationView()
 //                        .environmentObject(languageViewModel)

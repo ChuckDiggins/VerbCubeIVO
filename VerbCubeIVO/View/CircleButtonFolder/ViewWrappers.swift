@@ -7,7 +7,104 @@
 
 import SwiftUI
 
-struct ModelPatternQuizWrapper: View {
+struct ModelQuizWrapper: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    var body: some View {
+        ZStack{
+            LinearGradient(gradient: Gradient(colors: [
+                Color(.systemYellow),
+                Color(.systemPink),
+                Color(.systemPurple),
+            ]),
+                           startPoint: .top,
+                           endPoint: .bottomTrailing)
+            .ignoresSafeArea()
+            
+            VStack{
+
+                NavigationLink(destination: FeatherVerbStepView(languageViewModel: languageViewModel)){
+                    Text("Model Verb Step")
+                }.modifier(NavLinkModifier())
+//
+                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
+                    Text("Models for Pattern")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsBelongingToModel)){
+                    Text("Verbs in Model")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelForGivenVerb)){
+                    Text("Model for Random Verb")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveSameModelAsVerb)){
+                    Text("Verbs with Random Verb'Patts Model")
+                }.modifier(NavLinkModifier())
+                
+            }
+        }.navigationTitle("Model-based Quizzes")
+    }
+}
+
+
+struct ModelLearnWrapper: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    var body: some View {
+        ZStack{
+            LinearGradient(gradient: Gradient(colors: [
+                Color(.systemYellow),
+                Color(.systemPink),
+                Color(.systemPurple),
+            ]),
+                           startPoint: .top,
+                           endPoint: .bottomTrailing)
+            .ignoresSafeArea()
+            
+            VStack{
+                NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .model)){
+                    Text("Find Model for User Verb")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: FeatherVerbMorphView(languageViewModel: languageViewModel)){
+                    Text("Models of a Feather")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
+                    Text("Analyze User Verb")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
+                    Text("Verb Morph View")
+                }.modifier(NavLinkModifier())
+            }
+        }.navigationTitle("Model-based Learning")
+    }
+}
+          
+struct PatternLearnWrapper: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    var body: some View {
+        ZStack{
+            LinearGradient(gradient: Gradient(colors: [
+                Color(.systemYellow),
+                Color(.systemPink),
+                Color(.systemPurple),
+            ]),
+                           startPoint: .top,
+                           endPoint: .bottomTrailing)
+            .ignoresSafeArea()
+            
+            VStack{
+                NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .pattern)){
+                    Text("Find Pattern for User Verb")
+                }.modifier(NavLinkModifier())
+            }
+        }
+    }
+}
+
+struct PatternQuizWrapper: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     var body: some View {
         ZStack{
@@ -25,74 +122,59 @@ struct ModelPatternQuizWrapper: View {
                     Text("Models for Pattern")
                 }.modifier(NavLinkModifier())
                 
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsBelongingToModel)){
-                    Text("Verbs in Model")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelForGivenVerb)){
-                    Text("Model for Given Verb")
-                }.modifier(NavLinkModifier())
-                
                 NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveGivenPattern)){
                     Text("Verbs with Given Pattern")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveSameModelAsVerb)){
-                    Text("Verbs with Verb's Model")
                 }.modifier(NavLinkModifier())
                 
                 NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsWithSamePatternAsVerb)){
                     Text("Verbs with Verb's Pattern")
                 }.modifier(NavLinkModifier())
-                
             }
-            
-        }
-        .navigationTitle("Verbs, Models & Patterns")
-        
-        
-        Spacer()
+        }.navigationTitle("Pattern-based Verbs")
     }
 }
 
-//struct OptionsWrapper: View {
-//    @ObservedObject var languageViewModel: LanguageViewModel
-//    var body: some View {
-//        NavigationLink(destination: LanguageView(languageViewModel: languageViewModel)){
-//            Text("Language")
-//        }.modifier(NavLinkModifier())
-//        
-//        NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel)){
-//            Text("Tenses")
-//        }.modifier(NavLinkModifier())
-//    }
-//}
-
-struct OddJobsWrapper: View {
+struct OddJobsView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
+    var backgroundColor = Color.blue
     var body: some View {
-        VStack{
-            Text("Right/Wrong")
-            NavigationLink(destination: RightWrongVerbView(languageViewModel: languageViewModel)){
-                Text("Conjugate verb right and wrong")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
+        ZStack{
+            backgroundColor
+            Image("FeatherInverted")
+                .resizable()
+                .scaledToFit()
+                .ignoresSafeArea(.all)
+            VStack{
+                Text("Welcome to Odd Jobs!")
+                    .font(.largeTitle)
+                    .foregroundColor(.red)
+                
+                NavigationLink(destination: WordCollectionScreen(languageViewModel: languageViewModel)){
+                    Text("Word collections")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .likeGustar)){
+                    Text("Verbs like gustar")
+                }.modifier(NavLinkModifier())
+
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .weather)){
+                    Text("Weather and Time")
+                }
+                .modifier(NavLinkModifier())
+                
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .thirdPersonOnly)){
+                    Text("3rd Person Only")
+                }.modifier(NavLinkModifier())
+
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .auxiliary)){
+                    Text("Auxiliary Verbs")
+                }
+                .modifier(NavLinkModifier())
+            }
         }
-        Spacer()
-        VStack{
-            Text("Unconjugate")
-            NavigationLink(destination: UnconjugateView(languageViewModel: languageViewModel)){
-                Text("Find the verbs")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-        }
-        Spacer()
     }
 }
+
 
 
 struct NavLinkModifier : ViewModifier {
@@ -113,133 +195,72 @@ struct NavLinkModifier : ViewModifier {
     
 }
 
-struct GeneralCubeWrapper: View {
+struct GeneralVerbLearnWrapper: View {
     @ObservedObject  var languageViewModel: LanguageViewModel
     var body: some View {
         VStack{
-            Text("Verb Cube")
             NavigationLink(destination: VerbCubeView(languageViewModel: languageViewModel, vccsh: VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1:  .Verb, d2: .Person))){
                 Text("VerbCube")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.yellow)
-                .cornerRadius(10)
+            }.modifier(NavLinkModifier())
+
+            NavigationLink(destination: RightWrongVerbView(languageViewModel: languageViewModel)){
+                Text("Conjugate verb right and wrong")
+            }.modifier(NavLinkModifier())
             
+            NavigationLink(destination: UnconjugateView(languageViewModel: languageViewModel)){
+                Text("Unconjugate")
+            }.modifier(NavLinkModifier())
+            
+            NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel)){
+                Text("Mix & Match")
+            }.modifier(NavLinkModifier())
+            
+            NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
+                Text("Analyze User Verb")
+            }.modifier(NavLinkModifier())
+            
+            NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
+                Text("Verb Morph View")
+            }.modifier(NavLinkModifier())
+
         }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
-struct QuizCubeWrapper: View{
-    @ObservedObject var languageViewModel: LanguageViewModel
-    
+struct GeneralVerbQuizWrapper: View {
+    @ObservedObject  var languageViewModel: LanguageViewModel
     var body: some View {
         VStack{
-            Text("Quiz Cube")
-            HStack{
-                NavigationLink(destination: QuizCubeOptionsView2(languageViewModel: languageViewModel)){
-                    Text("Quiz Cube")
-                }.frame(width: 100, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.green)
-                    .cornerRadius(10)
-            }
-        }.navigationViewStyle(StackNavigationViewStyle())
-        
-    }
-    
-    
-}
-
-struct QuizWrapper: View{
-    @ObservedObject var languageViewModel: LanguageViewModel
-    
-    var body: some View {
-        VStack{
-            //            QuizVerbView(languageViewModel: languageViewModel)
-            //            FocusView(languageViewModel: languageViewModel)
+            NavigationLink(destination: VerbCubeView(languageViewModel: languageViewModel, vccsh: VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1:  .Verb, d2: .Person))){
+                Text("VerbCube")
+            }.modifier(NavLinkModifier())
             
-            Text("Fill-in the Blanks")
-            NavigationLink(destination: QuizVerbView(languageViewModel: languageViewModel)){
-                Text("Quiz Verb 6 Persons")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-                .padding(10)
+            NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel)){
+                Text("Mix & Match")
+            }.modifier(NavLinkModifier())
             
-            NavigationLink(destination: QuizVerbSingleView(languageViewModel: languageViewModel)){
-                Text("Quiz Verb - Single Person")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-                .padding(10)
+            NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveVerbs)){
+                Text("Multiple Choice - Subject/Verbs")
+            }.modifier(NavLinkModifier())
             
-        }.navigationViewStyle(StackNavigationViewStyle())
-    }
-    
-    
-}
-
-struct CollectionsWrapper: View {
-    @EnvironmentObject var languageViewModel: LanguageViewModel
-    var body: some View {
-        VStack{
-            Text("Choose from your word collections to use with Verb Cube and Quiz Cube")
-            NavigationLink(destination: WordCollectionScreen(languageViewModel: languageViewModel)){
-                Text("Word collections")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-                .padding(10)
-            Text("Customize verb list top focus on your preferred verbs")
-            NavigationLink(destination: VerbSelectionViewLazy(languageEngine: languageViewModel.getLanguageEngine(), languageViewModel: languageViewModel)){
-                Text("Verb selection view")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-            Text("Create lists of similar verbs")
-            NavigationLink(destination: EmptyView()){
-                Text("Verb pattern selection")
-            }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.orange)
-                .cornerRadius(10)
-            Spacer()
+            NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveTenses)){
+                Text("Multiple Choice - Subject/Tenses")
+            }.modifier(NavLinkModifier())
+            
+            NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
+                Text("Verb Morph View")
+            }.modifier(NavLinkModifier())
+            
+            
+//            Text("Quiz Cube")
+//            HStack{
+//                NavigationLink(destination: QuizCubeOptionsView2(languageViewModel: languageViewModel)){
+//                    Text("Quiz Cube")
+//                }.frame(width: 100, height: 50)
+//                    .padding(.leading, 10)
+//                    .background(Color.green)
+//                    .cornerRadius(10)
+//            }
         }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
-
-
-struct ExerciseWrapper: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    
-    var body: some View {
-        VStack{
-            VStack{
-                Text("Show how to conjugate any active verb")
-                NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
-                    Text("Verb Morph View")
-                }.frame(width: 200, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.orange)
-                    .cornerRadius(10)
-            }
-            VStack{
-                Text("Analyze any verb or verb phrase")
-                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
-                    Text("Analyze User Verb")
-                }.frame(width: 200, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.orange)
-                    .cornerRadius(10)
-            }
-            .padding(20)
-            
-        }.navigationViewStyle(StackNavigationViewStyle())
-        
-    }
-}
-

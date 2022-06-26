@@ -53,25 +53,37 @@ struct QuizCubeCellView: View {
     @State private var emptyText = ""
     @State private var studentAnswer = ""
     @State private var showActionSheet = false
+    @State private var isShown = false
+    @State private var selectedString = ""
     
+    let subjectStr = "yo"
+    let tenseStr = "present"
+    let verbStr = "acabar"
+    let correctAnswer = "acabo"
+    let buttonStrList = ["acabas", "acabamos", "acabaro", "acabo", "acaba"]
+   
     // MARK: - Body
     var body: some View {
-            Button(action:{
-                if useAlert {
-                    alertView()
-                } else {
-//                    showActionSheet.toggle()
-                }
-            }){
-                TextField("", text: cellData.isBlank ? $studentAnswer : $cellData.cellString,
-                          onCommit: {
-                    studentAnswer = VerbUtilities().removeLeadingOrFollowingBlanks(characterArray: studentAnswer)
-                    if studentAnswer == cellData.cellString {
-                        backgroundColor = .green
+        ZStack{
+            VStack{
+                Button(action:{
+                    if useAlert {
+                        isShown = true
+                        alertView()
+                        
                     } else {
-                        backgroundColor = .yellow
+                        //                    popupMenuView
                     }
-                                } )
+                }){
+                    TextField("", text: cellData.isBlank ? $studentAnswer : $cellData.cellString,
+                              onCommit: {
+                        studentAnswer = VerbUtilities().removeLeadingOrFollowingBlanks(characterArray: studentAnswer)
+                        if studentAnswer == cellData.cellString {
+                            backgroundColor = .green
+                        } else {
+                            backgroundColor = .yellow
+                        }
+                    } )
                     .frame(width: columnWidth, height: 30, alignment: .center)
                     .background(cellData.isBlank ? backgroundColor : defaultBackgroundColor)    //this is where to make this cleaner
                     .foregroundColor(foregroundColor)
@@ -79,12 +91,17 @@ struct QuizCubeCellView: View {
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .font(.footnote)
-            }.onAppear{
-                didAppear()
+                    
+//                    PopupButtonView(instruction: (subjectStr, tenseStr, verbStr), correctAnswer: correctAnswer, selectionString: buttonStrList, isShown: $isShown, selectedString: $selectedString)
+                }.onAppear{
+                    didAppear()
+                }
+                .onDisappear { didDisappear() }
+                .actionSheet(isPresented: $showActionSheet, content: getBetterActionSheet)
             }
-            .onDisappear { didDisappear() }
-            .actionSheet(isPresented: $showActionSheet, content: getBetterActionSheet)
+//            PopupButtonView(instruction: (subjectStr, tenseStr, verbStr), correctAnswer: correctAnswer, selectionString: buttonStrList, isShown: $isShown, selectedString: $selectedString)
         }
+    }
     
     func getActionSheet() -> ActionSheet{
         
@@ -132,7 +149,17 @@ extension QuizCubeCellView {
 
 // MARK: - Supplementary Views
 extension QuizCubeCellView {
+        
     
+//    func poppupView(isShown: Bool){
+//        let subjectStr = "yo"
+//        let tenseStr = "present"
+//        let verbStr = "acabar"
+//        let correctAnswer = "acabo"
+//        let buttonStrList = ["acabas", "acabamos", "acabaro", "acabo", "acaba"]
+//        PopupButtonView(instruction: (subjectStr, tenseStr, verbStr), correctAnswer: correctAnswer, selectionString: buttonStrList, isShown: $isShown, selectedString: $selectedString)
+//    }
+        
     func alertView(){
 //        @Binding var studentAnswer : String
         

@@ -11,14 +11,17 @@ import JumpLinguaHelpers
 extension LanguageEngine{
     func clearFilteredVerbList(){
         filteredVerbList.removeAll()
+        currentFilteredVerbIndex = 0
     }
     
     func resetFilteredVerbs(){
         filteredVerbList = verbList
+        currentFilteredVerbIndex = 0
     }
     
     func setFilteredVerbList(verbList: [Verb]){
         filteredVerbList = verbList
+        currentFilteredVerbIndex = 0
     }
     
     func getFilteredVerbs()->[Verb]{

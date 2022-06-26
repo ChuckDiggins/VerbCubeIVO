@@ -86,77 +86,46 @@ struct PatternRecognitionView: View {
     @State var moreInfoString = "Correct"
     @State var showGreen = false
     @State var progressValue: Float = 0.0
-//    @State var url = Bundle.main.url(forResource: "PatternRecognitionTutorial", withExtension: ".mov")!
+    //    @State var url = Bundle.main.url(forResource: "PatternRecognitionTutorial", withExtension: ".mov")!
     @State var showHelpScreen = false
-    
+    @State var conjugateThis = false
+    @State var colorList = [Color.green, .brown, .orange, .yellow, .purple, .pink]
+    @State var zColor = Color.orange
+    @State var currentVerbString = ""
     var body: some View {
         //        NavigationView{
         ZStack{
-//            Color.orange
-//                .edgesIgnoringSafeArea(.all)
+            zColor
+                .edgesIgnoringSafeArea(.all)
             VStack{
                 
-                
-                HStack{
-//                    Button("Help"){
-//                        showHelpScreen.toggle()
-//                        print("showHelpScreen = \(showHelpScreen)")
-//                    }.font(.largeTitle)
-//
-//
-//                    Button{
-//                        createAProblem()
-//                    } label: {
-//
-//                        Text("New problem")
-//                            .bold()
-//                            .frame(width: 200, height: 30)
-//                            .foregroundColor(.indigo)
-//                            .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-//                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                            .shadow(radius: 3)
-//                            .padding(10)
-//                    }
-//
-                    
-                    
-                    
-                }
-                Text(problemInstruction)
-                    .bold()
-                    .frame(width: 500, height: 30)
-                    .font(.title)
-                    .foregroundColor(.indigo)
-                    .background(.linearGradient(colors: [.black, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .shadow(radius: 3)
-                    .padding(10)
-                
-                ProgressBar(value: $progressValue).frame(width: 350, height: 20)
-                Text(correctMessageString)
-                    .bold()
-                    .frame(width: 500, height: 30)
-                    .font(correctAnswerCount<totalCorrectCount ? .title : .title2)
-                    .foregroundColor(.indigo)
-                    .background(correctAnswerCount<totalCorrectCount ? .green : .red)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .shadow(radius: 3)
-                    .padding(10)
-                
                 VStack{
+                    ZStack{
+                        ProgressBar(value: $progressValue, barColor: .red).frame(width: 350, height: 30)
+                        Text(correctMessageString)
+                            .bold()
+                            .foregroundColor(.indigo)
+                        
+                    }
                     Text(headerStringPart1)
+                        .padding()
                         .background(.black)
                         .font(.callout)
+                        .foregroundColor(.yellow)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    
                     HStack{
                         Button{
                             createAProblem()
+                            currentVerbString = ""
                         } label: {
                             Text(headerStringPart2)
-                                .frame(width: 200, height: 30)
-                                .background(.white)
+                                .frame(width: 200, height: 40)
+                                .background(.linearGradient(colors: [.black, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
                                 .foregroundColor(.red)
                                 .font(.title)
                                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                .shadow(radius: 3)
                         }
                         
                         Button{
@@ -171,6 +140,8 @@ struct PatternRecognitionView: View {
                                 .shadow(radius: 3)
                                 .padding(10)
                         }
+                        
+                        
                     }
                     
                 }
@@ -180,15 +151,14 @@ struct PatternRecognitionView: View {
                 let gridItems = [GridItem(.fixed(gridFixSize)),
                                  GridItem(.fixed(gridFixSize))]
                 
-//                let filterGridItems = [GridItem(.flexible()),
-//                                       GridItem(.flexible())]
+                //                let filterGridItems = [GridItem(.flexible()),
+                //                                       GridItem(.flexible())]
                 
                 LazyVGrid(columns: gridItems, spacing: 5){
                     ForEach (0..<multipleChoiceList.count, id: \.self){ i in
-                        //                    ForEach( multipleChoiceList, id: \.self ){ id in
-                        //                       MultipleChoiceWordCellButton(mcs: mcs, foregroundColor: foregroundColor, fontSize: fontSize )
                         Button(multipleChoiceList[i].answer){
                             multipleChoiceList[i].studentClicked.toggle()
+                            currentVerbString = multipleChoiceList[i].answer
                             computeCorrectAnswerCount()
                         }
                         .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
@@ -202,6 +172,20 @@ struct PatternRecognitionView: View {
                 .onAppear{
                     currentLanguage = languageViewModel.getCurrentLanguage()
                     createAProblem()
+                    currentVerbString = ""
+                }
+                if currentVerbString.count > 1 {
+                    NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: Verb(spanish: currentVerbString, french: currentVerbString, english: currentVerbString), residualPhrase: "")){
+                        HStack{
+                            Text("Show me ")
+                            Text(currentVerbString).bold()
+                        }
+                    }.frame(width: 300, height: 50)
+                        .padding(2)
+                        .buttonStyle(.bordered)
+                        .background(.green)
+                        .tint(.black)
+                        .cornerRadius(10)
                 }
                 Spacer()
                 
@@ -210,14 +194,13 @@ struct PatternRecognitionView: View {
                 .padding(.top, 100)
                 .offset(y: showHelpScreen ? 0 : UIScreen.main.bounds.height )
                 .animation(.spring())
-
+            
         }
-        
-        
-        
-        //            }
-        
     }
+    
+    
+    //            }
+    
     
     
     func computeCorrectAnswerCount(){
@@ -255,9 +238,11 @@ struct PatternRecognitionView: View {
         }
         computeCorrectAnswerCount()
         problemInstruction = multipleChoiceMode.getTitle()
+        showMeCorrectAnswers = false
     }
     
     func fillIdentifyVerbsBelongingToModel(){
+        zColor = colorList[0]
         let vu = VerbUtilities()
         var rvmList = languageViewModel.getCommonVerbModelList().shuffled()
         let primaryVerbModel = rvmList[0]
@@ -282,7 +267,10 @@ struct PatternRecognitionView: View {
         if verbEndingModelList.isEmpty {
             verbEndingModelList = languageViewModel.getModelsWithVerbEnding(verbEnding: verbEnding)
         }
-        let wrongVerbList = languageViewModel.findVerbsOfSameModel(targetID: verbEndingModelList[0].id)
+        
+        var wrongVerbID = verbEndingModelList[0].id
+        if wrongVerbID == primaryVerbModel.id { wrongVerbID = verbEndingModelList[1].id }
+        let wrongVerbList = languageViewModel.findVerbsOfSameModel(targetID:wrongVerbID)
         
         let verbList = languageViewModel.findVerbsOfSameModel(targetID: primaryVerbModel.id)
         multipleChoiceList.removeAll()
@@ -292,15 +280,15 @@ struct PatternRecognitionView: View {
         for verb in wrongVerbList {
             multipleChoiceList.append(MultipleChoiceStruct(answer: verb.getWordAtLanguage(language: currentLanguage)))
         }
-        
+        multipleChoiceList.shuffle()
         let extras = multipleChoiceList.count - maxListCount
         if extras > 0 {
             multipleChoiceList = multipleChoiceList.dropLast(extras)
         }
-        multipleChoiceList.shuffle()
     }
     
     func fillIdentifyVerbsThatHaveSameModelAsVerb(){
+        zColor = colorList[1]
         let vu = VerbUtilities()
         var rvmList = languageViewModel.getCommonVerbModelList().shuffled()
         let primaryVerbModel = rvmList[0]
@@ -322,7 +310,9 @@ struct PatternRecognitionView: View {
         if verbEndingModelList.isEmpty {
             verbEndingModelList = languageViewModel.getModelsWithVerbEnding(verbEnding: verbEnding)
         }
-        let wrongVerbList = languageViewModel.findVerbsOfSameModel(targetID: verbEndingModelList[0].id)
+        var wrongVerbID = verbEndingModelList[0].id
+        if wrongVerbID == primaryVerbModel.id { wrongVerbID = verbEndingModelList[1].id }
+        let wrongVerbList = languageViewModel.findVerbsOfSameModel(targetID:wrongVerbID)
         
         var verbList = languageViewModel.findVerbsOfSameModel(targetID: primaryVerbModel.id)
         verbList.shuffle()
@@ -336,12 +326,12 @@ struct PatternRecognitionView: View {
         for verb in wrongVerbList {
             multipleChoiceList.append(MultipleChoiceStruct(answer: verb.getWordAtLanguage(language: currentLanguage)))
         }
-        
+        multipleChoiceList.shuffle()
         let extras = multipleChoiceList.count - maxListCount
         if extras > 0 {
             multipleChoiceList = multipleChoiceList.dropLast(extras)
         }
-        multipleChoiceList.shuffle()
+
         headerStringPart1 = multipleChoiceMode.rawValue
         headerStringPart2 = targetVerb.getWordAtLanguage(language: currentLanguage)
         if languageViewModel.isVerbType(verb: targetVerb, verbType: .STEM){moreInfoString = "Stem changing"}
@@ -350,6 +340,7 @@ struct PatternRecognitionView: View {
     }
     
     func fillIdentifyModelsThatHaveGivenPattern(){
+        zColor = colorList[2]
         var modelList = [RomanceVerbModel]()
         let patternList = SpecialPatternType.stemChangingCommonSpanish.shuffled()
         let primaryPattern = patternList[0]
@@ -369,15 +360,16 @@ struct PatternRecognitionView: View {
         for model in modelList {
             multipleChoiceList.append(MultipleChoiceStruct(answer: model.modelVerb))
         }
-        
+        multipleChoiceList.shuffle()
         let extras = multipleChoiceList.count - maxListCount
         if extras > 0 {
             multipleChoiceList = multipleChoiceList.dropLast(extras)
         }
-        multipleChoiceList.shuffle()
+        
     }
     
     func fillIdentifyVerbsWithSamePatternAsVerb(){
+        zColor = colorList[3]
         //select a random pattern
         
         let patternList = SpecialPatternType.stemChangingCommonSpanish.shuffled()
@@ -417,6 +409,7 @@ struct PatternRecognitionView: View {
     }
     
     func fillIdentifyVerbsThatHaveGivenPattern(){
+        zColor = colorList[4]
         //select a random pattern
         
         let patternList = SpecialPatternType.stemChangingCommonSpanish.shuffled()
@@ -446,6 +439,7 @@ struct PatternRecognitionView: View {
     }
     
     func fillIdentifyModelForGivenVerb(){
+        zColor = colorList[5]
         let vu = VerbUtilities()
         var rvmList = languageViewModel.getCommonVerbModelList().shuffled()
         let primaryVerbModel = rvmList[0]
@@ -515,14 +509,14 @@ struct PatternRecognitionView: View {
 struct HelpScreen: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var showHelpScreen : Bool
-    let url = Bundle.main.url(forResource: "PatternRecognitionTutorial", withExtension: ".mov")!
+    //    let url = Bundle.main.url(forResource: "PatternRecognitionTutorial", withExtension: ".mov")!
     
     var body : some View {
         ZStack(alignment: .topLeading){
             Color.purple
                 .edgesIgnoringSafeArea(.all)
             Button {
-//                presentationMode.wrappedValue.dismiss()
+                //                presentationMode.wrappedValue.dismiss()
                 showHelpScreen.toggle()
             } label: {
                 Image(systemName: "xmark")
@@ -530,8 +524,8 @@ struct HelpScreen: View {
                     .font(.largeTitle)
                     .padding(20)
             }
-//            VideoPlayer(player: AVPlayer(url: url)).frame(width:100, height:400)
-
+            //            VideoPlayer(player: AVPlayer(url: url)).frame(width:100, height:400)
+            
         }
     }
 }

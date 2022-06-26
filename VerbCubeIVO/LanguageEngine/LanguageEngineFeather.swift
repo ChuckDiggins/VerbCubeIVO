@@ -15,6 +15,15 @@ struct SimilarModelsTo {
 }
 
 extension LanguageEngine{
+    func setVerbsForCurrentVerbModel(modelID: Int){
+        currentVerbModel = getModelAtID(id: modelID)
+        let verbList = findVerbsOfSameModel(targetID: modelID)
+        setFilteredVerbList(verbList: verbList)
+    }
+    
+    func getCurrentVerbModel()->RomanceVerbModel{
+        return currentVerbModel
+    }
     
     func findModelForThisVerbString(verbWord: String)->RomanceVerbModel{
         return spanishVerbModelConjugation.getVerbModel(verbWord: verbWord)
@@ -492,5 +501,10 @@ extension LanguageEngine{
         default:
             return RomanceVerbModel()
         }
+    }
+    func getRandomFeatherVerb()->Verb{
+        var vList = getFilteredVerbs()
+        vList.shuffle()
+        return vList[0]
     }
 }

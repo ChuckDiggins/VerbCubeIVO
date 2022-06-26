@@ -91,6 +91,10 @@ class LanguageViewModel : ObservableObject {
         languageEngine.getCurrentVerb()
     }
     
+    func getRandomFeatherVerb()->Verb{
+        languageEngine.getRandomFeatherVerb()
+    }
+    
     func getTenseList()->[Tense]{
         languageEngine.getTenseList()
     }
@@ -234,6 +238,34 @@ class LanguageViewModel : ObservableObject {
     
     func getBehavioralVerbModel()->BehavioralVerbModel{
         languageEngine.getBehavioralVerbModel()
+    }
+    
+    func getBehavioralVerbType()->BehaviorType{
+        return languageEngine.behaviorType
+    }
+    
+    func getCurrentBehavioralVerb()->Verb{
+        languageEngine.getCurrentBehavioralVerb()
+    }
+    
+    func setNextBehavioralVerb(){
+        languageEngine.setNextBehavioralVerb()
+    }
+    
+    func setPreviousBehavioralVerb(){
+        languageEngine.setPreviousBehavioralVerb()
+    }
+    
+    func setBehaviorType(bt: BehaviorType){
+        languageEngine.setBehaviorType(bt: bt)
+    }
+    
+    func getBehaviorType()->BehaviorType{
+        languageEngine.behaviorType
+    }
+    
+    func isAuxiliary(verb: Verb)->(Bool, Tense){
+        languageEngine.isAuxiliary(verb: verb)
     }
 }
 

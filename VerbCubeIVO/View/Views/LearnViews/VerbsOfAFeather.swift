@@ -227,7 +227,20 @@ struct VerbsOfAFeather: View {
         case .model:
             let newBrv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
             modelNumberString = "Model number: \(newBrv.getBescherelleID())"
-            modelNameString = "Model verb: \(newBrv.getBescherelleModelVerb())"
+            switch currentLanguage {
+            case .English:
+                modelNumberString = "English verb"
+            case .Spanish:
+                switch newBrv.getBescherelleID(){
+                case 5: modelNameString = "Regular AR Verb)"
+                case 87: modelNameString = "Regular IR Verb)"
+                case 6: modelNameString = "Regular ER Verb)"
+                default: modelNameString = "Model verb: \(newBrv.getBescherelleModelVerb())"
+                }
+            case .French:
+                modelNumberString = "Model number: \(newBrv.getBescherelleID())"
+            default:  modelNumberString = "Some other verb"
+            }
             modelVerbStringForWordCollection = newBrv.getBescherelleModelVerb()
         case .pattern:
             modelNumberString = "No pattern found for this verb"

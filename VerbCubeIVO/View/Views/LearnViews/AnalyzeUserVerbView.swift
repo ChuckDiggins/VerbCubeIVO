@@ -70,7 +70,7 @@ struct AnalyzeUserVerbView: View {
             VStack {
                 VStack {
                     VStack {
-                        Text("Critical Verb Forms").font(.title).bold()
+                        Text("Model-Based Verb Analysis").font(.headline).bold()
                         HStack{
                         TextField("Enter verb or verb phrase", text: $newVerbString,
                                   onEditingChanged: { changed in
@@ -154,7 +154,7 @@ struct AnalyzeUserVerbView: View {
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
                                     }
-                                }.frame(width: 200, height: 50)
+                                }.frame(width: 325, height: 50)
                                 .padding(.leading, 10)
                                 .buttonStyle(.bordered)
                                     .tint(.black)

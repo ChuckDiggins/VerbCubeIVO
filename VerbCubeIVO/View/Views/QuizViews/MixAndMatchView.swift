@@ -86,87 +86,103 @@ struct MixAndMatchView: View {
     @State private var subjunctiveParticiple = ""
     @State private var isHelpExpanded = false
     @State private var allSubjects = false
+    @State private var showAlert = false
     
     
     var body: some View {
-        VStack{          
-            setVerbAndTenseView()
-            ZStack{
-                ProgressBar(value: $progressValue).frame(height: 20)
-                Text("Correct \(correctAnswerCount) out of \(totalCorrectCount)").foregroundColor(.black)
-            }
-//            HStack{
-//                Text(subjectString)
-//                Text(verbString)
-//            }
-            .frame(width: 300, height: 30)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-            .shadow(radius: 3)
-            .onAppear{
-                currentLanguage = languageViewModel.getCurrentLanguage()
-                currentTense = languageViewModel.getCurrentTense()
-                currentVerb = languageViewModel.getCurrentFilteredVerb()
-                currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
-                currentTenseString = currentTense.rawValue
-                fillPersonMixStruct()
-                fillMixMatchList()
-            }.background( isThisVerbAMatch[matchIndex] && isThisSubjectAMatch[mixIndex] ? .green : .yellow)
-                .foregroundColor(.black)
-                .font(.body)
-            
-            helpView()
-            HStack{
-                VStack{
-                    //                Text("Click left")
-                    ForEach(subjectStringList.indices, id: \.self) { index in
-                        MixCellButton(index: index, wordText: subjectStringList[index], matchText: matchStringList[index], matchID: 0,
-                                      backgroundColor : isThisSubjectAMatch[index] ? .green: .yellow,
-                                      disabled: isThisSubjectDisabled[index] ? true : false,
-                                      function: getWordToMatch )
-                    }
+        helpView()
+        ZStack{
+            VStack{
+                setVerbAndTenseView()
+                ZStack{
+                    ProgressBar(value: $progressValue, barColor: .red).frame(height: 20)
+                    Text("Correct \(correctAnswerCount) out of \(totalCorrectCount)").foregroundColor(.black)
+                    
                 }
-               
-                VStack{
-                    //                Text("Match right")
-                    ForEach(verbStringList.indices, id: \.self) { index in
-                        MatchCellButton(index: index, wordText: verbStringList[index], matchID: 0, backgroundColor : isThisVerbAMatch[index] ? .green : .yellow,
-                                        disabled: isThisVerbDisabled[index] ? true : false,
-                                        function: isMatch)
+                
+                //
+                .frame(width: 300, height: 30)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .shadow(radius: 3)
+                .onAppear{
+                    currentLanguage = languageViewModel.getCurrentLanguage()
+                    currentTense = languageViewModel.getCurrentTense()
+                    currentVerb = languageViewModel.getCurrentFilteredVerb()
+                    currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
+                    currentTenseString = currentTense.rawValue
+                    fillPersonMixStruct()
+                    fillMixMatchList()
+                }.background( isThisVerbAMatch[matchIndex] && isThisSubjectAMatch[mixIndex] ? .green : .yellow)
+                    .foregroundColor(.black)
+                    .font(.body)
+                
+                
+                
+                Text("Click subject on left, click matching verb on right")
+                    .foregroundColor(.black)
+                    .background(.white)
+                HStack{
+                    
+                    VStack{
                         
+                        ForEach(subjectStringList.indices, id: \.self) { index in
+                            MixCellButton(index: index, wordText: subjectStringList[index], matchText: matchStringList[index], matchID: 0,
+                                          backgroundColor : isThisSubjectAMatch[index] ? .green: .yellow,
+                                          disabled: isThisSubjectDisabled[index] ? true : false,
+                                          function: getWordToMatch )
+                        }
                     }
+                    
+                    VStack{
+                        
+                        ForEach(verbStringList.indices, id: \.self) { index in
+                            MatchCellButton(index: index, wordText: verbStringList[index], matchID: 0, backgroundColor : isThisVerbAMatch[index] ? .green : .yellow,
+                                            disabled: isThisVerbDisabled[index] ? true : false,
+                                            function: isMatch)
+                        }
+                    }
+                    
                 }
+                Spacer()
             }
-            Spacer()
+            if showAlert {
+                CustomAlertView(show: $showAlert )
+            }
+        }
+        
+    }
+    
+    func getAlert()->Alert{
+        return Alert (
+            title: Text("Congratulations"),
+            message: Text("Click ok to move to next problem"),
+            primaryButton: .cancel(),
+            secondaryButton: .cancel()
+        )
+    }
+    func helpView() -> some View {
+        DisclosureGroup("Help", isExpanded: $isHelpExpanded){
+            VStack{
+                Text("Click on a subject in the left column.  It will turn 🟩")
+                Text("Click on a correct matching verb form in the right column.  If correct, it will also turn 🟩")
+                Text("Continue until all pairs are matched")
+                Text("")
+                
+                Text("To change the list of verbs for this quiz, click on Verbs of a Feather button")
+                //                    showVerbsOfAFeatherNavigationLink()
+            }.background(.yellow)
+                .foregroundColor(.black)
         }
     }
     
-    func helpView() -> some View {
-//
-        VStack{
-            DisclosureGroup("Help", isExpanded: $isHelpExpanded){
-                VStack{
-                    Text("Click on a subject in the left column.  It will turn 🟩")
-                    Text("Click on a correct matching verb form in the right column.  If correct, it will also turn 🟩")
-                    Text("Continue until all pairs are matched")
-                    Text("")
-                    
-                    Text("To change the list of verbs for this quiz, click on Verbs of a Feather button")
-                    showVerbsOfAFeatherNavigationLink()
-                }.background(.yellow)
-                    .foregroundColor(.black)
-                }
-        }.background(.red)
-        .foregroundColor(.white)
-    }
-    
     func showVerbsOfAFeatherNavigationLink()->some View{
-        NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .model)){
-                Text("Verbs of a Feather")
-            }.frame(width: 150, height: 50)
-                .padding(.leading, 5)
-                .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                .cornerRadius(10)
-                .foregroundColor(.yellow)
+        NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+            Text("New Model")
+        }.font(.callout)
+            .padding(2)
+            .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
+            .foregroundColor(.black)
+            .cornerRadius(4)
     }
     
     
@@ -216,7 +232,7 @@ struct MixAndMatchView: View {
             if currentLanguage == .French {subjunctiveParticiple = "qui "}
         }
     }
-        
+    
     func fillMixMatchList(){
         mixMatchList.removeAll()
         for pms in personMixString {
@@ -249,6 +265,7 @@ struct MixAndMatchView: View {
         correctAnswerCount = 0
         totalCorrectCount = mixMatchList.count
         progressValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
+        if correctAnswerCount == totalCorrectCount { showAlert.toggle() }
     }
     
     func getWordToMatch(index: Int, matchString: String){
@@ -258,7 +275,7 @@ struct MixAndMatchView: View {
         subjectString = subjectStringList[index]
         isThisSubjectAMatch[mixIndex] = true
         verbString = ""
-//        print("mixIndex: \(mixIndex), getWordToMatch \(matchString)")
+        //        print("mixIndex: \(mixIndex), getWordToMatch \(matchString)")
     }
     
     func isMatch(index: Int, verbString: String){
@@ -285,6 +302,8 @@ struct MixAndMatchView: View {
             }
             
             progressValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
+            if correctAnswerCount == totalCorrectCount { showAlert = true }
+            else {showAlert = false}
         }
     }
     
@@ -350,7 +369,7 @@ struct MixAndMatchView: View {
             .background(.yellow)
             .tint(.blue)
             .padding(5)
-           
+            
         }
         .padding(3)
     }

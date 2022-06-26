@@ -8,48 +8,119 @@
 import SwiftUI
 import JumpLinguaHelpers
 
-struct TabBarClassic: View {
+struct ScrollViewVC: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @State var selectedTab: Int = 0
+    @State var currentLanguage = LanguageType.Spanish
+    @State var currentLanguageStr = "Agnostic"
     
-    
-    //    var body: some  View {
-    //        TabView{
-    //            ForEach(icons, id: \.self){ icon in
-    //                Image(systemName: icon)
-    //                    .resizable()
-    //                    .scaledToFit()
-    //                    .padding(30)
-    //            }
-    //        }
-    //        .background(
-    //            RadialGradient(gradient: Gradient(colors: [Color.red, Color.blue]), center: .center, startRadius: 5, endRadius: 250 ))
-    //        .frame(height: 300)
-    //        .tabViewStyle(PageTabViewStyle())
-    //    }
     var body: some  View{
+//        Image("FeatherInverted")
+//            .resizable()
+//            .scaledToFit()
+//            .ignoresSafeArea(.all)
         
+        VStack {
+            Text("Welcome!")
+                .font(.largeTitle)
+                .foregroundColor(.red)
+            
+            VStack{
+                Button{
+                    if languageViewModel.getCurrentLanguage() == .Spanish {
+                        languageViewModel.setLanguage(language: .French)
+                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+                    } else {
+                        languageViewModel.setLanguage(language: .Spanish)
+                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+                    }
+                        
+                } label: {
+                    Text("Active language: \(currentLanguageStr)")
+                        .frame(minWidth: 0, maxWidth: 400)
+                        .frame(height: 50)
+                        .background(.purple)
+                        .foregroundColor(.yellow)
+                        .cornerRadius(10)
+                        .padding(20)
+                }
+                ScrollView{
+                    NavigationLink(destination: ModelView(languageViewModel: languageViewModel)){
+                        Text("Model-based Verbs")
+                    }.modifier(NavLinkModifier())
+                        .background(.orange)
+                    NavigationLink(destination: PatternView(languageViewModel: languageViewModel)){
+                        Text("Pattern-based Verbs")
+                    }.modifier(NavLinkModifier())
+                        .background(.yellow)
+                    NavigationLink(destination: GeneralVerbView(languageViewModel: languageViewModel)){
+                        Text("Verbs in General")
+                    }.modifier(NavLinkModifier())
+                        .background(.green)
+                    NavigationLink(destination: OddJobsView(languageViewModel: languageViewModel)){
+                        Text("Odds and Ends")
+                    }.modifier(NavLinkModifier())
+                        .background(.black)
+                    
+                    Button{
+                        exit(1)
+                    } label: {
+                        HStack{
+                            Text("Exit")
+                            Text("👋🏼")
+                        }
+                    }
+                    .padding(.leading, 10)
+                    .padding(30)
+                    .frame(width: 300, height: 50)
+                    .background(.red)
+                    .border(Color.white, width: 2)
+                    .cornerRadius(25)
+                    .foregroundColor(.black)
+                    .tint(.pink)
+                }
+            }
+        }.onAppear{
+            currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+        }
+    }
+    
+}
+struct TabBarClassicVC: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    @State var selectedTab: Int = 0
+    @State var currentLanguage = LanguageType.Spanish
+    
+    var body: some  View{
+        NavigationView{
         TabView (selection: $selectedTab) {
-            HomeView(languageViewModel: languageViewModel, selectedTab: $selectedTab)
-                .tabItem{
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }.tag(0)
-            LearningView(languageViewModel: languageViewModel)
+//            HomeView(languageViewModel: languageViewModel, selectedTab: $selectedTab)
+//                .tabItem{
+//                    Image(systemName: "house.fill")
+//                    Text("Home")
+//                }.tag(0)
+//
+            AudibleStyleView(languageViewModel: languageViewModel)
+                                        .tabItem{
+                                            Image(systemName: "house.fill")
+                                Text("Home")
+                            }.tag(0)
+            
+            ModelView(languageViewModel: languageViewModel)
                 .tabItem{
                     Image(systemName: "graduationcap")
-                    Text("Learn")
+                    Text("MBVC")
                 }.tag(1)
-            QuizzesView(languageViewModel: languageViewModel)
+            PatternView(languageViewModel: languageViewModel)
                 .tabItem{
                     Image(systemName: "pencil.circle.fill")
-                    Text("Quiz")
+                    Text("PBVC")
                 }.tag(2)
-            
-            CollectionsView(languageViewModel: languageViewModel)
+
+            GeneralVerbView(languageViewModel: languageViewModel)
                 .tabItem{
                     Image(systemName: "archivebox.fill")
-                    Text("Collections")
+                    Text("GVC")
                 }.tag(3)
             
             OddJobsView(languageViewModel: languageViewModel)
@@ -57,10 +128,28 @@ struct TabBarClassic: View {
                     Image(systemName: "folder.badge.gearshape")
                     Text("Odd Jobs")
                 }.tag(4)
-            
+
             
         }
         .accentColor(.green)
+        }.navigationBarTitle("Verbs of a Feather")
+            .navigationBarItems(leading:
+                                    Button{
+                exit(1)
+            } label: {
+                Image(systemName:"arrow.backward.circle").foregroundColor(.red)
+            }            )
+                                
+//                                trailing:
+//                                    HStack{
+//                NavigationLink(destination: LanguageView(languageViewModel: languageViewModel, currentLanguage: $currentLanguage)){
+//                    Image(systemName:"flag.fill").foregroundColor(.blue)
+//                }
+//                NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel)){
+//                    Image(systemName:"clock.arrow.circlepath").foregroundColor(.blue)
+//                }
+//            }
+
         
     }
 }
@@ -69,10 +158,10 @@ struct TabBarClassic: View {
 struct HomeView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @Binding var selectedTab : Int
-    @State var currentLanguage = LanguageType.Spanish
+    @State var currentLanguageStr = ""
     
     var body: some View {
-        NavigationView{
+        
             ZStack{
                 Image("FeatherInverted")
                     .resizable()
@@ -85,39 +174,27 @@ struct HomeView: View {
                         .foregroundColor(.red)
                     
                     VStack{
-                        Text("Active language: \(currentLanguage.rawValue)")
-                            .frame(minWidth: 0, maxWidth: 400)
-                            .frame(height: 50)
-                            .background(.purple)
-                            .foregroundColor(.yellow)
-                            .cornerRadius(10)
-                            .padding(20)
+                        Button{
+                            if languageViewModel.getCurrentLanguage() == .Spanish {
+                                languageViewModel.setLanguage(language: .French)
+                                currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+                            } else {
+                                languageViewModel.setLanguage(language: .Spanish)
+                                currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+                            }
+                                
+                        } label: {
+                            Text("Active language: \(currentLanguageStr)")
+                                .frame(minWidth: 0, maxWidth: 400)
+                                .frame(height: 50)
+                                .background(.purple)
+                                .foregroundColor(.yellow)
+                                .cornerRadius(10)
+                                .padding(20)
+                        }
+                        
                         Spacer()
-//                        HStack{
-//                            Text("Click ")
-//                            Image(systemName:"flag.fill").foregroundColor(.blue)
-//                            Image(systemName:"clock.arrow.circlepath").foregroundColor(.blue)
-//                            Text("above to change language and tenses")
-//                        }
-//                        .frame(minWidth: 0, maxWidth: 400)
-//                        .frame(height: 50)
-//                        .background(.yellow)
-//                        .foregroundColor(.black)
-//                        .cornerRadius(10)
-//                        .padding(5)
-//
-//                        HStack{
-//                            Text("Click ")
-//                            Image(systemName:"arrow.backward.circle").foregroundColor(.red)
-//                            Text("to exit")
-//                        }
-//                        .frame(minWidth: 0, maxWidth: 400)
-//                        .frame(height: 50)
-//                        .background(.yellow)
-//                        .foregroundColor(.black)
-//                        .cornerRadius(10)
-//                        .padding(20)
-//
+                      
                         Text("Click tabs below to go to learn, take quizzes and access collections")
                             .frame(minWidth: 0, maxWidth: 400)
                             .frame(height: 75)
@@ -127,33 +204,23 @@ struct HomeView: View {
                             .padding(20)
                         
                         Spacer()
-                    }.navigationBarTitle("Verbs of a Feather")
-                        .navigationBarItems(leading:
-                                                Button{
-                            exit(1)
-                        } label: {
-                            Image(systemName:"arrow.backward.circle").foregroundColor(.red)
-                        },
-                                            
-                                            trailing:
-                                                HStack{
-                            NavigationLink(destination: LanguageView(languageViewModel: languageViewModel, currentLanguage: $currentLanguage)){
-                                Image(systemName:"flag.fill").foregroundColor(.blue)
-                            }
-                            NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel)){
-                                Image(systemName:"clock.arrow.circlepath").foregroundColor(.blue)
-                            }
-                        } )
+                    }
                     
+//
+//
+                }.onAppear{
+                    currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
                 }
-            }
+//
+//            }
+       
         }
     }
 }
 
-struct FeatherView: View {
+struct ModelView: View{
     @ObservedObject var languageViewModel: LanguageViewModel
-    
+
     var body: some View {
         ZStack{
             Color.yellow
@@ -161,33 +228,98 @@ struct FeatherView: View {
                 .resizable()
                 .scaledToFit()
                 .ignoresSafeArea(.all)
-            
+
             VStack {
-                Text("Welcome to Feathers!")
+                Text("Model-based Verb Conjugation")
                     .font(.largeTitle)
                     .foregroundColor(.red)
                 
-                NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .pattern)){
-                    Text("Verbs of a Feather")
-                }.frame(width: 150, height: 50)
-                    .padding(.leading, 10)
-                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .cornerRadius(10)
-                    .foregroundColor(.yellow)
-               
-                NavigationLink(destination: FeatherVerbMorphView(languageViewModel: languageViewModel)){
-                    Text("Feather Morph")
-                }.frame(width: 150, height: 50)
-                    .padding(.leading, 10)
-                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .cornerRadius(10)
-                    .foregroundColor(.yellow)
+                
+                NavigationLink(destination: ModelLearnWrapper(languageViewModel: languageViewModel)){
+                    Text("Model-based learning")
+                        .frame(minWidth: 0, maxWidth: 300)
+                        .padding()
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .font(.headline)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                }
+                
+                
+                
+//                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
+//                    Text("Feather Quiz Morph")
+//                }.frame(minWidth: 0, maxWidth: 300)
+//                    .padding()
+//                    .foregroundColor(.white)
+//                    .padding(.horizontal)
+//                    .font(.headline)
+//                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                    .cornerRadius(10)
+                
+                NavigationLink(destination: ModelQuizWrapper(languageViewModel: languageViewModel)){
+                    Text("Model-based quizzes")
+                        .frame(minWidth: 0, maxWidth: 300)
+                        .padding()
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .font(.headline)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                }
+
             }
         }
     }
 }
 
-struct OddJobsView: View {
+struct PatternView: View{
+    @ObservedObject var languageViewModel: LanguageViewModel
+
+    var body: some View {
+        ZStack{
+            Color.yellow
+            Image("FeatherInverted")
+                .resizable()
+                .scaledToFit()
+                .ignoresSafeArea(.all)
+
+            VStack {
+                Text("Pattern-based Verb Conjugation")
+                    .font(.largeTitle)
+                    .foregroundColor(.red)
+                
+                NavigationLink(destination: PatternLearnWrapper(languageViewModel: languageViewModel)){
+                    Text("Pattern-based learning")
+                        .frame(minWidth: 0, maxWidth: 300)
+                        .padding()
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .font(.headline)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                }
+                
+                NavigationLink(destination: PatternQuizWrapper(languageViewModel: languageViewModel)){
+                    Text("Pattern-based quizzes")
+                        .frame(minWidth: 0, maxWidth: 300)
+                        .padding()
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .font(.headline)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                }
+                
+                
+
+            }
+        }
+    }
+}
+
+struct GeneralVerbView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     var backgroundColor = Color.blue
     var body: some View {
@@ -197,216 +329,38 @@ struct OddJobsView: View {
                 .resizable()
                 .scaledToFit()
                 .ignoresSafeArea(.all)
-            VStack{
-                Text("Welcome to Odd Jobs!")
-                    .font(.largeTitle)
-                    .foregroundColor(.red)
-                
-                NavigationLink(destination: OddJobsWrapper(languageViewModel: languageViewModel)){
-                    Text("Odd Jobs")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-            }
-        }
-    }
-}
-struct CollectionsView: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    var backgroundColor = Color.blue
-    var body: some View {
-        ZStack{
-            backgroundColor
-            Image("FeatherInverted")
-                .resizable()
-                .scaledToFit()
-                .ignoresSafeArea(.all)
             
             VStack{
-                Spacer()
-                Text("Welcome to Collections!")
+                Text("General Verb Conjugation")
                     .font(.largeTitle)
                     .foregroundColor(.red)
                 
-                NavigationLink(destination: WordCollectionScreen(languageViewModel: languageViewModel)){
-                    Text("Word collections")
-                }.frame(minWidth: 0, maxWidth: 300)
-                    .padding()
-                    .foregroundColor(.white)
-                    .padding(.horizontal)
-                    .font(.headline)
-                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .cornerRadius(10)
-                
-                NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .pattern)){
-                    Text("Verbs of a Feather")
-                }.frame(width: 150, height: 50)
-                    .padding(.leading, 10)
-                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .cornerRadius(10)
-                    .foregroundColor(.yellow)
-                
-//                NavigationLink(destination: VerbSelectionViewLazy(languageEngine: languageViewModel.getLanguageEngine(), languageViewModel: languageViewModel)){
-//                    Text("Verb selection view")
-//                }.frame(minWidth: 0, maxWidth: 300)
-//                    .padding()
-//                    .foregroundColor(.white)
-//                    .padding(.horizontal)
-//                    .font(.headline)
-//                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-//                    .cornerRadius(10)
-//
-                
-//                NavigationLink(destination: EmptyView()){
-//                    Text("Verb pattern selection")
-//                }.frame(minWidth: 0, maxWidth: 300)
-//                    .padding()
-//                    .foregroundColor(.white)
-//                    .padding(.horizontal)
-//                    .font(.headline)
-//                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-//                    .cornerRadius(10)
-                Spacer()
-            }
-            .foregroundColor(.white)
-            .navigationViewStyle(StackNavigationViewStyle())
-        }
-    }
-    
-}
+                NavigationLink(destination: GeneralVerbLearnWrapper(languageViewModel: languageViewModel)){
+                    Text("General Verb Learning")
+                        .frame(minWidth: 0, maxWidth: 300)
+                        .padding()
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .font(.headline)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                }
+                NavigationLink(destination: GeneralVerbQuizWrapper(languageViewModel: languageViewModel)){
+                    Text("General Verb Quizzes")
+                        .frame(minWidth: 0, maxWidth: 300)
+                        .padding()
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .font(.headline)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                }
 
-struct QuizzesView: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    
-    var body: some View {
-        ZStack{
-            Color.orange
-            Image("FeatherInverted")
-                .resizable()
-                .scaledToFit()
-                .ignoresSafeArea(.all)
-            
-            VStack {
-                Text("Welcome to the Quizzes!")
-                    .font(.largeTitle)
-                    .foregroundColor(.red)
-                Spacer()
-                VStack{
-                    NavigationLink(destination: QuizCubeOptionsView2(languageViewModel: languageViewModel)){
-                        Text("QuizCube")
-                            .frame(minWidth: 0, maxWidth: 300)
-                            .padding()
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                            .font(.headline)
-                            .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                            .cornerRadius(10)
-                        
-                    }
-                    
-                    NavigationLink(destination: ModelPatternQuizWrapper(languageViewModel: languageViewModel)){
-                        Text("Models v Patterns")
-                            .frame(minWidth: 0, maxWidth: 300)
-                            .padding()
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                            .font(.headline)
-                            .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                            .cornerRadius(10)
-                    }
-                    
-                    NavigationLink(destination: QuizWrapper(languageViewModel: languageViewModel)){
-                        Text("Simple Verb Practice")
-                            .frame(minWidth: 0, maxWidth: 300)
-                            .padding()
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                            .font(.headline)
-                            .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                            .cornerRadius(10)
-                    }
-                    NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel)){
-                        Text("Mix & Match")
-                            .frame(minWidth: 0, maxWidth: 300)
-                            .padding()
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                            .font(.headline)
-                            .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                            .cornerRadius(10)
-                    }
-                }
-                Spacer()
-            }
-        }
-    }
-}
-
-struct LearningView: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    
-    var body: some View {
-        ZStack{
-            Color.purple
-            Image("FeatherInverted")
-                .resizable()
-                .scaledToFit()
-                .ignoresSafeArea(.all)
-            
-            VStack {
-                Text("Welcome to the Learning Module!")
-                    .font(.largeTitle)
-                    .foregroundColor(.red)
-                
-                NavigationLink(destination: FeatherView(languageViewModel: languageViewModel)){
-                    Text("Go to Feathers")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                
-                NavigationLink(destination: ExerciseWrapper(languageViewModel: languageViewModel)){
-                    Text("Go to Exercises")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                
-                NavigationLink(destination: GeneralCubeWrapper(languageViewModel: languageViewModel)){
-                    Text("Verb Cube")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
             }
             Spacer()
         }
-        
+        .foregroundColor(.white)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
-
-
-//struct TabBarClassic_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TabBarClassic()
-//    }
-//}
-
 

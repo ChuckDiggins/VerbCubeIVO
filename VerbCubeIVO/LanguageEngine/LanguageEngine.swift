@@ -27,11 +27,11 @@ class LanguageEngine : ObservableObject {
     var currentFilteredVerbIndex = 0
     @Published var filteredVerbList = [Verb]()
     
-    private var behavioralVerbModel = BehavioralVerbModel()
+    var behavioralVerbModel = BehavioralVerbModel()
     var criticalVerbForms = CriticalVerbForms()
     private var verbModelConjugation : VerbModelConjugation!
-    var spanishVerbModelConjugation = RomanceVerbModelConjugation()
-    var frenchVerbModelConjugation = RomanceVerbModelConjugation()
+    var spanishVerbModelConjugation = RomanceVerbModelConjugation(language: .Spanish)
+    var frenchVerbModelConjugation = RomanceVerbModelConjugation(language: .French)
     var englishVerbModelConjugation = EnglishVerbModelConjugation()
     private var jsonDictionaryManager = JSONVerbPronounDictionaryManager()
     var lessonBundlePhraseCollectionManager : LessonBundlePhraseCollectionManager!
@@ -44,6 +44,10 @@ class LanguageEngine : ObservableObject {
     
     var startingVerbCubeListIndex = 0
     var verbCubeVerbIndex = 0
+    var behavioralVerbIndex = 0
+    var behaviorType = BehaviorType.likeGustar
+    var behaviorVerbList = [Verb]()
+    
     @Published var verbCubeList = [Verb]()
     var verbBlockCount: Int = 6
     var verbCubeBlockIndex = 0
@@ -57,6 +61,9 @@ class LanguageEngine : ObservableObject {
     var quizTenseList = [Tense.present, .preterite, .imperfect, .future, .conditional]
     var quizCubeConfiguration = ActiveVerbCubeConfiguration.PersonVerb
     var quizCubeDifficulty = QuizCubeDifficulty.easy
+    
+    var currentVerbModel = RomanceVerbModel()
+    var currentVerbPattern = SpecialPatternStruct(tense: .present, spt: .none )
     
 //    var realm : Realm
     
@@ -96,11 +103,21 @@ class LanguageEngine : ObservableObject {
         initializeCriticalForms()
         testPatternModelListLogic()
         
-//        testLogic(tense: .preterite)
+        //this should set the behavioral verb list and index
+        setBehaviorType(bt: .likeGustar)
+        
+        loadInitialVerbModel()
     }
 
-    func getBehavioralVerbModel()->BehavioralVerbModel{
-        return behavioralVerbModel
+    func loadInitialVerbModel(){
+        switch currentLanguage {
+        case .Spanish:
+            setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 38))  //encontrar
+        case .French:
+            setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 67))  //manger
+        default:
+            return
+        }
     }
     
     func testPatternModelListLogic(){

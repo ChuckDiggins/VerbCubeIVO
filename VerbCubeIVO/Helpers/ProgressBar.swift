@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ProgressBar: View {
     @Binding var value: Float
-    
+    var barColor : Color
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -19,7 +19,7 @@ struct ProgressBar: View {
                     .foregroundColor(Color(UIColor.systemTeal))
                 
                 Rectangle().frame(width: min(CGFloat(self.value)*geometry.size.width, geometry.size.width), height: geometry.size.height)
-                    .foregroundColor(Color(UIColor.systemRed))
+                    .foregroundColor(barColor)
                     .animation(.linear)
             }.cornerRadius(45.0)
         }
