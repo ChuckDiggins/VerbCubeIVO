@@ -343,7 +343,7 @@ extension LanguageEngine{
     func findVerbsOfSameModel(modelID: Int, inputVerbList: [Verb])->[Verb]{
         var vList = [Verb]()
         for v in inputVerbList {
-            var vID = getBescherelleID(verb: v)
+            let vID = getBescherelleID(verb: v)
             if vID == modelID {
                 vList.append(v)
             }
@@ -354,7 +354,7 @@ extension LanguageEngine{
     func findVerbsOfDifferentModel(modelID: Int, inputVerbList: [Verb])->[Verb]{
         var vList = [Verb]()
         for v in inputVerbList {
-            var vID = getBescherelleID(verb: v)
+            let vID = getBescherelleID(verb: v)
             if vID != modelID {
                 vList.append(v)
             }
@@ -406,6 +406,17 @@ extension LanguageEngine{
             }
         }
         return vList
+    }
+    
+    func getRandomEnglishVerbs(maxCount: Int)->[Verb]{
+        var newVerbList = verbList
+        newVerbList.shuffle()
+
+        if newVerbList.count > maxCount {
+            let verbCount = newVerbList.count
+            newVerbList.removeLast(verbCount-maxCount)
+        }
+        return newVerbList
     }
     
     //returns the part of the verb that is actually affected by model morphing

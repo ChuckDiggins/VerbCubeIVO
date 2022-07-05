@@ -38,8 +38,8 @@ struct FeatherVerbMorphView: View {
     @State var morphStepIndex = 0
     
     @State var morphStep = MorphStep()
-    @State var maxVerbCount = 12
-    @State var modelVerbCount = 12
+    @State var maxVerbCount = 9
+    @State var modelVerbCount = 9
     @State var morphStructList = [MorphStruct]()
     @State var currentMorphStepIndex = 0
     @State var morphStepCount = 0
@@ -146,21 +146,38 @@ struct FeatherVerbMorphView: View {
             .cornerRadius(4)
         }.padding(.horizontal, 20)
             
-            Button{
-                shuffleVerbList()
-            } label: {
-                Text("Shuffle")
-            }.font(.callout)
-                .padding(2)
-                .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                .foregroundColor(.black)
-                .cornerRadius(4)
+            HStack{
+                Button{
+                    shuffleVerbList()
+                } label: {
+                    Text("Shuffle")
+                }.font(.callout)
+                    .padding(2)
+                    .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
+                    .foregroundColor(.black)
+                    .cornerRadius(4)
+                
+                if currentVerbString.count > 1 {
+                    NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "")){
+                        HStack{
+                            Text("Show me ")
+                            Text(modelVerb).bold()
+                        }
+                    }.frame(width: 300, height: 50)
+                        .padding(2)
+                        .buttonStyle(.bordered)
+                        .background(.green)
+                        .tint(.black)
+                        .cornerRadius(10)
+                }
+            }
         }
     }
     
     enum MorphMode {
         case tense, person
     }
+    
     
     func shuffleVerbList(){
         loadVerbList()
@@ -293,13 +310,13 @@ struct FeatherVerbMorphView: View {
     {
     var tms = TextMorphStruct()
     if morphStep.isFinalStep {
-        tms.setValues(index: 0, str: morphStep.part1, color: .yellow, bold: false)
+        tms.setValues(index: 0, str: morphStep.part1, color: .black, bold: false)
         tms.setValues(index: 1, str: morphStep.part2, color: .red, bold: false)
         tms.setValues(index: 2, str: morphStep.part3, color: .black, bold: true)
     } else {
-        tms.setValues(index: 0, str: morphStep.part1, color: .yellow, bold: false)
+        tms.setValues(index: 0, str: morphStep.part1, color: .black, bold: false)
         tms.setValues(index: 1, str: morphStep.part2, color: .red, bold: false)
-        tms.setValues(index: 2, str: morphStep.part3, color: .yellow, bold: true)
+        tms.setValues(index: 2, str: morphStep.part3, color: .black, bold: true)
     }
     return tms
     }
@@ -347,7 +364,7 @@ struct FeatherVerbMorphView: View {
     
     func createInitialMorphStruct(verb: Verb)->(TextMorphStruct){
         var tms = TextMorphStruct()
-        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: currentPerson), color: .yellow, bold: false)
+        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: currentPerson), color: .black, bold: false)
         tms.setValues(index: 1, str: "", color: .red, bold: false)
         tms.setValues(index: 2, str: "", color: .black, bold: true)
         return tms

@@ -232,9 +232,9 @@ struct VerbsOfAFeather: View {
                 modelNumberString = "English verb"
             case .Spanish:
                 switch newBrv.getBescherelleID(){
-                case 5: modelNameString = "Regular AR Verb)"
-                case 87: modelNameString = "Regular IR Verb)"
-                case 6: modelNameString = "Regular ER Verb)"
+                case 5: modelNameString = "Regular AR Verb"
+                case 87: modelNameString = "Regular IR Verb"
+                case 6: modelNameString = "Regular ER Verb"
                 default: modelNameString = "Model verb: \(newBrv.getBescherelleModelVerb())"
                 }
             case .French:

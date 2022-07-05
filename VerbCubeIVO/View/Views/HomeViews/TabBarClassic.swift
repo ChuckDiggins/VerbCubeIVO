@@ -27,14 +27,20 @@ struct ScrollViewVC: View {
             
             VStack{
                 Button{
-                    if languageViewModel.getCurrentLanguage() == .Spanish {
+                    switch languageViewModel.getCurrentLanguage() {
+                    case .Spanish:
                         languageViewModel.setLanguage(language: .French)
                         currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-                    } else {
+                    case .French:
+                        languageViewModel.setLanguage(language: .English)
+                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+                    case .English:
+                        languageViewModel.setLanguage(language: .Spanish)
+                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+                    default:
                         languageViewModel.setLanguage(language: .Spanish)
                         currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
                     }
-                        
                 } label: {
                     Text("Active language: \(currentLanguageStr)")
                         .frame(minWidth: 0, maxWidth: 400)

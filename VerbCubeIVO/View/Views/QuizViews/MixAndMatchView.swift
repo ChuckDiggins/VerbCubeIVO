@@ -175,14 +175,23 @@ struct MixAndMatchView: View {
         }
     }
     
+    func showNewVerbsButton()->some View{
+        Button{
+            languageViewModel.setFilteredVerbList(verbList: languageViewModel.getRandomEnglishVerbs(maxCount : 30))
+            fillMixMatchList()
+        } label: {
+            Text("New Verbs")
+        }
+    }
+    
     func showVerbsOfAFeatherNavigationLink()->some View{
-        NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-            Text("New Model")
-        }.font(.callout)
-            .padding(2)
-            .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
-            .foregroundColor(.black)
-            .cornerRadius(4)
+            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+                Text("New Model")
+            }.font(.callout)
+                .padding(2)
+                .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
+                .foregroundColor(.black)
+                .cornerRadius(4)
     }
     
     
@@ -221,6 +230,13 @@ struct MixAndMatchView: View {
                 personMixString.append(PersonMixStruct(person: .S3, personString: "on"))
                 personMixString.append(PersonMixStruct(person: .P3, personString: "elles"))
             }
+        case .English:
+            personMixString.append(PersonMixStruct(person: .S1, personString: "I"))
+            personMixString.append(PersonMixStruct(person: .S2, personString: "you"))
+            personMixString.append(PersonMixStruct(person: .S3, personString: "he"))
+            personMixString.append(PersonMixStruct(person: .P1, personString: "we"))
+            personMixString.append(PersonMixStruct(person: .P2, personString: "you"))
+            personMixString.append(PersonMixStruct(person: .P3, personString: "they"))
         default: break
         }
     }
@@ -344,7 +360,11 @@ struct MixAndMatchView: View {
                     Text("Select Active Verbs")
                         .foregroundColor(.black)
                         .font(.caption)
-                    showVerbsOfAFeatherNavigationLink()
+                    if currentLanguage == .English {
+                        showNewVerbsButton()
+                    } else {
+                        showVerbsOfAFeatherNavigationLink()
+                    }
                 }
                 Spacer()
                 VStack{

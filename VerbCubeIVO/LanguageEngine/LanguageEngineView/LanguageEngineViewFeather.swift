@@ -15,6 +15,10 @@ extension LanguageViewModel{
         languageEngine.getCurrentVerbModel()
     }
     
+    func getRandomEnglishVerbs(maxCount: Int)->[Verb]{
+        languageEngine.getRandomEnglishVerbs(maxCount: maxCount)
+    }
+    
     func setVerbsForCurrentVerbModel(modelID: Int){
         languageEngine.setVerbsForCurrentVerbModel(modelID: modelID)
     }

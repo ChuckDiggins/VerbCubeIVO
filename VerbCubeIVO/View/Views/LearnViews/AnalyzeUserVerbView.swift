@@ -98,14 +98,21 @@ struct AnalyzeUserVerbView: View {
                                 hideKeyboard()
                             }
                         }
+
                             Button(action: {
                                 newVerbString = ""
                             },
-                            label: {  Text("X")
+                                   label: {  Text("X")
                                     .font(.largeTitle)
                                     .foregroundColor(.black)
                             })
                         }
+                        Text("Type in any verb or verb phrase")
+                            .font(.callout)
+                            .foregroundColor(.black)
+                            .background(.yellow)
+                        Spacer()
+
                     }
                         
                         if isNameValid {

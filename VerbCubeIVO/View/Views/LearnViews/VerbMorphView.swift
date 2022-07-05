@@ -114,19 +114,19 @@ struct VerbMorphView: View {
     @State var isBackward = false
     @State var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     @State var tmsList = [TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),TextMorphStruct() ]
-    @State var commentList = ["Start morphing yo form",
-                              "Start morphing tú form",
-                              "Start morphing él form",
-                              "Start morphing nosotros form",
-                              "Start morphing vosotros form",
-                              "Start morphing ellos form"]
+    @State var commentList = ["Click here to conjugate yo form",
+                              "Click here to conjugate tú form",
+                              "Click here to conjugate él form",
+                              "Click here to conjugate nosotros form",
+                              "Click here to conjugate vosotros form",
+                              "Click here to conjugate ellos form"]
     
     func fillTheCommentList(){
         //let vu = VerbUtilities()
         for p in 0 ..< 6 {
             let person = personList[p]
             let personString =  person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)
-            commentList[p] = "Start morphing the \(personString) form "
+            commentList[p] = "Click here to conjugate \(personString) form "
         }
     }
     
@@ -158,7 +158,7 @@ struct VerbMorphView: View {
     
     func createInitialMorphStruct(person: Person)->(TextMorphStruct){
         var tms = TextMorphStruct()
-        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: person), color: .yellow, bold: false)
+        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: person), color: .black, bold: false)
         tms.setValues(index: 1, str: "", color: .red, bold: false)
         tms.setValues(index: 2, str: "", color: .black, bold: true)
         return tms
@@ -169,7 +169,7 @@ struct VerbMorphView: View {
     {
         var tms = TextMorphStruct()
         if morphStep.isFinalStep {
-            tms.setValues(index: 0, str: morphStep.part1, color: .yellow, bold: false)
+            tms.setValues(index: 0, str: morphStep.part1, color: .black, bold: false)
             tms.setValues(index: 1, str: morphStep.part2, color: .red, bold: false)
             tms.setValues(index: 2, str: morphStep.part3, color: .black, bold: true)
         } else {
@@ -180,56 +180,51 @@ struct VerbMorphView: View {
         return tms
     }
 
+    func showVerbsOfAFeatherNavigationLink()->some View{
+        NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+            Text("New Model")
+        }.font(.callout)
+            .padding(2)
+            .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
+            .foregroundColor(.black)
+            .cornerRadius(4)
+    }
     
     var body: some View {
         VStack{
-//            LanguagePreferencesTenseView()
+            
+            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+                HStack{
+                    Text("Verb model:")
+                    Text(verbModelVerb)
+                    Spacer()
+                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                }
+                .frame(width: 350, height: 30)
+                .font(.callout)
+                .padding(2)
+                .background(Color.orange)
+                .foregroundColor(.black)
+                .cornerRadius(4)
+            }
             
             Button(action: {
                 languageViewModel.setNextFilteredVerb()
                 setCurrentVerb()
-                setCurrentBVerb(languageEngine: languageViewModel.getLanguageEngine())
             }){
                 HStack{
-                    Text("Current verb is: ")
-                        .foregroundColor(.blue)
+                    Text("Verb: ")
                     Text(currentVerbString)
-                        .background(Color.yellow)
-                        .foregroundColor(.black)
-                        .padding(2)
-                        .cornerRadius(4)
-                }
-            }
-            
-            
-            HStack{
-                Text("Verb model:")
-                    .foregroundColor(.blue)
-                Text(verbModelVerb)
-                    .background(Color.yellow)
-                    .foregroundColor(.black)
+                    Spacer()
+                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                }.frame(width: 350, height: 30)
+                    .font(.callout)
                     .padding(2)
+                    .background(Color.orange)
+                    .foregroundColor(.black)
                     .cornerRadius(4)
             }
             
-            HStack {
-                Spacer()
-                Button(action: {
-                    languageViewModel.setPreviousFilteredVerb()
-                    setCurrentVerb()
-                }){
-                    Text("Previous verb")
-                }
-                Spacer()
-                Button(action: {
-                    languageViewModel.setNextFilteredVerb()
-                    setCurrentVerb()
-                }){
-                    Text("Next verb")
-                }
-                Spacer()
-            }.background(Color.yellow)
-
             
             //ChangeTenseButtonView()
             
@@ -238,13 +233,16 @@ struct VerbMorphView: View {
                 setCurrentVerb()
             }){
                 Text("Tense: \(currentTenseString)")
-                //Image(systemName: "play.rectangle.fill").foregroundColor(.black)
+                Spacer()
+                Image(systemName: "rectangle.and.hand.point.up.left.filled")
             }
+            .frame(width: 350, height: 30)
             .font(.callout)
             .padding(2)
-            .background(Color.green)
-            .foregroundColor(.white)
+            .background(Color.yellow)
+            .foregroundColor(.black)
             .cornerRadius(4)
+            
             
         }
         Spacer()
@@ -306,7 +304,7 @@ struct VerbMorphView: View {
                             .foregroundColor(.black)
                     }
                 }.frame(minWidth: 350)
-                .background(Color.green.opacity(0.5))
+                .background(Color.green)
                 .padding(0)
 
             }//for each person
@@ -327,8 +325,6 @@ struct VerbMorphView: View {
     func setCurrentVerb(){
         languageViewModel.getCurrentFilteredVerb()
         languageViewModel.createAndConjugateCurrentFilteredVerb()
-        
-        //isBackward = viperViewModel.getCurrentAgnosticVerb().isPassive()
         currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: currentLanguage)
         verbModelVerb = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
         
@@ -336,15 +332,10 @@ struct VerbMorphView: View {
         fillTheCommentList()
         fillThePersonStringList()
         currentTenseString = languageViewModel.getCurrentTense().rawValue
-//        print("currentTenseString: \(currentTenseString)")
-//        isPassive = langugageEngine.currentVerbIsPassive()
         for person in personList{
             showNewVerb(person: person)
         }
-//        print("Current verb string = \(currentVerbString)")
-//        let agnosticVerb = languageViewModel.getCurrentFilteredVerb()
-//        let bVerb = agnosticVerb.getBVerb()
-//        print("\nsetCurrentAgnosticVerb:  agnosticVerb: \(agnosticVerb.spanish) ... isStemChanging = \(bVerb.m_stemChanging)")
+
         
     }
     
@@ -352,7 +343,6 @@ struct VerbMorphView: View {
         currentVerbString = languageEngine.getMorphStructManager().verbPhrase
 
         currentTenseString = languageEngine.getCurrentTense().rawValue
-//        isPassive = langugageEngine.currentVerbIsPassive()
        
         for person in personList{
             showNewVerb(person: person)

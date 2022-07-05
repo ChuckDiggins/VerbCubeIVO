@@ -115,6 +115,8 @@ class LanguageEngine : ObservableObject {
             setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 38))  //encontrar
         case .French:
             setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 67))  //manger
+        case .English:
+            setFilteredVerbList(verbList: getRandomEnglishVerbs(maxCount : 30))
         default:
             return
         }

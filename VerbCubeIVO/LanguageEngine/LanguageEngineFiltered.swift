@@ -41,6 +41,7 @@ extension LanguageEngine{
     }
     
     func getCurrentFilteredVerb()->Verb{
+        if currentFilteredVerbIndex > filteredVerbList.count - 1 { currentFilteredVerbIndex = 0 }
         return filteredVerbList[currentFilteredVerbIndex]
     }
     

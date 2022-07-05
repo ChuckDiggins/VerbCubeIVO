@@ -24,6 +24,8 @@ struct BehavioralVerbView: View {
     @State var currentVerbPhrase = ""
     @State var newVerbPhrase = ""
     @State var subjunctiveWord = "que "
+    @State var dependentVerb = Verb()
+    @State var highlightPerson = Person.S1
     
 //    @State var vvm = ["", "", "", "", "", ""]
 //    @State var vvr = ["", "", "", "", "", ""]
@@ -39,7 +41,7 @@ struct BehavioralVerbView: View {
     var fontSize = Font.body
     var frameHeight = CGFloat(30)
     
-    var studentAnswerFrameWidth : CGFloat = 150
+    var studentAnswerFrameWidth : CGFloat = 225
     @State private var number = Number.singular
     @FocusState var focusedField: FocusEnum?
     
@@ -56,17 +58,36 @@ struct BehavioralVerbView: View {
                 .foregroundColor(.black)
                 .frame(width: 350, height: 40)
             
-            Button{
-                showMeCorrectAnswers.toggle()
-            } label: {
-                Text(showMeCorrectAnswers ? "🐵" : "🙈")
-                    .bold()
-                    .font(.title)
-                    .foregroundColor(.black)
-                    .background(showMeCorrectAnswers ? .green : .yellow)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .shadow(radius: 3)
-                    .padding(10)
+            HStack{
+                Button{
+                    changeDependentVerb()
+                    setCurrentVerb()
+                } label: {
+                    HStack{
+                        Text("Dependent verb:")
+                        Text(dependentVerb.getWordAtLanguage(language: currentLanguage))
+                    }
+                    .padding(2)
+//                        .cornerRadius(4)
+//                        .bold()
+//                        .font(.title)
+//                        .foregroundColor(.black)
+//                        .background(.yellow)
+//                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                        .shadow(radius: 3)
+                }
+                Button{
+                    showMeCorrectAnswers.toggle()
+                } label: {
+                    Text(showMeCorrectAnswers ? "🐵" : "🙈")
+                        .bold()
+                        .font(.title)
+                        .foregroundColor(.black)
+                        .background(showMeCorrectAnswers ? .green : .yellow)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .shadow(radius: 3)
+                        .padding(10)
+                }
             }
             //show relevant tenses
             VStack{
@@ -159,6 +180,7 @@ struct BehavioralVerbView: View {
                 }
                 .onAppear {
                     languageViewModel.setBehaviorType(bt: behaviorType)
+                    highlightPerson = .S1
                     currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
                     currentVerb = languageViewModel.getCurrentBehavioralVerb()
                     setCurrentVerb()
@@ -170,6 +192,7 @@ struct BehavioralVerbView: View {
         }
     }
     
+    
     func setCurrentVerb(){
         focusedField = .p1
         setSubjunctiveStuff()
@@ -177,6 +200,7 @@ struct BehavioralVerbView: View {
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: languageViewModel.getCurrentTense())
         verbModelVerb = languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleInfo()
+        
         //set the persons here
         
         studentAnswer.removeAll()
@@ -186,6 +210,11 @@ struct BehavioralVerbView: View {
             studentAnswer.append("")
             person[i] = getPersonString(i: i)
         }
+        highlightPerson = .S1
+    }
+    
+    func changeDependentVerb(){
+        dependentVerb = languageViewModel.getRandomFeatherVerb()
     }
     
     func getVerbString(i: Int)->String{
@@ -211,9 +240,9 @@ struct BehavioralVerbView: View {
         else {
             var verbString = msm.getFinalVerbForm(person: Person.all[i])
             let result = languageViewModel.isAuxiliary(verb: currentVerb)
-            let dependentVerb = languageViewModel.getRandomFeatherVerb()
+            
             if result.1 == .infinitive {
-                verbString += " " + dependentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
+                verbString += dependentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
             } else if result.1 == .gerund {
                 let bRomanceVerb = languageViewModel.getRomanceVerb(verb: dependentVerb)
                 verbString += " " + bRomanceVerb.m_gerund
@@ -257,108 +286,134 @@ struct BehavioralVerbView: View {
 }
 
 extension BehavioralVerbView {
+
+    
+    func evaluateStudentAnswer(studentAnswer: String, correctAnswer: String)->Bool{
+        let studentAnswerClean = VerbUtilities().removeExtraBlanks(verbString: studentAnswer)
+        return studentAnswerClean == correctAnswer
+    }
+    
     func StudentAnswerTextEditViewExpanded() -> some View {
         Form {
             HStack {
                 Spacer()
                 Text(person[0])
+                    .foregroundColor(highlightPerson == .S1 ? .red : .black)
+                    .font(highlightPerson == .S1 ? .title3.weight(.bold) : .headline.weight(.regular))
                 TextField("", text: $studentAnswer[0]).focused($focusedField, equals: .p1)
                     .frame(width: studentAnswerFrameWidth, height: 30)
-                    .background(studentAnswer[0] == correctAnswer[0] ? .green : .yellow)
+                    .background(evaluateStudentAnswer(studentAnswer: studentAnswer[0], correctAnswer: correctAnswer[0]) ? .green : .yellow)
                     .foregroundColor(.black)
-                    .border(Color.black)
+                    .border(highlightPerson == .S1 ? .red : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .onSubmit{
-                        if studentAnswer[0] == correctAnswer[0] {focusedField = .p2 }
+                        if evaluateStudentAnswer(studentAnswer: studentAnswer[0], correctAnswer: correctAnswer[0]) {focusedField = .p2 }
+                        highlightPerson = .S2
                     }
-                Image(systemName: studentAnswer[0] == correctAnswer[0]  ? "checkmark.square" : "square")
-                    .foregroundColor(studentAnswer[0] == correctAnswer[0] ? .green : .yellow)
+                Image(systemName: evaluateStudentAnswer(studentAnswer: studentAnswer[0], correctAnswer: correctAnswer[0]) ? "checkmark.square" : "square")
+                    .foregroundColor(evaluateStudentAnswer(studentAnswer: studentAnswer[0], correctAnswer: correctAnswer[0]) ? .green : .yellow)
             }
             HStack {
                 Spacer()
                 Text(person[1])
+                    .foregroundColor(highlightPerson == .S2 ? .red : .black)
+                    .font(highlightPerson == .S2 ? .title3.weight(.bold) : .headline.weight(.regular))
                 TextField("", text: $studentAnswer[1]).focused($focusedField, equals: .p2)
                     .frame(width: studentAnswerFrameWidth, height: 30)
-                    .background(studentAnswer[1] == correctAnswer[1] ? .green : .yellow)
+                    .background(evaluateStudentAnswer(studentAnswer: studentAnswer[1], correctAnswer: correctAnswer[1]) ? .green : .yellow)
                     .foregroundColor(.black)
-                    .border(Color.black)
+                    .border(highlightPerson == .S2 ? .red : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .onSubmit{
-                        if studentAnswer[1] == correctAnswer[1] {focusedField = .p3 }
+                        if evaluateStudentAnswer(studentAnswer: studentAnswer[1], correctAnswer: correctAnswer[1]){focusedField = .p3 }
+                        highlightPerson = .S3
                     }
-                Image(systemName: studentAnswer[1] == correctAnswer[1]  ? "checkmark.square" : "square")
-                    .foregroundColor(studentAnswer[1] == correctAnswer[1] ? .green : .yellow)
+                Image(systemName: evaluateStudentAnswer(studentAnswer: studentAnswer[1], correctAnswer: correctAnswer[1]) ? "checkmark.square" : "square")
+                    .foregroundColor(evaluateStudentAnswer(studentAnswer: studentAnswer[1], correctAnswer: correctAnswer[1]) ? .green : .yellow)
             }
             HStack {
                 Spacer()
                 Text(person[2])
+                    .foregroundColor(highlightPerson == .S3 ? .red : .black)
+                    .font(highlightPerson == .S3 ? .title3.weight(.bold) : .headline.weight(.regular))
                 TextField("", text: $studentAnswer[2]).focused($focusedField, equals: .p3)
                     .frame(width: studentAnswerFrameWidth, height: 30)
-                    .background(studentAnswer[2] == correctAnswer[2] ? .green : .yellow)
+                    .background(evaluateStudentAnswer(studentAnswer: studentAnswer[2], correctAnswer: correctAnswer[2]) ? .green : .yellow)
                     .foregroundColor(.black)
-                    .border(Color.black)
+                    .border(highlightPerson == .S3 ? .red : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .onSubmit{
-                        if studentAnswer[2] == correctAnswer[2] {focusedField = .p4 }
+                        if evaluateStudentAnswer(studentAnswer: studentAnswer[2], correctAnswer: correctAnswer[2]){focusedField = .p4 }
+                        highlightPerson = .P1
                     }
-                Image(systemName: studentAnswer[2] == correctAnswer[2]  ? "checkmark.square" : "square")
-                    .foregroundColor(studentAnswer[2] == correctAnswer[2] ? .green : .yellow)
+                Image(systemName: evaluateStudentAnswer(studentAnswer: studentAnswer[2], correctAnswer: correctAnswer[2]) ? "checkmark.square" : "square")
+                    .foregroundColor(evaluateStudentAnswer(studentAnswer: studentAnswer[2], correctAnswer: correctAnswer[2]) ? .green : .yellow)
             }
             HStack {
                 Spacer()
                 Text(person[3])
+                    .foregroundColor(highlightPerson == .P1 ? .red : .black)
+                    .font(highlightPerson == .P1 ? .title3.weight(.bold) : .headline.weight(.regular))
                 TextField("", text: $studentAnswer[3]).focused($focusedField, equals: .p4)
                     .frame(width: studentAnswerFrameWidth, height: 30)
-                    .background(studentAnswer[3] == correctAnswer[3] ? .green : .yellow)
+                    .background(evaluateStudentAnswer(studentAnswer: studentAnswer[3], correctAnswer: correctAnswer[3]) ? .green : .yellow)
                     .foregroundColor(.black)
-                    .border(Color.black)
+                    .border(highlightPerson == .P1 ? .red : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .onSubmit{
-                        if studentAnswer[3] == correctAnswer[3 ]{focusedField = .p5 }
+                        if evaluateStudentAnswer(studentAnswer: studentAnswer[3], correctAnswer: correctAnswer[3]){focusedField = .p5 }
+                        highlightPerson = .P2
                     }
-                Image(systemName: studentAnswer[3] == correctAnswer[3]  ? "checkmark.square" : "square")
-                    .foregroundColor(studentAnswer[3] == correctAnswer[3] ? .green : .yellow)
+                Image(systemName: evaluateStudentAnswer(studentAnswer: studentAnswer[3], correctAnswer: correctAnswer[3]) ? "checkmark.square" : "square")
+                    .foregroundColor(evaluateStudentAnswer(studentAnswer: studentAnswer[3], correctAnswer: correctAnswer[3]) ? .green : .yellow)
             }
             HStack {
                 Spacer()
                 Text(person[4])
+                    .foregroundColor(highlightPerson == .P2 ? .red : .black)
+                    .font(highlightPerson == .P2 ? .title3.weight(.bold) : .headline.weight(.regular))
                 TextField("", text: $studentAnswer[4]).focused($focusedField, equals: .p5)
                     .frame(width: studentAnswerFrameWidth, height: 30)
-                    .background(studentAnswer[4] == correctAnswer[4] ? .green : .yellow)
+                    .background(evaluateStudentAnswer(studentAnswer: studentAnswer[4], correctAnswer: correctAnswer[4]) ? .green : .yellow)
                     .foregroundColor(.black)
-                    .border(Color.black)
+                    .border(highlightPerson == .P2 ? .red : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .onSubmit{
-                        if studentAnswer[4] == correctAnswer[4 ]{focusedField = .p6 }
+                        if evaluateStudentAnswer(studentAnswer: studentAnswer[4], correctAnswer: correctAnswer[4]){focusedField = .p6 }
+                        highlightPerson = .P3
                     }
-                Image(systemName: studentAnswer[4] == correctAnswer[4]  ? "checkmark.square" : "square")
-                    .foregroundColor(studentAnswer[4] == correctAnswer[4] ? .green : .yellow)
+                Image(systemName: evaluateStudentAnswer(studentAnswer: studentAnswer[4], correctAnswer: correctAnswer[4]) ? "checkmark.square" : "square")
+                    .foregroundColor(evaluateStudentAnswer(studentAnswer: studentAnswer[4], correctAnswer: correctAnswer[4]) ? .green : .yellow)
             }
             HStack {
                 Spacer()
                 Text(person[5])
+                    .foregroundColor(highlightPerson == .P3 ? .red : .black)
+                    .font(highlightPerson == .P3 ? .title3.weight(.bold) : .headline.weight(.regular))
                 TextField("", text: $studentAnswer[5]).focused($focusedField, equals: .p6)
                     .frame(width: studentAnswerFrameWidth, height: 30)
-                    .background(studentAnswer[5] == correctAnswer[5] ? .green : .yellow)
+                    .background(evaluateStudentAnswer(studentAnswer: studentAnswer[5], correctAnswer: correctAnswer[5]) ? .green : .yellow)
                     .foregroundColor(.black)
-                    .border(Color.black)
+                    .border(highlightPerson == .P3 ? .red : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .onSubmit{
-                        if studentAnswer[5] == correctAnswer[5 ]{ focusedField = .p1  }
+                        if evaluateStudentAnswer(studentAnswer: studentAnswer[5], correctAnswer: correctAnswer[5]){ focusedField = .p1  }
+                        highlightPerson = .S1
                     }
-                Image(systemName: studentAnswer[5] == correctAnswer[5]  ? "checkmark.square" : "square")
-                    .foregroundColor(studentAnswer[5] == correctAnswer[5] ? .green : .yellow)
+                Image(systemName: evaluateStudentAnswer(studentAnswer: studentAnswer[5], correctAnswer: correctAnswer[5]) ? "checkmark.square" : "square")
+                    .foregroundColor(evaluateStudentAnswer(studentAnswer: studentAnswer[5], correctAnswer: correctAnswer[5]) ? .green : .yellow)
             }
         }
         .background(.gray).opacity(0.7)
         .onAppear {
             currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
+            changeDependentVerb()
             setCurrentVerb()
         }
     }
