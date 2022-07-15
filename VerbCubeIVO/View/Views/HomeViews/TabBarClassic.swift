@@ -51,12 +51,16 @@ struct ScrollViewVC: View {
                         .padding(20)
                 }
                 ScrollView{
+                    NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel)){
+                        Text("Preferences")
+                    }.modifier(NavLinkModifier())
+                        .background(.orange)
                     NavigationLink(destination: ModelView(languageViewModel: languageViewModel)){
-                        Text("Model-based Verbs")
+                        Text("Model-Based Verbs")
                     }.modifier(NavLinkModifier())
                         .background(.orange)
                     NavigationLink(destination: PatternView(languageViewModel: languageViewModel)){
-                        Text("Pattern-based Verbs")
+                        Text("Pattern-Based Verbs")
                     }.modifier(NavLinkModifier())
                         .background(.yellow)
                     NavigationLink(destination: GeneralVerbView(languageViewModel: languageViewModel)){
@@ -236,13 +240,13 @@ struct ModelView: View{
                 .ignoresSafeArea(.all)
 
             VStack {
-                Text("Model-based Verb Conjugation")
+                Text("Model-Based Verbs")
                     .font(.largeTitle)
-                    .foregroundColor(.red)
+                    .foregroundColor(.black)
                 
-                
+                Spacer()
                 NavigationLink(destination: ModelLearnWrapper(languageViewModel: languageViewModel)){
-                    Text("Model-based learning")
+                    Text("Model-Based Learning")
                         .frame(minWidth: 0, maxWidth: 300)
                         .padding()
                         .foregroundColor(.white)
@@ -251,7 +255,6 @@ struct ModelView: View{
                         .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
                         .cornerRadius(10)
                 }
-                
                 
                 
 //                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
@@ -265,7 +268,7 @@ struct ModelView: View{
 //                    .cornerRadius(10)
                 
                 NavigationLink(destination: ModelQuizWrapper(languageViewModel: languageViewModel)){
-                    Text("Model-based quizzes")
+                    Text("Model-Based Quizzes")
                         .frame(minWidth: 0, maxWidth: 300)
                         .padding()
                         .foregroundColor(.white)
@@ -274,6 +277,7 @@ struct ModelView: View{
                         .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
                         .cornerRadius(10)
                 }
+                Spacer()
 
             }
         }
@@ -285,19 +289,19 @@ struct PatternView: View{
 
     var body: some View {
         ZStack{
-            Color.yellow
+            Color.green
             Image("FeatherInverted")
                 .resizable()
                 .scaledToFit()
                 .ignoresSafeArea(.all)
 
             VStack {
-                Text("Pattern-based Verb Conjugation")
+                Text("Pattern-Based Verbs")
                     .font(.largeTitle)
-                    .foregroundColor(.red)
-                
+                    .foregroundColor(.black)
+                Spacer()
                 NavigationLink(destination: PatternLearnWrapper(languageViewModel: languageViewModel)){
-                    Text("Pattern-based learning")
+                    Text("Pattern-Based Learning")
                         .frame(minWidth: 0, maxWidth: 300)
                         .padding()
                         .foregroundColor(.white)
@@ -308,7 +312,7 @@ struct PatternView: View{
                 }
                 
                 NavigationLink(destination: PatternQuizWrapper(languageViewModel: languageViewModel)){
-                    Text("Pattern-based quizzes")
+                    Text("Pattern-Based Quizzes")
                         .frame(minWidth: 0, maxWidth: 300)
                         .padding()
                         .foregroundColor(.white)
@@ -318,7 +322,7 @@ struct PatternView: View{
                         .cornerRadius(10)
                 }
                 
-                
+                Spacer()
 
             }
         }
@@ -337,10 +341,11 @@ struct GeneralVerbView: View {
                 .ignoresSafeArea(.all)
             
             VStack{
-                Text("General Verb Conjugation")
+                Text("Verbs in General")
                     .font(.largeTitle)
-                    .foregroundColor(.red)
+                    .foregroundColor(.black)
                 
+                Spacer()
                 NavigationLink(destination: GeneralVerbLearnWrapper(languageViewModel: languageViewModel)){
                     Text("General Verb Learning")
                         .frame(minWidth: 0, maxWidth: 300)
@@ -361,7 +366,7 @@ struct GeneralVerbView: View {
                         .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
                         .cornerRadius(10)
                 }
-
+                Spacer()
             }
             Spacer()
         }

@@ -7,6 +7,41 @@
 
 import SwiftUI
 
+
+struct ModelLearnWrapper: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    var body: some View {
+        ZStack{
+            LinearGradient(gradient: Gradient(colors: [
+                Color(.systemYellow),
+                Color(.systemPink),
+                Color(.systemPurple),
+            ]),
+                           startPoint: .top,
+                           endPoint: .bottomTrailing)
+            .ignoresSafeArea()
+            
+            VStack{
+                NavigationLink(destination: FeatherVerbMorphView(languageViewModel: languageViewModel)){
+                    Text("Conjugate Verbs with Same Model")
+                }.modifier(NavLinkModifier())
+                        
+                NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
+                    Text("Verb Morphing")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .model)){
+                    Text("Find Verbs with Same Model")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
+                    Text("Analyze User Verb")
+                }.modifier(NavLinkModifier())            
+            }
+        }.navigationTitle("Model-based Learning")
+    }
+}
+
 struct ModelQuizWrapper: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     var body: some View {
@@ -35,52 +70,20 @@ struct ModelQuizWrapper: View {
                 }.modifier(NavLinkModifier())
                 
                 NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelForGivenVerb)){
-                    Text("Model for Random Verb")
+                    Text("Model for Given Verb")
                 }.modifier(NavLinkModifier())
                 
                 NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveSameModelAsVerb)){
-                    Text("Verbs with Random Verb'Patts Model")
+                    Text("Verbs for Same Model")
                 }.modifier(NavLinkModifier())
                 
             }
+            
         }.navigationTitle("Model-based Quizzes")
     }
 }
 
 
-struct ModelLearnWrapper: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    var body: some View {
-        ZStack{
-            LinearGradient(gradient: Gradient(colors: [
-                Color(.systemYellow),
-                Color(.systemPink),
-                Color(.systemPurple),
-            ]),
-                           startPoint: .top,
-                           endPoint: .bottomTrailing)
-            .ignoresSafeArea()
-            
-            VStack{
-                NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .model)){
-                    Text("Find Model for User Verb")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: FeatherVerbMorphView(languageViewModel: languageViewModel)){
-                    Text("Models of a Feather")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
-                    Text("Analyze User Verb")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
-                    Text("Verb Morph View")
-                }.modifier(NavLinkModifier())
-            }
-        }.navigationTitle("Model-based Learning")
-    }
-}
           
 struct PatternLearnWrapper: View {
     @ObservedObject var languageViewModel: LanguageViewModel
@@ -134,48 +137,6 @@ struct PatternQuizWrapper: View {
     }
 }
 
-struct OddJobsView: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    var backgroundColor = Color.blue
-    var body: some View {
-        ZStack{
-            backgroundColor
-            Image("FeatherInverted")
-                .resizable()
-                .scaledToFit()
-                .ignoresSafeArea(.all)
-            VStack{
-                Text("Welcome to Odd Jobs!")
-                    .font(.largeTitle)
-                    .foregroundColor(.red)
-                
-                NavigationLink(destination: WordCollectionScreen(languageViewModel: languageViewModel)){
-                    Text("Word collections")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .likeGustar)){
-                    Text("Verbs like gustar")
-                }.modifier(NavLinkModifier())
-
-                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .weather)){
-                    Text("Weather and Time")
-                }
-                .modifier(NavLinkModifier())
-                
-                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .thirdPersonOnly)){
-                    Text("3rd Person Only")
-                }.modifier(NavLinkModifier())
-
-                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .auxiliary)){
-                    Text("Auxiliary Verbs")
-                }
-                .modifier(NavLinkModifier())
-            }
-        }
-    }
-}
-
-
 
 struct NavLinkModifier : ViewModifier {
     func body(content: Content) -> some View{
@@ -204,15 +165,11 @@ struct GeneralVerbLearnWrapper: View {
             }.modifier(NavLinkModifier())
 
             NavigationLink(destination: RightWrongVerbView(languageViewModel: languageViewModel)){
-                Text("Conjugate verb right and wrong")
+                Text("Right & Wrong")
             }.modifier(NavLinkModifier())
             
             NavigationLink(destination: UnconjugateView(languageViewModel: languageViewModel)){
                 Text("Unconjugate")
-            }.modifier(NavLinkModifier())
-            
-            NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel)){
-                Text("Mix & Match")
             }.modifier(NavLinkModifier())
             
             NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
@@ -220,7 +177,7 @@ struct GeneralVerbLearnWrapper: View {
             }.modifier(NavLinkModifier())
             
             NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
-                Text("Verb Morph View")
+                Text("Verb Morphing")
             }.modifier(NavLinkModifier())
 
         }.navigationViewStyle(StackNavigationViewStyle())
@@ -231,9 +188,6 @@ struct GeneralVerbQuizWrapper: View {
     @ObservedObject  var languageViewModel: LanguageViewModel
     var body: some View {
         VStack{
-            NavigationLink(destination: VerbCubeView(languageViewModel: languageViewModel, vccsh: VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1:  .Verb, d2: .Person))){
-                Text("VerbCube")
-            }.modifier(NavLinkModifier())
             
             NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel)){
                 Text("Mix & Match")
@@ -264,3 +218,48 @@ struct GeneralVerbQuizWrapper: View {
         }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
+
+struct OddJobsView: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    var backgroundColor = Color.purple
+    var body: some View {
+        ZStack{
+            backgroundColor
+            Image("FeatherInverted")
+                .resizable()
+                .scaledToFit()
+                .ignoresSafeArea(.all)
+            VStack{
+                Text("Odds and Ends")
+                    .font(.largeTitle)
+                    .foregroundColor(.black)
+                Spacer()
+                NavigationLink(destination: WordCollectionScreen(languageViewModel: languageViewModel)){
+                    Text("Word collections")
+                }.modifier(NavLinkModifier())
+                
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .likeGustar)){
+                    Text("Verbs like gustar")
+                }.modifier(NavLinkModifier())
+
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .weather)){
+                    Text("Weather and Time")
+                }
+                .modifier(NavLinkModifier())
+                
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .thirdPersonOnly)){
+                    Text("3rd Person Only")
+                }.modifier(NavLinkModifier())
+
+                NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .auxiliary)){
+                    Text("Auxiliary Verbs")
+                }
+                .modifier(NavLinkModifier())
+                Spacer()
+            }
+        }
+    }
+}
+
+
+

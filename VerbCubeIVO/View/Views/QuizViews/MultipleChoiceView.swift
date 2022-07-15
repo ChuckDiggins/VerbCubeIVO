@@ -70,6 +70,8 @@ struct MultipleChoiceView: View {
     
     var body: some View {
         ZStack{
+            Color("GeneralColor")
+                .ignoresSafeArea()
             VStack{
                 
                 HStack{
@@ -381,6 +383,16 @@ struct MultipleChoiceView: View {
         currentTenseString = currentTense.rawValue
     }
     
+    func getSubjectStringAtPersonIndex(index : Int)->String{
+        let person = Person.all[index]
+        return person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+    }
+    
+    func getSubjectStringAtPerson(person : Person)->String{
+        return person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+    }
+    
+    
     func setNewPerson(){
         currentPersonIndex += 1
         //        print("setNewPerson: currentPersonIndex = \(currentPersonIndex), personMixString.count = \(personMixString.count)")
@@ -388,8 +400,8 @@ struct MultipleChoiceView: View {
             currentPersonIndex = 0
             setNewTense()
         }
-        leftHandString = subjunctiveParticiple + " " + personMixString[currentPersonIndex].personString
         currentPerson =  personMixString[currentPersonIndex].person
+        leftHandString = subjunctiveParticiple + " " + getSubjectStringAtPerson(person: currentPerson)
         currentPersonString = leftHandString
     }
     
@@ -424,47 +436,19 @@ struct MultipleChoiceView: View {
     func resetPersons(){
         personMixString.shuffle()
         currentPersonIndex = 0
-        leftHandString = subjunctiveParticiple + " " + personMixString[currentPersonIndex].personString
         currentPerson =  personMixString[currentPersonIndex].person
+        leftHandString = subjunctiveParticiple + " " + getSubjectStringAtPerson(person: currentPerson)
     }
     
     
     func fillPersonMixStruct(){
         personMixString.removeAll()
-        switch currentLanguage {
-        case .Spanish:
-            personMixString.append(PersonMixStruct(person: .S1, personString: "yo"))
-            personMixString.append(PersonMixStruct(person: .S2, personString: "tú"))
-            personMixString.append(PersonMixStruct(person: .S3, personString: "él"))
-            personMixString.append(PersonMixStruct(person: .P1, personString: "nosotros"))
-            personMixString.append(PersonMixStruct(person: .P2, personString: "vosotros"))
-            personMixString.append(PersonMixStruct(person: .P3, personString: "ellos"))
-            if allSubjects {
-                personMixString.append(PersonMixStruct(person: .S3, personString: "ella"))
-                
-                personMixString.append(PersonMixStruct(person: .S3, personString: "usted"))
-                
-                personMixString.append(PersonMixStruct(person: .P1, personString: "nosotras"))
-                
-                personMixString.append(PersonMixStruct(person: .P2, personString: "vosotras"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "ellos"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "ellas"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "ustedes"))
-            }
-        case .French:
-            personMixString.append(PersonMixStruct(person: .S1, personString: "je"))
-            personMixString.append(PersonMixStruct(person: .S2, personString: "tu"))
-            personMixString.append(PersonMixStruct(person: .S3, personString: "il"))
-            personMixString.append(PersonMixStruct(person: .P1, personString: "nous"))
-            personMixString.append(PersonMixStruct(person: .P2, personString: "vous"))
-            personMixString.append(PersonMixStruct(person: .P3, personString: "ils"))
-            if allSubjects {
-                personMixString.append(PersonMixStruct(person: .S3, personString: "elle"))
-                personMixString.append(PersonMixStruct(person: .S3, personString: "on"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "elles"))
-            }
-        default: break
-        }
+        personMixString.append(PersonMixStruct(person: .S1, personString: getSubjectStringAtPerson(person : .S1)))
+        personMixString.append(PersonMixStruct(person: .S2, personString: getSubjectStringAtPerson(person : .S2)))
+        personMixString.append(PersonMixStruct(person: .S3, personString: getSubjectStringAtPerson(person : .S3)))
+        personMixString.append(PersonMixStruct(person: .P1, personString: getSubjectStringAtPerson(person : .P1)))
+        personMixString.append(PersonMixStruct(person: .P2, personString: getSubjectStringAtPerson(person : .P2)))
+        personMixString.append(PersonMixStruct(person: .P3, personString: getSubjectStringAtPerson(person : .P3)))
     }
 }
 

@@ -102,7 +102,7 @@ struct QuizVerbSingleView: View {
             }
             correctAnswer[i] = correctAnswerStr
             studentAnswer[i] = studentStr
-            person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine, verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i]))
+            person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i]))
             //            print("setCurrentVerb:  studentAnswer: \(studentAnswer[i]), correctAnswer: \(correctAnswer[i])")
         }
         fillComment()

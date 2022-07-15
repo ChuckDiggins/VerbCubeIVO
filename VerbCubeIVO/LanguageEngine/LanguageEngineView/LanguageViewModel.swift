@@ -14,12 +14,12 @@ import RealmSwift
 //déchoir
 class LanguageViewModel : ObservableObject {
     var insertQueQuiBeforeSubjunctive = true
-    var useFeminineSubjectPronouns = true
+    //var useFeminineSubjectPronouns = true
     var useUstedForS3 = false
     var useVoceForm = false
     var useAlertMode = true
     
-    @Published var spt = SubjectPronounType.maleInformal
+//    @Published var spt = SubjectPronounType.maleInformal
     
     @Published var languageEngine = LanguageEngine()
    var currentLanguage = LanguageType.Spanish
@@ -51,11 +51,12 @@ class LanguageViewModel : ObservableObject {
     }
     
     func setSubjectPronounType(spt: SubjectPronounType){
-        self.spt = spt
+        return languageEngine.setSubjectPronounType(spt: spt)
     }
     
     func getSubjectPronounType()->SubjectPronounType{
-       spt
+        var spt = languageEngine.getSubjectPronounType()
+        return spt
     }
     
     func getLanguageEngine()->LanguageEngine{
@@ -63,8 +64,7 @@ class LanguageViewModel : ObservableObject {
     }
     
     func getSubjectGender()->Gender{
-        if spt == .femaleFormal || spt == .femaleInformal { return .feminine }
-        return .masculine
+        languageEngine.getSubjectGender()
     }
     
     func verbsOfAFeather(verbList: [Verb])->Bool{

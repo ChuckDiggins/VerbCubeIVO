@@ -20,8 +20,8 @@ extension VerbsOfAFeather {
             
             Divider()
             switch featherMode {
-            case .model: Text("The following \(getActiveCount()) verbs with the same conjugation model were found:").bold()
-            case .pattern:  Text("The following \(getActiveCount()) verbs with the same conjugation pattern were found:").bold()
+            case .model: Text("The following \(featherVerbList.count) verbs with the same conjugation model were found:").bold()
+            case .pattern:  Text("The following \(featherVerbList.count) verbs with the same conjugation pattern were found:").bold()
             }
         }
     }
@@ -39,6 +39,7 @@ struct VerbsOfAFeather: View {
     @State var featherMode : FeatherMode
     @State var newVerbString = ""
     @State var currentVerb = Verb()
+    @State var selectedVerb = Verb()
     @State var criticalVerbForms = [String]()
     @State private var isDarkMode = false
     @State private var isNameValid = false
@@ -46,7 +47,7 @@ struct VerbsOfAFeather: View {
     @State private var languageString = "Agnostic"
     @State private var currentLanguage = LanguageType.Agnostic
     @State private var featherVerbList = [Verb]()
-    @State private var activeList = [Bool]()
+//    @State private var activeList = [Bool]()
     @State private var patternList = [SpecialPatternStruct]()
     @State private var activeCount = 0
     @State private var languageChanged = false
@@ -58,47 +59,53 @@ struct VerbsOfAFeather: View {
     @FocusState private var textFieldFocus : Bool
     
     var body : some View {
-//        languageButton()                 This was convenient for me but not for typical users
-        Button{
-            if ( featherMode == .pattern ){ featherMode = .model }
-            else { featherMode = .pattern }
-            switch featherMode {
-            case .model:  featherModeHeader = "Feather Mode: Model"
-            case .pattern:  featherModeHeader = "Feather Mode: Pattern"
-            }
-        } label: {
-            Text(featherModeHeader)
-        }
-        .frame(width: 150, height: 50)
-        .padding(.leading, 10)
-        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-        .cornerRadius(10)
-        .foregroundColor(.yellow)
-        
-        VStack {
-            processTextField()
-            if isNameValid {
-                VStack{
-                    Button(action: {
-                        analyzeAndFind()
-                    }, label: {
-                        Text("Analyze ")
-                            .padding(.all, 2 )
-                            .background(Color.orange)
-                            .cornerRadius(10)
-                    })
-                    processAndSaveView()
+        ZStack{
+            Color(.orange)
+                .ignoresSafeArea()
+            VStack {
+                switch featherMode {
+                case .model:  Text("Find Verbs with Same Model").font(.title2).bold()
+                case .pattern: Text("Find Verbs with Same Pattern").font(.title2).bold()
                 }
+                processTextField()
+                if isNameValid {
+                    VStack{
+                        Button(action: {
+                            analyzeAndFind()
+                        }, label: {
+                            Text("Analyze ")
+                                .padding(.all, 2 )
+                                .background(Color.orange)
+                                .cornerRadius(10)
+                        })
+                        processAndSaveView()
+                    }
+                }
+                //if not valid name,
+                else {
+                    showExampleView()
+                }
+                
+                if isAnalyzed { BirdsOfAFeatherList() }
+                Spacer()
+                
+                if selectedVerb.getWordAtLanguage(language: currentLanguage).count > 0 {
+                    NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "")){
+                        HStack{
+                            Text("Show me ")
+                            Text(selectedVerb.getWordAtLanguage(language: currentLanguage)).bold()
+                        }
+                    }.frame(width: 300, height: 50)
+                        .padding(2)
+                        .buttonStyle(.bordered)
+                        .background(.green)
+                        .tint(.black)
+                        .cornerRadius(10)
+                }
+                Spacer()
             }
-            //if not valid name,
-            else {
-                showExampleView()
-            }
-            
-            if isAnalyzed { BirdsOfAFeatherList() }
-            Spacer()
         }
-        //            .navigationTitle("Verbs of a Feather")
+//        .navigationTitle("Verbs with Same Model")
         Spacer()
             .onAppear(){
                 switch featherMode {
@@ -112,20 +119,10 @@ struct VerbsOfAFeather: View {
             }
     }
     
-    func getActiveCount()->Int{
-        var count = 0
-        for i in 0..<activeList.count{
-            if activeList[i] { count += 1 }
-        }
-        return count
-    }
-    
-    
-    
     @ViewBuilder
     func processAndSaveView()->some View{
         HStack {
-            if getActiveCount() > 2 {
+            if featherVerbList.count > 2 {
                 HStack{
                     Button(action: {
                         saveFeatherListToActiveList()
@@ -144,25 +141,18 @@ struct VerbsOfAFeather: View {
     
     @ViewBuilder
     func showExampleView()->some View{
-        VStack{
-            Text("Type in an infinitive.  It can be reflexive and part of a verb phrase.")
-            Text("It can be reflexive and part of a verb phrase.")
-            Text("\nExamples: ")
-            Text("            encontrar").font(.callout).fontWeight(.bold)
-            Text("            darse con").font(.callout).fontWeight(.bold)
-            Text("            xxxeguirse de").font(.callout).fontWeight(.bold)
-        }.frame(minWidth: 0, maxWidth: 400)
-                .frame(height: 200)
-                .background(.yellow)
-                .foregroundColor(.black)
-                .cornerRadius(10)
-                .padding(20)
+        Text("Type in any verb or verb phrase")
+            .font(.callout)
+            .foregroundColor(.black)
+            .background(.yellow)
+        Spacer()
     }
-
+    
     @ViewBuilder
     func processTextField()->some View{
         VStack{
             HStack{
+                Text("🔍")
                 TextField("Enter verb or verb phrase", text: $newVerbString).focused($textFieldFocus)
                     .disableAutocorrection(true)
                     .background(Color.black).opacity(0.8)
@@ -193,20 +183,9 @@ struct VerbsOfAFeather: View {
         }
     }
     
-
-    func saveFeatherListToActiveList(){
-        var activeVerbList = [Verb]()
-        for i in 0..<featherVerbList.count {
-            if activeList[i] { activeVerbList.append(featherVerbList[i]) }
-        }
-        languageViewModel.setFilteredVerbList(verbList: activeVerbList)
-    }
     
-    func selectRandom12()->[Verb]{
-        var randomVerbList = [Verb]()
-        randomVerbList = featherVerbList.shuffled()
-        for i in 0..<12 { featherVerbList[i] = randomVerbList[i] }
-        return featherVerbList
+    func saveFeatherListToActiveList(){
+        languageViewModel.setFilteredVerbList(verbList: featherVerbList)
     }
     
     func saveAndExit(){
@@ -221,7 +200,7 @@ struct VerbsOfAFeather: View {
         let result =  analyze(verbString: newVerbString)
         currentVerb = result.0
         featherVerbList = result.1
-        activeList.removeAll()
+//        activeList.removeAll()
         
         switch featherMode {
         case .model:
@@ -250,8 +229,6 @@ struct VerbsOfAFeather: View {
             
         }
         
-        for _ in 0..<featherVerbList.count{
-            activeList.append(true)}
         isAnalyzed = true
         hideKeyboard()
     }
@@ -336,15 +313,13 @@ struct VerbsOfAFeather: View {
                 LazyVGrid(columns: gridItems, spacing: 5){
                     ForEach(0..<featherVerbList.count, id: \.self){ index in
                         Button(featherVerbList[index].getWordAtLanguage(language: currentLanguage)){
-                            activeList[index].toggle()
+                            selectedVerb = featherVerbList[index]
                         }
                         .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                        .background(activeList[index] ? .green : .red)
-                        .foregroundColor(activeList[index] ? .black : .yellow)
+                        .background(.green )
+                        .foregroundColor(.black )
                         .cornerRadius(8)
                         .font(Font.callout)
-                        //                        WordCellButton(wordText: featherVerbList[index].getWordAtLanguage(language: currentLanguage), isActive:
-                        //                                        activeList[index] )
                     }
                 }
                 .padding()

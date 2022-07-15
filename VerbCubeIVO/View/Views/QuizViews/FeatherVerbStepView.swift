@@ -35,7 +35,7 @@ struct FeatherVerbStepView: View {
                                  "", "", "", "", "", ""]
     @State var showPhrase = true
     @State var needsRefresh = false
-    @State var maxVerbCount = 10
+    @State var maxVerbCount = 8
     @State var finalMessage = ""
     @State var simpleAlert = false
     @State var currentVerbModelString = ""
@@ -77,16 +77,17 @@ struct FeatherVerbStepView: View {
         ZStack{
             LinearGradient(gradient: Gradient(colors: [
                 Color(.systemYellow),
-                Color(.systemPink),
-                Color(.systemPurple),
+                Color(.systemOrange),
+//                Color(.systemPurple),
             ]),
                            startPoint: .top,
                            endPoint: .bottomTrailing)
             .ignoresSafeArea()
             VStack {
+                Text("Model Verb Step").font(.title).foregroundColor(.black)
                 showHeaderInfo()
                 showActionButtons()
-                showStudentEditWordSingle()
+//                showStudentEditWordSingle()
                 showObservationString()
                 showVerbs()
                 Spacer()
@@ -104,7 +105,8 @@ struct FeatherVerbStepView: View {
         HStack(spacing: 0){
             Text(showMeComment)
                 .foregroundColor(.black)
-        }.padding()
+        }
+        .frame(width: 400, height: 30)
         .background(.yellow)
         .font(.callout)
     }
@@ -160,20 +162,56 @@ struct FeatherVerbStepView: View {
             }.environment(\.defaultMinListRowHeight, 15) // HERE
                 Spacer()
         }
-        .navigationBarTitle ("Verb model: \(modelVerb): \(verbList.count) verbs", displayMode: .inline)
     }
     
     fileprivate func showActionButtons()-> some View {
         HStack{
-            Button("Ending🔴", action: { stepEnding() })
-            Button("Stem🟡", action: { stepStem() })
-                .disabled(disableStem)
-            Button("Spell🟢", action: { stepOrtho() })
-                .disabled(disableOrtho)
-            Button("Irregular🔵", action: {  })
-                .disabled(disableIrregular)
             Spacer()
-        }
+            if !disableStem {
+                Button{
+                    stepStem()
+                } label: {
+                    HStack(spacing: 0){
+                        Text("Stem").foregroundColor(.black)
+                        Image(systemName: "rectangle.and.hand.point.up.left.filled").foregroundColor(.yellow).background(.black)
+                    }
+                }
+            }
+            if !disableOrtho {
+                Button{
+                    stepOrtho()
+                } label: {
+                    HStack(spacing: 0){
+                        Text("Spell").foregroundColor(.black)
+                        Image(systemName: "rectangle.and.hand.point.up.left.filled").foregroundColor(.green).background(.black)
+                    }
+                }
+                
+            }
+
+            if !disableIrregular {
+                Button{
+                    //
+                } label: {
+                    HStack(spacing: 0){
+                        Text("Irregular").foregroundColor(.black)
+                        Image(systemName: "rectangle.and.hand.point.up.left.filled").foregroundColor(.blue).background(.black)
+                    }
+                }
+            }
+            
+            Button{
+                stepEnding()
+            } label: {
+                HStack(spacing: 0){
+                    Text("Ending").foregroundColor(.black)
+                    Image(systemName: "rectangle.and.hand.point.up.left.filled").foregroundColor(.red).background(.black)
+                }
+            }
+            
+            Spacer()
+            
+        }.background(.white)
        
     }
     
@@ -360,7 +398,7 @@ struct FeatherVerbStepView: View {
             verbCount = verbList.count
         }
         currentTenseString = languageViewModel.getCurrentTense().rawValue
-        currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine)
+        currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
         setVerbStringsAtPerson(person: currentPerson)
         setBescherelleModelInfo()
         nonEditableText = morphInfoList[0].root
@@ -370,7 +408,7 @@ struct FeatherVerbStepView: View {
         disableOrtho = morphInfoList[0].orthoFrom.isEmpty
         disableStem = morphInfoList[0].stemFrom.isEmpty
         checkConjugationComplete()
-        showMeComment = "Click on colored button above to start conjugating"
+        showMeComment = "Click on ↖️ above to start conjugating"
     }
     
     
@@ -430,82 +468,90 @@ struct FeatherVerbStepView: View {
         return persons[personIndex]
     }
     
-//    fileprivate func showInstructionBar() -> some View {
-//        HStack{
-//            Button(action: {
-//                showPreviousInstruction()
-//            }){
-//                Image(systemName: "arrowtriangle.backward")
-//            }
-//            Button{
-//                showNextInstruction()
-//            } label: {
-//                Text("\(instructionString)")
-//                    .background(.yellow)
-//                    .foregroundColor(.black)
-//
-//
-//            }
-//            Button(action: {
-//                showNextInstruction()
-//            }){
-//                Image(systemName: "arrowtriangle.forward")
-//            }
-//            .padding()
-//        }.frame(width: 300, height:30)
-//    }
-//
     fileprivate func showHeaderInfo() -> some View {
-        VStack{
-            HStack{
-                Button(action: {
-                    currentTenseString = languageViewModel.getNextTense().rawValue
-                    setVerbStringsAtPerson(person: currentPerson)
-                }){
-                    Text("\(currentTenseString)")
+        return VStack{
+            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+                HStack{
+                    Text("Verb model:")
+                    Text(modelVerb)
+                    Spacer()
+                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
                 }
+                .frame(width: 350, height: 30)
                 .font(.callout)
                 .padding(2)
-                .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
+                .background(Color.orange)
                 .foregroundColor(.black)
                 .cornerRadius(4)
+            }
+            .task {
+                setBescherelleModelInfo()
+            }
+            Button(action: {
+                currentTenseString = languageViewModel.getNextTense().rawValue
+                setVerbStringsAtPerson(person: currentPerson)
+                setMorphStructsAtPerson(person: currentPerson)
+            }){
+                Text("Tense: \(currentTenseString)")
                 Spacer()
-                NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-                    Text("New Model")
-                }.font(.callout)
-                    .padding(2)
-                    .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .foregroundColor(.black)
-                    .cornerRadius(4)
+                Image(systemName: "rectangle.and.hand.point.up.left.filled")
+            }
+            .frame(width: 350, height: 30)
+            .font(.callout)
+            .padding(2)
+            .background(Color.orange)
+            .foregroundColor(.black)
+            .cornerRadius(4)
+            Button(action: {
+                currentPerson = getNextPerson()
+                currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+                setMorphStructsAtPerson(person: currentPerson)
+                currentPerson = getNextPerson()
+                setVerbStringsAtPerson(person: currentPerson)
+            }){
+                Text("Person: \(currentPersonString)")
+                Spacer()
+                Image(systemName: "rectangle.and.hand.point.up.left.filled")
+            }
+            .frame(width: 350, height: 30)
+            .font(.callout)
+            .padding(2)
+            .background(Color.orange)
+            .foregroundColor(.black)
+            .cornerRadius(4)
+            
+            HStack{
                 Button{
                     shuffleVerbList()
                 } label: {
                     Text("Shuffle")
-                }.font(.callout)
+                    Spacer()
+                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                }
+                .frame(width: 150, height: 30)
+                .font(.callout)
                     .padding(2)
                     .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
                     .foregroundColor(.black)
                     .cornerRadius(4)
-                    .onTapGesture {
-                        print("Trying to shuffle")
-                    }
                 
-                Spacer()
-                Button(action: {
-                    currentPerson = getNextPerson()
-                    currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine)
-                    setVerbStringsAtPerson(person: currentPerson)
-                }){
-                    Text("\(currentPersonString) form")
+                if verbString.count > 1 {
+                    NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "")){
+                        HStack{
+                            Text("Show me ")
+                            Text(modelVerb).bold()
+                        }
+                    }.frame(width: 300, height: 50)
+                        .padding(2)
+                        .buttonStyle(.bordered)
+                        .background(.green)
+                        .tint(.black)
+                        .cornerRadius(10)
                 }
-                .font(.callout)
-                .padding(2)
-                .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                .foregroundColor(.black)
-                .cornerRadius(4)
-            }.padding(.horizontal, 20)
-
+            }
         }
+        
+       
     }
 
 }

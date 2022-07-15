@@ -50,29 +50,33 @@ struct AnalyzeUserVerbView: View {
     }
     
     var body : some View {
-        VStack{
-            VStack {
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 1.0)){
-                        languageChanged.toggle()
-                    }
-                    changeLanguage()
-                }){
-                    Text(currentLanguage.rawValue)
-                        .frame(width: 100, height: 30)
-                        .padding(10)
-                        .foregroundColor(.white)
-                        .background(languageChanged ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        .shadow(radius: 3)
-                }
-            }
+        ZStack{
+            Color(.orange)
+                .ignoresSafeArea()
+//        VStack{
+//            VStack {
+//                Button(action: {
+//                    withAnimation(.easeInOut(duration: 1.0)){
+//                        languageChanged.toggle()
+//                    }
+//                    changeLanguage()
+//                }){
+//                    Text(currentLanguage.rawValue)
+//                        .frame(width: 100, height: 30)
+//                        .padding(10)
+//                        .foregroundColor(.white)
+//                        .background(languageChanged ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                        .shadow(radius: 3)
+//                }
+//            }
             VStack {
                 VStack {
                     VStack {
-                        Text("Model-Based Verb Analysis").font(.headline).bold()
+                        Text("Analyze User Verb").font(.title).bold()
                         HStack{
-                        TextField("Enter verb or verb phrase", text: $newVerbString,
+                            Text("🔍")
+                        TextField("", text: $newVerbString,
                                   onEditingChanged: { changed in
                             print("onEditingChanged: \(changed)")
                         }){
@@ -174,9 +178,9 @@ struct AnalyzeUserVerbView: View {
                 .onAppear(){
                     currentLanguage = languageViewModel.getCurrentLanguage()
                 }
-            }
+//            }
+        }
         .padding(20)
-        .background(Color.gray)
         .padding(.all, 8)
         Spacer()
         

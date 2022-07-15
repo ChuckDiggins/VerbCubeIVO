@@ -209,7 +209,7 @@ class VerbCubeHandlerClass {
         case .Tense:
             for j in 0..<tenses.count {list.append(tenses[j].rawValue)}
         case .Person:
-            for j in 0..<persons.count { list.append(persons[j].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))}
+            for j in 0..<persons.count { list.append(persons[j].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: false))}
         }
         return list
     }
@@ -222,7 +222,7 @@ class VerbCubeHandlerClass {
         case .Tense:
             str = currentTense.rawValue
         case .Person:
-            str = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)
+            str = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
         }
         return str
         

@@ -49,33 +49,12 @@ struct BehavioralVerbView: View {
 //        NavigationView{
         VStack{
             HStack{
-                Text("Verb Behavior Model")
+                Text("Verb Behavior Model:")
                 Text(behaviorType.rawValue)
                     .padding(2)
                     .cornerRadius(4)
-            }
-            .background(Color.yellow)
-                .foregroundColor(.black)
-                .frame(width: 350, height: 40)
-            
-            HStack{
-                Button{
-                    changeDependentVerb()
-                    setCurrentVerb()
-                } label: {
-                    HStack{
-                        Text("Dependent verb:")
-                        Text(dependentVerb.getWordAtLanguage(language: currentLanguage))
-                    }
-                    .padding(2)
-//                        .cornerRadius(4)
-//                        .bold()
-//                        .font(.title)
-//                        .foregroundColor(.black)
-//                        .background(.yellow)
-//                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                        .shadow(radius: 3)
-                }
+                    .font(Font.headline.weight(.bold))
+                Text(" ")
                 Button{
                     showMeCorrectAnswers.toggle()
                 } label: {
@@ -88,6 +67,32 @@ struct BehavioralVerbView: View {
                         .shadow(radius: 3)
                         .padding(10)
                 }
+            }
+            .background(Color.yellow)
+                .foregroundColor(.black)
+                .frame(width: 350, height: 40)
+            
+            HStack{
+                if behaviorType == .auxiliary {
+                    Button{
+                        changeDependentVerb()
+                        setCurrentVerb()
+                    } label: {
+                        HStack{
+                            Text("Dependent verb:")
+                            Text(dependentVerb.getWordAtLanguage(language: currentLanguage))
+                        }
+                        .padding(2)
+                        //                        .cornerRadius(4)
+                        //                        .bold()
+                        //                        .font(.title)
+                        //                        .foregroundColor(.black)
+                        //                        .background(.yellow)
+                        //                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        //                        .shadow(radius: 3)
+                    }
+                }
+                
             }
             //show relevant tenses
             VStack{
@@ -266,11 +271,11 @@ struct BehavioralVerbView: View {
         }
         else if behaviorType == .thirdPersonOnly {
             if i == 2 || i == 5 {
-                return subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine, verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i])) }
+                return subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i])) }
             return ""
         }
         else if behaviorType == .auxiliary {
-            return subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine, verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i]))
+            return subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(),subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i]))
         }
         return ""
     }

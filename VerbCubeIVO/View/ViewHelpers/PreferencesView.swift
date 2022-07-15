@@ -6,103 +6,69 @@
 //
 
 import SwiftUI
-
-enum SubjectPronounType : String {
-    case maleFormal = "male formal"
-    case femaleFormal = "female formal"
-    case maleInformal = "male informal"
-    case femaleInformal = "female informal"
-}
+import JumpLinguaHelpers
 
 struct PreferencesView: View {
-    @EnvironmentObject var languageViewModel: LanguageViewModel
-    @State var verbCount = 6
-    @State var preferredVerbType = PreferredVerbType.All
+    @ObservedObject var languageViewModel: LanguageViewModel
+    @State var currenSubjectPronounType = SubjectPronounType.all
+    @State var currenSubjectPronounTypeString = "whatever"
     
     var body: some View {
-        NavigationView {
-            VStack {
-                NavigationLink(destination: SubjectButtons(selected: languageViewModel.getSubjectPronounType())){
-                    Text("Subject Type: \(languageViewModel.getSubjectPronounType().rawValue)")
-                }.frame(width: 200, height: 50)
-                .padding(.leading, 10)
-                .background(Color.green.opacity(0.5))
-                .foregroundColor(.yellow)
-                .cornerRadius(10)
 
-                VStack(spacing: 25) {
-                    Image(systemName: "globe")
-                        .font(.largeTitle)
-                    Text("Preferences")
-                        .font(.title)
-                    Text("Introduction")
-                        .foregroundColor(.gray)
-                    Text("Insert que/qui before subjunctive")
-                    Text("Use present progressive for English present tense")
-                }
-                .font(.caption)
-                .padding(.top, 25)
-                .foregroundColor(.black)
-                .background(.yellow)
-                Spacer()
-            }
-            // This creates a title in your nav bar
-            .navigationBarTitle(Text("Program preferences"))
-            .edgesIgnoringSafeArea(.bottom)
-        }
-    }
-}
-
-struct SubjectButtons : View {
-    @EnvironmentObject var languageViewModel: LanguageViewModel
-    @State var selected : SubjectPronounType
-    
-    let sptList = [SubjectPronounType.maleFormal, .maleInformal, .femaleFormal, .femaleInformal]
-    
-    var body: some View {
         ZStack{
-            Image("white cube").frame(width: 100, height:100).opacity(0.3)
-            VStack(alignment: .leading, spacing: 2){
-                VStack{
-                    HStack{
-                        Text("Preferred subject pronouns: ")
-                        Text("\(selected.rawValue)")
-                    }
-                }.foregroundColor(.black)
-                Divider()
-                ForEach(sptList, id: \.self){ spt in
-                    Button(action: {
-                        selected = spt
-                        languageViewModel.setSubjectPronounType(spt: spt)
-                    }) {
-                        Text("\(spt.rawValue))")
-                            .font(.title)
-                        Spacer()
-                        ZStack{
-                            Circle().fill(Color.red.opacity(0.5)).frame(width: 12, height: 12)
-                            if self.selected == spt {
-                                Circle().fill(Color.blue.opacity(0.5)).frame(width: 12, height: 12)
-                            }
-                        }
-                    }
-                }
-            }
+            Color("GeneralColor")
+                .ignoresSafeArea()
             
+            VStack{
+            HStack{
+            Text("Preferences")
+                .font(.title)
+                Image(systemName: "globe")
+                    .font(.largeTitle)
+                
+            }
+                VStack(spacing: 25) {
+                    
+                    NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel)){
+                        Text("SetTenses")
+                    }.frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.green)
+                    .foregroundColor(.black)
+                    .cornerRadius(10)
+
+                    Button{
+                        switch languageViewModel.getSubjectPronounType() {
+                        case .maleInformal:
+                            languageViewModel.setSubjectPronounType(spt: .femaleInformal)
+                            currenSubjectPronounType = languageViewModel.getSubjectPronounType()
+                            currenSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
+                        case .femaleInformal:
+                            languageViewModel.setSubjectPronounType(spt: .maleInformal)
+                            currenSubjectPronounType = languageViewModel.getSubjectPronounType()
+                            currenSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
+                        default:
+                            languageViewModel.setSubjectPronounType(spt: .maleInformal)
+                        }
+                    } label: {
+                        Text("Subject Type: \(languageViewModel.getSubjectPronounType().rawValue)")
+                            .frame(minWidth: 0, maxWidth: 400)
+                            .frame(height: 50)
+                            .background(currenSubjectPronounType == .maleInformal ? .black: .red)
+                            .foregroundColor(.yellow)
+                            .cornerRadius(10)
+                            .padding(20)
+                    }
+                    
+                }
+                Spacer()
+            }.onAppear{
+                currenSubjectPronounType = languageViewModel.getSubjectPronounType()
+                currenSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
+            }
         }
-        .padding(.vertical)
-        .padding(.horizontal,25)
-//        .padding(.bottom, (UIApplication.shared.windows.last?.safeAreaInsets.bottom)! + 15)
-        .background(Color.yellow)
-        .cornerRadius(30)
     }
 }
-//    Button(action: {
-//        currentTense = languageViewModel.getLanguageEngine().getNextTense()
-//        currentTenseString = currentTense.rawValue
-//        setCurrentVerb()
-//    }){
-//        Text("Next tense")
-//    }
 
 struct VerbTypeStruct : Hashable {
     let id = 0
@@ -150,8 +116,8 @@ enum PreferredVerbType : String, CaseIterable {
 }
 
 
-struct PreferencesView_Previews: PreviewProvider {
-    static var previews: some View {
-        PreferencesView()
-    }
-}
+//struct PreferencesView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PreferencesView()
+//    }
+//}

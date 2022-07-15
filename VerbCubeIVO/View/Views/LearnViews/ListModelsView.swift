@@ -52,15 +52,16 @@ struct ListModelsView: View {
             
             LazyVGrid(columns: gridItems, spacing: 5){
                 ForEach (0..<modelStructList.count, id: \.self){ i in
-                    Button{
-                        selectedModel(index: i)
-                    } label: {
-                        HStack{
-                            Text(modelStructList[i].model)
-                            Text(": \(modelStructList[i].count)").foregroundColor(.red)
+                    if modelStructList[i].count > 0 {
+                        Button{
+                            selectedModel(index: i)
+                        } label: {
+                            HStack{
+                                Text(modelStructList[i].model)
+                                Text(": \(modelStructList[i].count)").foregroundColor(.red)
+                            }
                         }
                     }
-                    
                 }
                 .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
                 .background(backgroundColor)

@@ -211,6 +211,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
             for j in 0..<tenses.count {list.append(tenses[j].rawValue)}
         case .Person:
             for j in 0..<persons.count { list.append(persons[j].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3))}
+
         }
         return list
     }

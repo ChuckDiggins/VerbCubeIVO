@@ -139,7 +139,7 @@ struct QuizVerbView: View {
 //            if !studentAnswerToggle {
 //                studentAnswer = studentAnswerCopy
 //            }
-            person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine, verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i]))
+            person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i]))
 //            print("setCurrentVerb:  studentAnswer: \(studentAnswer[i]), correctAnswer: \(correctAnswer[i])")
         }
     }
@@ -183,7 +183,7 @@ struct QuizVerbView: View {
 //                studentStr = correctAnswerStr
 //            }
 //            saoList.append(StudentAnswerObject(studentAnswer: studentStr, correctAnswer: correctAnswerStr))
-//            person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine, verbStartsWithVowel: vu.startsWithVowelSound(characterArray: vvm[i]))
+//            person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(),subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: vvm[i]))
 //        }
 //    }
    

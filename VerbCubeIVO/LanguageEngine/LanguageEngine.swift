@@ -21,7 +21,7 @@ class LanguageEngine : ObservableObject {
     private var currentTenseIndex = 0
     private var currentPersonIndex = 0
     
-    var tenseList = [Tense.present, .preterite, .imperfect, .conditional, .presentSubjunctive, .imperfectSubjunctiveRA]
+    var tenseList = [Tense.present, .preterite, .imperfect, .conditional, .presentSubjunctive]
     var verbList = [Verb]()
     
     var currentFilteredVerbIndex = 0
@@ -39,6 +39,7 @@ class LanguageEngine : ObservableObject {
     var m_jsonDictionaryManager = JSONDictionaryManager()
     private var verbModelManager = VerbModelManager()
     private var tenseManager = TenseManager()
+    var subjectPronounType = SubjectPronounType.maleInformal
 //    private var wsp : ViperWordStringParser!
     private var m_wsp : WordStringParser!
     
@@ -197,7 +198,7 @@ class LanguageEngine : ObservableObject {
         createAndConjugateAgnosticVerb(verb: currentVerb, tense: tense)
         for p in 0..<6 {
             let person = Person.allCases[p]
-            print("Person: \(person.getSubjectString(language: getCurrentLanguage(), gender: .masculine))")
+            print("Person: \(person.getSubjectString(language: getCurrentLanguage(), subjectPronounType: getSubjectPronounType()))")
         }
     }
     
@@ -223,7 +224,7 @@ class LanguageEngine : ObservableObject {
             cs.verbForm = createAndConjugateAgnosticVerb(verb: verb, tense: cs.tense, person: cs.person)
             cs.verbForm += " " + residualPhrase
             putCriticalStruct(index: index, criticalStruct: cs)
-            print("\(cs.person.getSubjectString(language: getCurrentLanguage(), gender: .masculine)), \(cs.verbForm), \(cs.tense.rawValue), \(cs.comment)")
+            print("\(cs.person.getSubjectString(language: getCurrentLanguage(), subjectPronounType: getSubjectPronounType())), \(cs.verbForm), \(cs.tense.rawValue), \(cs.comment)")
         }
     }
     
@@ -251,7 +252,19 @@ class LanguageEngine : ObservableObject {
         currentVerb = verbList[currentVerbIndex]
     }
     
-   
+    func setSubjectPronounType(spt: SubjectPronounType){
+        return subjectPronounType = spt
+    }
+    
+    func getSubjectPronounType()->SubjectPronounType{
+        return subjectPronounType
+    }
+    
+    func getSubjectGender()->Gender{
+        if subjectPronounType == .femaleFormal || subjectPronounType == .femaleInformal { return .feminine }
+        return .masculine
+    }
+    
     func getTenseList()->[Tense]{return tenseList}
     func setTenses(tenseList: [Tense]){ self.tenseList = tenseList }
     

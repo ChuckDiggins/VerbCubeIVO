@@ -10,13 +10,13 @@ import AVKit
 import JumpLinguaHelpers
 
 enum MultipleChoiceMode : String {
-    case IdentifyVerbsBelongingToModel = "Identify verbs belonging to this model:"
-    case IdentifyModelsThatHaveGivenPattern = "Identify models that have this pattern:"
-    case IdentifyVerbsThatHaveGivenPattern = "Identify verbs that have this pattern"
-    case IdentifyVerbsThatHaveSameModelAsVerb = "Identify verbs that have same model as"
-    case IdentifyVerbsWithSamePatternAsVerb = "Identify verbs that have the same pattern as:"
-    case IdentifyModelForGivenVerb = "Identify the model for this verb:"
-    case CreateVerbForGivenModel = "Create a verb for this model:"
+    case IdentifyVerbsBelongingToModel = "Verbs in Model"
+    case IdentifyModelsThatHaveGivenPattern = "Models for Pattern"
+    case IdentifyVerbsThatHaveGivenPattern = "Verbs with Same Pattern"
+    case IdentifyVerbsThatHaveSameModelAsVerb = "Verbs for Same Model"
+    case IdentifyVerbsWithSamePatternAsVerb = "Verbs for Pattern"
+    case IdentifyModelForGivenVerb = "Model for Given Verb"
+    case CreateVerbForGivenModel = "Create a Verb"
     
     func getTitle()->String{
         switch self{
@@ -98,6 +98,10 @@ struct PatternRecognitionView: View {
             zColor
                 .edgesIgnoringSafeArea(.all)
             VStack{
+                Text(headerStringPart1)
+                    .padding()
+                    .font(.title2)
+                    .foregroundColor(.black)
                 
                 VStack{
                     ZStack{
@@ -107,12 +111,6 @@ struct PatternRecognitionView: View {
                             .foregroundColor(.indigo)
                         
                     }
-                    Text(headerStringPart1)
-                        .padding()
-                        .background(.black)
-                        .font(.callout)
-                        .foregroundColor(.yellow)
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     
                     HStack{
                         Button{

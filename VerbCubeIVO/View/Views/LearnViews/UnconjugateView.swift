@@ -24,14 +24,8 @@ struct UnconjugateView: View {
     
     var body: some View {
         ZStack{
-            LinearGradient(gradient: Gradient(colors: [
-                Color(.systemYellow),
-                Color(.systemPink),
-                Color(.systemPurple),
-            ]),
-                           startPoint: .top,
-                           endPoint: .bottomTrailing)
-            .ignoresSafeArea()
+            Color("GeneralColor")
+                .ignoresSafeArea()
             
             VStack{
                 let gridFixSize = CGFloat(50.0)
@@ -116,7 +110,7 @@ struct UnconjugateView: View {
                                     WordCell(wordText: getSubjectString(vtp: vtpList[i]), backgroundColor: .orange, foregroundColor: .black, fontSize: .system(size: fontSize) )
                                     WordCell(wordText: vtpList[i].verb.getWordStringAtLanguage(language:languageViewModel.currentLanguage), backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize))
                                     WordCell(wordText: vtpList[i].tense.rawValue, backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize*0.7))
-                                    WordCell(wordText: vtpList[i].person.getSubjectString(language: languageViewModel.currentLanguage, gender: .masculine),  backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize*0.7))
+                                    WordCell(wordText: vtpList[i].person.getSubjectString(language: languageViewModel.currentLanguage, subjectPronounType: languageViewModel.getSubjectPronounType()),  backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize*0.7))
                                 }
                             }
                         }
@@ -140,7 +134,7 @@ struct UnconjugateView: View {
         var str0 = ""
         var reflexivePronoun = ""
         
-        var subj = vtp.person.getSubjectString(language: languageViewModel.currentLanguage, gender: .masculine) + " "
+        var subj = vtp.person.getSubjectString(language: languageViewModel.currentLanguage, subjectPronounType: languageViewModel.getSubjectPronounType()) + " "
         if vtp.tense == .imperative && vtp.person == .S3 {
             subj = "Usted "
         }

@@ -62,6 +62,7 @@ struct MixAndMatchView: View {
     @State private var currentLanguage = LanguageType.Spanish
     @State var currentTense = Tense.present
     @State var currentVerb = Verb()
+    @State var currentModelString = ""
     @State var currentVerbString = ""
     @State var currentTenseString = ""
     @State private var mixMatchList = [MixMatchStruct]()
@@ -92,7 +93,10 @@ struct MixAndMatchView: View {
     var body: some View {
         helpView()
         ZStack{
+            Color("GeneralColor")
+                .ignoresSafeArea()
             VStack{
+                Text("Mix and Match").font(.title2).bold()
                 setVerbAndTenseView()
                 ZStack{
                     ProgressBar(value: $progressValue, barColor: .red).frame(height: 20)
@@ -105,6 +109,7 @@ struct MixAndMatchView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .shadow(radius: 3)
                 .onAppear{
+                    
                     currentLanguage = languageViewModel.getCurrentLanguage()
                     currentTense = languageViewModel.getCurrentTense()
                     currentVerb = languageViewModel.getCurrentFilteredVerb()
@@ -175,70 +180,32 @@ struct MixAndMatchView: View {
         }
     }
     
-    func showNewVerbsButton()->some View{
-        Button{
-            languageViewModel.setFilteredVerbList(verbList: languageViewModel.getRandomEnglishVerbs(maxCount : 30))
-            fillMixMatchList()
-        } label: {
-            Text("New Verbs")
-        }
-    }
+//
+//    func showVerbsOfAFeatherNavigationLink()->some View{
+//            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+//                Text("New Model")
+//            }.font(.callout)
+//                .padding(2)
+//                .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                .foregroundColor(.black)
+//                .cornerRadius(4)
+//    }
+//
     
-    func showVerbsOfAFeatherNavigationLink()->some View{
-            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-                Text("New Model")
-            }.font(.callout)
-                .padding(2)
-                .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
-                .foregroundColor(.black)
-                .cornerRadius(4)
+    func getSubjectStringAtPerson(person : Person)->String{
+        return person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
     }
-    
     
     func fillPersonMixStruct(){
         
         personMixString.removeAll()
-        switch currentLanguage {
-        case .Spanish:
-            personMixString.append(PersonMixStruct(person: .S1, personString: "yo"))
-            personMixString.append(PersonMixStruct(person: .S2, personString: "tú"))
-            personMixString.append(PersonMixStruct(person: .S3, personString: "él"))
-            personMixString.append(PersonMixStruct(person: .P1, personString: "nosotros"))
-            personMixString.append(PersonMixStruct(person: .P2, personString: "vosotros"))
-            personMixString.append(PersonMixStruct(person: .P3, personString: "ellos"))
-            if allSubjects {
-                personMixString.append(PersonMixStruct(person: .S3, personString: "ella"))
-                
-                personMixString.append(PersonMixStruct(person: .S3, personString: "usted"))
-                
-                personMixString.append(PersonMixStruct(person: .P1, personString: "nosotras"))
-                
-                personMixString.append(PersonMixStruct(person: .P2, personString: "vosotras"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "ellos"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "ellas"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "ustedes"))
-            }
-        case .French:
-            personMixString.append(PersonMixStruct(person: .S1, personString: "je"))
-            personMixString.append(PersonMixStruct(person: .S2, personString: "tu"))
-            personMixString.append(PersonMixStruct(person: .S3, personString: "il"))
-            personMixString.append(PersonMixStruct(person: .P1, personString: "nous"))
-            personMixString.append(PersonMixStruct(person: .P2, personString: "vous"))
-            personMixString.append(PersonMixStruct(person: .P3, personString: "ils"))
-            if allSubjects {
-                personMixString.append(PersonMixStruct(person: .S3, personString: "elle"))
-                personMixString.append(PersonMixStruct(person: .S3, personString: "on"))
-                personMixString.append(PersonMixStruct(person: .P3, personString: "elles"))
-            }
-        case .English:
-            personMixString.append(PersonMixStruct(person: .S1, personString: "I"))
-            personMixString.append(PersonMixStruct(person: .S2, personString: "you"))
-            personMixString.append(PersonMixStruct(person: .S3, personString: "he"))
-            personMixString.append(PersonMixStruct(person: .P1, personString: "we"))
-            personMixString.append(PersonMixStruct(person: .P2, personString: "you"))
-            personMixString.append(PersonMixStruct(person: .P3, personString: "they"))
-        default: break
-        }
+        personMixString.append(PersonMixStruct(person: .S1, personString: getSubjectStringAtPerson(person : .S1)))
+        personMixString.append(PersonMixStruct(person: .S2, personString: getSubjectStringAtPerson(person : .S2)))
+        personMixString.append(PersonMixStruct(person: .S3, personString: getSubjectStringAtPerson(person : .S3)))
+        personMixString.append(PersonMixStruct(person: .P1, personString: getSubjectStringAtPerson(person : .P1)))
+        personMixString.append(PersonMixStruct(person: .P2, personString: getSubjectStringAtPerson(person : .P2)))
+        personMixString.append(PersonMixStruct(person: .P3, personString: getSubjectStringAtPerson(person : .P3)))
+
     }
     
     func setSubjunctiveParticiple(){
@@ -334,63 +301,86 @@ struct MixAndMatchView: View {
         
     }
     
+    func showNewVerbsButton()->some View{
+        Button{
+            languageViewModel.setFilteredVerbList(verbList: languageViewModel.getRandomEnglishVerbs(maxCount : 30))
+            fillMixMatchList()
+        } label: {
+            Text("New Verbs")
+        }
+    }
+        
+    func setCurrentVerb(){
+        languageViewModel.createAndConjugateCurrentFilteredVerb()
+        currentTense = languageViewModel.getCurrentTense()
+        currentVerb = languageViewModel.getCurrentFilteredVerb()
+        
+        //this sets up the initial invitation message to the user "Click here"
+        currentTenseString = languageViewModel.getCurrentTense().rawValue
+        currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: currentLanguage)
+        currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
+        setSubjunctiveParticiple()
+        fillMixMatchList()
+        correctAnswerCount = 0
+    }
+    
     func setVerbAndTenseView() -> some View {
         VStack {
-            HStack{
-                VStack{
-                    Text("Verb ").foregroundColor(.black)
-                    Button{
-                        languageViewModel.setNextFilteredVerb()
-                        currentVerb = languageViewModel.getCurrentFilteredVerb()
-                        currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
-                        fillMixMatchList()
-                        correctAnswerCount = 0
-                    } label: {
-                        Text("\(currentVerbString)")
-                    }
-                    .font(.caption)
-                    .padding(2)
-                    .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .foregroundColor(.black)
-                    .cornerRadius(4)
-                    .buttonStyle(.bordered)
+            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+                HStack{
+                    Text("Verb model:")
+                    Text(currentModelString)
+                    Spacer()
+                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
                 }
-                Spacer()
-                VStack{
-                    Text("Select Active Verbs")
-                        .foregroundColor(.black)
-                        .font(.caption)
-                    if currentLanguage == .English {
-                        showNewVerbsButton()
-                    } else {
-                        showVerbsOfAFeatherNavigationLink()
-                    }
-                }
-                Spacer()
-                VStack{
-                    Text("Tense").foregroundColor(.black)
-                    Button(action: {
-                        currentTense = languageViewModel.getLanguageEngine().getNextTense()
-                        currentTenseString = currentTense.rawValue
-                        setSubjunctiveParticiple()
-                        fillMixMatchList()
-                        correctAnswerCount = 0
-                    }){
-                        Text(currentTenseString)
-                    }
-                    .font(.caption)
-                    .padding(2)
-                    .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                    .foregroundColor(.black)
-                    .cornerRadius(4)
-                    .buttonStyle(.bordered)
-                }
+                .frame(width: 350, height: 30)
+                .font(.callout)
+                .padding(2)
+                .background(Color.orange)
+                .foregroundColor(.black)
+                .cornerRadius(4)
+            }.task {
+                setCurrentVerb()
             }
-            .background(.yellow)
-            .tint(.blue)
-            .padding(5)
+            
+            
+            Button(action: {
+                languageViewModel.setNextFilteredVerb()
+                setCurrentVerb()
+            }){
+                HStack{
+                    Text("Verb: ")
+                    Text(currentVerbString)
+                    Spacer()
+                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                }.frame(width: 350, height: 30)
+                    .font(.callout)
+                    .padding(2)
+                    .background(Color.orange)
+                    .foregroundColor(.black)
+                    .cornerRadius(4)
+            }
+            
+            
+            //ChangeTenseButtonView()
+            
+            Button(action: {
+                currentTenseString = languageViewModel.getNextTense().rawValue
+                setCurrentVerb()
+            }){
+                Text("Tense: \(currentTenseString)")
+                Spacer()
+                Image(systemName: "rectangle.and.hand.point.up.left.filled")
+            }
+            .frame(width: 350, height: 30)
+            .font(.callout)
+            .padding(2)
+            .background(Color.orange)
+            .foregroundColor(.black)
+            .cornerRadius(4)
             
         }
+        
         .padding(3)
     }
     

@@ -349,7 +349,7 @@ struct FeatherVerbQuizMorphView: View {
             verbCount = verbList.count
         }
         currentTenseString = languageViewModel.getCurrentTense().rawValue
-        currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine)
+        currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
         setVerbStringsAtPerson(person: currentPerson)
         setBescherelleModelInfo()
         nonEditableText = morphInfoList[0].root
@@ -524,7 +524,7 @@ struct FeatherVerbQuizMorphView: View {
                 Spacer()
                 Button(action: {
                     currentPerson = getNextPerson()
-                    currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender: .masculine)
+                    currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
                     setVerbStringsAtPerson(person: currentPerson)
                 }){
                     Text("\(currentPersonString) form")
