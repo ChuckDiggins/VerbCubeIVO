@@ -12,11 +12,12 @@ struct PreferencesView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @State var currenSubjectPronounType = SubjectPronounType.all
     @State var currenSubjectPronounTypeString = "whatever"
+    @State var speechModeActiveString = "Speech mode is ACTIVE"
     
     var body: some View {
 
         ZStack{
-            Color("GeneralColor")
+            Color(.black)
                 .ignoresSafeArea()
             
             VStack{
@@ -38,6 +39,19 @@ struct PreferencesView: View {
                     .cornerRadius(10)
 
                     Button{
+                        languageViewModel.toggleSpeechMode()
+                        setSpeechModeActiveString()
+                        textToSpeech(text: speechModeActiveString, language: .English)
+                    } label: {
+                        Text(speechModeActiveString)
+                    }
+                    .frame(width: 200, height: 50)
+                    .padding(.leading, 10)
+                    .background(Color.green)
+                    .foregroundColor(.black)
+                    .cornerRadius(10)
+                    
+                    Button{
                         switch languageViewModel.getSubjectPronounType() {
                         case .maleInformal:
                             languageViewModel.setSubjectPronounType(spt: .femaleInformal)
@@ -54,7 +68,7 @@ struct PreferencesView: View {
                         Text("Subject Type: \(languageViewModel.getSubjectPronounType().rawValue)")
                             .frame(minWidth: 0, maxWidth: 400)
                             .frame(height: 50)
-                            .background(currenSubjectPronounType == .maleInformal ? .black: .red)
+                            .background(currenSubjectPronounType == .maleInformal ? .blue: .red)
                             .foregroundColor(.yellow)
                             .cornerRadius(10)
                             .padding(20)
@@ -65,8 +79,17 @@ struct PreferencesView: View {
             }.onAppear{
                 currenSubjectPronounType = languageViewModel.getSubjectPronounType()
                 currenSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
+                setSpeechModeActiveString()
             }
         }
+    }
+    func setSpeechModeActiveString(){
+        if languageViewModel.isSpeechModeActive() {
+            speechModeActiveString = "Speech mode is ACTIVE"
+        }
+        else{
+            speechModeActiveString = "Speech mode is OFF"
+            }
     }
 }
 

@@ -10,7 +10,7 @@ import JumpLinguaHelpers
 
 struct StudentScoreView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
-    var studentScoreModel : StudentScoreModel
+    @State private var studentScoreModel = StudentScoreModel()
     @State private var verbScoreList = [VerbScore]()
     @State private var tenseScoreList = [TenseScore]()
     @State private var personScoreList = [PersonScore]()
@@ -36,7 +36,6 @@ struct StudentScoreView: View {
                     .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
                     .cornerRadius(10)
                     .foregroundColor(.yellow)
-                
             }
             
             switch currentScoreType {
@@ -49,6 +48,10 @@ struct StudentScoreView: View {
             Spacer()
             
         }.onAppear{
+            studentScoreModel = languageViewModel.getStudentScoreModel()
+//            verbScoreList = studentScoreModel.verbScoreList
+//            tenseScoreList = studentScoreModel.tenseScoreList
+            
             verbScoreList = studentScoreModel.getScores(studentScoreEnum: .verb) as! [VerbScore]
             tenseScoreList = studentScoreModel.getScores(studentScoreEnum: .tense) as! [TenseScore]
             personScoreList = studentScoreModel.getScores(studentScoreEnum: .person) as! [PersonScore]
@@ -59,13 +62,13 @@ struct StudentScoreView: View {
 
 struct StudentScoreView_Previews: PreviewProvider {
     static var previews: some View {
-        StudentScoreView(languageViewModel: LanguageViewModel(language: .Spanish), studentScoreModel: StudentScoreModel())
+        StudentScoreView(languageViewModel: LanguageViewModel(language: .Spanish))
     }
 }
 
 struct VerbScoreView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
-    var verbScoreList : [VerbScore]
+    @State var verbScoreList = [VerbScore]()
     var body: some View {
         VStack{
             List{
@@ -88,6 +91,8 @@ struct VerbScoreView: View {
                 }
             }
             .environment(\.defaultMinListRowHeight, 12)
+        }.onAppear{
+            verbScoreList = languageViewModel.getStudentScoreModel().verbScoreList
         }
     }
 }

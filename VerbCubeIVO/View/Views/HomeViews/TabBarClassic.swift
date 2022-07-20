@@ -26,30 +26,30 @@ struct ScrollViewVC: View {
                 .foregroundColor(.red)
             
             VStack{
-                Button{
-                    switch languageViewModel.getCurrentLanguage() {
-                    case .Spanish:
-                        languageViewModel.setLanguage(language: .French)
-                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-                    case .French:
-                        languageViewModel.setLanguage(language: .English)
-                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-                    case .English:
-                        languageViewModel.setLanguage(language: .Spanish)
-                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-                    default:
-                        languageViewModel.setLanguage(language: .Spanish)
-                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-                    }
-                } label: {
-                    Text("Active language: \(currentLanguageStr)")
-                        .frame(minWidth: 0, maxWidth: 400)
-                        .frame(height: 50)
-                        .background(.purple)
-                        .foregroundColor(.yellow)
-                        .cornerRadius(10)
-                        .padding(20)
-                }
+//                Button{
+//                    switch languageViewModel.getCurrentLanguage() {
+//                    case .Spanish:
+//                        languageViewModel.setLanguage(language: .French)
+//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+//                    case .French:
+//                        languageViewModel.setLanguage(language: .English)
+//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+//                    case .English:
+//                        languageViewModel.setLanguage(language: .Spanish)
+//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+//                    default:
+//                        languageViewModel.setLanguage(language: .Spanish)
+//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
+//                    }
+//                } label: {
+//                    Text("Active language: \(currentLanguageStr)")
+//                        .frame(minWidth: 0, maxWidth: 400)
+//                        .frame(height: 50)
+//                        .background(.purple)
+//                        .foregroundColor(.yellow)
+//                        .cornerRadius(10)
+//                        .padding(20)
+//                }
                 ScrollView{
                     NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel)){
                         Text("Preferences")
@@ -110,12 +110,16 @@ struct TabBarClassicVC: View {
 //                    Text("Home")
 //                }.tag(0)
 //
-            AudibleStyleView(languageViewModel: languageViewModel)
-                                        .tabItem{
-                                            Image(systemName: "house.fill")
-                                Text("Home")
-                            }.tag(0)
-            
+            ScrollViewVC(languageViewModel: languageViewModel)
+                .tabItem{
+                    Image(systemName: "house.fill")
+                    Text("Home")
+                }.tag(0)
+//            PreferencesView(languageViewModel: languageViewModel)
+//                .tabItem{
+//                    Image(systemName: "house.fill")
+//                    Text("Pref")
+//                }.tag(0)
             ModelView(languageViewModel: languageViewModel)
                 .tabItem{
                     Image(systemName: "graduationcap")
@@ -130,7 +134,7 @@ struct TabBarClassicVC: View {
             GeneralVerbView(languageViewModel: languageViewModel)
                 .tabItem{
                     Image(systemName: "archivebox.fill")
-                    Text("GVC")
+                    Text("GNRL")
                 }.tag(3)
             
             OddJobsView(languageViewModel: languageViewModel)
@@ -143,13 +147,13 @@ struct TabBarClassicVC: View {
         }
         .accentColor(.green)
         }.navigationBarTitle("Verbs of a Feather")
-            .navigationBarItems(leading:
-                                    Button{
-                exit(1)
-            } label: {
-                Image(systemName:"arrow.backward.circle").foregroundColor(.red)
-            }            )
-                                
+//            .navigationBarItems(leading:
+//                                    Button{
+//                exit(1)
+//            } label: {
+//                Image(systemName:"arrow.backward.circle").foregroundColor(.red)
+//            }            )
+//                                
 //                                trailing:
 //                                    HStack{
 //                NavigationLink(destination: LanguageView(languageViewModel: languageViewModel, currentLanguage: $currentLanguage)){

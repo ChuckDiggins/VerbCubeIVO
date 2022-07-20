@@ -55,6 +55,9 @@ struct MultipleChoiceView: View {
     @State var currentVerbString = ""
     @State var currentTenseString = ""
     @State var currentPersonString = ""
+    @State var modelVerb = ""
+    @State var modelID = 0
+    @State var modelVerbEnding = VerbEnding.none
     @State var leftHandString = ""
     @State var rightHandStringList = ["acabo", "tengo", "vienes", "acabamos", "aclaron", "tenemos"]
     @State var tenseList = [Tense]()
@@ -65,7 +68,6 @@ struct MultipleChoiceView: View {
     @State private var correctAnswerCount = 0
     @State private var wrongAnswerCount = 0
     @State private var totalCorrectCount = 0
-    @State private var studentScoreModel = StudentScoreModel()
     @State private var isNew = true
     
     var body: some View {
@@ -73,6 +75,24 @@ struct MultipleChoiceView: View {
             Color("GeneralColor")
                 .ignoresSafeArea()
             VStack{
+                NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
+                    HStack{
+                        Text("Verb model:")
+                        Text(modelVerb)
+                        Spacer()
+                        Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                    }
+                    .frame(width: 350, height: 30)
+                    .font(.callout)
+                    .padding(2)
+                    .background(Color.orange)
+                    .foregroundColor(.black)
+                    .cornerRadius(4)
+                }
+                .task {
+                    setBescherelleModelInfo()
+                    setVerbList()
+                }
                 
                 HStack{
                     Button{
@@ -82,45 +102,45 @@ struct MultipleChoiceView: View {
                         case .hard: multipleChoiceDifficulty = .simple
                         }
                     } label: {
-                        Text("\(multipleChoiceDifficulty.rawValue)")
-                            .frame(width: 200, height: 40)
+                        Text("Mode: \(multipleChoiceDifficulty.rawValue)")
+                            .frame(width: 300, height: 40)
                             .padding(.leading, 10)
                             .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
                             .cornerRadius(10)
                             .foregroundColor(.yellow)
                     }
-                    NavigationLink(destination: StudentScoreView(languageViewModel: languageViewModel, studentScoreModel: studentScoreModel)){
-                        Text("Student scores")
-                    }.frame(width: 150, height: 40)
-                        .padding(.leading, 10)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                        .foregroundColor(.yellow)
                     
                 }
-                
-                ZStack{
-                    ProgressBar(value: $wrongValue, barColor: .yellow).frame(height: 20)
-                    Text("Wrong \(wrongAnswerCount) out of \(totalCorrectCount)").foregroundColor(.green)
+                HStack{
+                    Spacer()
+                    Text("Wrong \(wrongAnswerCount)").foregroundColor(.black)
+                    Spacer()
+                    Text("Correct \(correctAnswerCount)").foregroundColor(.black)
+                    Spacer()
+                    NavigationLink(destination: StudentScoreView(languageViewModel: languageViewModel)){
+                        Text("👩🏻‍🎓")
+                    }.frame(width: 40, height: 40)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                        .font(.title2)
                 }
-                ZStack{
-                    ProgressBar(value: $correctValue, barColor: .green).frame(height: 20)
-                    Text("Correct \(correctAnswerCount) out of \(totalCorrectCount)").foregroundColor(.yellow)
-                }
-                //
                 .frame(width: 300, height: 30)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .shadow(radius: 3)
-                
+
                 Rectangle()
                     .fill(.orange)
                     .frame(height: 2, alignment: .center)
                 
                 VStack{
-                    setNextProblemView()
+                    //setNextProblemView()
                     Text(problemInstructionString)
+                        .font(.headline)
+                        .padding(2)
+                        .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
                         .foregroundColor(.black)
-                        .background(.white)
+                        .cornerRadius(4)
+                        .buttonStyle(.bordered)
                     HStack{
                         Button(leftHandString){
                             print("soon I will do something cool with this")
@@ -135,16 +155,25 @@ struct MultipleChoiceView: View {
                                 Button(rightHandStringList[index]){
                                     if rightHandStringList[index] == correctRightHandString {
                                         correctAnswerCount += 1
-                                        studentScoreModel.incrementVerbScore(value: currentVerb, correctScore: 1, wrongScore: 0)
-                                        studentScoreModel.incrementTenseScore(value: currentTense, correctScore: 1, wrongScore: 0)
-                                        studentScoreModel.incrementPersonScore(value: currentPerson, correctScore: 1, wrongScore: 0)
+                                        languageViewModel.getStudentScoreModel().incrementVerbScore(value: currentVerb, correctScore: 1, wrongScore: 0)
+                                        languageViewModel.getStudentScoreModel().incrementTenseScore(value: currentTense, correctScore: 1, wrongScore: 0)
+                                        languageViewModel.getStudentScoreModel().incrementPersonScore(value: currentPerson, correctScore: 1, wrongScore: 0)
                                         correctValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
+                                        if languageViewModel.isSpeechModeActive(){
+                                            textToSpeech(text: "Correct", language: .English)
+                                        }
+                                        showCurrentStudentScores()
                                     } else {
                                         wrongAnswerCount += 1
-                                        studentScoreModel.incrementVerbScore(value: currentVerb, correctScore: 0, wrongScore: 1)
-                                        studentScoreModel.incrementTenseScore(value: currentTense, correctScore: 0, wrongScore: 1)
-                                        studentScoreModel.incrementPersonScore(value: currentPerson, correctScore: 0, wrongScore: 1)
+                                        languageViewModel.getStudentScoreModel().incrementVerbScore(value: currentVerb, correctScore: 0, wrongScore: 1)
+                                        languageViewModel.getStudentScoreModel().incrementTenseScore(value: currentTense, correctScore: 0, wrongScore: 1)
+                                        languageViewModel.getStudentScoreModel().incrementPersonScore(value: currentPerson, correctScore: 0, wrongScore: 1)
+                                        
                                         wrongValue = Float(wrongAnswerCount) / Float(totalCorrectCount)
+                                        if languageViewModel.isSpeechModeActive(){
+                                            textToSpeech(text: "Wrong", language: .English)
+                                        }
+                                        showCurrentStudentScores()
                                     }
                                     showCurrentStudentScores()
                                     showNewProblem()
@@ -163,16 +192,7 @@ struct MultipleChoiceView: View {
             }
             .onAppear{
                 if isNew {
-                    print("On appear")
-                    currentLanguage = languageViewModel.getCurrentLanguage()
-                    setVerbList()
-                    tenseList = languageViewModel.getTenseList()
-                    currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
-                    currentTenseString = currentTense.rawValue
-                    fillPersonMixStruct()
-                    setProblemMode()
-                    createNextProblem()
-                    isNew = false
+                    initialize()
                 }
             }
             //            if showAlert {
@@ -182,12 +202,34 @@ struct MultipleChoiceView: View {
         
     }
     
+    func initialize(){
+        print("On appear")
+        currentLanguage = languageViewModel.getCurrentLanguage()
+        setVerbList()
+        tenseList = languageViewModel.getTenseList()
+        currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
+        currentTenseString = currentTense.rawValue
+        fillPersonMixStruct()
+        setProblemMode()
+        createNextProblem()
+        isNew = false
+        setBescherelleModelInfo()
+    }
+    
+    func setCurrentVerb(){
+        currentVerbIndex += 1
+        if currentVerbIndex >= verbList.count {currentVerbIndex = 0}
+        currentVerb = verbList[currentVerbIndex]
+        currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
+        //createNextProblem()
+    }
+    
     func showCurrentStudentScores(){
-        var result = studentScoreModel.getVerbScores(value: currentVerb)
-        print("\nVerb: \(currentVerbString): correct = \(result.0), wrong = \(result.1)")
-        result = studentScoreModel.getTenseScores(value: currentTense)
+        var result = languageViewModel.getStudentScoreModel().getVerbScores(value: currentVerb)
+        print("\nVerb: \(currentVerb.getWordAtLanguage(language: currentLanguage)): correct = \(result.0), wrong = \(result.1)")
+        result = languageViewModel.getStudentScoreModel().getTenseScores(value: currentTense)
         print("Tense: \(currentTenseString): correct = \(result.0), wrong = \(result.1)")
-        result = studentScoreModel.getPersonScores(value: currentPerson)
+        result = languageViewModel.getStudentScoreModel().getPersonScores(value: currentPerson)
         print("Person: \(currentPersonString): correct = \(result.0), wrong = \(result.1)")
     }
     
@@ -197,12 +239,11 @@ struct MultipleChoiceView: View {
             primaryProblemMode = ProblemMode.verbMode
             secondaryProblemMode = ProblemMode.tenseMode
             totalCorrectCount = randomPersonList.count * tenseList.count * verbList.count
-            studentScoreModel.createStudentScoreModels(verbList: verbList, tenseList: tenseList, personList: randomPersonList, modelList: romanceModelList, patternList: verbPatternList)
         case .oneSubjectToFiveTenses:
             primaryProblemMode = ProblemMode.verbMode
             secondaryProblemMode = ProblemMode.personMode
             totalCorrectCount = randomTenseList.count * personMixString.count * verbList.count
-            studentScoreModel.createStudentScoreModels(verbList: verbList, tenseList: tenseList, personList: randomPersonList, modelList: romanceModelList, patternList: verbPatternList)
+            
         case .oneVerbToFiveModels:
             primaryProblemMode = ProblemMode.verbMode
             secondaryProblemMode = ProblemMode.personMode
@@ -211,7 +252,7 @@ struct MultipleChoiceView: View {
             primaryProblemMode = ProblemMode.verbMode
             secondaryProblemMode = ProblemMode.personMode
             totalCorrectCount = randomPersonList.count * tenseList.count * verbList.count
-            studentScoreModel.createStudentScoreModels(verbList: verbList, tenseList: tenseList, personList: randomPersonList, modelList: romanceModelList, patternList: verbPatternList)
+            
         }
     }
     func setSubjunctiveParticiple(){
@@ -222,22 +263,30 @@ struct MultipleChoiceView: View {
         }
     }
     
-    func setNextProblemView() -> some View {
-        VStack {
-            Text("Next problem").foregroundColor(.black)
-            Button{
-                createNextProblem()
-            } label: {
-                Text("Verb: \(currentVerb.getWordAtLanguage(language: currentLanguage))")
-            }
-            .font(.headline)
-            .padding(2)
-            .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-            .foregroundColor(.black)
-            .cornerRadius(4)
-            .buttonStyle(.bordered)
-        }
+    func setBescherelleModelInfo() {
+        let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: verbList[0])
+        modelID = brv.getBescherelleID()
+        modelVerb = brv.getBescherelleModelVerb()
+        let result = languageViewModel.getModelStringAtTensePerson(bVerb: brv, tense: languageViewModel.getCurrentTense(), person: currentPerson)
+        print("verb \(brv.getWordStringAtLanguage(language: languageViewModel.getCurrentLanguage())) = \(result.0) + \(result.1)")
+        modelVerbEnding = VerbUtilities().determineVerbEnding(verbWord: modelVerb)
     }
+    
+//    func setNextProblemView() -> some View {
+//        VStack {
+//            Button{
+//                createNextProblem()
+//            } label: {
+//                Text("Verb: \(currentVerb.getWordAtLanguage(language: currentLanguage))")
+//            }
+//            .font(.headline)
+//            .padding(2)
+//            .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
+//            .foregroundColor(.black)
+//            .cornerRadius(4)
+//            .buttonStyle(.bordered)
+//        }
+//    }
     
     func showNewProblem(){
         switch multipleChoiceDifficulty {
@@ -322,7 +371,7 @@ struct MultipleChoiceView: View {
         wrongAnswerCount = 0
         wrongValue = 0
         correctValue = 0
-        studentScoreModel.resetAllScores()
+//        studentScoreModel.resetAllScores()
     }
     
     func loadRightHandVerbsForThisLeftHandSubject(verb: Verb, tense: Tense, person: Person){
@@ -337,7 +386,7 @@ struct MultipleChoiceView: View {
                     correctRightHandString = str
                 }
             }
-            problemInstructionString = "Subject \(leftHandString): \(currentTense.rawValue) tense"
+            problemInstructionString = "Subject \"\(leftHandString)\": \(currentTense.rawValue): \(verb.getWordAtLanguage(language: currentLanguage))"
         case .oneSubjectToFiveTenses:
             randomTenseList.shuffle()
             for tense in randomTenseList {
@@ -347,7 +396,7 @@ struct MultipleChoiceView: View {
                     correctRightHandString = str
                 }
             }
-            problemInstructionString = "Subject \(leftHandString): \(currentTense.rawValue) tense"
+            problemInstructionString = "Subject \"\(leftHandString)\": \(currentTense.rawValue): \(verb.getWordAtLanguage(language: currentLanguage))"
         case .oneVerbToFiveSubjects:
             correctRightHandString = ""
         case .oneVerbToFiveModels:
@@ -401,20 +450,16 @@ struct MultipleChoiceView: View {
             setNewTense()
         }
         currentPerson =  personMixString[currentPersonIndex].person
-        leftHandString = subjunctiveParticiple + " " + getSubjectStringAtPerson(person: currentPerson)
+        leftHandString = subjunctiveParticiple + getSubjectStringAtPerson(person: currentPerson)
         currentPersonString = leftHandString
     }
     
     func setVerbList(){
-        //get 10 random verbs from filtered list
         verbList = languageViewModel.getFilteredVerbs()
         if verbList.isEmpty {
             print("no active verbs")
         }
         verbList.shuffle()
-        if verbList.count > 10 {
-            verbList.removeLast(verbList.count - 10)
-        }
         currentVerbIndex = 0
         currentVerb = verbList[currentVerbIndex]
     }

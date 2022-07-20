@@ -113,7 +113,6 @@ extension LanguageEngine{
             case .French:
                 let verbWord = verb.getWordAtLanguage(language: getCurrentLanguage())
                 let bFrenchVerb = vmm.createFrenchBVerb(verbPhrase: verbWord)
-                let id = bFrenchVerb.getBescherelleID()
                 for spt in bFrenchVerb.m_specialPatternList {
                     if spt.tense == thisPattern.tense && spt.pattern.rawValue == thisPattern.pattern.rawValue { newVerbList.append(verb) }
                 }
@@ -127,9 +126,7 @@ extension LanguageEngine{
     
     func getVerbsOfDifferentPattern(verbList: [Verb], thisPattern: SpecialPatternStruct)->[Verb]{
         var newVerbList = [Verb]()
-        let targetTense = thisPattern.tense
-        let targetPattern = thisPattern.pattern
-        
+
         var vmm = VerbModelManager()
         for verb in verbList {
             switch getCurrentLanguage() {
@@ -246,16 +243,40 @@ extension LanguageEngine{
 
     //ignores the model
     
-    func conjugateAsRegularVerb(verb: Verb, tense: Tense, person: Person)->String{
+    func conjugateAsRegularVerb(verb: Verb, tense: Tense, person: Person, isReflexive: Bool, residPhrase: String)->String{
         switch getCurrentLanguage() {
         case .English:
             break
         case .Spanish:
             let spVerb = SpanishVerb(word: verb.spanish, type: .normal)
-            return spVerb.conjugateAsRegularVerb(tense: tense, person: person)
+            var verbString = spVerb.conjugateAsRegularVerb(tense: tense, person: person)
+            if isReflexive {
+                let pronoun = SpanishPronoun().getReflexive(person: person)
+                if pronoun.count>0 {
+                    verbString = pronoun + " " + verbString
+                }
+            }
+            if ( residPhrase.count > 0 ){
+                verbString += " " + residPhrase
+            }
+            return verbString
         case .French:
             let frVerb = FrenchVerb(word: verb.french, type: .normal)
-            return frVerb.conjugateAsRegularVerb(tense: tense, person: person)
+            var verbString = frVerb.conjugateAsRegularVerb(tense: tense, person: person)
+            if isReflexive {
+                let startsWithVowelSound =  VerbUtilities().startsWithVowelSound(characterArray: verbString)
+                let pronoun = FrenchPronoun().getReflexive(person: person, startsWithVowelSound: startsWithVowelSound)
+                if startsWithVowelSound {
+                    verbString = pronoun + verbString
+                } else {
+                    verbString = pronoun + " " + verbString
+                }
+            }
+            
+            if ( residPhrase.count > 0 ){
+                verbString += " " + residPhrase
+            }
+            return verbString
         case .Italian:
             break
         case .Portuguese:

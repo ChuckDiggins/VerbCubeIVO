@@ -162,19 +162,36 @@ struct RightWrongVerbView: View {
     
     func setCurrentVerb(){
         setSubjunctiveStuff()
-        
         currentVerbString = currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
+        var isReflexive = false
+        var residPhrase = ""
+        switch currentLanguage {
+        case .Spanish:
+            let result = VerbUtilities().analyzeSpanishWordPhrase(testString: currentVerbString)
+            isReflexive = result.isReflexive
+            residPhrase = result.residualPhrase
+        case .French:
+            let result = VerbUtilities().analyzeFrenchWordPhrase(phraseString: currentVerbString)
+            isReflexive = result.isReflexive
+            residPhrase = result.residualPhrase
+        default:
+            break
+        }
+        
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: languageViewModel.getCurrentTense())
         currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
-        
+        print("currentModelString = \(currentModelString)")
+        print("currentVerbString = \(currentVerbString)")
+        print("isReflexive = \(isReflexive)")
+
         //set the persons here
         var msm = languageViewModel.getMorphStructManager()
         vvm.removeAll()
         vvr.removeAll()
         for i in 0..<6 {
             vvm.append(msm.getFinalVerbForm(person: Person.all[i]))
-            vvr.append(languageViewModel.conjugateAsRegularVerb(verb: currentVerb, tense: currentTense, person: Person.all[i]))
+            vvr.append(languageViewModel.conjugateAsRegularVerb(verb: currentVerb, tense: currentTense, person: Person.all[i], isReflexive: isReflexive, residPhrase: residPhrase))
             person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: vvm[i]))
         }
     }

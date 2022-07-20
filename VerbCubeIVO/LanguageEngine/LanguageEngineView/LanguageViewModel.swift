@@ -38,6 +38,14 @@ class LanguageViewModel : ObservableObject {
         currentLanguage = languageEngine.getCurrentLanguage()
     }
 
+    func toggleSpeechMode(){
+        languageEngine.toggleSpeechMode()
+    }
+    
+    func isSpeechModeActive()->Bool{
+        languageEngine.isSpeechModeActive()
+    }
+    
     func getVerbList()->[Verb]{
         return languageEngine.getVerbList()
     }
@@ -50,12 +58,20 @@ class LanguageViewModel : ObservableObject {
         return ""
     }
     
+    func initializeStudentScoreModel(){
+        languageEngine.initializeStudentScoreModel()
+    }
+    
+    func getStudentScoreModel()->StudentScoreModel{
+        languageEngine.studentScoreModel
+    }
+    
     func setSubjectPronounType(spt: SubjectPronounType){
         return languageEngine.setSubjectPronounType(spt: spt)
     }
     
     func getSubjectPronounType()->SubjectPronounType{
-        var spt = languageEngine.getSubjectPronounType()
+        let spt = languageEngine.getSubjectPronounType()
         return spt
     }
     

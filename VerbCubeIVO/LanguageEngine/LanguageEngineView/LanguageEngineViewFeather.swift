@@ -86,8 +86,8 @@ extension LanguageViewModel{
         return languageEngine.getModelsWithSameVerbEndingInModelList(verbEnding: verbEnding, modelList: modelList)
     }
     
-    func conjugateAsRegularVerb(verb: Verb, tense: Tense, person: Person)->String{
-        return languageEngine.conjugateAsRegularVerb(verb: verb, tense: tense, person: person)
+    func conjugateAsRegularVerb(verb: Verb, tense: Tense, person: Person, isReflexive: Bool, residPhrase: String)->String{
+        return languageEngine.conjugateAsRegularVerb(verb: verb, tense: tense, person: person, isReflexive: isReflexive, residPhrase: residPhrase)
     }
     
     func conjugateAsRegularVerbWithThisVerbEnding(verbEnding: VerbEnding, verb: Verb, tense: Tense, person: Person)->String{

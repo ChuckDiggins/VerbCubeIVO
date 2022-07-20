@@ -80,6 +80,7 @@ struct ListModelsView: View {
     func selectedModel(index: Int){
         let verbList = languageViewModel.findVerbsOfSameModel(targetID: modelStructList[index].id)
         languageViewModel.setFilteredVerbList(verbList: verbList)
+        languageViewModel.initializeStudentScoreModel()
         dismiss()
     }
     

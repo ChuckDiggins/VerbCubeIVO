@@ -65,7 +65,7 @@ enum StudentScoreEnum : String {
     case pattern = "Patterns"
 }
 
-struct StudentScoreModel {
+class StudentScoreModel {
     
     var verbScoreList = [VerbScore]()
     var tenseScoreList = [TenseScore]()
@@ -103,7 +103,7 @@ struct StudentScoreModel {
         }
     }
     
-    mutating func createStudentScoreModels(verbList: [Verb], tenseList: [Tense], personList: [Person],
+   func createStudentScoreModels(verbList: [Verb], tenseList: [Tense], personList: [Person],
                                            modelList: [RomanceVerbModel], patternList: [SpecialPatternType]){
         for v in verbList{ verbScoreList.append(VerbScore(verb: v))}
         for t in tenseList{ tenseScoreList.append(TenseScore(tense: t))}
@@ -112,7 +112,14 @@ struct StudentScoreModel {
         for p in patternList{ patternScoreList.append(PatternScore(pattern: p))}
     }
     
-    mutating func resetAllScores(){
+    func createStudentScoreModels(verbList: [Verb], tenseList: [Tense], personList: [Person]){
+         for v in verbList{ verbScoreList.append(VerbScore(verb: v))}
+         for t in tenseList{ tenseScoreList.append(TenseScore(tense: t))}
+         for p in personList{ personScoreList.append(PersonScore(person: p))}
+     }
+     
+    
+    func resetAllScores(){
         for v in verbScoreList {
             v.wrongScore = 0
             v.correctScore = 0
@@ -162,7 +169,7 @@ struct StudentScoreModel {
         return (0,0)
     }
     
-    mutating func incrementVerbScore(value: Verb, correctScore: Int, wrongScore: Int)
+    func incrementVerbScore(value: Verb, correctScore: Int, wrongScore: Int)
     {
     for v in verbScoreList {
         if v.value == value {
@@ -172,7 +179,7 @@ struct StudentScoreModel {
     }
     }
     
-    mutating func incrementTenseScore(value: Tense, correctScore: Int, wrongScore: Int)
+    func incrementTenseScore(value: Tense, correctScore: Int, wrongScore: Int)
     {
     for v in tenseScoreList {
         if v.value == value {
@@ -183,7 +190,7 @@ struct StudentScoreModel {
     }
 
     
-    mutating func incrementPersonScore(value: Person, correctScore: Int, wrongScore: Int)
+    func incrementPersonScore(value: Person, correctScore: Int, wrongScore: Int)
     {
     for v in personScoreList {
         if v.value == value {
@@ -193,7 +200,7 @@ struct StudentScoreModel {
     }
     }
     
-    mutating func incrementModelScore(value: RomanceVerbModel, correctScore: Int, wrongScore: Int)
+    func incrementModelScore(value: RomanceVerbModel, correctScore: Int, wrongScore: Int)
     {
     for v in modelScoreList {
         if v.value.id == value.id {
@@ -203,7 +210,7 @@ struct StudentScoreModel {
     }
     }
     
-    mutating func incrementPatternScore(value: SpecialPatternType, correctScore: Int, wrongScore: Int)
+    func incrementPatternScore(value: SpecialPatternType, correctScore: Int, wrongScore: Int)
     {
     for v in patternScoreList {
         if v.value == value {

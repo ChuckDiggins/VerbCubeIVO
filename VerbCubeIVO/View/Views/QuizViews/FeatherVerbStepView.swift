@@ -225,6 +225,9 @@ struct FeatherVerbStepView: View {
             verbListBackgroundColor = .red
             actionBackgroundColor = .red
             highlight = .none
+            if languageViewModel.isSpeechModeActive(){
+                textToSpeech(text: showMeComment, language: .English)
+            }
         }
     }
     
@@ -257,7 +260,9 @@ struct FeatherVerbStepView: View {
         default:
             break
         }
-        
+        if languageViewModel.isSpeechModeActive(){
+            textToSpeech(text: showMeComment, language: .English)
+        }
         propogateChangeToOtherVerbs()
     }
     
@@ -290,6 +295,9 @@ struct FeatherVerbStepView: View {
         default:
             break
         }
+        if languageViewModel.isSpeechModeActive(){
+            textToSpeech(text: showMeComment, language: .English)
+        }
         propogateChangeToOtherVerbs()
     }
     
@@ -321,6 +329,9 @@ struct FeatherVerbStepView: View {
             checkConjugationComplete()
         default:
             break
+        }
+        if languageViewModel.isSpeechModeActive(){
+            textToSpeech(text: showMeComment, language: .English)
         }
         propogateChangeToOtherVerbs()
     }

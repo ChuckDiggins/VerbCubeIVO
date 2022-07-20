@@ -65,6 +65,9 @@ class LanguageEngine : ObservableObject {
     
     var currentVerbModel = RomanceVerbModel()
     var currentVerbPattern = SpecialPatternStruct(tense: .present, spt: .none )
+    var studentScoreModel = StudentScoreModel()
+    
+    var useSpeechMode = false
     
 //    var realm : Realm
     
@@ -105,9 +108,9 @@ class LanguageEngine : ObservableObject {
         testPatternModelListLogic()
         
         //this should set the behavioral verb list and index
-        setBehaviorType(bt: .likeGustar)
-        
+        setBehaviorType(bt: .likeGustar)  
         loadInitialVerbModel()
+        initializeStudentScoreModel()
     }
 
     func loadInitialVerbModel(){
@@ -125,7 +128,7 @@ class LanguageEngine : ObservableObject {
     
     func testPatternModelListLogic(){
         var verb = Verb(spanish : "seguir", french : "seguir", english: "follow")
-        let verbStr = conjugateAsRegularVerb(verb: verb, tense: .present, person: .S1)
+        let verbStr = conjugateAsRegularVerb(verb: verb, tense: .present, person: .S1, isReflexive: true, residPhrase: "cuenta de")
         print("seguir as regular verb: \(verbStr)")
         let patternVerbList = getVerbsForPatternGroup(patternType: .o2ue)
 //        var vl = getVerbsOfPatternGroups(patternType: .c2z)
@@ -161,6 +164,14 @@ class LanguageEngine : ObservableObject {
         return getWordCollectionList()
     }
     
+    func toggleSpeechMode(){
+        useSpeechMode.toggle()
+    }
+    
+    func isSpeechModeActive()->Bool{
+        return useSpeechMode
+    }
+    
     func setLanguage(language: LanguageType){
         currentLanguage = language
         m_wsp.m_language = language
@@ -178,6 +189,13 @@ class LanguageEngine : ObservableObject {
         }
     }
     
+    func initializeStudentScoreModel(){
+        let tenseList = getTenseList()
+        var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
+        personList.shuffle()
+        let verbList = getFilteredVerbs()
+        studentScoreModel.createStudentScoreModels(verbList: verbList, tenseList: tenseList, personList: personList)
+    }
 
     func initializeCriticalForms(){
         criticalVerbForms.clearAll()
@@ -230,6 +248,10 @@ class LanguageEngine : ObservableObject {
     
     func putCriticalStruct(index: Int, criticalStruct: CriticalStruct){
         criticalVerbForms.put(index: index, criticalStruct: criticalStruct)
+    }
+    
+    func getStudentScoreModel()->StudentScoreModel{
+        studentScoreModel
     }
     
     func getVerbList()->[Verb]{

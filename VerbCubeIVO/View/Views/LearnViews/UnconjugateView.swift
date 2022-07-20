@@ -111,6 +111,11 @@ struct UnconjugateView: View {
                                     WordCell(wordText: vtpList[i].verb.getWordStringAtLanguage(language:languageViewModel.currentLanguage), backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize))
                                     WordCell(wordText: vtpList[i].tense.rawValue, backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize*0.7))
                                     WordCell(wordText: vtpList[i].person.getSubjectString(language: languageViewModel.currentLanguage, subjectPronounType: languageViewModel.getSubjectPronounType()),  backgroundColor: .yellow, foregroundColor: .black, fontSize: .system(size: fontSize*0.7))
+//                                    Button{
+//                                        textToSpeech(text : "\(vtpList[i])", language: languageViewModel.currentLanguage)
+//                                    } label: {
+//                                        Image(systemSymbol: .speakerWave1Fill).foregroundColor(.red).padding()
+//                                    }
                                 }
                             }
                         }

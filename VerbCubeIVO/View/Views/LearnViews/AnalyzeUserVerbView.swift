@@ -74,6 +74,11 @@ struct AnalyzeUserVerbView: View {
                 VStack {
                     VStack {
                         Text("Analyze User Verb").font(.title).bold()
+                        Text("Type in any verb or verb phrase")
+                            .frame(width: 325, height: 50)
+                            .font(.callout)
+                            .foregroundColor(.black)
+//                            .background(.yellow)
                         HStack{
                             Text("🔍")
                         TextField("", text: $newVerbString,
@@ -111,10 +116,8 @@ struct AnalyzeUserVerbView: View {
                                     .foregroundColor(.black)
                             })
                         }
-                        Text("Type in any verb or verb phrase")
-                            .font(.callout)
-                            .foregroundColor(.black)
-                            .background(.yellow)
+                        
+                        
                         Spacer()
 
                     }
@@ -180,8 +183,8 @@ struct AnalyzeUserVerbView: View {
                 }
 //            }
         }
-        .padding(20)
-        .padding(.all, 8)
+//        .padding(20)
+//        .padding(.all, 8)
         Spacer()
         
     }
@@ -190,6 +193,19 @@ struct AnalyzeUserVerbView: View {
         let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
         modelID = brv.getBescherelleID()
         modelVerb = brv.getBescherelleModelVerb()
+        switch currentLanguage {
+        case .Spanish:
+            switch modelID{
+            case 5: modelVerb = "Regular AR Verb"
+            case 87: modelVerb = "Regular IR Verb"
+            case 788: modelVerb = "Regular IR Verb"
+            case 6: modelVerb = "Regular ER Verb"
+            default: break
+            }
+        default:
+            break
+        }
+    
     }
     
     struct  CriticalFormView : View {

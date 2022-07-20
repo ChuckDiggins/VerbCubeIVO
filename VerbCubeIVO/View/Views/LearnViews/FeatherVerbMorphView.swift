@@ -87,6 +87,10 @@ struct FeatherVerbMorphView: View {
                 incrementCurrentMorphStepIndex()
                 getCurrentMorphStepForAllVerbs()
                 setMorphComment()
+                if languageViewModel.isSpeechModeActive(){
+                    let morphCommentClean = VerbUtilities().removeNonAlphaCharactersButLeaveBlanks(characterArray: morphComment)
+                    textToSpeech(text: morphCommentClean, language: .English)
+                }
             }){
                 HStack{
                     Text(morphComment)
@@ -252,10 +256,12 @@ struct FeatherVerbMorphView: View {
         let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: verbList[0])
         modelID = brv.getBescherelleID()
         modelVerb = brv.getBescherelleModelVerb()
-        let result = languageViewModel.getModelStringAtTensePerson(bVerb: brv, tense: languageViewModel.getCurrentTense(), person: currentPerson)
-        verbPart1 = result.0
-        modelVerbPart2 = result.1
+        if modelVerb.count > 0 && modelID > 0 {
+            let result = languageViewModel.getModelStringAtTensePerson(bVerb: brv, tense: languageViewModel.getCurrentTense(), person: currentPerson)
+            verbPart1 = result.0
+            modelVerbPart2 = result.1
         print("verb \(brv.getWordStringAtLanguage(language: languageViewModel.getCurrentLanguage())) = \(result.0) + \(result.1)")
+        }
     }
     
     //reflexive verbs mess up the synch
