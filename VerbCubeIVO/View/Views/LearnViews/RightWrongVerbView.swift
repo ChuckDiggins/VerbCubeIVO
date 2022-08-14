@@ -40,10 +40,10 @@ struct RightWrongVerbView: View {
     
     var body: some View {
         ZStack{
-            Color("GeneralColor")
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             VStack{
-                Text("Right & Wrong").font(.title2).bold()
+                Text("Right & Wrong").font(.title2).bold().foregroundColor(.white)
                 setVerbAndTenseView()
                 
                 if ( bValidVerb ){
@@ -52,16 +52,16 @@ struct RightWrongVerbView: View {
                         HStack {
                             Text("Mode:")
                                 .frame(width: 100, height: 20, alignment: .trailing)
-                                .background(.white )
-                                .foregroundColor(.black)
+//                                .background(.white )
+//                                .foregroundColor(.black)
                             Text("as Model")
                                 .frame(width:100, height:20, alignment: .trailing)
-                                .background(.green )
-                                .foregroundColor(.black)
+//                                .background(.green )
+//                                .foregroundColor(.black)
                             Text("as Regular")
                                 .frame(width:100, height:20, alignment: .trailing)
-                                .background(.yellow)
-                                .foregroundColor(.black)
+//                                .background(.yellow)
+//                                .foregroundColor(.black)
                         }.font(fontSize)
                         Divider().background(Color.orange)
                         ForEach (0..<6){ i in
@@ -69,17 +69,18 @@ struct RightWrongVerbView: View {
                                 Text(person[i])
                                     .frame(width: 100, height: 20, alignment: .trailing)
                                     .background(vvm[i] == vvr[i] ? .white : .red  )
-                                    .foregroundColor(vvm[i] == vvr[i] ? .black : .yellow)
+                                    .foregroundColor(.black)
+//                                    .foregroundColor(vvm[i] == vvr[i] ? .black : .yellow)
                                 
                                 Text(vvm[i])
                                     .frame(width: 100, height: 20, alignment: .trailing)
-                                    .background(.green )
-                                    .foregroundColor(.black)
+//                                    .background(.green )
+                                    .foregroundColor(Color("BethanyGreenText"))
                                 
                                 Text(vvr[i])
                                     .frame(width: 100, height: 20, alignment: .trailing)
-                                    .background(.yellow)
-                                    .foregroundColor(.black)
+//                                    .background(.yellow)
+                                    .foregroundColor(Color("BethanyGreenText"))
                             }.font(fontSize)
                         }
                     }
@@ -94,6 +95,8 @@ struct RightWrongVerbView: View {
                     }
                 }
             }
+            .foregroundColor(Color("BethanyGreenText"))
+            .background(Color("BethanyNavalBackground"))
         }
         
     }
@@ -105,14 +108,9 @@ struct RightWrongVerbView: View {
                     Text("Verb model:")
                     Text(currentModelString)
                     Spacer()
-                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
                 }
-                .frame(width: 350, height: 30)
-                .font(.callout)
-                .padding(2)
-                .background(Color.orange)
-                .foregroundColor(.black)
-                .cornerRadius(4)
+                .modifier(ModelTensePersonButtonModifier())
             }.task {
                 setCurrentVerb()
             }
@@ -127,13 +125,8 @@ struct RightWrongVerbView: View {
                     Text("Verb: ")
                     Text(currentVerbString)
                     Spacer()
-                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
-                }.frame(width: 350, height: 30)
-                    .font(.callout)
-                    .padding(2)
-                    .background(Color.orange)
-                    .foregroundColor(.black)
-                    .cornerRadius(4)
+                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                }.modifier(ModelTensePersonButtonModifier())
             }
             
             
@@ -146,14 +139,9 @@ struct RightWrongVerbView: View {
             }){
                 Text("Tense: \(currentTenseString)")
                 Spacer()
-                Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
             }
-            .frame(width: 350, height: 30)
-            .font(.callout)
-            .padding(2)
-            .background(Color.orange)
-            .foregroundColor(.black)
-            .cornerRadius(4)
+            .modifier(ModelTensePersonButtonModifier())
             
         }
         

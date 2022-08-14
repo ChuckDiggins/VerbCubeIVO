@@ -42,7 +42,7 @@ struct TextMorphStruct : Identifiable, Hashable{
     
     init(){
         morphString = ["", "", ""]
-        morphColor = [.black, .red, .black]
+        morphColor = [Color("BethanyGreenText"), .red, Color("BethanyGreenText")]
         bold = [false, false, false]
     }
     
@@ -120,6 +120,7 @@ struct VerbMorphView: View {
                               "conjugate nosotros form",
                               "conjugate vosotros form",
                               "conjugate ellos form"]
+    @State var subjunctiveWord = ""
     
     func fillTheCommentList(){
         //let vu = VerbUtilities()
@@ -134,7 +135,7 @@ struct VerbMorphView: View {
         for p in 0 ..< 6 {
             let person = personList[p]
             let personString =  person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)
-            personStr[p] = personString
+            personStr[p] = subjunctiveWord + personString
         }
     }
     
@@ -158,9 +159,9 @@ struct VerbMorphView: View {
     
     func createInitialMorphStruct(person: Person)->(TextMorphStruct){
         var tms = TextMorphStruct()
-        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: person), color: .black, bold: false)
+        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: person), color: Color("BethanyGreenText"), bold: false)
         tms.setValues(index: 1, str: "", color: .red, bold: false)
-        tms.setValues(index: 2, str: "", color: .black, bold: true)
+        tms.setValues(index: 2, str: "", color: Color("BethanyGreenText"), bold: true)
         return tms
     }
     
@@ -169,13 +170,13 @@ struct VerbMorphView: View {
     {
     var tms = TextMorphStruct()
     if morphStep.isFinalStep {
-        tms.setValues(index: 0, str: morphStep.part1, color: .black, bold: false)
+        tms.setValues(index: 0, str: morphStep.part1, color: Color("BethanyGreenText"), bold: false)
         tms.setValues(index: 1, str: morphStep.part2, color: .red, bold: false)
-        tms.setValues(index: 2, str: morphStep.part3, color: .black, bold: true)
+        tms.setValues(index: 2, str: morphStep.part3, color: Color("BethanyGreenText"), bold: true)
     } else {
-        tms.setValues(index: 0, str: morphStep.part1, color: .black, bold: false)
+        tms.setValues(index: 0, str: morphStep.part1, color: Color("BethanyGreenText"), bold: false)
         tms.setValues(index: 1, str: morphStep.part2, color: .red, bold: false)
-        tms.setValues(index: 2, str: morphStep.part3, color: .black, bold: true)
+        tms.setValues(index: 2, str: morphStep.part3, color: Color("BethanyGreenText"), bold: true)
     }
     return tms
     }
@@ -192,12 +193,14 @@ struct VerbMorphView: View {
     
     var body: some View {
         ZStack{
-            Color("GeneralColor")
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
             VStack{
-                Text("Verb Morphing").font(.title2).bold()
-                ModelVerbTenseView(languageViewModel: languageViewModel, mvtp: mvtp, setCurrentVerb: setCurrentVerb)
+                Text("Verb Morphing").font(.title2).foregroundColor(Color("ChuckText1"))
+//                ModelVerbTenseView(languageViewModel: languageViewModel, mvtp: mvtp, function: setCurrentVerb)
+                TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
+//                CurrentVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 Spacer()
                     .frame(height: 20)
                 
@@ -208,14 +211,16 @@ struct VerbMorphView: View {
                         VStack(spacing: 0){
                             
                             HStack{
-                                
+
                                 // person string here
-                                
-                                Text(getPersonString(person: person))
-                                    .frame(width: 100, height: 30, alignment: .trailing)
-                                
+
+                                HStack{
+                                    Text(subjunctiveWord)
+                                    Text(getPersonString(person: person))
+                                }
+
                                 //conjugated string here
-                                
+
                                 HStack(spacing: 0)
                                 {
                                 if ( tmsList[person.getIndex()].getBold(index: 0) ){
@@ -226,7 +231,7 @@ struct VerbMorphView: View {
                                     Text(tmsList[person.getIndex()].getString(index: 0))
                                         .foregroundColor(tmsList[person.getIndex()].getColor(index: 0))
                                 }
-                                
+
                                 if ( tmsList[person.getIndex()].getBold(index: 1) ){
                                     Text(tmsList[person.getIndex()].getString(index: 1))
                                         .foregroundColor(tmsList[person.getIndex()].getColor(index: 1))
@@ -235,7 +240,7 @@ struct VerbMorphView: View {
                                     Text(tmsList[person.getIndex()].getString(index: 1))
                                         .foregroundColor(tmsList[person.getIndex()].getColor(index: 1))
                                 }
-                                
+
                                 if ( tmsList[person.getIndex()].getBold(index: 2) ){
                                     Text(tmsList[person.getIndex()].getString(index: 2))
                                         .foregroundColor(tmsList[person.getIndex()].getColor(index: 2))
@@ -244,25 +249,32 @@ struct VerbMorphView: View {
                                     Text(tmsList[person.getIndex()].getString(index: 2))
                                         .foregroundColor(tmsList[person.getIndex()].getColor(index: 2))
                                 }
-                                
+
                                 }//HStack - conjugated string
-                                
-                            }
+
+                            }.frame(width: 350, height: 25, alignment: .leading)
+                                .padding(.horizontal, 20)
                             
                             Button(action: {
                                 showMorph(person: person)
+                                if languageViewModel.isSpeechModeActive(){
+                                    let morphCommentClean = VerbUtilities().removeNonAlphaCharactersButLeaveBlanks(characterArray: commentList[person.getIndex()])
+                                    textToSpeech(text: morphCommentClean, language: .English)
+                                }
                             }){
                                 HStack{
-                                    Text(commentList[person.getIndex()]).bold()
+                                    Text(commentList[person.getIndex()])
                                     Spacer()
-                                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
-                                    Text(" ")
-                                } .background(Color.yellow)
-                                    .foregroundColor(.black)
+                                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                                }
+                                .frame(width: 350, height: 25)
+                                .padding(.horizontal)
+                                .background(Color("BethanyPurpleButtons"))
+                                .foregroundColor(.white)
                             }
                         }.frame(minWidth: 350)
-                            .background(Color.green)
-                            .padding(0)
+                            .background(Color("BethanyNavalBackground"))
+                     
                         
                     }//for each person
                     
@@ -271,27 +283,34 @@ struct VerbMorphView: View {
                 .onAppear {
                     currentLanguage = languageViewModel.getCurrentLanguage()
                     setCurrentVerb()
-                    mvtp.currentVerbString = currentVerbString
                 }
             }
+            .foregroundColor(Color("BethanyGreenText"))
+            .background(Color("BethanyNavalBackground"))
         }
         Spacer()
         
     }//body view
     
     
-    
+    func setSubjunctiveStuff(){
+        subjunctiveWord = ""
+        if languageViewModel.getCurrentTense().isSubjunctive() {
+            if currentLanguage == .French { subjunctiveWord = "qui"}
+            else {subjunctiveWord = "que"}
+        }
+    }
+
     func setCurrentVerb(){
-        languageViewModel.getCurrentFilteredVerb()
+        
         languageViewModel.createAndConjugateCurrentFilteredVerb()
-        
-        
+
         //this sets up the initial invitation message to the user "Click here"
         fillTheCommentList()
         fillThePersonStringList()
-        mvtp.currentTenseString = languageViewModel.getCurrentTense().rawValue
-        mvtp.currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: currentLanguage)
-        mvtp.currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
+        currentTenseString = languageViewModel.getCurrentTense().rawValue
+        currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: currentLanguage)
+        setSubjunctiveStuff()
         
         for person in personList{
             showNewVerb(person: person)

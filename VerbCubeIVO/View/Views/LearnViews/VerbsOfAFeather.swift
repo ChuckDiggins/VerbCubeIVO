@@ -15,13 +15,13 @@ extension VerbsOfAFeather {
                 Text("Verb model information:")
                 Text(modelNumberString)
                 Text(modelNameString)
-            }.background(.linearGradient(colors: [.blue, .green], startPoint: .topLeading, endPoint: .bottomTrailing))
-                .font(.caption)
+            }.padding(.horizontal)
             
-            Divider()
+            Divider().frame(height:2).background(.yellow)
+            
             switch featherMode {
-            case .model: Text("The following \(featherVerbList.count) verbs with the same conjugation model were found:").bold()
-            case .pattern:  Text("The following \(featherVerbList.count) verbs with the same conjugation pattern were found:").bold()
+            case .model: Text("The following \(featherVerbList.count) verbs with the same conjugation model were found:").bold().padding(.horizontal)
+            case .pattern:  Text("The following \(featherVerbList.count) verbs with the same conjugation pattern were found:").bold().padding(.horizontal)
             }
         }
     }
@@ -60,12 +60,12 @@ struct VerbsOfAFeather: View {
     
     var body : some View {
         ZStack{
-            Color(.orange)
-                .ignoresSafeArea()
-            VStack {
+            Color("BethanyNavalBackground")
+                .edgesIgnoringSafeArea(.all)
+            ScrollView {
                 switch featherMode {
-                case .model:  Text("Find Verbs with Same Model").font(.title2).bold()
-                case .pattern: Text("Find Verbs with Same Pattern").font(.title2).bold()
+                case .model:  Text("Find Verbs with Same Model").font(.title2).bold().foregroundColor(Color("ChuckText1"))
+                case .pattern: Text("Find Verbs with Same Pattern").font(.title2).bold().foregroundColor(Color("ChuckText1"))
                 }
                 processTextField()
                 if isNameValid {
@@ -74,11 +74,9 @@ struct VerbsOfAFeather: View {
                             analyzeAndFind()
                         }, label: {
                             Text("Analyze ")
-                                .padding(.all, 2 )
-                                .background(Color.orange)
-                                .cornerRadius(10)
+                                .modifier(ModelTensePersonButtonModifier())
                         })
-                        processAndSaveView()
+                        
                     }
                 }
                 //if not valid name,
@@ -90,33 +88,39 @@ struct VerbsOfAFeather: View {
                 Spacer()
                 
                 if selectedVerb.getWordAtLanguage(language: currentLanguage).count > 0 {
-                    NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "")){
-                        HStack{
-                            Text("Show me ")
-                            Text(selectedVerb.getWordAtLanguage(language: currentLanguage)).bold()
-                        }
-                    }.frame(width: 300, height: 50)
-                        .padding(2)
-                        .buttonStyle(.bordered)
-                        .background(.green)
-                        .tint(.black)
-                        .cornerRadius(10)
+                    ZStack{
+                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "", teachMeMode: featherMode == .model ? .model : .regular)){
+                            HStack{
+                                Text("Show me ")
+                                Text(selectedVerb.getWordAtLanguage(language: currentLanguage)).bold()
+                            }
+                        }.frame(width: 300, height: 50)
+                            .padding(2)
+                            .buttonStyle(.bordered)
+                            .background(.green)
+                            .tint(.black)
+                            .cornerRadius(10)
+                    }
                 }
                 Spacer()
             }
         }
-//        .navigationTitle("Verbs with Same Model")
-        Spacer()
-            .onAppear(){
-                switch featherMode {
-                case .model:  featherModeHeader = "Feather Mode: Model"
-                case .pattern:  featherModeHeader = "Feather Mode: Pattern"
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.textFieldFocus = true
-                    currentLanguage = languageViewModel.getCurrentLanguage()
-                }
+        .foregroundColor(Color("BethanyGreenText"))
+        .background(Color("BethanyNavalBackground"))
+        
+        .onAppear(){
+            switch featherMode {
+            case .model:  featherModeHeader = "Feather Mode: Model"
+            case .pattern:  featherModeHeader = "Feather Mode: Pattern"
             }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.textFieldFocus = true
+                currentLanguage = languageViewModel.getCurrentLanguage()
+            }
+        }
+        //        .navigationTitle("Verbs with Same Model")
+        Spacer()
+            
     }
     
     @ViewBuilder
@@ -129,9 +133,10 @@ struct VerbsOfAFeather: View {
                         saveAndExit()
                     }, label: {
                         Text("Save as active verbs")
-                            .padding(.all, 2 )
-                            .background(Color.yellow)
-                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .background(Color("BethanyPurpleButtons"))
+                            .cornerRadius(5)
+                            .foregroundColor(.white)
                     })
                 }
             }
@@ -143,8 +148,8 @@ struct VerbsOfAFeather: View {
     func showExampleView()->some View{
         Text("Type in any verb or verb phrase")
             .font(.callout)
-            .foregroundColor(.black)
-            .background(.yellow)
+            .foregroundColor(Color("BethanyGreenText"))
+            .background(Color("BethanyNavalBackground"))
         Spacer()
     }
     
@@ -152,8 +157,8 @@ struct VerbsOfAFeather: View {
     func processTextField()->some View{
         VStack{
             HStack{
-                Text("🔍")
-                TextField("Enter verb or verb phrase", text: $newVerbString).focused($textFieldFocus)
+                Text(" ")
+                TextField("🔍", text: $newVerbString).focused($textFieldFocus)
                     .disableAutocorrection(true)
                     .background(Color.black).opacity(0.8)
                     .foregroundColor(.yellow)
@@ -175,11 +180,10 @@ struct VerbsOfAFeather: View {
                     newVerbString = ""
                 },
                        label: {  Text("X")
-                        .font(.largeTitle)
-                        .foregroundColor(.black)
-                        .background(.yellow)
+                        .font(.title2)
+                        .foregroundColor(Color("ChuckText1"))
                 })
-            }
+            }.padding(.horizontal)
         }
     }
     
@@ -222,7 +226,6 @@ struct VerbsOfAFeather: View {
             }
             modelVerbStringForWordCollection = newBrv.getBescherelleModelVerb()
         case .pattern:
-            modelNumberString = "No pattern found for this verb"
             for sps in patternList {
                 modelNumberString = "Pattern: \(sps.pattern.rawValue)"
             }
@@ -233,6 +236,16 @@ struct VerbsOfAFeather: View {
         hideKeyboard()
     }
     
+//    if currentVerbString.count > 1 {
+//        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: currentVerbString, french: currentVerbString, english: currentVerbString), residualPhrase: "", teachMeMode: .model)){
+//            HStack{
+//                Text("Show me ")
+//                Text(currentVerbString).bold()
+//                Spacer()
+//                Image(systemName: "chevron.right").foregroundColor(.yellow)
+//            }
+//        }.modifier(NeumorphicTextfieldModifier())
+//    }
     func analyze(verbString: String)-> (Verb, [Verb]){
         let vu = VerbUtilities()
         var verb = Verb()
@@ -259,22 +272,25 @@ struct VerbsOfAFeather: View {
         case .pattern:
             patternList = languageViewModel.getPatternsForVerb(verb: verb, tense: .present)
             
-            //if this this verb has no special patterns, then don't load any verbs
-            if patternList.count > 0 {
-                vList = languageViewModel.findVerbsFromSamePatternsAsVerb(verb: verb, tense: .present)
-                print("Found \(vList.count) words in findVerbLike")
-                var i = 0
-                var targetVerbFound = false
-                for v in vList {
-                    if v.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())==verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()) {
-                        targetVerbFound = true
-                    }
-                    print("Verb: \(i). \(v.getWordAtLanguage(language: currentLanguage))")
-                    i += 1
-                }
-                if !targetVerbFound {
-                    vList.append(verb)
-                }
+            vList = languageViewModel.getVerbList()
+            
+            //patterns can have multiple aspects for different tenses
+            
+            for pattern in patternList {
+                vList = languageViewModel.getVerbsOfPattern(verbList: vList, thisPattern: pattern)
+//                print("Found \(vList.count) words in findVerbLike")
+//                var i = 0
+//                var targetVerbFound = false
+//                for v in newVerbList {
+//                    if v.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())==verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()) {
+//                        targetVerbFound = true
+//                    }
+//                    print("Verb: \(i). \(v.getWordAtLanguage(language: currentLanguage))")
+//                    i += 1
+//                }
+//                if !targetVerbFound {
+//                    vList.append(verb)
+//                }
             }
             
         }
@@ -300,14 +316,14 @@ struct VerbsOfAFeather: View {
     
     fileprivate func BirdsOfAFeatherList() -> some View {
         return VStack{
-            Text("Your verb: \(currentVerb.getWordAtLanguage(language: currentLanguage))").font(.caption)
+            Text("Your verb: \(currentVerb.getWordAtLanguage(language: currentLanguage))")
             if isAnalyzed {
                 showFeatherInfo
             }
-            
+            Text(" ")
+            processAndSaveView()
             let gridFixSize = CGFloat(200.0)
             let gridItems = [GridItem(.fixed(gridFixSize)),
-                             //                                         GridItem(.fixed(gridFixSize)),
                              GridItem(.fixed(gridFixSize))]
             ScrollView{
                 LazyVGrid(columns: gridItems, spacing: 5){

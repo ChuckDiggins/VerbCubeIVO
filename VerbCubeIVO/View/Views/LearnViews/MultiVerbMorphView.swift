@@ -8,7 +8,7 @@
 import SwiftUI
 import JumpLinguaHelpers
 
-struct FeatherVerbMorphView: View {
+struct MultiVerbMorphView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @Environment(\.dismiss) private var dismiss
     //    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
@@ -26,7 +26,7 @@ struct FeatherVerbMorphView: View {
     @State var currentVerbPhrase = ""
     @State var currentVerbString = ""
     @State var currentTenseString = ""
-    @State var currentPerson = Person.S1
+//    @State var currentPerson = Person.S1
     @State var currentPersonString = "yo"
     @State var personIndex = 0
     
@@ -53,6 +53,7 @@ struct FeatherVerbMorphView: View {
     @State var verbsFromSameFeather = false
     @State var simpleAlert = false
     @State var currentVerbModelString = ""
+    @State var subjunctiveWord = "que "
     
     //    @State var tmeList = Array(repeating: TextMorphStruct(), count: 12)
     @State var tmsList = [TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),
@@ -65,11 +66,13 @@ struct FeatherVerbMorphView: View {
     
     var body: some View {
         ZStack{
-            Color(.orange)
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             VStack {
-                //            ModelVerbTenseView(languageViewModel: languageViewModel, mvtp: mvtp, setCurrentVerb: setCurrentVerb)
-                Text("Conjugate Verbs with Same Model").font(.title).bold()
+                HomePreferencesButtonView(languageViewModel: languageViewModel)
+                Text("Multi-Verb Morphing")
+                    .font(.title2)
+                    .foregroundColor(Color("ChuckText1"))
                 showHeaderInfo()
                 showMorphs()
             }
@@ -77,10 +80,9 @@ struct FeatherVerbMorphView: View {
                 initializeStuff()
             }
         }
-//        .navigationTitle("Conjugate Verbs with Same Model")
-        
     }
     
+   
     fileprivate func showMorphs() -> some View {
         return VStack{
             Button(action: {
@@ -95,87 +97,44 @@ struct FeatherVerbMorphView: View {
                 HStack{
                     Text(morphComment)
                     Spacer()
-                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
+                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
                 }
-                .frame(width: 350, height: 30)
-                .font(.callout)
-                .padding(2)
-                .background(Color.yellow)
-                .foregroundColor(.black)
-                .cornerRadius(4)
+                .modifier(ModelTensePersonButtonModifier())
             }
-            List {
+            VStack {
                 ForEach( 0..<verbList.count, id: \.self){verbIndex in
                     let tms = tmsList[verbIndex]
                     //                    VStack(spacing: 0){
                     HStack{
-                        Text(currentPersonString)
-                            .frame(width: 100, height: 30, alignment: .trailing)
+                        HStack {
+                            Text(subjunctiveWord)
+                            Text(currentPersonString)
+                        }
                         //conjugated string here
                         HStack(spacing: 0){
                             ForEach( 0..<3 ) { index in
                                 Text(tms.getString(index: index))
                                     .background(tms.getColor(index: index))
                             }
-                        }.foregroundColor(.black)
-                        //                        }
-                    }
+                        }
+                    }.frame(width: 300, height: 25, alignment: .leading)
+                        .padding(.horizontal, 20)
                 }//forEach verbIndex
-            }.environment(\.defaultMinListRowHeight, 15) // HERE
+            } .foregroundColor(Color("BethanyGreenText"))
+                .background(Color("BethanyNavalBackground"))
+
+
         }
         
     }
     
+    
     fileprivate func showHeaderInfo() -> some View {
         return VStack{
-            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-                HStack{
-                    Text("Verb model:")
-                    Text(modelVerb)
-                    Spacer()
-                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
-                }
-                .frame(width: 350, height: 30)
-                .font(.callout)
-                .padding(2)
-                .background(Color.orange)
-                .foregroundColor(.black)
-                .cornerRadius(4)
-            }
-            .task {
-                setBescherelleModelInfo()
-            }
-            Button(action: {
-                currentTenseString = languageViewModel.getNextTense().rawValue
-                setMorphStructsAtPerson(person: currentPerson)
-            }){
-                Text("Tense: \(currentTenseString)")
-                Spacer()
-                Image(systemName: "rectangle.and.hand.point.up.left.filled")
-            }
-            .frame(width: 350, height: 30)
-            .font(.callout)
-            .padding(2)
-            .background(Color.orange)
-            .foregroundColor(.black)
-            .cornerRadius(4)
-            Button(action: {
-                currentPerson = getNextPerson()
-                studentActive = false
-                currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
-                setMorphStructsAtPerson(person: currentPerson)
-            }){
-                Text("Person: \(currentPersonString)")
-                Spacer()
-                Image(systemName: "rectangle.and.hand.point.up.left.filled")
-            }
-            .frame(width: 350, height: 30)
-            .font(.callout)
-            .padding(2)
-            .background(Color.orange)
-            .foregroundColor(.black)
-            .cornerRadius(4)
-            
+            ListVerbModelsView(languageViewModel: languageViewModel)
+            TenseButtonView(languageViewModel: languageViewModel, function: setTensePersonVerb)
+            CurrentPersonButtonView(languageViewModel: languageViewModel, function: setTensePersonVerb)
+
             HStack{
                 Button{
                     shuffleVerbList()
@@ -192,7 +151,7 @@ struct FeatherVerbMorphView: View {
                     .cornerRadius(4)
                 
                 if currentVerbString.count > 1 {
-                    NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "")){
+                    NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "", teachMeMode: .model)){
                         HStack{
                             Text("Show me ")
                             Text(modelVerb).bold()
@@ -223,7 +182,7 @@ struct FeatherVerbMorphView: View {
             verbList.removeLast(verbCount-maxVerbCount)
             verbCount = verbList.count
         }
-        setMorphStructsAtPerson(person: currentPerson)
+        setMorphStructsAtPerson(person: languageViewModel.getCurrentPerson())
         setMorphComment()
     }
     
@@ -245,9 +204,22 @@ struct FeatherVerbMorphView: View {
             verbList.removeLast(verbCount-maxVerbCount)
             verbCount = verbList.count
         }
+        setTensePersonVerb()
+    }
+    
+    func setSubjunctiveStuff(){
+        subjunctiveWord = ""
+        if languageViewModel.getCurrentTense().isSubjunctive() {
+            if currentLanguage == .French { subjunctiveWord = "qui "}
+            else {subjunctiveWord = "que "}
+        }
+    }
+    
+    func setTensePersonVerb(){
+        setSubjunctiveStuff()
         currentTenseString = languageViewModel.getCurrentTense().rawValue
-        currentPersonString = currentPerson.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
-        setMorphStructsAtPerson(person: currentPerson)
+        currentPersonString = languageViewModel.getCurrentPerson().getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+        setMorphStructsAtPerson(person: languageViewModel.getCurrentPerson())
         setMorphComment()
         setBescherelleModelInfo()
     }
@@ -257,7 +229,7 @@ struct FeatherVerbMorphView: View {
         modelID = brv.getBescherelleID()
         modelVerb = brv.getBescherelleModelVerb()
         if modelVerb.count > 0 && modelID > 0 {
-            let result = languageViewModel.getModelStringAtTensePerson(bVerb: brv, tense: languageViewModel.getCurrentTense(), person: currentPerson)
+            let result = languageViewModel.getModelStringAtTensePerson(bVerb: brv, tense: languageViewModel.getCurrentTense(), person: languageViewModel.getCurrentPerson())
             verbPart1 = result.0
             modelVerbPart2 = result.1
         print("verb \(brv.getWordStringAtLanguage(language: languageViewModel.getCurrentLanguage())) = \(result.0) + \(result.1)")
@@ -278,7 +250,7 @@ struct FeatherVerbMorphView: View {
         morphStructList.removeAll()
         
         for verb in verbList{
-            morphStructList.append(languageViewModel.createConjugatedMorphStruct(verb: verb, tense: languageViewModel.getCurrentTense(), person: currentPerson))
+            morphStructList.append(languageViewModel.createConjugatedMorphStruct(verb: verb, tense: languageViewModel.getCurrentTense(), person: languageViewModel.getCurrentPerson()))
         }
         currentMorphStepIndex = 0
         setMorphComment()
@@ -287,17 +259,17 @@ struct FeatherVerbMorphView: View {
         
     }
     
-    func setMorphStructsAtTense(tense: Tense){
-        morphStructList.removeAll()
-        
-        for verb in verbList{
-            morphStructList.append(languageViewModel.createConjugatedMorphStruct(verb: verb, tense: tense, person: currentPerson))
-        }
-        currentMorphStepIndex = 0
-        morphStepCount = morphStructList[0].getMorphStepCount()
-        getCurrentMorphStepForAllVerbs()
-        
-    }
+//    func setMorphStructsAtTense(tense: Tense){
+//        morphStructList.removeAll()
+//
+//        for verb in verbList{
+//            morphStructList.append(languageViewModel.createConjugatedMorphStruct(verb: verb, tense: tense, person: languageViewModel.getCurrentPerson()))
+//        }
+//        currentMorphStepIndex = 0
+//        morphStepCount = morphStructList[0].getMorphStepCount()
+//        getCurrentMorphStepForAllVerbs()
+//
+//    }
     
     func getCurrentMorphStepForAllVerbs(){
         for verbIndex in 0..<verbList.count {
@@ -320,7 +292,9 @@ struct FeatherVerbMorphView: View {
     
     func setMorphComment(){
         let i = currentMorphStepIndex
-        if i == 0 { morphComment = "Start with the infinitive." }
+        if i == 0 {
+                morphComment = "Click me: Start with the infinitive."
+            }
         else if i < morphStepCount { morphComment = morphStructList[0].getMorphStep(index: i).comment }
         else { morphComment = "🛑 Conjugation complete. "}
     }
@@ -343,13 +317,13 @@ struct FeatherVerbMorphView: View {
     {
     var tms = TextMorphStruct()
     if morphStep.isFinalStep {
-        tms.setValues(index: 0, str: morphStep.part1, color: .yellow, bold: false)
+        tms.setValues(index: 0, str: morphStep.part1, color: Color("BethanyNavalBackground"), bold: false)
         tms.setValues(index: 1, str: morphStep.part2, color: .red, bold: false)
-        tms.setValues(index: 2, str: morphStep.part3, color: .yellow, bold: true)
+        tms.setValues(index: 2, str: morphStep.part3, color: Color("BethanyNavalBackground"), bold: true)
     } else {
-        tms.setValues(index: 0, str: morphStep.part1, color: .yellow, bold: false)
+        tms.setValues(index: 0, str: morphStep.part1, color: Color("BethanyNavalBackground"), bold: false)
         tms.setValues(index: 1, str: morphStep.part2, color: .red, bold: false)
-        tms.setValues(index: 2, str: morphStep.part3, color: .yellow, bold: true)
+        tms.setValues(index: 2, str: morphStep.part3, color: Color("BethanyNavalBackground"), bold: true)
     }
     return tms
     }
@@ -397,7 +371,7 @@ struct FeatherVerbMorphView: View {
     
     func createInitialMorphStruct(verb: Verb)->(TextMorphStruct){
         var tms = TextMorphStruct()
-        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: currentPerson), color: .yellow, bold: false)
+        tms.setValues(index: 0, str: languageViewModel.getFinalVerbForm(person: languageViewModel.getCurrentPerson()), color: .yellow, bold: false)
         tms.setValues(index: 1, str: "", color: .red, bold: false)
         tms.setValues(index: 2, str: "", color: .blue, bold: true)
         return tms

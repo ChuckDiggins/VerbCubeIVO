@@ -22,7 +22,7 @@ struct ModelLearnWrapper: View {
             .ignoresSafeArea()
             
             VStack{
-                NavigationLink(destination: FeatherVerbMorphView(languageViewModel: languageViewModel)){
+                NavigationLink(destination: MultiVerbMorphView(languageViewModel: languageViewModel)){
                     Text("Conjugate Verbs with Same Model")
                 }.modifier(NavLinkModifier())
                         
@@ -34,7 +34,7 @@ struct ModelLearnWrapper: View {
                     Text("Find Verbs with Same Model")
                 }.modifier(NavLinkModifier())
                 
-                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
+                NavigationLink(destination: AnalyzeMyVerbView(languageViewModel: languageViewModel)){
                     Text("Analyze User Verb")
                 }.modifier(NavLinkModifier())            
             }
@@ -172,7 +172,7 @@ struct GeneralVerbLearnWrapper: View {
                 Text("Unconjugate")
             }.modifier(NavLinkModifier())
             
-            NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
+            NavigationLink(destination: AnalyzeMyVerbView(languageViewModel: languageViewModel)){
                 Text("Analyze User Verb")
             }.modifier(NavLinkModifier())
             

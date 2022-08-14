@@ -13,18 +13,23 @@ struct CustomAlertView: View {
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .trailing, vertical: .top)){
             VStack(spacing: 25){
-//                Image("Feather")
                 Text("Congratulations!")
-                    .font(.title)
-                    .foregroundColor(.pink)
-                    .padding()
+
                 Button{
                     withAnimation{show.toggle()}
                 } label: {
-                    Text("Next problem")
-                        .padding()
+                    VStack{
+                        Text("Next problem")
+                        Text("Click on Verb or Tense")
+                    }.padding()
                 }
-            }
+            } .frame(minWidth: 0, maxWidth: 350)
+                .frame(height: 200)
+                .foregroundColor(.white)
+                .padding(.horizontal)
+                .font(.headline)
+                .background(.blue)
+                .cornerRadius(10)
         }
         .frame(width: 200, height: 100)
         .background(.black)

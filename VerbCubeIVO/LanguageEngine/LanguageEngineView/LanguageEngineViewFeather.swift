@@ -14,6 +14,10 @@ extension LanguageViewModel{
     func getCurrentVerbModel()->RomanceVerbModel{
         languageEngine.getCurrentVerbModel()
     }
+
+    func getCurrentRandomVerb()->Verb{
+        return languageEngine.getCurrentRandomVerb()
+    }
     
     func getRandomEnglishVerbs(maxCount: Int)->[Verb]{
         languageEngine.getRandomEnglishVerbs(maxCount: maxCount)
@@ -33,6 +37,14 @@ extension LanguageViewModel{
     
     func findVerbsFromSameModel(verb: Verb)->[Verb]{
         return languageEngine.findVerbsFromSameModel(verb: verb)
+    }
+    
+    func setCurrentPattern(pattern: SpecialPatternType){
+        languageEngine.setCurrentPattern(pattern: pattern)
+    }
+    
+    func getCurrentPattern()->SpecialPatternType{
+        languageEngine.getCurrentPattern()
     }
     
     func getPatternsForVerb(verb: Verb, tense: Tense)->[SpecialPatternStruct]{

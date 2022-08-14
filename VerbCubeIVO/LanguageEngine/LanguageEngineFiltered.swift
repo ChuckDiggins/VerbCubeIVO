@@ -45,8 +45,23 @@ extension LanguageEngine{
         return filteredVerbList[currentFilteredVerbIndex]
     }
     
+    func getRandomVerb()->Verb{
+        let verbList = filteredVerbList.shuffled()
+        currentRandomVerb = verbList[0]
+        return currentRandomVerb
+    }
+    
+    func getCurrentRandomVerb()->Verb{
+        let verbWord = currentRandomVerb.getWordAtLanguage(language: getCurrentLanguage())
+        if verbWord.count == 0 {
+            currentRandomVerb = getRandomVerb()
+        }
+        return currentRandomVerb
+    }
+    
     func addVerbToFilteredList(verb: Verb){
         filteredVerbList.append(verb)
+        currentFilteredVerbIndex = filteredVerbList.count - 1
     }
     
     func copyWordCollectionToFilteredList(wordCollection: dWordCollection){

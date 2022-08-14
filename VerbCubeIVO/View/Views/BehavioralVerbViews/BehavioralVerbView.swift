@@ -219,7 +219,7 @@ struct BehavioralVerbView: View {
     }
     
     func changeDependentVerb(){
-        dependentVerb = languageViewModel.getRandomFeatherVerb()
+        dependentVerb = languageViewModel.getRandomVerb()
     }
     
     func getVerbString(i: Int)->String{

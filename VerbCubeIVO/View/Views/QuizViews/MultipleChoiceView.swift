@@ -69,26 +69,21 @@ struct MultipleChoiceView: View {
     @State private var wrongAnswerCount = 0
     @State private var totalCorrectCount = 0
     @State private var isNew = true
+    @State private var headerText = "Multiple Choice"
     
     var body: some View {
         ZStack{
-            Color("GeneralColor")
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
+            
+           
             VStack{
-                NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-                    HStack{
-                        Text("Verb model:")
-                        Text(modelVerb)
-                        Spacer()
-                        Image(systemName: "rectangle.and.hand.point.up.left.filled")
-                    }
-                    .frame(width: 350, height: 30)
-                    .font(.callout)
-                    .padding(2)
-                    .background(Color.orange)
-                    .foregroundColor(.black)
-                    .cornerRadius(4)
-                }
+                VStack{
+                    Text("Multiple Choice").font(.title2)
+                    Text(headerText).font(.title2).bold()
+                }.foregroundColor(Color("ChuckText1"))
+                
+                ListVerbModelsView(languageViewModel: languageViewModel)
                 .task {
                     setBescherelleModelInfo()
                     setVerbList()
@@ -102,20 +97,19 @@ struct MultipleChoiceView: View {
                         case .hard: multipleChoiceDifficulty = .simple
                         }
                     } label: {
-                        Text("Mode: \(multipleChoiceDifficulty.rawValue)")
-                            .frame(width: 300, height: 40)
-                            .padding(.leading, 10)
-                            .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                            .cornerRadius(10)
-                            .foregroundColor(.yellow)
+                        HStack{
+                            Text("Change mode: \(multipleChoiceDifficulty.rawValue)")
+                            Spacer()
+                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                        }.modifier(ModelTensePersonButtonModifier())
                     }
                     
                 }
                 HStack{
                     Spacer()
-                    Text("Wrong \(wrongAnswerCount)").foregroundColor(.black)
+                    Text("Wrong \(wrongAnswerCount)").foregroundColor(Color("BethanyGreenText"))
                     Spacer()
-                    Text("Correct \(correctAnswerCount)").foregroundColor(.black)
+                    Text("Correct \(correctAnswerCount)").foregroundColor(Color("BethanyGreenText"))
                     Spacer()
                     NavigationLink(destination: StudentScoreView(languageViewModel: languageViewModel)){
                         Text("👩🏻‍🎓")
@@ -143,10 +137,10 @@ struct MultipleChoiceView: View {
                         .buttonStyle(.bordered)
                     HStack{
                         Button(leftHandString){
-                            print("soon I will do something cool with this")
+//                            print("soon I will do something cool with this")
                         }
                         .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                        .background(.orange)
+                        .background(.orange.opacity(0.1))
                         .cornerRadius(8)
                         .font(.body)
                         
@@ -175,12 +169,12 @@ struct MultipleChoiceView: View {
                                         }
                                         showCurrentStudentScores()
                                     }
-                                    showCurrentStudentScores()
+//                                    showCurrentStudentScores()
                                     showNewProblem()
                                     
                                 }
                                 .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                                .background(.yellow)
+                                .background(Color("ChuckBackground").opacity(0.5))
                                 .cornerRadius(8)
                                 .font(.body)
                             }
@@ -190,10 +184,13 @@ struct MultipleChoiceView: View {
                 }
                 Spacer()
             }
+            .foregroundColor(Color("BethanyGreenText"))
+            .background(Color("BethanyNavalBackground"))
             .onAppear{
                 if isNew {
                     initialize()
                 }
+                fillHeaderText()
             }
             //            if showAlert {
             //                CustomAlertView(show: $showAlert )
@@ -216,6 +213,14 @@ struct MultipleChoiceView: View {
         setBescherelleModelInfo()
     }
     
+    func fillHeaderText(){
+        switch multipleChoiceType {
+        case .oneSubjectToFiveVerbs: headerText = "Subject versus Verb"
+        case .oneSubjectToFiveTenses: headerText = "Subject versus Tense"
+        case .oneVerbToFiveSubjects:  headerText = "Verb versus Subject"
+        case .oneVerbToFiveModels: headerText = "Verb versus Model"
+        }
+    }
     func setCurrentVerb(){
         currentVerbIndex += 1
         if currentVerbIndex >= verbList.count {currentVerbIndex = 0}
@@ -255,13 +260,6 @@ struct MultipleChoiceView: View {
             
         }
     }
-    func setSubjunctiveParticiple(){
-        subjunctiveParticiple = ""
-        if currentTense.isSubjunctive() {
-            subjunctiveParticiple = "que "
-            if currentLanguage == .French {subjunctiveParticiple = "qui "}
-        }
-    }
     
     func setBescherelleModelInfo() {
         let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: verbList[0])
@@ -293,30 +291,31 @@ struct MultipleChoiceView: View {
         case .simple:
             setNewPerson()
         case .medium:
-            setNewPerson()
             setNewTense()
+            setNewPerson()
+            
         case .hard:
-            setNewPerson()
             setNewTense()
+            setNewPerson()
             setNewVerb()
         }
         loadRightHandVerbsForThisLeftHandSubject(verb: currentVerb, tense: currentTense, person: currentPerson)
     }
     
-    func setNextQuiz(){
-        switch secondaryProblemMode {
-        case .verbMode:
-            setNewVerb()
-        case .tenseMode:
-            setNewTense()
-        case .personMode:
-            setNewPerson()
-        }
-        setNewPerson()
-        loadRightHandVerbsForThisLeftHandSubject(verb: currentVerb, tense: currentTense, person: currentPerson)
-    }
-    
-    
+//    func setNextQuiz(){
+//        switch secondaryProblemMode {
+//        case .verbMode:
+//            setNewVerb()
+//        case .tenseMode:
+//            setNewTense()
+//        case .personMode:
+//            setNewPerson()
+//        }
+//        setNewPerson()
+//        loadRightHandVerbsForThisLeftHandSubject(verb: currentVerb, tense: currentTense, person: currentPerson)
+//    }
+//
+//
     func createNextProblem(){
         switch multipleChoiceType {
         case .oneSubjectToFiveVerbs:
@@ -376,6 +375,8 @@ struct MultipleChoiceView: View {
     
     func loadRightHandVerbsForThisLeftHandSubject(verb: Verb, tense: Tense, person: Person){
         rightHandStringList.removeAll()
+        currentTense = tense
+        setSubjunctiveParticiple()
         switch multipleChoiceType {
         case .oneSubjectToFiveVerbs:
             randomPersonList.shuffle()
@@ -430,6 +431,14 @@ struct MultipleChoiceView: View {
         currentTense = tenseList[currentTenseIndex]
         setSubjunctiveParticiple()
         currentTenseString = currentTense.rawValue
+    }
+    
+    func setSubjunctiveParticiple(){
+        subjunctiveParticiple = ""
+        if currentTense.isSubjunctive() {
+            subjunctiveParticiple = "que "
+            if currentLanguage == .French {subjunctiveParticiple = "qui "}
+        }
     }
     
     func getSubjectStringAtPersonIndex(index : Int)->String{

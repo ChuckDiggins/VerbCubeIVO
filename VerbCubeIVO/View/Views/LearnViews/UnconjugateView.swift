@@ -24,17 +24,18 @@ struct UnconjugateView: View {
     
     var body: some View {
         ZStack{
-            Color("GeneralColor")
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
             VStack{
+//                Text("Unconjugate").font(.title2).foregroundColor(Color("ChuckText1"))
                 let gridFixSize = CGFloat(50.0)
                 let gridItems = [GridItem(.fixed(gridFixSize*2)),
                                  GridItem(.fixed(gridFixSize)),
                                  GridItem(.fixed(gridFixSize)),
                                  GridItem(.fixed(gridFixSize))]
                 HStack{
-                    Text("Find verbs for:").padding(10)
+                    Text("Find verbs for:").padding(10).foregroundColor(Color("ChuckText1"))
                     TextField("Verb form", text: $verbFormToUnconjugate, onEditingChanged: {changed in
                         isAnalyzed = false})
                     .frame(width: 150, height: 15)
@@ -72,7 +73,7 @@ struct UnconjugateView: View {
                     Text("Find verbs")
                         .frame(width: 200, height: 50)
                         .padding(.leading, 10)
-                        .background(Color.orange)
+                        .background((Color("BethanyPurpleButtons")))
                         .cornerRadius(10)
                 }
                 
@@ -82,8 +83,6 @@ struct UnconjugateView: View {
                             HStack{
                                 Text(unconjugateMessage)
                                     .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                                    .background(Color.blue)
-                                    .foregroundColor(.yellow)
                                     .cornerRadius(8)
                                     .font(.system(size: fontSize))
                                 Text(verbFormToUnconjugate)
@@ -121,7 +120,7 @@ struct UnconjugateView: View {
                         }
                         
                     }
-                }
+                }.foregroundColor(Color("BethanyGreenText"))
                 Spacer()
                 
                 //                }

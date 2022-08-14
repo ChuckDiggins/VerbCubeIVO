@@ -25,6 +25,14 @@ extension LanguageEngine{
         return currentVerbModel
     }
     
+    func setCurrentPattern(pattern: SpecialPatternType){
+        currentPattern = pattern
+    }
+    
+    func getCurrentPattern()->SpecialPatternType{
+        return currentPattern
+    }
+    
     func findModelForThisVerbString(verbWord: String)->RomanceVerbModel{
         return spanishVerbModelConjugation.getVerbModel(verbWord: verbWord)
     }
@@ -197,7 +205,7 @@ extension LanguageEngine{
         var newVerbList = [Verb]()
         var patternStructList = getPatternsForVerb(verb: verb, tense: tense)
         
-        newVerbList = getFilteredVerbs()
+        newVerbList = verbList
         for spt in patternStructList {
             newVerbList = getVerbsOfPattern(verbList: newVerbList, thisPattern: spt)
         }
@@ -534,9 +542,9 @@ extension LanguageEngine{
             return RomanceVerbModel()
         }
     }
-    func getRandomFeatherVerb()->Verb{
-        var vList = getFilteredVerbs()
-        vList.shuffle()
-        return vList[0]
-    }
+//    func getRandomFeatherVerb()->Verb{
+//        var vList = getFilteredVerbs()
+//        vList.shuffle()
+//        return vList[0]
+//    }
 }

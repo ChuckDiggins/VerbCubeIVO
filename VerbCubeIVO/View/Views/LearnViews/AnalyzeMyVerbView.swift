@@ -14,7 +14,7 @@ struct VerbListStruct : Identifiable {
     var englishString = "dummy"
 }
 
-struct AnalyzeUserVerbView: View {
+struct AnalyzeMyVerbView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     
     @State var newVerbString = ""
@@ -51,36 +51,18 @@ struct AnalyzeUserVerbView: View {
     
     var body : some View {
         ZStack{
-            Color(.orange)
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
-//        VStack{
-//            VStack {
-//                Button(action: {
-//                    withAnimation(.easeInOut(duration: 1.0)){
-//                        languageChanged.toggle()
-//                    }
-//                    changeLanguage()
-//                }){
-//                    Text(currentLanguage.rawValue)
-//                        .frame(width: 100, height: 30)
-//                        .padding(10)
-//                        .foregroundColor(.white)
-//                        .background(languageChanged ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
-//                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                        .shadow(radius: 3)
-//                }
-//            }
             VStack {
                 VStack {
                     VStack {
-                        Text("Analyze User Verb").font(.title).bold()
+                        Text("Analyze User Verb").font(.title2).bold().foregroundColor(.white)
                         Text("Type in any verb or verb phrase")
                             .frame(width: 325, height: 50)
                             .font(.callout)
-                            .foregroundColor(.black)
-//                            .background(.yellow)
+
                         HStack{
-                            Text("🔍")
+                            Text("Enter verb:")
                         TextField("", text: $newVerbString,
                                   onEditingChanged: { changed in
                             print("onEditingChanged: \(changed)")
@@ -113,7 +95,6 @@ struct AnalyzeUserVerbView: View {
                             },
                                    label: {  Text("X")
                                     .font(.largeTitle)
-                                    .foregroundColor(.black)
                             })
                         }
                         
@@ -156,14 +137,15 @@ struct AnalyzeUserVerbView: View {
                                                 .frame(maxWidth: .infinity)
                                                 .padding()
                                                 .font(.callout)
-                                                .background(.linearGradient(colors: [.blue, .green], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                                .foregroundColor(.white)
+                                                .background(Color("BethanyPurpleButtons"))
                                                 .clipShape(Capsule())
                                         }
                                     }
                                 }.padding()
                                     
                                 
-                                NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase)){
+                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .model)){
                                     HStack{
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
@@ -177,10 +159,11 @@ struct AnalyzeUserVerbView: View {
                         }
                     }.padding(8)
                 }
-                Spacer()
+            .foregroundColor(Color("BethanyGreenText"))
                 .onAppear(){
                     currentLanguage = languageViewModel.getCurrentLanguage()
                 }
+            Spacer()
 //            }
         }
 //        .padding(20)
@@ -188,6 +171,7 @@ struct AnalyzeUserVerbView: View {
         Spacer()
         
     }
+    
     
     func setBescherelleModelInfo() {
         let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
@@ -301,6 +285,8 @@ func isValidVerb(language: LanguageType, verbString: String)->Bool{
     switch language{
     case .Spanish:
        if verbString == "ir" { return true}
+        if verbString == "ver" { return true}
+        if verbString == "dar" { return true}
         let result = vu.analyzeSpanishWordPhrase(testString: verbString)
         if result.0.count > 2 {
             if result.1 == .AR || result.1 == .ER || result.1 == .IR || result.1 == .accentIR { return true }
@@ -331,7 +317,7 @@ struct NeumorphicTextfieldModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
             .font(.system(size: 18, weight: .bold))
-            .foregroundColor(.accentColor)
+            .foregroundColor(.red)
             .autocapitalization(.none)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)

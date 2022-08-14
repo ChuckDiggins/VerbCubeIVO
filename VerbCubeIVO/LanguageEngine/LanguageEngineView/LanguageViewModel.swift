@@ -37,7 +37,15 @@ class LanguageViewModel : ObservableObject {
         languageEngine.setLanguage(language: language)
         currentLanguage = languageEngine.getCurrentLanguage()
     }
-
+    
+    func getTeachMeMode()->TeachMeMode{
+        languageEngine.getTeachMeMode()
+    }
+    
+    func setTeachMeMode(teachMeMode: TeachMeMode){
+        languageEngine.setTeachMeMode(teachMeMode: teachMeMode)
+    }
+    
     func toggleSpeechMode(){
         languageEngine.toggleSpeechMode()
     }
@@ -103,12 +111,13 @@ class LanguageViewModel : ObservableObject {
         languageEngine.setCurrentVerb(verb: verb)
     }
     
+    
     func getCurrentVerb()->Verb{
         languageEngine.getCurrentVerb()
     }
     
-    func getRandomFeatherVerb()->Verb{
-        languageEngine.getRandomFeatherVerb()
+    func getRandomVerb()->Verb{
+        languageEngine.getRandomVerb()
     }
     
     func getTenseList()->[Tense]{
@@ -117,6 +126,10 @@ class LanguageViewModel : ObservableObject {
     
     func setTenses(tenseList: [Tense]){
         languageEngine.setTenses(tenseList: tenseList)
+    }
+    
+    func getCurrentPerson()->Person{
+        languageEngine.getCurrentPerson()
     }
     
     func getNextPerson()->Person{
@@ -190,6 +203,10 @@ class LanguageViewModel : ObservableObject {
     
     func createAndConjugateCurrentFilteredVerb(){
         languageEngine.createAndConjugateCurrentFilteredVerb()
+    }
+    
+    func createAndConjugateCurrentRandomVerb(){
+        languageEngine.createAndConjugateCurrentRandomVerb()
     }
     
     func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{

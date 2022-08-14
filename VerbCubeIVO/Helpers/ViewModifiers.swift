@@ -11,7 +11,8 @@ import Combine
 struct TextModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
-            .frame(minWidth: 0, maxWidth: 300)
+            .frame(minWidth: 0, maxWidth: 350)
+            .frame(height: 30)
             .foregroundColor(.white)
             .padding(.horizontal)
             .font(.headline)
@@ -48,4 +49,17 @@ struct GreenButtonModifier : ViewModifier {
                     width: 5)
     }
 }
+
+struct ModelTensePersonButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(width: 350, height: 30)
+                .font(.callout)
+                .padding(.horizontal)
+                .background(Color("BethanyPurpleButtons"))
+                .foregroundColor(.white)
+                .cornerRadius(5)
+    }
+}
+
 

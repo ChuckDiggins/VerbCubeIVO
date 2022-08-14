@@ -78,7 +78,7 @@ struct FeatherVerbStepView: View {
             LinearGradient(gradient: Gradient(colors: [
                 Color(.systemYellow),
                 Color(.systemOrange),
-//                Color(.systemPurple),
+                //                Color(.systemPurple),
             ]),
                            startPoint: .top,
                            endPoint: .bottomTrailing)
@@ -87,20 +87,49 @@ struct FeatherVerbStepView: View {
                 Text("Model Verb Step").font(.title).foregroundColor(.black)
                 showHeaderInfo()
                 showActionButtons()
-//                showStudentEditWordSingle()
+                //                showStudentEditWordSingle()
                 showObservationString()
-                showVerbs()
+//                ShowFivePartVerbs(currentPersonString: currentPersonString, verbList: verbList, fivePartVerbStructList: fivePartVerbStructList, conjugationComplete: conjugationComplete, highlight: highlight)
+//                VStack{
+//                    List {
+//                        ForEach( 0..<verbList.count, id: \.self){verbIndex in
+//                            HStack{
+//                                Text(currentPersonString)
+//                                    .frame(width: 100, height: 30, alignment: .trailing)
+//        //                        //                        Text(verbStringList[verbIndex])
+//                                HStack(spacing: 0){
+//                                    Text(fivePartVerbStructList[verbIndex].root).foregroundColor(.black)
+//                                    Text(fivePartVerbStructList[verbIndex].workingStem)
+//                                        .foregroundColor(highlight == .stem  ? .yellow : .black)
+//                                        .background(highlight == .stem ? .black : verbListBackgroundColor)
+//                                    Text(fivePartVerbStructList[verbIndex].root2).foregroundColor(.black)
+//                                    Text(fivePartVerbStructList[verbIndex].workingOrtho)
+//                                        .foregroundColor(highlight == .spell ? .yellow : .black)
+//                                        .background(highlight == .spell  ? .black : verbListBackgroundColor)
+//                                    Text(fivePartVerbStructList[verbIndex].workingEnding)
+//                                        .foregroundColor(highlight == .ending  ? .yellow : .black)
+//                                        .background(highlight == .ending  ? .black : verbListBackgroundColor)
+//                                        .font(.headline.weight(.heavy))
+//                                }
+//                                .background(conjugationComplete ? Color.red : verbListBackgroundColor)
+//                            }.listRowBackground(conjugationComplete ? Color.red : verbListBackgroundColor)
+//                        }
+//                    }.environment(\.defaultMinListRowHeight, 15) // HERE
+//                    Spacer()
+//                }
                 Spacer()
             }
-            .onAppear{
-                focusedField = true
-                initializeStuff()
-            }
+            Spacer()
         }
-        
+        .onAppear{
+            focusedField = true
+            initializeStuff()
+        }
     }
     
-    
+
+
+
     fileprivate func showObservationString()-> some View {
         HStack(spacing: 0){
             Text(showMeComment)
@@ -134,36 +163,7 @@ struct FeatherVerbStepView: View {
         
     }
     
-    fileprivate func showVerbs() -> some View {
-        VStack{
-            List {
-                ForEach( 0..<verbList.count, id: \.self){verbIndex in
-                    HStack{
-                        Text(currentPersonString)
-                            .frame(width: 100, height: 30, alignment: .trailing)
-                        //                        Text(verbStringList[verbIndex])
-                        HStack(spacing: 0){
-                            Text(fivePartVerbStructList[verbIndex].root).foregroundColor(.black)
-                            Text(fivePartVerbStructList[verbIndex].workingStem)
-                                .foregroundColor(highlight == .stem  ? .yellow : .black)
-                                .background(highlight == .stem ? .black : verbListBackgroundColor)
-                            Text(fivePartVerbStructList[verbIndex].root2).foregroundColor(.black)
-                            Text(fivePartVerbStructList[verbIndex].workingOrtho)
-                                .foregroundColor(highlight == .spell ? .yellow : .black)
-                                .background(highlight == .spell  ? .black : verbListBackgroundColor)
-                            Text(fivePartVerbStructList[verbIndex].workingEnding)
-                                .foregroundColor(highlight == .ending  ? .yellow : .black)
-                                .background(highlight == .ending  ? .black : verbListBackgroundColor)
-                                .font(.headline.weight(.heavy))
-                        }
-                        //.background(conjugationComplete ? Color.red : verbListBackgroundColor)
-                    }.listRowBackground(conjugationComplete ? Color.red : verbListBackgroundColor)
-                }
-            }.environment(\.defaultMinListRowHeight, 15) // HERE
-                Spacer()
-        }
-    }
-    
+//
     fileprivate func showActionButtons()-> some View {
         HStack{
             Spacer()
@@ -547,7 +547,7 @@ struct FeatherVerbStepView: View {
                     .cornerRadius(4)
                 
                 if verbString.count > 1 {
-                    NavigationLink(destination: AnalyzeFilteredVerbView(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "")){
+                    NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "", teachMeMode: .model)){
                         HStack{
                             Text("Show me ")
                             Text(modelVerb).bold()
@@ -565,4 +565,43 @@ struct FeatherVerbStepView: View {
        
     }
 
+}
+
+struct ShowFivePartVerbs : View {
+    @State var currentPersonString : String
+    @State var verbList : [Verb]
+    @State var fivePartVerbStructList : [FivePartVerbStruct]
+    @State var conjugationComplete : Bool
+    @State var highlight : HighlightEnum
+    @State var verbListBackgroundColor = Color.white
+//
+    var body: some View {
+        VStack{
+            Text("Hello world")
+//            List {
+//                ForEach( 0..<verbList.count, id: \.self){verbIndex in
+//                    HStack{
+//                        Text(currentPersonString)
+//                            .frame(width: 100, height: 30, alignment: .trailing)
+//                        HStack(spacing: 0){
+//                            Text(fivePartVerbStructList[verbIndex].root).foregroundColor(.black)
+//                            Text(fivePartVerbStructList[verbIndex].workingStem)
+//                                .foregroundColor(highlight == .stem  ? .yellow : .black)
+//                                .background(highlight == .stem ? .black : verbListBackgroundColor)
+//                            Text(fivePartVerbStructList[verbIndex].root2).foregroundColor(.black)
+//                            Text(fivePartVerbStructList[verbIndex].workingOrtho)
+//                                .foregroundColor(highlight == .spell ? .yellow : .black)
+//                                .background(highlight == .spell  ? .black : verbListBackgroundColor)
+//                            Text(fivePartVerbStructList[verbIndex].workingEnding)
+//                                .foregroundColor(highlight == .ending  ? .yellow : .black)
+//                                .background(highlight == .ending  ? .black : verbListBackgroundColor)
+//                                .font(.headline.weight(.heavy))
+//                        }
+//                        .background(conjugationComplete ? Color.red : verbListBackgroundColor)
+//                    }.listRowBackground(conjugationComplete ? Color.red : verbListBackgroundColor)
+//                }
+//            }.environment(\.defaultMinListRowHeight, 15) // HERE
+//            Spacer()
+        }
+    }
 }

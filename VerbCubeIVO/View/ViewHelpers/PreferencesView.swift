@@ -15,65 +15,46 @@ struct PreferencesView: View {
     @State var speechModeActiveString = "Speech mode is ACTIVE"
     
     var body: some View {
-
+        
         ZStack{
-            Color(.black)
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
             VStack{
-            HStack{
-            Text("Preferences")
-                .font(.title)
-                Image(systemName: "globe")
-                    .font(.largeTitle)
                 
-            }
-                VStack(spacing: 25) {
+                HStack{
+                    Text("Preferences")
+                        .font(.title)
+                    Image(systemName: "globe")
+                        .font(.largeTitle)
                     
+                }
+                VStack(spacing: 25) {
+                    DisclosureGroupPreferences()
                     NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel)){
-                        Text("SetTenses")
-                    }.frame(width: 200, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.green)
-                    .foregroundColor(.black)
-                    .cornerRadius(10)
+                        HStack{
+                            Text("Set tenses")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    } .modifier(ModelTensePersonButtonModifier())
 
                     Button{
                         languageViewModel.toggleSpeechMode()
                         setSpeechModeActiveString()
                         textToSpeech(text: speechModeActiveString, language: .English)
                     } label: {
-                        Text(speechModeActiveString)
-                    }
-                    .frame(width: 200, height: 50)
-                    .padding(.leading, 10)
-                    .background(Color.green)
-                    .foregroundColor(.black)
-                    .cornerRadius(10)
-                    
-                    Button{
-                        switch languageViewModel.getSubjectPronounType() {
-                        case .maleInformal:
-                            languageViewModel.setSubjectPronounType(spt: .femaleInformal)
-                            currenSubjectPronounType = languageViewModel.getSubjectPronounType()
-                            currenSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
-                        case .femaleInformal:
-                            languageViewModel.setSubjectPronounType(spt: .maleInformal)
-                            currenSubjectPronounType = languageViewModel.getSubjectPronounType()
-                            currenSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
-                        default:
-                            languageViewModel.setSubjectPronounType(spt: .maleInformal)
+                        HStack{
+                            Text(speechModeActiveString)
+                            Spacer()
+                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
                         }
-                    } label: {
-                        Text("Subject Type: \(languageViewModel.getSubjectPronounType().rawValue)")
-                            .frame(minWidth: 0, maxWidth: 400)
-                            .frame(height: 50)
-                            .background(currenSubjectPronounType == .maleInformal ? .blue: .red)
-                            .foregroundColor(.yellow)
-                            .cornerRadius(10)
-                            .padding(20)
                     }
+                    .modifier(ModelTensePersonButtonModifier())
                     
+                    ListVerbModelsView(languageViewModel: languageViewModel)
+                    PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
+                    ChangeLanguageView(languageViewModel: languageViewModel)
                 }
                 Spacer()
             }.onAppear{
@@ -89,7 +70,10 @@ struct PreferencesView: View {
         }
         else{
             speechModeActiveString = "Speech mode is OFF"
-            }
+        }
+    }
+    func dummy(){
+        
     }
 }
 
@@ -113,6 +97,7 @@ struct ToggleButtonsView : View {
     @State private var verbTypeStructList = [VerbTypeStruct]()
     
     var body: some View {
+       
         VStack(alignment: .leading, spacing: 10){
             Text("Filter by").padding(.top).foregroundColor(.yellow)
             ForEach($verbTypeStructList, id:\.self) {$vts in

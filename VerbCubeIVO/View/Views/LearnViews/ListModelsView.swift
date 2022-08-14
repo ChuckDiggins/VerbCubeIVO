@@ -8,13 +8,13 @@
 import SwiftUI
 import JumpLinguaHelpers
 
-struct ModelStruct {
+struct ModelPatternStruct {
     var id = 0
-    var model = ""
+    var name = ""
     var count = 0
-    init(id: Int, model: String, count: Int){
+    init(id: Int, name: String, count: Int){
         self.id = id
-        self.model = model
+        self.name = name
         self.count = count
     }
 }
@@ -25,7 +25,7 @@ struct ListModelsView: View {
     @State var currentVerbEnding = VerbEnding.ER
     @State var currentVerbEndingString = "Current ending = ER"
     @State private var currentLanguage = LanguageType.Spanish
-    @State var modelStructList = [ModelStruct]()
+    @State var modelStructList = [ModelPatternStruct]()
     @State private var rvmList = [RomanceVerbModel]()
     var backgroundColor = Color.yellow
     var foregroundColor = Color.black
@@ -57,7 +57,7 @@ struct ListModelsView: View {
                             selectedModel(index: i)
                         } label: {
                             HStack{
-                                Text(modelStructList[i].model)
+                                Text(modelStructList[i].name)
                                 Text(": \(modelStructList[i].count)").foregroundColor(.red)
                             }
                         }
@@ -120,7 +120,7 @@ struct ListModelsView: View {
         modelStructList.removeAll()
         for model in verbEndingModelList {
             let verbList = languageViewModel.findVerbsOfSameModel(targetID: model.id)
-            modelStructList.append(ModelStruct(id: model.id, model: model.modelVerb, count: verbList.count))
+            modelStructList.append(ModelPatternStruct(id: model.id, name: model.modelVerb, count: verbList.count))
         }
     }
     

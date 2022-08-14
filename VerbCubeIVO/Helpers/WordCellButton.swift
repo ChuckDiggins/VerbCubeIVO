@@ -30,8 +30,8 @@ struct MatchCellButton: View {
     var index : Int
     var wordText : String
     var matchID : Int
-    var backgroundColor = Color.green
-    var foregroundColor =  Color.black
+    var backgroundColor = Color("BethanyNavalBackground")
+    var foregroundColor =  Color("BethanyGreenText")
     var fontSize = Font.callout
     var disabled = false
     var function: (_ index: Int, _ wordText: String) -> Void

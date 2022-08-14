@@ -10,6 +10,10 @@ import JumpLinguaHelpers
 import Dot
 import RealmSwift
 
+enum  TeachMeMode : String {
+    case regular, model, subjunctive, reflexive, compound, none
+}
+
 class LanguageEngine : ObservableObject {
     @Published private var currentLanguage = LanguageType.Agnostic
     private var currentVerb = Verb()
@@ -26,6 +30,7 @@ class LanguageEngine : ObservableObject {
     
     var currentFilteredVerbIndex = 0
     @Published var filteredVerbList = [Verb]()
+    var currentPattern = SpecialPatternType.none
     
     var behavioralVerbModel = BehavioralVerbModel()
     var criticalVerbForms = CriticalVerbForms()
@@ -66,8 +71,10 @@ class LanguageEngine : ObservableObject {
     var currentVerbModel = RomanceVerbModel()
     var currentVerbPattern = SpecialPatternStruct(tense: .present, spt: .none )
     var studentScoreModel = StudentScoreModel()
-    
+    var currentRandomVerb = Verb()
     var useSpeechMode = false
+    var teachMeMode = TeachMeMode.none
+
     
 //    var realm : Realm
     
@@ -97,19 +104,20 @@ class LanguageEngine : ObservableObject {
         loadVerbsFromJSON()
         createVerbList()
         
-        filteredVerbList = verbList
-        fillVerbCubeLists()   //verb cube list is a list of all the filtered verbs
-        setPreviousCubeBlockVerbs()  //verbCubeBlock is a block of verbBlockCount verbs
-        fillQuizCubeVerbList()
-        fillQuizCubeBlock()
+        
         lessonBundlePhraseCollectionManager = LessonBundlePhraseCollectionManager(jsonDictionaryManager: m_jsonDictionaryManager, randomWordLists: m_randomWordLists)
         lessonBundlePhraseCollectionManager.loadJsonStuff(loadBundles: false, loadPhrases: false)
         initializeCriticalForms()
         testPatternModelListLogic()
         
         //this should set the behavioral verb list and index
-        setBehaviorType(bt: .likeGustar)  
-        loadInitialVerbModel()
+        setBehaviorType(bt: .likeGustar)
+        filteredVerbList = verbList
+        loadInitialVerbModel()      
+        fillVerbCubeLists()   //verb cube list is a list of all the filtered verbs
+        setPreviousCubeBlockVerbs()  //verbCubeBlock is a block of verbBlockCount verbs
+        fillQuizCubeVerbList()
+        fillQuizCubeBlock()
         initializeStudentScoreModel()
     }
 
@@ -160,9 +168,19 @@ class LanguageEngine : ObservableObject {
         }
     }
     
+    func getTeachMeMode()->TeachMeMode{
+        teachMeMode
+    }
+    
+    func setTeachMeMode(teachMeMode: TeachMeMode){
+        self.teachMeMode = teachMeMode
+    }
+    
+    
     func getWordCollections()->[dWordCollection] {
         return getWordCollectionList()
     }
+    
     
     func toggleSpeechMode(){
         useSpeechMode.toggle()
@@ -385,7 +403,19 @@ class LanguageEngine : ObservableObject {
     }
     
     func createAndConjugateCurrentFilteredVerb(){
+        let verbStr = getCurrentFilteredVerb().getWordAtLanguage(language: currentLanguage)
+        let currentTenseStr = getCurrentTense().rawValue
+        
+        print("createAndConjugateCurrentFilteredVerb: \(verbStr): currentTenseStr \(currentTenseStr), currentTense: \(currentTense.rawValue) ")
         createAndConjugateAgnosticVerb(verb: getCurrentFilteredVerb(), tense: currentTense)
+    }
+    
+    func createAndConjugateCurrentRandomVerb(){
+        let verbStr = getCurrentRandomVerb().getWordAtLanguage(language: currentLanguage)
+        let currentTenseStr = getCurrentTense().rawValue
+        
+        print("createAndConjugateCurrentRandomVerb: \(verbStr): currentTenseStr \(currentTenseStr), currentTense: \(currentTense.rawValue) ")
+        createAndConjugateAgnosticVerb(verb: getCurrentRandomVerb(), tense: currentTense)
     }
     
     func createConjugatedMorphStruct(verb: Verb, tense: Tense, person: Person)->MorphStruct{
@@ -442,6 +472,10 @@ class LanguageEngine : ObservableObject {
 // MARK: - General Utilities
 
 extension LanguageEngine{
+    func getCurrentPerson()->Person{
+        Person.allCases[currentPersonIndex]
+    }
+    
     func getNextPerson()->Person{
         currentPersonIndex += 1
         if ( currentPersonIndex >= 6){

@@ -93,26 +93,28 @@ struct MixAndMatchView: View {
     var body: some View {
         helpView()
         ZStack{
-            Color("GeneralColor")
+            Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             VStack{
-                Text("Mix and Match").font(.title2).bold()
-                setVerbAndTenseView()
-                ZStack{
-                    ProgressBar(value: $progressValue, barColor: .red).frame(height: 20)
-                    Text("Correct \(correctAnswerCount) out of \(totalCorrectCount)").foregroundColor(.black)
-                    
+                Text("Mix and Match").font(.title2).font(.caption)
+                ListVerbModelsView(languageViewModel: languageViewModel)
+                RandomVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
+                TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
+                VStack{
+                    ZStack{
+                        
+                        ProgressBar(value: $progressValue, barColor: .red).frame(height: 20)
+                        Text("Correct \(correctAnswerCount) out of \(totalCorrectCount)").foregroundColor(.black)
+                    }
                 }
-                
                 //
                 .frame(width: 300, height: 30)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .shadow(radius: 3)
                 .onAppear{
-                    
                     currentLanguage = languageViewModel.getCurrentLanguage()
                     currentTense = languageViewModel.getCurrentTense()
-                    currentVerb = languageViewModel.getCurrentFilteredVerb()
+                    currentVerb = languageViewModel.getCurrentRandomVerb()
                     currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
                     currentTenseString = currentTense.rawValue
                     fillPersonMixStruct()
@@ -122,17 +124,19 @@ struct MixAndMatchView: View {
                     .font(.body)
                 
                 
+                VStack{
+                    Text("1. Click subject   2. Click matching verb")
+                }
+                .modifier(TextModifier())
                 
-                Text("Click subject on left, click matching verb on right")
-                    .foregroundColor(.black)
-                    .background(.white)
+                
                 HStack{
                     
                     VStack{
                         
                         ForEach(subjectStringList.indices, id: \.self) { index in
                             MixCellButton(index: index, wordText: subjectStringList[index], matchText: matchStringList[index], matchID: 0,
-                                          backgroundColor : isThisSubjectAMatch[index] ? .green: .yellow,
+                                          backgroundColor : isThisSubjectAMatch[index] ? .green: Color("BethanyNavalBackground"),
                                           disabled: isThisSubjectDisabled[index] ? true : false,
                                           function: getWordToMatch )
                         }
@@ -141,43 +145,55 @@ struct MixAndMatchView: View {
                     VStack{
                         
                         ForEach(verbStringList.indices, id: \.self) { index in
-                            MatchCellButton(index: index, wordText: verbStringList[index], matchID: 0, backgroundColor : isThisVerbAMatch[index] ? .green : .yellow,
+                            MatchCellButton(index: index, wordText: verbStringList[index], matchID: 0, backgroundColor : isThisVerbAMatch[index] ? .green :  Color("BethanyNavalBackground"),
                                             disabled: isThisVerbDisabled[index] ? true : false,
                                             function: isMatch)
                         }
                     }
                     
                 }
-                Spacer()
             }
             if showAlert {
                 CustomAlertView(show: $showAlert )
             }
-        }
+        }.foregroundColor(Color("BethanyGreenText"))
+            .background( Color("BethanyNavalBackground"))
         
     }
     
-    func getAlert()->Alert{
-        return Alert (
-            title: Text("Congratulations"),
-            message: Text("Click ok to move to next problem"),
-            primaryButton: .cancel(),
-            secondaryButton: .cancel()
-        )
-    }
+//    func getAlert()->Alert{
+//        return Alert (
+//            title: Text("Congratulations"),
+////            message: Text("Click ok to move to next problem"),
+//            primaryButton: .cancel(),
+//            secondaryButton: .cancel()
+//        )
+//    }
     func helpView() -> some View {
         DisclosureGroup("Help", isExpanded: $isHelpExpanded){
-            VStack{
+            VStack(alignment: .leading){
                 Text("Click on a subject in the left column.  It will turn 🟩")
                 Text("Click on a correct matching verb form in the right column.  If correct, it will also turn 🟩")
                 Text("Continue until all pairs are matched")
                 Text("")
                 
-                Text("To change the list of verbs for this quiz, click on Verbs of a Feather button")
-                //                    showVerbsOfAFeatherNavigationLink()
+                HStack{
+                    Text("Click on")
+                    Text("Verb Model").background(.orange)
+                  Text("to change verbs")
+                }
+                Button{
+                    isHelpExpanded = false
+                } label: {
+                    Text("Close this")
+                }.background(.white)
+                    .padding()
             }.background(.yellow)
                 .foregroundColor(.black)
-        }
+                .padding()
+            
+                
+        }.padding()
     }
     
 //
@@ -311,80 +327,21 @@ struct MixAndMatchView: View {
     }
         
     func setCurrentVerb(){
-        languageViewModel.createAndConjugateCurrentFilteredVerb()
+        currentVerb = languageViewModel.getCurrentRandomVerb()
+        currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
+        languageViewModel.createAndConjugateCurrentRandomVerb()
         currentTense = languageViewModel.getCurrentTense()
-        currentVerb = languageViewModel.getCurrentFilteredVerb()
-        
         //this sets up the initial invitation message to the user "Click here"
         currentTenseString = languageViewModel.getCurrentTense().rawValue
-        currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: currentLanguage)
-        currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
+        
+//        currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
+        currentModelString = languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleInfo()
         setSubjunctiveParticiple()
         fillMixMatchList()
         correctAnswerCount = 0
     }
     
-    func setVerbAndTenseView() -> some View {
-        VStack {
-            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-                HStack{
-                    Text("Verb model:")
-                    Text(currentModelString)
-                    Spacer()
-                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
-                }
-                .frame(width: 350, height: 30)
-                .font(.callout)
-                .padding(2)
-                .background(Color.orange)
-                .foregroundColor(.black)
-                .cornerRadius(4)
-            }.task {
-                setCurrentVerb()
-            }
-            
-            
-            Button(action: {
-                languageViewModel.setNextFilteredVerb()
-                setCurrentVerb()
-            }){
-                HStack{
-                    Text("Verb: ")
-                    Text(currentVerbString)
-                    Spacer()
-                    Image(systemName: "rectangle.and.hand.point.up.left.filled")
-                }.frame(width: 350, height: 30)
-                    .font(.callout)
-                    .padding(2)
-                    .background(Color.orange)
-                    .foregroundColor(.black)
-                    .cornerRadius(4)
-            }
-            
-            
-            //ChangeTenseButtonView()
-            
-            Button(action: {
-                currentTenseString = languageViewModel.getNextTense().rawValue
-                setCurrentVerb()
-            }){
-                Text("Tense: \(currentTenseString)")
-                Spacer()
-                Image(systemName: "rectangle.and.hand.point.up.left.filled")
-            }
-            .frame(width: 350, height: 30)
-            .font(.callout)
-            .padding(2)
-            .background(Color.orange)
-            .foregroundColor(.black)
-            .cornerRadius(4)
-            
-        }
-        
-        .padding(3)
-    }
-    
-    
+//
 }
 
 struct MixAndMatchView_Previews: PreviewProvider {

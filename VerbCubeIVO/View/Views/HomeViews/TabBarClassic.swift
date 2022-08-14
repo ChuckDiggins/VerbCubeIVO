@@ -13,6 +13,7 @@ struct ScrollViewVC: View {
     @State var selectedTab: Int = 0
     @State var currentLanguage = LanguageType.Spanish
     @State var currentLanguageStr = "Agnostic"
+    @State var animationAmount = 5.0
     
     var body: some  View{
 //        Image("FeatherInverted")
@@ -26,51 +27,63 @@ struct ScrollViewVC: View {
                 .foregroundColor(.red)
             
             VStack{
-//                Button{
-//                    switch languageViewModel.getCurrentLanguage() {
-//                    case .Spanish:
-//                        languageViewModel.setLanguage(language: .French)
-//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-//                    case .French:
-//                        languageViewModel.setLanguage(language: .English)
-//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-//                    case .English:
-//                        languageViewModel.setLanguage(language: .Spanish)
-//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-//                    default:
-//                        languageViewModel.setLanguage(language: .Spanish)
-//                        currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-//                    }
-//                } label: {
-//                    Text("Active language: \(currentLanguageStr)")
-//                        .frame(minWidth: 0, maxWidth: 400)
-//                        .frame(height: 50)
-//                        .background(.purple)
-//                        .foregroundColor(.yellow)
-//                        .cornerRadius(10)
-//                        .padding(20)
-//                }
+                
                 ScrollView{
+                    DisclosureGroupMain()
                     NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel)){
-                        Text("Preferences")
-                    }.modifier(NavLinkModifier())
-                        .background(.orange)
-                    NavigationLink(destination: ModelView(languageViewModel: languageViewModel)){
-                        Text("Model-Based Verbs")
-                    }.modifier(NavLinkModifier())
-                        .background(.orange)
-                    NavigationLink(destination: PatternView(languageViewModel: languageViewModel)){
-                        Text("Pattern-Based Verbs")
-                    }.modifier(NavLinkModifier())
-                        .background(.yellow)
-                    NavigationLink(destination: GeneralVerbView(languageViewModel: languageViewModel)){
-                        Text("Verbs in General")
-                    }.modifier(NavLinkModifier())
-                        .background(.green)
-                    NavigationLink(destination: OddJobsView(languageViewModel: languageViewModel)){
-                        Text("Odds and Ends")
-                    }.modifier(NavLinkModifier())
-                        .background(.black)
+                        HStack{
+                            Text("Preferences")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    NavigationLink(destination: TeachMeARegularVerb(languageViewModel: languageViewModel)){
+                        HStack{
+                            Text("Teach me a regular verb")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    NavigationLink(destination: TeachMeAModelVerb(languageViewModel: languageViewModel)){
+                        HStack{
+                            Text("Teach me a model verb")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    NavigationLink(destination: TeachMeAPatternVerb(languageViewModel: languageViewModel)){
+                        HStack{
+                            Text("Teach me a pattern verb")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    NavigationLink(destination: ShowMeModelQuizzes(languageViewModel: languageViewModel)){
+                        HStack{
+                            Text("Show me model quizzes")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    NavigationLink(destination: FindMyVerb(languageViewModel: languageViewModel)){
+                        HStack{
+                            Text("Find my verb")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    NavigationLink(destination: ShowMeVerbsPatternsAndModels(languageViewModel: languageViewModel)){
+                        HStack{
+                            Text("Verbs, patterns and models")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+//                    NavigationLink(destination: OddJobsView(languageViewModel: languageViewModel)){
+//                        Text("Odds and Ends")
+//                    }.modifier(NavLinkModifier())
+//                        .background(.black)
                     
                     Button{
                         exit(1)
@@ -96,57 +109,57 @@ struct ScrollViewVC: View {
     }
     
 }
-struct TabBarClassicVC: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    @State var selectedTab: Int = 0
-    @State var currentLanguage = LanguageType.Spanish
-    
-    var body: some  View{
-        NavigationView{
-        TabView (selection: $selectedTab) {
+//struct TabBarClassicVC: View {
+//    @ObservedObject var languageViewModel: LanguageViewModel
+//    @State var selectedTab: Int = 0
+//    @State var currentLanguage = LanguageType.Spanish
+//
+//    var body: some  View{
+////        NavigationView{
+//        TabView (selection: $selectedTab) {
 //            HomeView(languageViewModel: languageViewModel, selectedTab: $selectedTab)
 //                .tabItem{
 //                    Image(systemName: "house.fill")
 //                    Text("Home")
 //                }.tag(0)
 //
-            ScrollViewVC(languageViewModel: languageViewModel)
-                .tabItem{
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }.tag(0)
+//            ScrollViewVC(languageViewModel: languageViewModel)
+//                .tabItem{
+//                    Image(systemName: "house.fill")
+//                    Text("Home")
+//                }.tag(0)
 //            PreferencesView(languageViewModel: languageViewModel)
 //                .tabItem{
 //                    Image(systemName: "house.fill")
 //                    Text("Pref")
 //                }.tag(0)
-            ModelView(languageViewModel: languageViewModel)
-                .tabItem{
-                    Image(systemName: "graduationcap")
-                    Text("MBVC")
-                }.tag(1)
-            PatternView(languageViewModel: languageViewModel)
-                .tabItem{
-                    Image(systemName: "pencil.circle.fill")
-                    Text("PBVC")
-                }.tag(2)
-
-            GeneralVerbView(languageViewModel: languageViewModel)
-                .tabItem{
-                    Image(systemName: "archivebox.fill")
-                    Text("GNRL")
-                }.tag(3)
-            
-            OddJobsView(languageViewModel: languageViewModel)
-                .tabItem{
-                    Image(systemName: "folder.badge.gearshape")
-                    Text("Odd Jobs")
-                }.tag(4)
-
-            
-        }
-        .accentColor(.green)
-        }.navigationBarTitle("Verbs of a Feather")
+//            ModelView(languageViewModel: languageViewModel)
+//                .tabItem{
+//                    Image(systemName: "graduationcap")
+//                    Text("MBVC")
+//                }.tag(1)
+//            PatternView(languageViewModel: languageViewModel)
+//                .tabItem{
+//                    Image(systemName: "pencil.circle.fill")
+//                    Text("PBVC")
+//                }.tag(2)
+//
+//            GeneralVerbView(languageViewModel: languageViewModel)
+//                .tabItem{
+//                    Image(systemName: "archivebox.fill")
+//                    Text("GNRL")
+//                }.tag(3)
+//
+//            OddJobsView(languageViewModel: languageViewModel)
+//                .tabItem{
+//                    Image(systemName: "folder.badge.gearshape")
+//                    Text("Odd Jobs")
+//                }.tag(4)
+//
+//
+//        }
+//        .accentColor(.green)
+//        }.navigationBarTitle("Verbs of a Feather")
 //            .navigationBarItems(leading:
 //                                    Button{
 //                exit(1)
@@ -164,9 +177,9 @@ struct TabBarClassicVC: View {
 //                }
 //            }
 
-        
-    }
-}
+//        
+//    }
+//}
 
 
 struct HomeView: View {
@@ -247,7 +260,7 @@ struct ModelView: View{
                 Text("Model-Based Verbs")
                     .font(.largeTitle)
                     .foregroundColor(.black)
-                
+                DisclosureGroupModel()
                 Spacer()
                 NavigationLink(destination: ModelLearnWrapper(languageViewModel: languageViewModel)){
                     Text("Model-Based Learning")
