@@ -22,8 +22,8 @@ struct TeachMeAModelVerb: View {
         ZStack{
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
-            VStack{
-                Text("Teach Me A Model Verb").font(.title2).foregroundColor(.white)
+            ScrollView{
+                DisclosureGroupTeachMeAModelVerb()
                 VStack{
                     Text("Step 1: Pick a tense").font(.title2)
                     
@@ -84,11 +84,10 @@ struct TeachMeAModelVerb: View {
                 Divider().frame(height:1).background(.white)
                 
                 VStack{
-                    Text("Step 4: Pick a practice verb type ").font(.title2)
-                    Text("Select dictionary verb or X-verb")
-                    
+                    Text("Step 4: Conjugate your verb").font(.title2)
                     VStack{
-                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, residualPhrase: "", teachMeMode: .model))
+                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel,
+                                                                          verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", teachMeMode: .model))
                         {
                         HStack{
                             Text("Model verb = \(currentVerbString)")
@@ -96,17 +95,8 @@ struct TeachMeAModelVerb: View {
                             Image(systemName: "chevron.right").foregroundColor(.yellow)
                         }
                         }.modifier(ModelTensePersonButtonModifier())
-                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, residualPhrase: "", teachMeMode: .model))
-                        {
-                        HStack{
-                            Text("X-verb = \(currentVerbString)")
-                            Spacer()
-                            Image(systemName: "chevron.right").foregroundColor(.yellow)
-                        }
-                        }.modifier(ModelTensePersonButtonModifier())
                     }
                     .padding()
-                    
                 }
                 .frame(maxWidth: .infinity)
                 .padding(2)

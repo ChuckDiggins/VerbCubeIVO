@@ -53,7 +53,7 @@ struct SimpleVerbConjugation: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
-            VStack{
+            ScrollView{
                 Text("Simple Verb Conjugation").font(.title2).foregroundColor(Color("ChuckText1"))
                 HStack{
                     Text("Current verb")
@@ -103,17 +103,45 @@ struct SimpleVerbConjugation: View {
                         }
                         VStack{
                             if teachMeMode == .model {
-                                NavigationLink(destination: MultiVerbMorphView(languageViewModel: languageViewModel)){
-                                    HStack{
-                                        Text("Show me step-by-step")
-                                        Spacer()
-                                        Image(systemName: "chevron.right").foregroundColor(.yellow)
-                                    }.modifier(ModelTensePersonButtonModifier())
-                                }.buttonStyle(ThemeAnimationStyle())
+                                VStack{
+                                   
+                                    NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
+                                        HStack{
+                                            HStack{
+                                                Text("Conjugate")
+                                                Text("this verb").foregroundColor(.red)
+                                                Text("step-by-step")
+                                            }
+                                            Spacer()
+                                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                                        }.modifier(ModelTensePersonButtonModifier())
+                                    }.buttonStyle(ThemeAnimationStyle())
+                                    NavigationLink(destination: MultiVerbMorphView(languageViewModel: languageViewModel)){
+                                        HStack{
+                                            HStack{
+                                                Text("Conjugate")
+                                                Text("this model").foregroundColor(.red)
+                                                Text("step-by-step")
+                                            }
+                                            Spacer()
+                                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                                        }.modifier(ModelTensePersonButtonModifier())
+                                    }.buttonStyle(ThemeAnimationStyle())
+                                }
                             } else {
                                 NavigationLink(destination: VerbMorphView(languageViewModel: languageViewModel)){
                                     HStack{
-                                        Text("Show me step-by-step")
+                                        NavigationLink(destination: MultiVerbMorphView(languageViewModel: languageViewModel)){
+                                            HStack{
+                                                HStack{
+                                                    Text("Conjugate")
+                                                    Text("this model").foregroundColor(.red)
+                                                    Text("step-by-step")
+                                                }
+                                                Spacer()
+                                                Image(systemName: "chevron.right").foregroundColor(.yellow)
+                                            }.modifier(ModelTensePersonButtonModifier())
+                                        }.buttonStyle(ThemeAnimationStyle())
                                         Spacer()
                                         Image(systemName: "chevron.right").foregroundColor(.yellow)
                                     }.modifier(ModelTensePersonButtonModifier())
@@ -125,13 +153,15 @@ struct SimpleVerbConjugation: View {
                     .padding(10)
                     
                     .onAppear {
+                        currentVerbPhrase = verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
+//                        print("onAppear1: currentVerbPhrase: \(currentVerbPhrase)")
                         languageViewModel.setTeachMeMode(teachMeMode: teachMeMode)
                         currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
                         switch teachMeMode {
                         case .regular:
                             languageViewModel.addVerbToFilteredList(verb: verb)
                         case .model, .subjunctive, .compound, .reflexive, .none:
-                            verb = languageViewModel.getCurrentFilteredVerb()
+                            languageViewModel.addVerbToFilteredList(verb: verb)
                         }
                         setCurrentVerb()
                     }
@@ -194,9 +224,8 @@ struct SimpleVerbConjugation: View {
     }
 
     func setCurrentVerb(){
-        setSubjunctiveStuff()
-        
         currentVerbPhrase = verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
+        setSubjunctiveStuff()
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: languageViewModel.getCurrentTense())
         let brv = languageViewModel.createAndConjugateAgnosticVerb(verb: verb)
@@ -208,6 +237,7 @@ struct SimpleVerbConjugation: View {
             vvm.append(msm.getFinalVerbForm(person: Person.all[i]) + " " + residualPhrase)
             person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: vvm[i]))
         }
+//        print("setCurrentVerb: currentVerbPhrase: \(currentVerbPhrase)")
     }
     
     func setSubjunctiveStuff(){
@@ -256,9 +286,8 @@ struct SimpleVerbConjugation: View {
                     newVerbString = ""
                 },
                        label: {  Text("X")
-                        .font(.largeTitle)
+                        .font(.title2)
                         .foregroundColor(Color("BethanyGreenText"))
-                        .background(.black)
                 })
             }.frame(width: 350)
                 .padding(.horizontal)

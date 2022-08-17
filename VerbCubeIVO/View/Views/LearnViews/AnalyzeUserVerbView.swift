@@ -14,7 +14,7 @@ struct VerbListStruct : Identifiable {
     var englishString = "dummy"
 }
 
-struct AnalyzeMyVerbView: View {
+struct AnalyzeUserVerbView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     
     @State var newVerbString = ""
@@ -56,7 +56,7 @@ struct AnalyzeMyVerbView: View {
             VStack {
                 VStack {
                     VStack {
-                        Text("Analyze User Verb").font(.title2).bold().foregroundColor(.white)
+                        Text("Analyze User Verb").font(.title2).bold().foregroundColor(Color("ChuckText1"))
                         Text("Type in any verb or verb phrase")
                             .frame(width: 325, height: 50)
                             .font(.callout)
@@ -114,9 +114,10 @@ struct AnalyzeMyVerbView: View {
                                         hideKeyboard()
                                     }, label: {
                                         Text("Analyze ")
-                                            .padding(.all, 2 )
-                                            .background(Color.orange)
+                                            .padding(.all, 5 )
+                                            .background(Color("BethanyPurpleButtons"))
                                             .cornerRadius(10)
+                                            .foregroundColor(.white)
 
                                     })
                                 }
@@ -137,25 +138,26 @@ struct AnalyzeMyVerbView: View {
                                                 .frame(maxWidth: .infinity)
                                                 .padding()
                                                 .font(.callout)
-                                                .foregroundColor(.white)
-                                                .background(Color("BethanyPurpleButtons"))
+                                                .background(Color("BethanyNavalBackground"))
                                                 .clipShape(Capsule())
                                         }
                                     }
-                                }.padding()
-                                    
-                                
-                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .model)){
+                                }
+
+                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .regular)){
                                     HStack{
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
+                                        Spacer()
+                                        Image(systemName: "chevron.right").foregroundColor(.yellow)
                                     }
                                 }.frame(width: 325, height: 50)
                                 .padding(.leading, 10)
-                                .buttonStyle(.bordered)
-                                    .tint(.black)
+                                .background(Color("BethanyPurpleButtons"))
                                 .cornerRadius(10)
+                                .foregroundColor(.white)
                             }
+                            Spacer()
                         }
                     }.padding(8)
                 }

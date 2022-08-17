@@ -15,64 +15,76 @@ struct ShowMeModelQuizzes: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
-            VStack{
+            ScrollView{
+                DisclosureGroupShowMeModelQuizzes().foregroundColor(Color("BethanyGreenText"))
+                
                 ListVerbModelsView(languageViewModel: languageViewModel)
                 TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 PersonTypeButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
-                VStack{
-                    Text("Show me model quizzes")
-                        .font(.title2)
-                        .foregroundColor(Color("ChuckText1"))
-                    
-                    Text("Select a quiz:").font(.title)
-                        .font(.title3)
-                    
-                    HStack{
-                        VStack{
-                            NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveVerbs))
-                            {
-                            Image("MCSubjectVerb")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 200)
-                                .border(Color("ChuckText1"))
-                            }
-                            VStack{
-                                Text("Multiple Choice")
-                                Text("Subject vs Verb")
-                            }.font(.caption)
+                
+                HStack{
+                    VStack{
+                        NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel))
+                        {
+                        Image("MixAndMatch")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 150)
+                            .border(Color("ChuckText1"))
                         }
                         VStack{
-                            NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveTenses))
-                            {
-                            Image("MCSubjectTense")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 200)
-                                .border(Color("ChuckText1"))
-                            }
-                            VStack{
-                                Text("Multiple Choice")
-                                Text("Subject vs Tense")
-                            }.font(.caption)
-                        }
-                        VStack{
-                            NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel))
-                            {
-                            Image("MixAndMatch")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 200)
-                                .border(Color("ChuckText1"))
-                            }
-                            Text("Mix and Match").font(.caption)
+                            Text("Mix and Match")
                         }
                         
                     }
+                    VStack{
+                        NavigationLink(destination: DragDropVerbSubjectView(languageViewModel: languageViewModel))
+                        {
+                        Image("DragAndDrop")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 150)
+                            .border(Color("ChuckText1"))
+                        }
+                        VStack{
+                            Text("Drag and Drop")
+                        }
+                    }
                 }
-                .padding()
-                .foregroundColor(Color("BethanyGreenText"))
-            }
+                HStack{
+                    VStack{
+                        NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveVerbs))
+                        {
+                        Image("MCSubjectVerb")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 150)
+                            .border(Color("ChuckText1"))
+                        }
+                        VStack{
+                            Text("Multiple Choice")
+                            Text("Subject vs Verb")
+                        }
+                    }
+                    VStack{
+                        NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveTenses))
+                        {
+                        Image("MCSubjectTense")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 150)
+                            .border(Color("ChuckText1"))
+                        }
+                        VStack{
+                            Text("Multiple Choice")
+                            Text("Subject vs Tense")
+                        }
+                    }
+                }
+ 
+            }.font(.caption)
+            .padding()
+            .foregroundColor(Color("BethanyGreenText"))
         }
         
     }

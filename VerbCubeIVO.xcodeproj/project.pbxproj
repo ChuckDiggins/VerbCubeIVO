@@ -12,7 +12,7 @@
 		6E0A6D3E2884AFD4009234C0 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0A6D3D2884AFD4009234C0 /* TextToSpeech.swift */; };
 		6E2174E3289857A60066C234 /* DisclosureGroupMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */; };
 		6E2174E5289857F70066C234 /* DisclosureGroupPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */; };
-		6E2174E728985D680066C234 /* DisclosureGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E628985D680066C234 /* DisclosureGroupModel.swift */; };
+		6E2174E728985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */; };
 		6E229CA027C68A26009F8E02 /* ShowWordTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */; };
 		6E229CA227C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */; };
 		6E229CAE27C95CB6009F8E02 /* QuizCubeOptionsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CAD27C95CB6009F8E02 /* QuizCubeOptionsView2.swift */; };
@@ -20,7 +20,6 @@
 		6E229CB227C98776009F8E02 /* ToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CB127C98776009F8E02 /* ToggleItem.swift */; };
 		6E417482289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E417481289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift */; };
 		6E417484289EF0CA00EB5C00 /* TeachMeCommonControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */; };
-		6E417486289EFB7800EB5C00 /* TeachMeThisVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E417485289EFB7800EB5C00 /* TeachMeThisVerb.swift */; };
 		6E41748828A015A800EB5C00 /* ShowMeModelQuizzes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41748728A015A800EB5C00 /* ShowMeModelQuizzes.swift */; };
 		6E41748A28A01F7500EB5C00 /* FindMyVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41748928A01F7500EB5C00 /* FindMyVerb.swift */; };
 		6E41748C28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41748B28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift */; };
@@ -34,6 +33,9 @@
 		6E447CA128A7FEE800528DD9 /* MultipleChoiceModeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA028A7FEE800528DD9 /* MultipleChoiceModeEnum.swift */; };
 		6E447CA328A81A8700528DD9 /* TeachMeAPatternVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA228A81A8700528DD9 /* TeachMeAPatternVerb.swift */; };
 		6E447CA528A81C5A00528DD9 /* ListPatternsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA428A81C5A00528DD9 /* ListPatternsView.swift */; };
+		6E447CA728AAA4A900528DD9 /* DisclosureGroupTeachMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA628AAA4A900528DD9 /* DisclosureGroupTeachMe.swift */; };
+		6E447CA928AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA828AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift */; };
+		6E447CAB28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CAA28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift */; };
 		6E69297527D152E0003BCD71 /* CustomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69297427D152E0003BCD71 /* CustomActionSheet.swift */; };
 		6E69297727D25E76003BCD71 /* LanguageEngineVerbCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69297627D25E76003BCD71 /* LanguageEngineVerbCube.swift */; };
 		6E69297927D2745A003BCD71 /* QuizCubeWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69297827D2745A003BCD71 /* QuizCubeWatcher.swift */; };
@@ -84,7 +86,7 @@
 		6ECCD47527D8295D0049B9CA /* LanguageEngineFiltered.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47427D8295D0049B9CA /* LanguageEngineFiltered.swift */; };
 		6ECCD47727D900700049B9CA /* VerbMorphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47627D900700049B9CA /* VerbMorphView.swift */; };
 		6ECCD47927D928790049B9CA /* ColorExtender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47827D928790049B9CA /* ColorExtender.swift */; };
-		6ECCD47D27D96BAA0049B9CA /* AnalyzeMyVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47C27D96BAA0049B9CA /* AnalyzeMyVerbView.swift */; };
+		6ECCD47D27D96BAA0049B9CA /* AnalyzeUserVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47C27D96BAA0049B9CA /* AnalyzeUserVerbView.swift */; };
 		6ECCD48127DBDEA40049B9CA /* LanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48027DBDEA40049B9CA /* LanguageView.swift */; };
 		6ECCD48327DBDEC60049B9CA /* TenseSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48227DBDEC60049B9CA /* TenseSelectionView.swift */; };
 		6ECCD48527DBDF200049B9CA /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48427DBDF200049B9CA /* PreferencesView.swift */; };
@@ -129,7 +131,7 @@
 		6E0A6D3D2884AFD4009234C0 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
 		6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupMain.swift; sourceTree = "<group>"; };
 		6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupPreferences.swift; sourceTree = "<group>"; };
-		6E2174E628985D680066C234 /* DisclosureGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupModel.swift; sourceTree = "<group>"; };
+		6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupVerbsPatternsAndModels.swift; sourceTree = "<group>"; };
 		6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWordTypeEnum.swift; sourceTree = "<group>"; };
 		6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveVerbCubeConfiguration.swift; sourceTree = "<group>"; };
 		6E229CAD27C95CB6009F8E02 /* QuizCubeOptionsView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCubeOptionsView2.swift; sourceTree = "<group>"; };
@@ -137,7 +139,6 @@
 		6E229CB127C98776009F8E02 /* ToggleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleItem.swift; sourceTree = "<group>"; };
 		6E417481289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeModelBasedVerbConjugation.swift; sourceTree = "<group>"; };
 		6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeCommonControls.swift; sourceTree = "<group>"; };
-		6E417485289EFB7800EB5C00 /* TeachMeThisVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeThisVerb.swift; sourceTree = "<group>"; };
 		6E41748728A015A800EB5C00 /* ShowMeModelQuizzes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMeModelQuizzes.swift; sourceTree = "<group>"; };
 		6E41748928A01F7500EB5C00 /* FindMyVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindMyVerb.swift; sourceTree = "<group>"; };
 		6E41748B28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMeVerbsPatternsAndModels.swift; sourceTree = "<group>"; };
@@ -151,6 +152,9 @@
 		6E447CA028A7FEE800528DD9 /* MultipleChoiceModeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceModeEnum.swift; sourceTree = "<group>"; };
 		6E447CA228A81A8700528DD9 /* TeachMeAPatternVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeAPatternVerb.swift; sourceTree = "<group>"; };
 		6E447CA428A81C5A00528DD9 /* ListPatternsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPatternsView.swift; sourceTree = "<group>"; };
+		6E447CA628AAA4A900528DD9 /* DisclosureGroupTeachMe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupTeachMe.swift; sourceTree = "<group>"; };
+		6E447CA828AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupShowMeModelQuizzes.swift; sourceTree = "<group>"; };
+		6E447CAA28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupFindMyVerb.swift; sourceTree = "<group>"; };
 		6E69297427D152E0003BCD71 /* CustomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionSheet.swift; sourceTree = "<group>"; };
 		6E69297627D25E76003BCD71 /* LanguageEngineVerbCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineVerbCube.swift; sourceTree = "<group>"; };
 		6E69297827D2745A003BCD71 /* QuizCubeWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCubeWatcher.swift; sourceTree = "<group>"; };
@@ -196,7 +200,7 @@
 		6ECCD47427D8295D0049B9CA /* LanguageEngineFiltered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineFiltered.swift; sourceTree = "<group>"; };
 		6ECCD47627D900700049B9CA /* VerbMorphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbMorphView.swift; sourceTree = "<group>"; };
 		6ECCD47827D928790049B9CA /* ColorExtender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtender.swift; sourceTree = "<group>"; };
-		6ECCD47C27D96BAA0049B9CA /* AnalyzeMyVerbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeMyVerbView.swift; sourceTree = "<group>"; };
+		6ECCD47C27D96BAA0049B9CA /* AnalyzeUserVerbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeUserVerbView.swift; sourceTree = "<group>"; };
 		6ECCD48027DBDEA40049B9CA /* LanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageView.swift; sourceTree = "<group>"; };
 		6ECCD48227DBDEC60049B9CA /* TenseSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenseSelectionView.swift; sourceTree = "<group>"; };
 		6ECCD48427DBDF200049B9CA /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -257,7 +261,10 @@
 			children = (
 				6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */,
 				6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */,
-				6E2174E628985D680066C234 /* DisclosureGroupModel.swift */,
+				6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */,
+				6E447CA628AAA4A900528DD9 /* DisclosureGroupTeachMe.swift */,
+				6E447CA828AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift */,
+				6E447CAA28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift */,
 			);
 			path = "DisclosureViews - Help";
 			sourceTree = "<group>";
@@ -267,7 +274,6 @@
 			children = (
 				6E417481289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift */,
 				6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */,
-				6E417485289EFB7800EB5C00 /* TeachMeThisVerb.swift */,
 				6E41748728A015A800EB5C00 /* ShowMeModelQuizzes.swift */,
 				6E41748928A01F7500EB5C00 /* FindMyVerb.swift */,
 				6E41748B28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift */,
@@ -284,6 +290,13 @@
 				6E978AD7285925BA0085EA4D /* FeatherVerbStepView.swift */,
 			);
 			path = "Next time";
+			sourceTree = "<group>";
+		};
+		6E447CAE28AD421000528DD9 /* JumpLinguaHelpersFiles */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = JumpLinguaHelpersFiles;
 			sourceTree = "<group>";
 		};
 		6E69298027D2DC6A003BCD71 /* RIP */ = {
@@ -420,7 +433,7 @@
 		6EBB895028283F3700A49376 /* LearnViews */ = {
 			isa = PBXGroup;
 			children = (
-				6ECCD47C27D96BAA0049B9CA /* AnalyzeMyVerbView.swift */,
+				6ECCD47C27D96BAA0049B9CA /* AnalyzeUserVerbView.swift */,
 				6E447C9B28A4710700528DD9 /* SimpleVerbConjugation.swift */,
 				6EBAC2EC27F39A5C004DB5D1 /* MultiVerbMorphView.swift */,
 				6ED156682849121C00BF0EEA /* ListModelsView.swift */,
@@ -496,6 +509,7 @@
 		6ED2A5B527BDADC400164F80 /* VerbCubeIVO */ = {
 			isa = PBXGroup;
 			children = (
+				6E447CAE28AD421000528DD9 /* JumpLinguaHelpersFiles */,
 				6E447C9D28A5571B00528DD9 /* Next time */,
 				6E257DBB28988C41007D7314 /* FeatherFlow */,
 				6E2174E1289857630066C234 /* DisclosureViews - Help */,
@@ -646,8 +660,7 @@
 				6ECCD48127DBDEA40049B9CA /* LanguageView.swift in Sources */,
 				6E41748828A015A800EB5C00 /* ShowMeModelQuizzes.swift in Sources */,
 				6EC3086127D3FD100056F8F7 /* VerbSelectionViewLazy.swift in Sources */,
-				6E417486289EFB7800EB5C00 /* TeachMeThisVerb.swift in Sources */,
-				6ECCD47D27D96BAA0049B9CA /* AnalyzeMyVerbView.swift in Sources */,
+				6ECCD47D27D96BAA0049B9CA /* AnalyzeUserVerbView.swift in Sources */,
 				6EA29CAB27E792F100CE0372 /* WordCellButton.swift in Sources */,
 				6ED179C62803986D00B23F3E /* WordCellViews.swift in Sources */,
 				6EAD5FF027D42A8200027A49 /* ViewModifiers.swift in Sources */,
@@ -665,6 +678,7 @@
 				6EDE945128148D5700C1A3DB /* PatternRecognitionView.swift in Sources */,
 				6EF60AE128397B2E007E61F3 /* MultipleChoiceAlert.swift in Sources */,
 				6EA80F2A27BDB96C00D6061F /* LanguageEngineContainer.swift in Sources */,
+				6E447CA928AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift in Sources */,
 				6E229CB227C98776009F8E02 /* ToggleItem.swift in Sources */,
 				6E229CAE27C95CB6009F8E02 /* QuizCubeOptionsView2.swift in Sources */,
 				6E69298227D2DCA6003BCD71 /* VerbCubeHandlerClass.swift in Sources */,
@@ -712,11 +726,12 @@
 				6E0A6D3E2884AFD4009234C0 /* TextToSpeech.swift in Sources */,
 				6EB76D662899A91E00E65641 /* HomePreferencesButtonView.swift in Sources */,
 				6EF1761E27E141560010B8DA /* CircleButtonNavigationView.swift in Sources */,
-				6E2174E728985D680066C234 /* DisclosureGroupModel.swift in Sources */,
+				6E2174E728985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift in Sources */,
 				6ED37545281B3DB30034DB47 /* ProgressBar.swift in Sources */,
 				6ECCD48E27DC03100049B9CA /* LanguageEngineViewQuizCube.swift in Sources */,
 				6ECCD45927D7A9DC0049B9CA /* JSONVerbs.swift in Sources */,
 				6ECCD46927D7D4790049B9CA /* JSONWordCollectionStructs.swift in Sources */,
+				6E447CA728AAA4A900528DD9 /* DisclosureGroupTeachMe.swift in Sources */,
 				6E05543B28762034007CE454 /* ModelVerbTenseView.swift in Sources */,
 				6E2174E3289857A60066C234 /* DisclosureGroupMain.swift in Sources */,
 				6ECCD47927D928790049B9CA /* ColorExtender.swift in Sources */,
@@ -737,6 +752,7 @@
 				6EA80F3827BDC77400D6061F /* InteractiveVerbCubeCellView.swift in Sources */,
 				6EF60AE5283E7ECC007E61F3 /* MultipleChoiceView.swift in Sources */,
 				6ECCD48827DBE3600049B9CA /* LanguageViewModel.swift in Sources */,
+				6E447CAB28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift in Sources */,
 				6EE480B628106E270091F1D5 /* View Extensions.swift in Sources */,
 				6EA80F3527BDC65800D6061F /* VerbCubeCellView.swift in Sources */,
 				6E229CB027C982B5009F8E02 /* CustomToggleStyle.swift in Sources */,

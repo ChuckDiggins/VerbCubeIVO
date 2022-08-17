@@ -33,12 +33,17 @@ struct DisclosureGroupMain: View {
                         .background(.yellow)
                 }.background(.yellow)
 
-                DisclosureGroup("Model-based Verbs", isExpanded: $isExpandedModelBased){
-                    Text("Feather uses a model-based approach to teach verb conjugation.  Verbs that belong to the same model conjugate identically in every tense, any person.")
+                DisclosureGroup("Teach me", isExpanded: $isExpandedModelBased){
+                    
+                    Text("Teach me regular verbs.  Regular verbs are conjugated normally, without any patterns such as stem-changes.  Regular verbs belong to regular verb models: cortar, vender, vivir")
                         .padding()
                         .multilineTextAlignment(.leading)
                         .background(.orange)
-                    Text("If you learn one verb in a model, you learn all the verbs in that model!")
+                    Text("Teach me model verbs.  Verbs that belong to the same model conjugate identically in every tense, any person, even verb models which are irregular.")
+                        .padding()
+                        .multilineTextAlignment(.leading)
+                        .background(.orange)
+                    Text("Teach me pattern verbs.  Verbs are selected based on their patterns, such as O to OU stem changing verbs.")
                         .padding()
                         .multilineTextAlignment(.leading)
                         .background(.orange)

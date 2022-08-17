@@ -15,10 +15,10 @@ struct ShowMeVerbsPatternsAndModels: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
-            VStack{
+            ScrollView{
+                
                 VStack{
-                    Text("Verbs, Patterns and Models").font(.title2)
-                        .foregroundColor(Color("ChuckText1"))
+                    DisclosureGroupVerbsPatternsAndModels()
                     Text("Select an exercise:")
                         .font(.title2)
                     HStack{

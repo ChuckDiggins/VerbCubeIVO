@@ -114,12 +114,12 @@ struct VerbMorphView: View {
     @State var isBackward = false
     @State var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     @State var tmsList = [TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),TextMorphStruct() ]
-    @State var commentList = ["conjugate yo form",
-                              "conjugate tú form",
-                              "conjugate él form",
-                              "conjugate nosotros form",
-                              "conjugate vosotros form",
-                              "conjugate ellos form"]
+    @State var commentList = ["Conjugate yo form",
+                              "Conjugate tú form",
+                              "Conjugate él form",
+                              "Conjugate nosotros form",
+                              "Conjugate vosotros form",
+                              "Conjugate ellos form"]
     @State var subjunctiveWord = ""
     
     func fillTheCommentList(){

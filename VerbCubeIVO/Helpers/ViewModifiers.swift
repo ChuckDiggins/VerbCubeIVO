@@ -53,7 +53,7 @@ struct GreenButtonModifier : ViewModifier {
 struct ModelTensePersonButtonModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
-            .frame(width: 350, height: 30)
+            .frame(width: 300, height: 45)
                 .font(.callout)
                 .padding(.horizontal)
                 .background(Color("BethanyPurpleButtons"))
@@ -61,5 +61,17 @@ struct ModelTensePersonButtonModifier : ViewModifier {
                 .cornerRadius(5)
     }
 }
+
+struct DisclosureGroupModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .padding(.horizontal, 10)
+                .padding(.vertical, 3)
+                .background(Color("BethanyNavalBackground"))
+                .foregroundColor(Color("ChuckText1"))
+                .font(.title2)
+    }
+}
+
 
 

@@ -80,10 +80,14 @@ struct ScrollViewVC: View {
                             Image(systemName: "chevron.right").foregroundColor(.yellow)
                         }
                     }.modifier(ModelTensePersonButtonModifier())
-//                    NavigationLink(destination: OddJobsView(languageViewModel: languageViewModel)){
-//                        Text("Odds and Ends")
-//                    }.modifier(NavLinkModifier())
-//                        .background(.black)
+                    NavigationLink(destination: OddJobsView(languageViewModel: languageViewModel)){
+                        HStack{
+                            Text("Odds and Ends")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                        .background(.black)
                     
                     Button{
                         exit(1)
@@ -96,11 +100,9 @@ struct ScrollViewVC: View {
                     .padding(.leading, 10)
                     .padding(30)
                     .frame(width: 300, height: 50)
-                    .background(.red)
-                    .border(Color.white, width: 2)
-                    .cornerRadius(25)
-                    .foregroundColor(.black)
-                    .tint(.pink)
+                    .background(Color("BethanyPurpleButtons"))
+                    .foregroundColor(.white)      
+                    .cornerRadius(5)
                 }
             }
         }.onAppear{
@@ -245,150 +247,150 @@ struct HomeView: View {
     }
 }
 
-struct ModelView: View{
-    @ObservedObject var languageViewModel: LanguageViewModel
-
-    var body: some View {
-        ZStack{
-            Color.yellow
-            Image("FeatherInverted")
-                .resizable()
-                .scaledToFit()
-                .ignoresSafeArea(.all)
-
-            VStack {
-                Text("Model-Based Verbs")
-                    .font(.largeTitle)
-                    .foregroundColor(.black)
-                DisclosureGroupModel()
-                Spacer()
-                NavigationLink(destination: ModelLearnWrapper(languageViewModel: languageViewModel)){
-                    Text("Model-Based Learning")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                
-                
-//                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
-//                    Text("Feather Quiz Morph")
-//                }.frame(minWidth: 0, maxWidth: 300)
-//                    .padding()
-//                    .foregroundColor(.white)
-//                    .padding(.horizontal)
-//                    .font(.headline)
-//                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-//                    .cornerRadius(10)
-                
-                NavigationLink(destination: ModelQuizWrapper(languageViewModel: languageViewModel)){
-                    Text("Model-Based Quizzes")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                Spacer()
-
-            }
-        }
-    }
-}
-
-struct PatternView: View{
-    @ObservedObject var languageViewModel: LanguageViewModel
-
-    var body: some View {
-        ZStack{
-            Color.green
-            Image("FeatherInverted")
-                .resizable()
-                .scaledToFit()
-                .ignoresSafeArea(.all)
-
-            VStack {
-                Text("Pattern-Based Verbs")
-                    .font(.largeTitle)
-                    .foregroundColor(.black)
-                Spacer()
-                NavigationLink(destination: PatternLearnWrapper(languageViewModel: languageViewModel)){
-                    Text("Pattern-Based Learning")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                
-                NavigationLink(destination: PatternQuizWrapper(languageViewModel: languageViewModel)){
-                    Text("Pattern-Based Quizzes")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                
-                Spacer()
-
-            }
-        }
-    }
-}
-
-struct GeneralVerbView: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    var backgroundColor = Color.blue
-    var body: some View {
-        ZStack{
-            backgroundColor
-            Image("FeatherInverted")
-                .resizable()
-                .scaledToFit()
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                Text("Verbs in General")
-                    .font(.largeTitle)
-                    .foregroundColor(.black)
-                
-                Spacer()
-                NavigationLink(destination: GeneralVerbLearnWrapper(languageViewModel: languageViewModel)){
-                    Text("General Verb Learning")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                NavigationLink(destination: GeneralVerbQuizWrapper(languageViewModel: languageViewModel)){
-                    Text("General Verb Quizzes")
-                        .frame(minWidth: 0, maxWidth: 300)
-                        .padding()
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .font(.headline)
-                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .cornerRadius(10)
-                }
-                Spacer()
-            }
-            Spacer()
-        }
-        .foregroundColor(.white)
-        .navigationViewStyle(StackNavigationViewStyle())
-    }
-}
-
+//struct ModelView: View{
+//    @ObservedObject var languageViewModel: LanguageViewModel
+//
+//    var body: some View {
+//        ZStack{
+//            Color.yellow
+//            Image("FeatherInverted")
+//                .resizable()
+//                .scaledToFit()
+//                .ignoresSafeArea(.all)
+//
+//            VStack {
+//                Text("Model-Based Verbs")
+//                    .font(.largeTitle)
+//                    .foregroundColor(.black)
+//                DisclosureGroupModel()
+//                Spacer()
+//                NavigationLink(destination: ModelLearnWrapper(languageViewModel: languageViewModel)){
+//                    Text("Model-Based Learning")
+//                        .frame(minWidth: 0, maxWidth: 300)
+//                        .padding()
+//                        .foregroundColor(.white)
+//                        .padding(.horizontal)
+//                        .font(.headline)
+//                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .cornerRadius(10)
+//                }
+//                
+//                
+////                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
+////                    Text("Feather Quiz Morph")
+////                }.frame(minWidth: 0, maxWidth: 300)
+////                    .padding()
+////                    .foregroundColor(.white)
+////                    .padding(.horizontal)
+////                    .font(.headline)
+////                    .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+////                    .cornerRadius(10)
+//                
+//                NavigationLink(destination: ModelQuizWrapper(languageViewModel: languageViewModel)){
+//                    Text("Model-Based Quizzes")
+//                        .frame(minWidth: 0, maxWidth: 300)
+//                        .padding()
+//                        .foregroundColor(.white)
+//                        .padding(.horizontal)
+//                        .font(.headline)
+//                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .cornerRadius(10)
+//                }
+//                Spacer()
+//
+//            }
+//        }
+//    }
+//}
+//
+//struct PatternView: View{
+//    @ObservedObject var languageViewModel: LanguageViewModel
+//
+//    var body: some View {
+//        ZStack{
+//            Color.green
+//            Image("FeatherInverted")
+//                .resizable()
+//                .scaledToFit()
+//                .ignoresSafeArea(.all)
+//
+//            VStack {
+//                Text("Pattern-Based Verbs")
+//                    .font(.largeTitle)
+//                    .foregroundColor(.black)
+//                Spacer()
+//                NavigationLink(destination: PatternLearnWrapper(languageViewModel: languageViewModel)){
+//                    Text("Pattern-Based Learning")
+//                        .frame(minWidth: 0, maxWidth: 300)
+//                        .padding()
+//                        .foregroundColor(.white)
+//                        .padding(.horizontal)
+//                        .font(.headline)
+//                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .cornerRadius(10)
+//                }
+//                
+//                NavigationLink(destination: PatternQuizWrapper(languageViewModel: languageViewModel)){
+//                    Text("Pattern-Based Quizzes")
+//                        .frame(minWidth: 0, maxWidth: 300)
+//                        .padding()
+//                        .foregroundColor(.white)
+//                        .padding(.horizontal)
+//                        .font(.headline)
+//                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .cornerRadius(10)
+//                }
+//                
+//                Spacer()
+//
+//            }
+//        }
+//    }
+//}
+//
+//struct GeneralVerbView: View {
+//    @ObservedObject var languageViewModel: LanguageViewModel
+//    var backgroundColor = Color.blue
+//    var body: some View {
+//        ZStack{
+//            backgroundColor
+//            Image("FeatherInverted")
+//                .resizable()
+//                .scaledToFit()
+//                .ignoresSafeArea(.all)
+//            
+//            VStack{
+//                Text("Verbs in General")
+//                    .font(.largeTitle)
+//                    .foregroundColor(.black)
+//                
+//                Spacer()
+//                NavigationLink(destination: GeneralVerbLearnWrapper(languageViewModel: languageViewModel)){
+//                    Text("General Verb Learning")
+//                        .frame(minWidth: 0, maxWidth: 300)
+//                        .padding()
+//                        .foregroundColor(.white)
+//                        .padding(.horizontal)
+//                        .font(.headline)
+//                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .cornerRadius(10)
+//                }
+//                NavigationLink(destination: GeneralVerbQuizWrapper(languageViewModel: languageViewModel)){
+//                    Text("General Verb Quizzes")
+//                        .frame(minWidth: 0, maxWidth: 300)
+//                        .padding()
+//                        .foregroundColor(.white)
+//                        .padding(.horizontal)
+//                        .font(.headline)
+//                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .cornerRadius(10)
+//                }
+//                Spacer()
+//            }
+//            Spacer()
+//        }
+//        .foregroundColor(.white)
+//        .navigationViewStyle(StackNavigationViewStyle())
+//    }
+//}
+//

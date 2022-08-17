@@ -14,10 +14,9 @@ struct FindMyVerb: View {
         ZStack{
             Color("BethanyNavalBackground")
                 .edgesIgnoringSafeArea(.all)
-            
-            
-            VStack{
-                Text("Find my verb").font(.title2).foregroundColor(Color("ChuckText1"))
+
+            ScrollView{
+                DisclosureGroupFindMyVerb()
                 VStack{
                     
                     HStack{
@@ -34,10 +33,11 @@ struct FindMyVerb: View {
                                 Text("Find Verb Model")
                             }
                         }
+                       
                         VStack{
                             NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .pattern))
                             {
-                            Image("FindMyVerbModel")
+                            Image("FindMyVerbPattern")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 100, height: 200)
@@ -50,7 +50,7 @@ struct FindMyVerb: View {
                     }.font(.caption)
                     HStack{
                         VStack{
-                            NavigationLink(destination: AnalyzeMyVerbView(languageViewModel: languageViewModel))
+                            NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel))
                             {
                             Image("FindMyVerbAnalyze")
                                 .resizable()

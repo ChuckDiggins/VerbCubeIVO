@@ -27,8 +27,8 @@ struct BehavioralVerbView: View {
     @State var dependentVerb = Verb()
     @State var highlightPerson = Person.S1
     
-//    @State var vvm = ["", "", "", "", "", ""]
-//    @State var vvr = ["", "", "", "", "", ""]
+    //    @State var vvm = ["", "", "", "", "", ""]
+    //    @State var vvr = ["", "", "", "", "", ""]
     @State var person = ["a mí", "a ti", "a él", "a nosotros", "a vosotros", "a ellos", "a usted", "a ella", "a ellas" ]
     @State var studentAnswer = ["", "", "", "", "", ""]
     @State var correctAnswer = ["", "", "", "", "", ""]
@@ -46,156 +46,142 @@ struct BehavioralVerbView: View {
     @FocusState var focusedField: FocusEnum?
     
     var body: some View {
-//        NavigationView{
-        VStack{
-            HStack{
-                Text("Verb Behavior Model:")
-                Text(behaviorType.rawValue)
-                    .padding(2)
-                    .cornerRadius(4)
-                    .font(Font.headline.weight(.bold))
-                Text(" ")
-                Button{
-                    showMeCorrectAnswers.toggle()
-                } label: {
-                    Text(showMeCorrectAnswers ? "🐵" : "🙈")
-                        .bold()
-                        .font(.title)
-                        .foregroundColor(.black)
-                        .background(showMeCorrectAnswers ? .green : .yellow)
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        .shadow(radius: 3)
-                        .padding(10)
-                }
-            }
-            .background(Color.yellow)
-                .foregroundColor(.black)
-                .frame(width: 350, height: 40)
-            
-            HStack{
-                if behaviorType == .auxiliary {
-                    Button{
-                        changeDependentVerb()
-                        setCurrentVerb()
-                    } label: {
-                        HStack{
-                            Text("Dependent verb:")
-                            Text(dependentVerb.getWordAtLanguage(language: currentLanguage))
-                        }
-                        .padding(2)
-                        //                        .cornerRadius(4)
-                        //                        .bold()
-                        //                        .font(.title)
-                        //                        .foregroundColor(.black)
-                        //                        .background(.yellow)
-                        //                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        //                        .shadow(radius: 3)
-                    }
-                }
-                
-            }
-            //show relevant tenses
+        ZStack{
+            Color("BethanyNavalBackground")
+                .edgesIgnoringSafeArea(.all)
             VStack{
                 HStack{
-                    Spacer()
-                    Button(action: {
-                        languageViewModel.setNextBehavioralVerb()
-                        currentVerb = languageViewModel.getCurrentBehavioralVerb()
-                        setCurrentVerb()
-                    }){
-                        Text(currentVerbPhrase)
-                            .background(Color.yellow)
-                    }
-                    Spacer()
-                    Button(action: {
-                        currentTense = languageViewModel.getLanguageEngine().getNextTense()
-                        currentTenseString = currentTense.rawValue
-                        setCurrentVerb()
-                    }){
-                        Text(currentTenseString)
-                            .background(Color.yellow)
-                    }
-                    Spacer()
-                }.background(Color.yellow)
-                
-            }
-            
-            if ( bValidVerb ){
-                
-                VStack {
-                    StudentAnswerTextEditViewExpanded()
-//                    ForEach (0..<6){ i in
-//                        HStack{
-//                            Text(person[i])
-//                                .padding(2)
-//                                .frame(width: 200, height: frameHeight, alignment: .trailing)
-//                                .background(.white  )
-//                                .foregroundColor(.black)
-////                            TextField("answer here")
-//                            Text(correctAnswer[i])
-//                                .padding(2)
-//                                .frame(width: 200, height: frameHeight, alignment: .leading)
-//                                .background(.green )
-//                                .foregroundColor(.black)
-////                            Text(vvr[i])
-////                                .frame(width: 100, height: 20, alignment: .trailing)
-////                                .background(.yellow)
-////                                .foregroundColor(.black)
-//                        }.font(fontSize)
+                    Text("Verb Behavior Model:")
+                    Text(behaviorType.rawValue)
+                        .padding(2)
+                        .cornerRadius(4)
+                        .font(.title2)
+                        .foregroundColor(Color("ChuckText1"))
+                    Text(" ")
+                }
+//                    Button{
+//                        showMeCorrectAnswers.toggle()
+//                    } label: {
+//                        Text(showMeCorrectAnswers ? "🐵" : "🙈")
+//                            .bold()
+//                            .font(.title)
+//                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                            .shadow(radius: 3)
+//                            .padding(10)
 //                    }
-                    if behaviorType == .auxiliary {
-                        let result = languageViewModel.getBehavioralVerbModel().getAuxiliaryComment(language: currentLanguage, verb: currentVerb)
-                            
-                        VStack{
-                            Text(result.0)
-                                .bold()
-                                .frame(width: 350)
-                                .font(.callout)
-                                .foregroundColor(.black)
-                                .background(.yellow)
-                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                .shadow(radius: 3)
-                                .padding(3)
-                            Text(result.1)
-                                .bold()
-                                .frame(width: 350)
-                                .font(.callout)
-                                .foregroundColor(.black)
-                                .background(.orange)
-                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                .shadow(radius: 3)
-                                .padding(3)
+//                    .frame(width: 350, height: 45)
+                    
+                VStack{
+                    HStack{
+                        if behaviorType == .auxiliary {
+                            Button{
+                                changeDependentVerb()
+                                setCurrentVerb()
+                            } label: {
+                                HStack{
+                                    Text("Dependent verb:")
+                                    Text(dependentVerb.getWordAtLanguage(language: currentLanguage))
+                                }
+                                .padding(2)
+                                
+                            }
                         }
-                    }
-                    else if behaviorType == .likeGustar {
                         
-                        Button{
-                            if number == .singular { number = .plural }
-                            else { number = .singular }
-                            setCurrentVerb()
-                        } label: {
-                            Text("Number is: \(number.rawValue)")
-                                .padding()
-                                .background(Color.orange)
-//                                .frame(width: 200, height: frameHeight, alignment: .trailing)
-                                .cornerRadius(8)
-                        }
                     }
-                    Spacer()
                 }
-                .onAppear {
-                    languageViewModel.setBehaviorType(bt: behaviorType)
-                    highlightPerson = .S1
-                    currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
-                    currentVerb = languageViewModel.getCurrentBehavioralVerb()
-                    setCurrentVerb()
-                }
-                Spacer()
+                    //show relevant tenses
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                languageViewModel.setNextBehavioralVerb()
+                                currentVerb = languageViewModel.getCurrentBehavioralVerb()
+                                setCurrentVerb()
+                            }){
+                                Text(currentVerbPhrase)
+                                
+                            }
+                            Spacer()
+                            Button(action: {
+                                currentTense = languageViewModel.getLanguageEngine().getNextTense()
+                                currentTenseString = currentTense.rawValue
+                                setCurrentVerb()
+                            }){
+                                Text(currentTenseString)
+                                
+                            }
+                            Spacer()
+                        }
+                    
+                    if ( bValidVerb ){
+                        
+                        VStack {
+                            StudentAnswerTextEditViewExpanded()
+                            //                    ForEach (0..<6){ i in
+                            //                        HStack{
+                            //                            Text(person[i])
+                            //                                .padding(2)
+                            //                                .frame(width: 200, height: frameHeight, alignment: .trailing)
+                            //                                .background(.white  )
+                            //                                .foregroundColor(.black)
+                            ////                            TextField("answer here")
+                            //                            Text(correctAnswer[i])
+                            //                                .padding(2)
+                            //                                .frame(width: 200, height: frameHeight, alignment: .leading)
+                            //                                .background(.green )
+                            //                                .foregroundColor(.black)
+                            ////                            Text(vvr[i])
+                            ////                                .frame(width: 100, height: 20, alignment: .trailing)
+                            ////                                .background(.yellow)
+                            ////                                .foregroundColor(.black)
+                            //                        }.font(fontSize)
+                            //                    }
+                            if behaviorType == .auxiliary {
+                                let result = languageViewModel.getBehavioralVerbModel().getAuxiliaryComment(language: currentLanguage, verb: currentVerb)
+                                
+                                VStack{
+                                    Text(result.0)
+                                        .bold()
+                                        .frame(width: 350)
+                                        .font(.callout)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                        .shadow(radius: 3)
+                                        .padding(3)
+                                    Text(result.1)
+                                        .bold()
+                                        .frame(width: 350)
+                                        .font(.callout)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                        .shadow(radius: 3)
+                                        .padding(3)
+                                }
+                            }
+                            else if behaviorType == .likeGustar {
+                                
+                                Button{
+                                    if number == .singular { number = .plural }
+                                    else { number = .singular }
+                                    setCurrentVerb()
+                                } label: {
+                                    Text("Number is: \(number.rawValue)")
+                                        .padding()
+                                        .cornerRadius(8)
+                                }
+                            }
+                            Spacer()
+                        }
+                        .onAppear {
+                            languageViewModel.setBehaviorType(bt: behaviorType)
+                            highlightPerson = .S1
+                            currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
+                            currentVerb = languageViewModel.getCurrentBehavioralVerb()
+                            setCurrentVerb()
+                        }
+                        Spacer()
+                    }
+                }.foregroundColor(Color("BethanyGreenText"))
             }
-//        }
-
         }
-    }
+
     
     
     func setCurrentVerb(){
@@ -291,7 +277,7 @@ struct BehavioralVerbView: View {
 }
 
 extension BehavioralVerbView {
-
+    
     
     func evaluateStudentAnswer(studentAnswer: String, correctAnswer: String)->Bool{
         let studentAnswerClean = VerbUtilities().removeExtraBlanks(verbString: studentAnswer)
@@ -423,7 +409,7 @@ extension BehavioralVerbView {
         }
     }
 }
-    
+
 //struct VerbsLikeGustarView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        PersonalVerbsView()

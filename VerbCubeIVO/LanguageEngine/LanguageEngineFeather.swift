@@ -25,6 +25,10 @@ extension LanguageEngine{
         return currentVerbModel
     }
     
+    func setCurrentVerbModel(model: RomanceVerbModel){
+        currentVerbModel = model
+    }
+    
     func setCurrentPattern(pattern: SpecialPatternType){
         currentPattern = pattern
     }
@@ -70,6 +74,11 @@ extension LanguageEngine{
         default:
             return [RomanceVerbModel]()
         }
+    }
+    
+    func getPatternsForThisModel(verbModel: RomanceVerbModel)->[SpecialPatternStruct]{
+        var tempVM = verbModel
+        return tempVM.parseSpecialPatterns()
     }
     
     func getModelsOfPattern(verbList: [Verb], thisPattern: SpecialPatternStruct)->[RomanceVerbModel]{

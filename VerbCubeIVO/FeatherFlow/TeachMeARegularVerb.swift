@@ -21,6 +21,7 @@ struct TeachMeARegularVerb: View {
     @State var xverbAR = "xxxyyar"
     @State var xverbER = "xxxyyer"
     @State var xverbIR = "xxxyyir"
+    @State var currentVerbString = "xxx"
     var instructionFont = Font.caption
     
     var body: some View {
@@ -28,8 +29,8 @@ struct TeachMeARegularVerb: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
-            VStack{
-                Text("Teach Me A Regular Verb").font(.title2).foregroundColor(Color("ChuckText1"))
+            ScrollView{
+                DisclosureGroupTeachMeARegularVerb().foregroundColor(Color("BethanyGreenText"))
                 VStack{
                     Text("Step 1: Pick a tense").font(.title2)
                     Text("To change the tense, click Tense button.")
@@ -55,6 +56,9 @@ struct TeachMeARegularVerb: View {
                     HStack{
                         Button{
                             teachMeVerbType = .AR
+                            let vm = languageViewModel.findModelForThisVerbString(verbWord: "cortar")
+                            languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
+                            currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
                         } label: {
                             HStack{
                                 Circle()
@@ -72,6 +76,9 @@ struct TeachMeARegularVerb: View {
                         .padding()
                         Button{
                             teachMeVerbType = .ER
+                            let vm = languageViewModel.findModelForThisVerbString(verbWord: "deber")
+                            languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
+                            currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
                         } label: {
                             HStack{
                                 Circle()
@@ -90,6 +97,9 @@ struct TeachMeARegularVerb: View {
                         .padding()
                         Button{
                             teachMeVerbType = .IR
+                            let vm = languageViewModel.findModelForThisVerbString(verbWord: "vivir")
+                            languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
+                            currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
                         } label: {
                             HStack{
                                 Circle()
@@ -117,79 +127,41 @@ struct TeachMeARegularVerb: View {
                 .padding(3)
                 Divider().frame(height:1).background(.white)
                 VStack{
-                    Text("Step 3: Pick a practice verb type ").font(.title2)
-                    
-                    Text("Select regular verb or X-verb")
-                    
-                    switch teachMeVerbType{
-                    case .AR:
-                        VStack{
-                            NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: "comprar", french: "acheter", english: "buy"), residualPhrase: "", teachMeMode: .regular))
-                            {
-                            HStack{
-                                Text("Regular verb: comprar")
-                                Spacer()
-                                Image(systemName: "chevron.right").foregroundColor(.yellow)
-                            }
-                            }.modifier(ModelTensePersonButtonModifier())
-                            NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: xverbAR, french: "", english: ""), residualPhrase: "", teachMeMode: .regular))
-                            {
-                            HStack{
-                                Text("X-verb:  xxxyyyar")
-                                Spacer()
-                                Image(systemName: "chevron.right").foregroundColor(.yellow)
-                            }
-                            }.modifier(ModelTensePersonButtonModifier())
-                        }
-                        .padding()
-                    case .ER:
-                        VStack{
-                            NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: "vender", french: "", english: ""), residualPhrase: "", teachMeMode: .regular))
-                            {
-                            HStack{
-                                Text("Regular verb: vender")
-                                Spacer()
-                                Image(systemName: "chevron.right").foregroundColor(.yellow)
-                            }
-                            }.modifier(ModelTensePersonButtonModifier())
-                            NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: xverbAR, french: "", english: ""), residualPhrase: "", teachMeMode: .regular))
-                            {
-                            HStack{
-                                Text("X-verb:  xxxyzer")
-                                Spacer()
-                                Image(systemName: "chevron.right").foregroundColor(.yellow)
-                            }
-                            }.modifier(ModelTensePersonButtonModifier())
-                            
-                        }
-                        .padding()
-                    case .IR:
-                        VStack{
-                            NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: "vivir", french: "", english: ""), residualPhrase: "", teachMeMode: .regular))
-                            {
-                            HStack{
-                                Text("Regular verb:  vivir")
-                                Spacer()
-                                Image(systemName: "chevron.right").foregroundColor(.yellow)
-                            }
-                            }.modifier(ModelTensePersonButtonModifier())
-                            
-                            NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: xverbIR, french: "", english: ""), residualPhrase: "", teachMeMode: .regular))
-                            {
-                            HStack{
-                                Text("X-verb:  xxxyzir")
-                                Spacer()
-                                Image(systemName: "chevron.right").foregroundColor(.yellow)
-                            }
-                            }.modifier(ModelTensePersonButtonModifier())
-                            
-                        }
-                        .padding()
+                    Text("Step 3: Pick a verb").font(.title2)
+                    Text("To change the verb, click Button.")
+                    Button(action: {
+                        languageViewModel.setNextFilteredVerb()
+                        currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
+                    }){
+                        HStack{
+                            Text("Verb: ")
+                            Text(currentVerbString)
+                            Spacer()
+                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                        }.modifier(ModelTensePersonButtonModifier())
                     }
+                    
+                }
+                .frame(maxWidth: .infinity)
+                .padding(2)
+                
+                VStack{
+                    Text("Step 4: Conjugate your verb").font(.title2)
+                    NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", teachMeMode: .model))
+                    {
+                    HStack{
+                        Text("Regular verb: \(currentVerbString)")
+                        Spacer()
+                        Image(systemName: "chevron.right").foregroundColor(.yellow)
+                    }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundColor(Color("BethanyGreenText"))
                 .padding(3)
+            }.onAppear{
+                currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
             }
             Spacer()
         } .animation(.easeIn)

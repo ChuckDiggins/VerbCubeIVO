@@ -75,20 +75,21 @@ struct MultipleChoiceView: View {
         ZStack{
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
-            
-           
+
             VStack{
-                VStack{
-                    Text("Multiple Choice").font(.title2)
-                    Text(headerText).font(.title2).bold()
-                }.foregroundColor(Color("ChuckText1"))
-                
+                if multipleChoiceType == MultipleChoiceType.oneSubjectToFiveVerbs {
+                    DisclosureGroupMultipleChoiceSubjectVerb().foregroundColor(Color("BethanyGreenText"))
+                }
+                else {
+                    DisclosureGroupMultipleChoiceSubjectTense().foregroundColor(Color("BethanyGreenText"))
+                }
+ 
                 ListVerbModelsView(languageViewModel: languageViewModel)
                 .task {
                     setBescherelleModelInfo()
                     setVerbList()
                 }
-                
+
                 HStack{
                     Button{
                         switch multipleChoiceDifficulty {
@@ -122,27 +123,31 @@ struct MultipleChoiceView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .shadow(radius: 3)
 
-                Rectangle()
-                    .fill(.orange)
-                    .frame(height: 2, alignment: .center)
+                
                 
                 VStack{
-                    //setNextProblemView()
-                    Text(problemInstructionString)
-                        .font(.headline)
-                        .padding(2)
-                        .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .foregroundColor(.black)
-                        .cornerRadius(4)
-                        .buttonStyle(.bordered)
+                   
+                    VStack{
+                        HStack{
+//                            Text("Problem:")
+                            Text(problemInstructionString)
+                        }.font(.headline)
+//                        Text("Click on the correct answer on the right")
+//                            .font(.subheadline)
+                    }
+                    .frame(width: 350, height: 40)
+                    .padding(2)
+                    .cornerRadius(4)
+                    .border(Color("ChuckText1"))
+                    Divider().frame(height:2).background(.yellow)
                     HStack{
                         Button(leftHandString){
 //                            print("soon I will do something cool with this")
                         }
-                        .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                        .background(.orange.opacity(0.1))
-                        .cornerRadius(8)
-                        .font(.body)
+                        .frame(width: 150, height: 30)
+                        .font(.headline)
+                        .cornerRadius(3)
+                        .border(Color("ChuckText1"))
                         
                         VStack{
                             ForEach(rightHandStringList.indices, id: \.self) { index in
@@ -173,14 +178,16 @@ struct MultipleChoiceView: View {
                                     showNewProblem()
                                     
                                 }
-                                .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                                .background(Color("ChuckBackground").opacity(0.5))
+                                .frame(width: 200, height: 30)
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .background(Color("BethanyPurpleButtons"))
                                 .cornerRadius(8)
-                                .font(.body)
                             }
+                            
                         }
                         
-                    }
+                    }.padding(.horizontal)
                 }
                 Spacer()
             }
@@ -387,7 +394,7 @@ struct MultipleChoiceView: View {
                     correctRightHandString = str
                 }
             }
-            problemInstructionString = "Subject \"\(leftHandString)\": \(currentTense.rawValue): \(verb.getWordAtLanguage(language: currentLanguage))"
+            problemInstructionString = "Problem tense: \(currentTense.rawValue.lowercased())"
         case .oneSubjectToFiveTenses:
             randomTenseList.shuffle()
             for tense in randomTenseList {
@@ -397,7 +404,7 @@ struct MultipleChoiceView: View {
                     correctRightHandString = str
                 }
             }
-            problemInstructionString = "Subject \"\(leftHandString)\": \(currentTense.rawValue): \(verb.getWordAtLanguage(language: currentLanguage))"
+            problemInstructionString = "Problem tense: \(currentTense.rawValue.lowercased())"
         case .oneVerbToFiveSubjects:
             correctRightHandString = ""
         case .oneVerbToFiveModels:

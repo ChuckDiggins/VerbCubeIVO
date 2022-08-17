@@ -9,7 +9,7 @@ import SwiftUI
 import JumpLinguaHelpers
 
 struct DragDropVerbSubjectView: View {
-//    @Environment(\.dismiss) private var dismiss
+    @ObservedObject var languageViewModel: LanguageViewModel
     // Mark: properties
     @State var progress : CGFloat = 0
     @State var verbWordsFrom: [DragDrop2Word] = wordMatch
@@ -24,89 +24,123 @@ struct DragDropVerbSubjectView: View {
     @State var animateWrongText : Bool = false
     @State var droppedCount : CGFloat = 0
     @State var droppedCountInt = 0
-    
+    @State var tenseList = [Tense]()
+    @State var currentTense = Tense.present
+    @State var currentVerb = Verb()
+    @State var currentPerson = Person.S1
+    @State var verbWordList = [String]()
+    @State var currentVerbString = ""
+    @State var currentTenseString = ""
+    @State var width = 0.0
+    var subjectList = ["yo", "tú", "usted", "nosotros", "ellos", "ellas", "vosotros", "él", "ella", "ustedes"]
+    var personList = [Person.S1, .S2, .S3, .P1, .P3, .P3, .P2, .S3, .S3, .P3]
     
     var body: some View {
-        VStack{
-            Image("JLCropSmall")
-                .frame(width:200, height:100)
-                .aspectRatio(contentMode: .fit)
-                .padding(.trailing, 5)
-                .padding(10)
-            VStack(spacing: 15){
-                //            NavBar()
+        ZStack{
+//            Color("BethanyNavalBackground")
+//                .ignoresSafeArea()
+            
+            
+            ScrollView{
+                DisclosureGroupDragAndDrop()
+                NavBar()
+//              Text("Drag and Drop: Verbs to Subjects   ")
+                
                 HStack{
                     Button{
-                        let newChallenge = fillNewDragDropWords()
-                        verbWordsFrom = newChallenge
-                        subjectWordsTo = newChallenge
-                        verbWordsFrom = verbWordsFrom.shuffled()
-                        shuffledRows = generateGridFrom()
-                        verbWordsFrom = wordMatch
-                        rows = generateGridTo()
-                        droppedCount = 0
-                        droppedCountInt = 0
-                        progress = 0
+                        loadNewProblem()
                     } label: {
-                        Text("Load new challenge")
-                            .bold()
-                            .frame(width: 200, height: 30)
-                            .foregroundColor(.indigo)
-                            .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                            .shadow(radius: 3)
-                    }
-                    
-                    Button{
-                        //                    dismiss()
-                    } label : {
-                        Text("Cancel")
-                            .bold()
-                            .frame(width: 100, height: 30)
-                            .foregroundColor(.indigo)
-                            .background(.linearGradient(colors: [.white, .mint], startPoint: .bottomLeading, endPoint: .topTrailing))
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                            .shadow(radius: 3)
-                    }
+                        HStack{
+                            VStack{
+                                Text("Verb: \(currentVerbString)")
+                                Text("Tense: \(currentTenseString)" )
+                            }
+                            Spacer()
+                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                        }
+                    }.modifier(ModelTensePersonButtonModifier())
+                    NavigationLink(destination: StudentScoreView(languageViewModel: languageViewModel)){
+                        Text("👩🏻‍🎓")
+                    }.frame(width: 40, height: 40)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                        .font(.title2)
                 }.padding(5)
                 
                 VStack(alignment: .leading, spacing: 30){
-                    Text("Drag the verbs to the subjects")
-                        .font(.title2.bold())
-                    
                     Text("Number completed: \(Int(droppedCount)) out of \(verbWordsFrom.count)")
-                        .background(.linearGradient(colors: [.yellow, .orange], startPoint: .bottomLeading, endPoint: .topTrailing))
                 }
                 .padding(.top, 30)
-                
-                
-                
-                
+//                VStack{
+//                    Text("Drag from bottom box to upper box")
+//                }
+//                .modifier(TextModifier())
+
                 // Mark: Drag Drop Area
                 DropArea()
                     .padding(.vertical, 15)
-                    .background(.yellow)
-                
-                
-                
+                    .border(.yellow)
                 DragArea()
                     .padding(.vertical, 15)
-                    .background(.red)
-                
-                
+                    .border(.red)
+                Spacer()
             }.padding()
+                .foregroundColor(Color("BethanyGreenText"))
         }
-            .onAppear{
-                if rows.isEmpty{
-                    //first creating shuffled one
-                    //then creating normal one
-                    verbWordsFrom = verbWordsFrom.shuffled()
-                    shuffledRows = generateGridFrom()
-                    verbWordsFrom = wordMatch
-                    rows = generateGridTo()
-                }
+        .onAppear{
+            currentVerb = languageViewModel.getCurrentFilteredVerb()
+            fillTenseList()
+            loadNewProblem()
+            
+//            if rows.isEmpty{
+//                //first creating shuffled one
+//                //then creating normal one
+//                verbWordsFrom = verbWordsFrom.shuffled()
+//                shuffledRows = generateGridFrom()
+//                verbWordsFrom = wordMatch
+//                rows = generateGridTo()
+//            }
+            
+        }
+        .offset(x: animateWrongText ? -30 : 0)
+        
+        
+    }
+    func fillTenseList(){
+        tenseList.removeAll()
+        for tense in languageViewModel.getTenseList(){
+            let tenseIndex =  tense.getIndex()
+            //is simple indicative?
+            if tenseIndex < 6 {
+                tenseList.append(tense)
             }
-            .offset(x: animateWrongText ? -30 : 0)
+            //or simple subjunctive
+            else if tenseIndex >= Tense.presentSubjunctive.getIndex() && tenseIndex <= Tense.imperfectSubjunctiveSE.getIndex() {
+                tenseList.append(tense)
+            }
+        }
+    }
+    func loadNewProblem(){
+        currentVerb = languageViewModel.getRandomVerb()
+        currentVerbString = currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
+        let tempTenseList = tenseList.shuffled()
+        currentTense = tempTenseList[0]
+        currentTenseString = currentTense.rawValue
+        verbWordList.removeAll()
+        for person in personList {
+            verbWordList.append(languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: currentTense, person: person))
+        }
+        var tempChallenge = fillNewDragDropWords(subjectList: subjectList, verbWordList: verbWordList)
+        var newChallenge = tempChallenge.shuffled()
+        verbWordsFrom = newChallenge
+        subjectWordsTo = newChallenge
+        verbWordsFrom = verbWordsFrom.shuffled()
+        shuffledRows = generateGridFrom()
+        verbWordsFrom = wordMatch
+        rows = generateGridTo()
+        droppedCount = 0
+        droppedCountInt = 0
+        progress = 0
     }
     
     // Mark: Drop area
@@ -118,13 +152,14 @@ struct DragDropVerbSubjectView: View {
                     ForEach($row){$item in
                         Text(item.valueFrom)
                             .font(.system(size: item.fontSize))
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, item.padding)
-                            .foregroundColor(.black)
-//                            .opacity(item.isShowing ? 1 : 0)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, item.padding)  //variable
+                        
+                        //                            .opacity(item.isShowing ? 1 : 0)
                             .background(){
                                 RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                    .fill(item.isShowing ? .clear : .gray.opacity(0.25))
+                                    .fill(item.isShowing ? .clear : .gray.opacity(0.15))
+                                    .border(item.isShowing ? .clear : .gray.opacity(0.25))
                             }
                             .background(){
                                 //if item is dropped into the correct place
@@ -133,6 +168,7 @@ struct DragDropVerbSubjectView: View {
                                     .opacity(item.isShowing ? 1 : 0)
                                     .background(item.isShowing ? .green : .clear)
                             }
+                            .border(.yellow)
                         // Mark: adding the drop operation here
                             .onDrop(of: [.url], isTargeted: .constant(false)){
                                 providers in
@@ -140,11 +176,13 @@ struct DragDropVerbSubjectView: View {
                                     let _ = first.loadObject(ofClass: URL.self){
                                         value, error in
                                         guard let url = value else{return}
+                                        currentPerson = getPerson(personString: item.valueTo)
                                         if replaceAccentWithDoubleLetter(characterArray: item.valueTo) == "\(url)"{
                                             droppedCount += 1
                                             droppedCountInt = droppedCountInt
-//                                            print("onDrop: \(item)")
+                                            //                                            print("onDrop: \(item)")
                                             let progress = (droppedCount / CGFloat(subjectWordsTo.count))
+                                            incrementStudentCorrectScore()
                                             withAnimation{
                                                 item.isShowing = true
                                                 updateShuffledArray(ddWord: item)
@@ -154,6 +192,7 @@ struct DragDropVerbSubjectView: View {
                                         //animating when wrong text is dropped
                                         else {
                                             animateView()
+                                            incrementStudentWrongScore()
                                         }
                                         
                                     }
@@ -167,8 +206,37 @@ struct DragDropVerbSubjectView: View {
                     Divider()
                 }
             }
-        }
+        }.foregroundColor(Color("BethanyGreenText"))
     }
+    
+    func getPerson(personString: String)->Person{
+        switch (languageViewModel.getCurrentLanguage()){
+        case .Spanish:
+            if personString == "yo" { return .S1}
+            if personString == "tú" { return .S2}
+            if personString == "el" || personString == "ella" || personString == "usted" { return .S3}
+            if personString == "nosotros" { return .P1}
+            if personString == "vosotros" { return .P2}
+            if personString == "ellos" || personString == "ellas" || personString == "ustedes" { return .P3}
+        case .French:
+            if personString == "yo" { return .S1}
+            if personString == "tú" { return .S2}
+            if personString == "el" || personString == "ella" || personString == "usted" { return .S3}
+            if personString == "nosotros" { return .P1}
+            if personString == "vosotros" { return .P2}
+            if personString == "ellos" || personString == "ellas" || personString == "ustedes" { return .P3}
+        case .English:
+            if personString == "I" { return .S1}
+            if personString == "you" { return .S2}
+            if personString == "he" || personString == "she" || personString == "it" { return .S3}
+            if personString == "we" { return .P1}
+            if personString == "they" { return .P3}
+        default:
+            return .S1
+        }
+        return .S1
+    }
+    
     
     func areEqualStrings(str1: String, str2: String)->Bool{
         if str1 == str2 {return true}
@@ -183,13 +251,14 @@ struct DragDropVerbSubjectView: View {
                     ForEach(row){item in
                         Text(item.valueTo)
                             .font(.system(size: item.fontSize))
-                            .foregroundColor(.black)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, item.padding)
+                            .foregroundColor(Color("BethanyGreenText"))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 3)
                             .background(){
                                 RoundedRectangle(cornerRadius: 6, style: .continuous)
                                     .stroke(.gray)
                             }
+                            .border(.red)
                         // Mark: adding drag here
                             .onDrag{
                                 return .init(contentsOf: URL(string: replaceAccentWithDoubleLetter(characterArray: item.valueTo)))!
@@ -212,42 +281,41 @@ struct DragDropVerbSubjectView: View {
     // Mark: Custom Nav Bar
     @ViewBuilder
     func NavBar()->some View{
-        HStack(spacing: 18){
-            Button{
-                
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.title)
-                    .foregroundColor(.gray)
-            }
-            
+        HStack(spacing: 25){
             GeometryReader{proxy in
                 ZStack(alignment: .leading){
                     Capsule()
                         .fill(.gray.opacity(0.25))
                     Capsule()
-                        .fill(Color("Green"))
+                        .fill(.green)
                         .frame(width: proxy.size.width * progress)
                 }
             }.frame(height: 20)
             
-            Button{
-                
-            } label: {
-                Image(systemName: "suit.heart.fill")
-                    .font(.title)
-                    .foregroundColor(.red)
-            }
+            
         }
         
     }
+    
+    func incrementStudentCorrectScore(){
+        languageViewModel.getStudentScoreModel().incrementVerbScore(value: currentVerb, correctScore: 1, wrongScore: 0)
+        languageViewModel.getStudentScoreModel().incrementTenseScore(value: currentTense, correctScore: 1, wrongScore: 0)
+        languageViewModel.getStudentScoreModel().incrementPersonScore(value: currentPerson, correctScore: 1, wrongScore: 0)
+    }
+    
+    func incrementStudentWrongScore(){
+        languageViewModel.getStudentScoreModel().incrementVerbScore(value: currentVerb, correctScore: 0, wrongScore: 1)
+        languageViewModel.getStudentScoreModel().incrementTenseScore(value: currentTense, correctScore: 0, wrongScore: 1)
+        languageViewModel.getStudentScoreModel().incrementPersonScore(value: currentPerson, correctScore: 0, wrongScore: 1)
+    }
+    
     
     //Mark: Generating custom grid columns
     func generateGridFrom()->[[DragDrop2Word]]{
         //Step 1
         //Identifying each text width and updating it into State Variable
         for item in verbWordsFrom.enumerated(){
-            let textSize = textSize(ddWord: item.element)
+            let textSize = textSize(ddWord: item.element) + 30
             verbWordsFrom[item.offset].textSize = textSize
         }
         var gridArray: [[DragDrop2Word]] = []
@@ -256,7 +324,7 @@ struct DragDropVerbSubjectView: View {
         //currentWidth
         var currentWidth: CGFloat = 0
         //-30 -> Horizontal padding
-        var totalScreenWidth: CGFloat = UIScreen.main.bounds.width - 30
+        let totalScreenWidth: CGFloat = UIScreen.main.bounds.width - 30
         
         for character in verbWordsFrom {
             currentWidth += character.textSize
@@ -282,7 +350,7 @@ struct DragDropVerbSubjectView: View {
         //Step 1
         //Identifying each text width and updating it into State Variable
         for item in subjectWordsTo.enumerated(){
-            let textSize = textSize(ddWord: item.element)
+            let textSize = textSize(ddWord: item.element) + 25
             subjectWordsTo[item.offset].textSize = textSize
         }
         var gridArray: [[DragDrop2Word]] = []
@@ -291,7 +359,7 @@ struct DragDropVerbSubjectView: View {
         //currentWidth
         var currentWidth: CGFloat = 0
         //-30 -> Horizontal padding
-        var totalScreenWidth: CGFloat = UIScreen.main.bounds.width - 30
+        let totalScreenWidth: CGFloat = UIScreen.main.bounds.width - 30
         
         for character in subjectWordsTo {
             currentWidth += character.textSize
@@ -336,21 +404,21 @@ struct DragDropVerbSubjectView: View {
     func animateView(){
         withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.2, blendDuration: 0.2))
         {
-            animateWrongText = true
+        animateWrongText = true
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
             withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.2, blendDuration: 0.2))
             {
-                animateWrongText = false
+            animateWrongText = false
             }
         }
         
     }
 }
 
-struct DragDropVerbSubjectView_Previews: PreviewProvider {
-    static var previews: some View {
-        DragDropVerbSubjectView()
-    }
-}
+//struct DragDropVerbSubjectView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DragDropVerbSubjectView()
+//    }
+//}

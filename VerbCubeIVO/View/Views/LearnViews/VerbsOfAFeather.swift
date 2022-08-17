@@ -11,11 +11,23 @@ import JumpLinguaHelpers
 extension VerbsOfAFeather {
     private var showFeatherInfo: some View {
         VStack{
-            VStack{
-                Text("Verb model information:")
-                Text(modelNumberString)
-                Text(modelNameString)
-            }.padding(.horizontal)
+            HStack{
+                VStack{
+                    Text("Verb information:")
+                    Text(modelNumberString)
+                    Text(modelNameString)
+                }
+                VStack{
+                    Text("Pattern information:")
+                        ForEach( 0..<patternTenseStringList.count, id: \.self){i in
+                            HStack{
+                                Text(patternTenseStringList[i])
+                                Text(patternTypeStringList[i])
+                            }
+                        }
+
+                }
+            }
             
             Divider().frame(height:2).background(.yellow)
             
@@ -49,6 +61,8 @@ struct VerbsOfAFeather: View {
     @State private var featherVerbList = [Verb]()
 //    @State private var activeList = [Bool]()
     @State private var patternList = [SpecialPatternStruct]()
+    @State private var patternTenseStringList = [String]()
+    @State private var patternTypeStringList = [String]()
     @State private var activeCount = 0
     @State private var languageChanged = false
     @State private var modelNumberString = ""
@@ -206,32 +220,38 @@ struct VerbsOfAFeather: View {
         featherVerbList = result.1
 //        activeList.removeAll()
         
-        switch featherMode {
-        case .model:
-            let newBrv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
-            modelNumberString = "Model number: \(newBrv.getBescherelleID())"
-            switch currentLanguage {
-            case .English:
-                modelNumberString = "English verb"
-            case .Spanish:
-                switch newBrv.getBescherelleID(){
-                case 5: modelNameString = "Regular AR Verb"
-                case 87: modelNameString = "Regular IR Verb"
-                case 6: modelNameString = "Regular ER Verb"
-                default: modelNameString = "Model verb: \(newBrv.getBescherelleModelVerb())"
-                }
-            case .French:
-                modelNumberString = "Model number: \(newBrv.getBescherelleID())"
-            default:  modelNumberString = "Some other verb"
-            }
-            modelVerbStringForWordCollection = newBrv.getBescherelleModelVerb()
-        case .pattern:
-            for sps in patternList {
-                modelNumberString = "Pattern: \(sps.pattern.rawValue)"
-            }
-            
-        }
+        //process model information
         
+        let newBrv = languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb)
+        modelNumberString = "Model number: \(newBrv.getBescherelleID())"
+        switch currentLanguage {
+        case .English:
+            modelNumberString = "English verb"
+        case .Spanish:
+            switch newBrv.getBescherelleID(){
+            case 5: modelNameString = "Regular AR Verb"
+            case 87: modelNameString = "Regular IR Verb"
+            case 6: modelNameString = "Regular ER Verb"
+            default: modelNameString = "Model verb: \(newBrv.getBescherelleModelVerb())"
+            }
+        case .French:
+            modelNumberString = "Model number: \(newBrv.getBescherelleID())"
+        default:  modelNumberString = "Some other verb"
+        }
+        modelVerbStringForWordCollection = newBrv.getBescherelleModelVerb()
+        
+        //process model information
+        
+        let vm = languageViewModel.findModelForThisVerbString(verbWord: currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))
+        let verbList = languageViewModel.findVerbsOfSameModel(targetID: vm.id)
+        languageViewModel.setFilteredVerbList(verbList: verbList)
+        patternList = languageViewModel.getPatternsForThisModel(verbModel: vm)
+        patternTenseStringList.removeAll()
+        print(patternList.count)
+        for sps in patternList {
+            patternTenseStringList.append(sps.tense.rawValue)
+            patternTypeStringList.append(sps.pattern.rawValue)
+        }
         isAnalyzed = true
         hideKeyboard()
     }

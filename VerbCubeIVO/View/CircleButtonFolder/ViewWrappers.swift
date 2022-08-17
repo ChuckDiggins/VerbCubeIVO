@@ -34,7 +34,7 @@ struct ModelLearnWrapper: View {
                     Text("Find Verbs with Same Model")
                 }.modifier(NavLinkModifier())
                 
-                NavigationLink(destination: AnalyzeMyVerbView(languageViewModel: languageViewModel)){
+                NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
                     Text("Analyze User Verb")
                 }.modifier(NavLinkModifier())            
             }
@@ -172,7 +172,7 @@ struct GeneralVerbLearnWrapper: View {
                 Text("Unconjugate")
             }.modifier(NavLinkModifier())
             
-            NavigationLink(destination: AnalyzeMyVerbView(languageViewModel: languageViewModel)){
+            NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel)){
                 Text("Analyze User Verb")
             }.modifier(NavLinkModifier())
             
@@ -224,37 +224,38 @@ struct OddJobsView: View {
     var backgroundColor = Color.purple
     var body: some View {
         ZStack{
-            backgroundColor
+            Color("BethanyNavalBackground")
+                .ignoresSafeArea()
             Image("FeatherInverted")
                 .resizable()
                 .scaledToFit()
                 .ignoresSafeArea(.all)
             VStack{
                 Text("Odds and Ends")
-                    .font(.largeTitle)
-                    .foregroundColor(.black)
+                    .font(.title2)
+                    .foregroundColor(Color("ChuckText1"))
                 Spacer()
-                NavigationLink(destination: WordCollectionScreen(languageViewModel: languageViewModel)){
-                    Text("Word collections")
-                }.modifier(NavLinkModifier())
                 
+                NavigationLink(destination: RightWrongVerbView(languageViewModel: languageViewModel)){
+                    Text("Right and Wrong")
+                }.modifier(ModelTensePersonButtonModifier())
+
                 NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .likeGustar)){
                     Text("Verbs like gustar")
-                }.modifier(NavLinkModifier())
+                }.modifier(ModelTensePersonButtonModifier())
 
                 NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .weather)){
                     Text("Weather and Time")
-                }
-                .modifier(NavLinkModifier())
+                }.modifier(ModelTensePersonButtonModifier())
                 
                 NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .thirdPersonOnly)){
                     Text("3rd Person Only")
-                }.modifier(NavLinkModifier())
+                }.modifier(ModelTensePersonButtonModifier())
 
                 NavigationLink(destination: BehavioralVerbView(languageViewModel: languageViewModel, behaviorType: .auxiliary)){
                     Text("Auxiliary Verbs")
-                }
-                .modifier(NavLinkModifier())
+                }.modifier(ModelTensePersonButtonModifier())
+                
                 Spacer()
             }
         }

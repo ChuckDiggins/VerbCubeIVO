@@ -14,6 +14,10 @@ extension LanguageViewModel{
     func getCurrentVerbModel()->RomanceVerbModel{
         languageEngine.getCurrentVerbModel()
     }
+    
+    func setCurrentVerbModel(model: RomanceVerbModel){
+        languageEngine.setCurrentVerbModel(model: model)
+    }
 
     func getCurrentRandomVerb()->Verb{
         return languageEngine.getCurrentRandomVerb()
@@ -69,6 +73,10 @@ extension LanguageViewModel{
     
     //SpecialPatternType is the enum
     //SpecialPatternStruct comprises tense and SpecialPatternType
+    
+    func getPatternsForThisModel(verbModel: RomanceVerbModel)->[SpecialPatternStruct]{
+        languageEngine.getPatternsForThisModel(verbModel: verbModel)
+    }
     
     func getVerbsForPatternGroup(patternType: SpecialPatternType)->[Verb]{
         return languageEngine.getVerbsForPatternGroup(patternType: patternType)

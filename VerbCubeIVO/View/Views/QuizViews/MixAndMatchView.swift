@@ -62,6 +62,7 @@ struct MixAndMatchView: View {
     @State private var currentLanguage = LanguageType.Spanish
     @State var currentTense = Tense.present
     @State var currentVerb = Verb()
+    @State var currentPerson = Person.S1
     @State var currentModelString = ""
     @State var currentVerbString = ""
     @State var currentTenseString = ""
@@ -91,21 +92,25 @@ struct MixAndMatchView: View {
     
     
     var body: some View {
-        helpView()
         ZStack{
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
-            VStack{
-                Text("Mix and Match").font(.title2).font(.caption)
+            ScrollView{
+                DisclosureGroupMixAndMatch()
                 ListVerbModelsView(languageViewModel: languageViewModel)
                 RandomVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
-                VStack{
+                HStack{
                     ZStack{
-                        
                         ProgressBar(value: $progressValue, barColor: .red).frame(height: 20)
                         Text("Correct \(correctAnswerCount) out of \(totalCorrectCount)").foregroundColor(.black)
                     }
+                    NavigationLink(destination: StudentScoreView(languageViewModel: languageViewModel)){
+                        Text("👩🏻‍🎓")
+                    }.frame(width: 40, height: 40)
+                        .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
+                        .cornerRadius(10)
+                        .font(.title2)
                 }
                 //
                 .frame(width: 300, height: 30)
@@ -282,6 +287,8 @@ struct MixAndMatchView: View {
         if subjectString.count>0 {
             self.matchIndex = index
             self.verbString = verbString
+            currentPerson = getPerson(personString: subjectString)
+            print("subjectString: \(subjectString), person: \(currentPerson)")
             if verbString == matchString {
                 isThisVerbAMatch[index] = true
                 isThisVerbDisabled[index] = true
@@ -290,20 +297,66 @@ struct MixAndMatchView: View {
                 matchString = ""
                 subjectString = ""
                 self.verbString = ""
+                incrementStudentCorrectScore()
                 AudioServicesPlayAlertSound(UInt32(1008))
             } else {
+                incrementStudentWrongScore()
                 AudioServicesPlayAlertSound(UInt32(1003))
             }
             
             correctAnswerCount = 0
             for match in isThisVerbAMatch {
-                if match { correctAnswerCount += 1}
+                if match {
+                    correctAnswerCount += 1
+                }
+                else {
+                }
             }
             
             progressValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
             if correctAnswerCount == totalCorrectCount { showAlert = true }
             else {showAlert = false}
         }
+    }
+    
+    func getPerson(personString: String)->Person{
+        switch (languageViewModel.getCurrentLanguage()){
+        case .Spanish:
+            if personString == "yo" { return .S1}
+            if personString == "tú" { return .S2}
+            if personString == "el" || personString == "ella" || personString == "usted" { return .S3}
+            if personString == "nosotros" { return .P1}
+            if personString == "vosotros" { return .P2}
+            if personString == "ellos" || personString == "ellas" || personString == "ustedes" { return .P3}
+        case .French:
+            if personString == "yo" { return .S1}
+            if personString == "tú" { return .S2}
+            if personString == "el" || personString == "ella" || personString == "usted" { return .S3}
+            if personString == "nosotros" { return .P1}
+            if personString == "vosotros" { return .P2}
+            if personString == "ellos" || personString == "ellas" || personString == "ustedes" { return .P3}        
+        case .English:
+            if personString == "I" { return .S1}
+            if personString == "you" { return .S2}
+            if personString == "he" || personString == "she" || personString == "it" { return .S3}
+            if personString == "we" { return .P1}
+            if personString == "they" { return .P3}
+        default:
+            return .S1
+        }
+        return .S1
+    }
+    
+    func incrementStudentCorrectScore(){
+        languageViewModel.getStudentScoreModel().incrementVerbScore(value: currentVerb, correctScore: 1, wrongScore: 0)
+        languageViewModel.getStudentScoreModel().incrementTenseScore(value: currentTense, correctScore: 1, wrongScore: 0)
+        languageViewModel.getStudentScoreModel().incrementPersonScore(value: currentPerson, correctScore: 1, wrongScore: 0)
+    }
+    
+    func incrementStudentWrongScore(){
+        languageViewModel.getStudentScoreModel().incrementVerbScore(value: currentVerb, correctScore: 0, wrongScore: 1)
+        languageViewModel.getStudentScoreModel().incrementTenseScore(value: currentTense, correctScore: 0, wrongScore: 1)
+        languageViewModel.getStudentScoreModel().incrementPersonScore(value: currentPerson, correctScore: 0, wrongScore: 1)
     }
     
     func fillPersonStringList()->[String]{

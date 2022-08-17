@@ -28,14 +28,23 @@ struct UnconjugateView: View {
                 .ignoresSafeArea()
             
             VStack{
-//                Text("Unconjugate").font(.title2).foregroundColor(Color("ChuckText1"))
+                Text("Unconjugate").font(.title2).foregroundColor(Color("ChuckText1"))
+                
                 let gridFixSize = CGFloat(50.0)
                 let gridItems = [GridItem(.fixed(gridFixSize*2)),
                                  GridItem(.fixed(gridFixSize)),
                                  GridItem(.fixed(gridFixSize)),
                                  GridItem(.fixed(gridFixSize))]
+                VStack{
+                    Text("Find matching verbs")
+                    HStack{
+                        Text("Enter conjugated form, such as:")
+                        Text("estaba").foregroundColor(.red)
+                    }
+                    
+                }.padding(10)
                 HStack{
-                    Text("Find verbs for:").padding(10).foregroundColor(Color("ChuckText1"))
+                    
                     TextField("Verb form", text: $verbFormToUnconjugate, onEditingChanged: {changed in
                         isAnalyzed = false})
                     .frame(width: 150, height: 15)
@@ -60,8 +69,7 @@ struct UnconjugateView: View {
                         isAnalyzed = false
                     },
                            label: {  Text("X")
-                            .font(.largeTitle)
-                            .foregroundColor(.black)
+                            .font(.title2)
                     })
                 }
                 Button {
@@ -74,6 +82,7 @@ struct UnconjugateView: View {
                         .frame(width: 200, height: 50)
                         .padding(.leading, 10)
                         .background((Color("BethanyPurpleButtons")))
+                        .foregroundColor(.white)
                         .cornerRadius(10)
                 }
                 
@@ -121,6 +130,9 @@ struct UnconjugateView: View {
                         
                     }
                 }.foregroundColor(Color("BethanyGreenText"))
+                .onAppear {
+                    verbFormToUnconjugate = "estaba"
+                }
                 Spacer()
                 
                 //                }
@@ -130,7 +142,7 @@ struct UnconjugateView: View {
             
         }
         .accentColor(.black)
-        .navigationTitle("Unconjugate!")
+       
         
     }
     

@@ -12,7 +12,7 @@ struct DragDrop2Word: Identifiable, Hashable, Equatable{
     var id = UUID().uuidString
     var valueFrom: String
     var valueTo: String
-    var padding: CGFloat = 10
+    var padding: CGFloat = 20
     var textSize: CGFloat = .zero
     var fontSize: CGFloat = 15
     var isShowing: Bool = false
@@ -21,6 +21,7 @@ struct DragDrop2Word: Identifiable, Hashable, Equatable{
 
 var subjectList = ["yo", "tú", "usted", "nosotros", "ellos", "ellas", "vosotros", "él", "ella", "ustedes"]
 var verbWordList = ["doy", "das", "da", "damos", "dan", "dan", "dais", "da", "da", "dan"]
+
 func fillNewDragDropWords()->[DragDrop2Word]{
     var newWords = [DragDrop2Word]()
     for i in 0 ..< subjectList.count {
@@ -28,6 +29,19 @@ func fillNewDragDropWords()->[DragDrop2Word]{
     }
     return newWords
 }
+
+func fillNewDragDropWords(subjectList: [String], verbWordList: [String])->[DragDrop2Word]{
+    var newWords = [DragDrop2Word]()
+    for i in 0 ..< subjectList.count {
+        var dd2w = DragDrop2Word(valueFrom: subjectList[i], valueTo: verbWordList[i])
+        var paddingSize = 15.0 - Double(subjectList[0].count)
+        if paddingSize < 2.0 {paddingSize = 2.0}
+        dd2w.padding = paddingSize
+        newWords.append(dd2w)
+    }
+    return newWords
+}
+
 
 func createWordMatchDar()->[DragDrop2Word]{
     return [
