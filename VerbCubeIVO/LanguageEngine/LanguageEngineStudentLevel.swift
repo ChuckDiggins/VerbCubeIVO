@@ -407,7 +407,7 @@ extension LanguageEngine{
         currentModelListIR.append(getModelAtModelWord(modelWord: "pudrir"))
         currentModelListIR.append(getModelAtModelWord(modelWord: "podrir"))
         currentModelListIR.append(getModelAtModelWord(modelWord: "prohibir"))
-        currentModelListIR.append(getModelAtModelWord(modelWord: "reńir"))
+        currentModelListIR.append(getModelAtModelWord(modelWord: "reñir"))
         currentModelListIR.append(getModelAtModelWord(modelWord: "reunir"))
         currentModelListIR.append(getModelAtModelWord(modelWord: "salir"))
         currentModelListIR.append(getModelAtModelWord(modelWord: "seguir"))

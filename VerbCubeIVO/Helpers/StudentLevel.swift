@@ -117,7 +117,7 @@ enum StudentLevel : Int, CaseIterable {
         case .level4005: return ("Not available", "Not available")
         case .level4006: return ("Not available", "Not available")
             
-        case .level5001: return ("Verb models are an powerful and efficient way to learn Spanish verb conjugation.", "All verbs for a given model conjugate identically for all tenses, all persons.")
+        case .level5001: return ("Verb models are a powerful and efficient way to learn Spanish verb conjugation.", "All verbs for a given model conjugate identically for all tenses, all persons.")
         case .level5002: return ("Some verb models are one-of-a-kind.", "For example, the verb ser has no other verbs like it")
         case .level5003: return ("Some verb models are unusual.", "For example, the verb xxx has no other verbs like it.")
         case .level5004: return ("X-verbs are made up verbs", "X-verbs, such as XXXEGUIR, can be very useful for learning verb models.")

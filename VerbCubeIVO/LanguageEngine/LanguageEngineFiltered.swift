@@ -18,16 +18,30 @@ extension LanguageEngine{
         var verbSublist = [Verb]()
         
         for verb in filteredVerbList {
+            var isNew = true
             if getRomanceVerbEnding(verb: verb) == ending {
-                let v = verb
-                verbSublist.append(verb)
+                for subVerb in verbSublist {
+                    if subVerb == verb {
+                        isNew = false
+                    }
+                }
+                if isNew { verbSublist.append(verb) }
             }
         }
         //if verb ending is .IR, look for accented ir ending also: oír, for example
         
         if ending == .IR {
             for verb in filteredVerbList {
-                if getRomanceVerbEnding(verb: verb) == .accentIR { verbSublist.append(verb)}
+                var isNew = true
+                if getRomanceVerbEnding(verb: verb) == .accentIR {
+                    for subVerb in verbSublist {
+                        if subVerb == verb {
+                            isNew = false
+                        }
+                    }
+                    if isNew { verbSublist.append(verb) }
+                    
+                }
             }
         }
         return verbSublist

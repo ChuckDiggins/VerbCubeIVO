@@ -63,7 +63,7 @@ struct CurrentGeneralLessonView: View {
             if lessonLevel == 4 {
                 ListPatternsView(languageViewModel: languageViewModel, function: listVerbsForPatternType)
             } else if lessonLevel == 5 {
-                ListModels(languageViewModel: languageViewModel, function: listVerbsForModel)
+                ListModels(languageViewModel: languageViewModel, studentLevel: studentLevel, function: listVerbsForModel)
             }
             
             VStack{

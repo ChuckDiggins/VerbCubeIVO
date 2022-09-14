@@ -98,6 +98,13 @@ struct PlainSimpleVerbConjugation: View {
                             .padding(.horizontal)
                         
                     }
+                    Button("Press to Dismiss"){
+                        presentationMode.wrappedValue.dismiss()
+                    } .padding(5)
+                        .background(Color.black)
+                        .foregroundColor(.yellow)
+                        .cornerRadius(8)
+                        .font(.subheadline)
                     Spacer()
                     .background(Color("BethanyNavalBackground"))
                     .padding(10)
@@ -115,15 +122,7 @@ struct PlainSimpleVerbConjugation: View {
                         }
                         setCurrentVerb()
                     }
-                   
-                    Button("Press to Dismiss"){
-                        presentationMode.wrappedValue.dismiss()
-                    } .padding(5)
-                        .background(Color.black)
-                        .foregroundColor(.yellow)
-                        .cornerRadius(8)
-                        .font(.subheadline)
-                    Spacer()
+
                 }
             }
             .onAppear{
