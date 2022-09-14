@@ -161,10 +161,13 @@ struct TeachMeARegularVerb: View {
                 .foregroundColor(Color("BethanyGreenText"))
                 .padding(3)
             }.onAppear{
+                let vm = languageViewModel.findModelForThisVerbString(verbWord: "cortar")
+                languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
                 currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
             }
             Spacer()
         } .animation(.easeIn)
+        
     }
        
 }

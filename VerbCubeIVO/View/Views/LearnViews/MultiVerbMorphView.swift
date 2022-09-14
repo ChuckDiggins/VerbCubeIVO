@@ -69,7 +69,7 @@ struct MultiVerbMorphView: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             VStack {
-                HomePreferencesButtonView(languageViewModel: languageViewModel)
+                PreferencesButtonView(languageViewModel: languageViewModel)
                 Text("Multi-Verb Morphing")
                     .font(.title2)
                     .foregroundColor(Color("ChuckText1"))

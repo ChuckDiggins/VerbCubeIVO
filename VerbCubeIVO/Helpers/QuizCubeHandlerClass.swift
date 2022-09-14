@@ -166,6 +166,12 @@ class QuizCubeHandlerClass : ObservableObject {
         }
     }
     
+    func getQuizCubeCellInfo(verb: Verb, tense: Tense, person: Person)->VerbCubeCellInfo{
+        var vcci = VerbCubeCellInfo()
+        vcci.setConjugationInfo(verb: verb, tense: tense, person: person)
+        return vcci
+    }
+    
     func getVerbCubeCellInfo(i: Int, j: Int)->VerbCubeCellInfo{
         if  i < conjStringArrayDimension1  && j < conjStringArrayDimension2 {
 //            print("verbCubeCellInfoArray[\(i)][\(j)] - verb \(quizCubeCellInfoArray[i][j].verb.getWordAtLanguage(language: languageEngine.getCurrentLanguage())), person: \(quizCubeCellInfoArray[i][j].person.getMaleString()), tense: \(quizCubeCellInfoArray[i][j].tense.rawValue)")

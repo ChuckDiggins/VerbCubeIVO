@@ -127,7 +127,7 @@ struct VerbMorphView: View {
         for p in 0 ..< 6 {
             let person = personList[p]
             let personString =  person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3)
-            commentList[p] = "conjugate \(personString) form "
+            commentList[p] = "Conjugate \(personString) form "
         }
     }
     
@@ -196,7 +196,8 @@ struct VerbMorphView: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
-            VStack{
+            ScrollView{
+                PreferencesButtonView(languageViewModel: languageViewModel)
                 Text("Verb Morphing").font(.title2).foregroundColor(Color("ChuckText1"))
 //                ModelVerbTenseView(languageViewModel: languageViewModel, mvtp: mvtp, function: setCurrentVerb)
                 TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)

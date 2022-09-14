@@ -144,7 +144,7 @@ struct AnalyzeUserVerbView: View {
                                     }
                                 }
 
-                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .regular)){
+                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .model)){
                                     HStack{
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
@@ -255,6 +255,8 @@ struct AnalyzeUserVerbView: View {
         }
         currentVerb = verb
         setBescherelleModelInfo()
+        let vm = languageViewModel.findModelForThisVerbString(verbWord: reconstructedVerbString)
+        languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
         return (verb, residualPhrase, true)
     }
     

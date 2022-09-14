@@ -26,7 +26,7 @@ struct DisclosureGroupTeachMeARegularVerb: View {
                     }
                     .multilineTextAlignment(.leading)
                 }
-                    .foregroundColor(.black)
+                .foregroundColor(Color("ChuckText1"))
                 Divider().frame(height:2).background(.yellow)
                 DisclosureGroup("4 Steps", isExpanded: $isExpandedMore2){
                     VStack{
@@ -52,7 +52,7 @@ struct DisclosureGroupTeachMeARegularVerb: View {
                     }
                     .multilineTextAlignment(.leading)
                 }
-                    .foregroundColor(.black)
+                .foregroundColor(Color("ChuckText1"))
             }
             .modifier(DisclosureGroupModifier())
         }
@@ -76,7 +76,7 @@ struct DisclosureGroupTeachMeAModelVerb: View {
                     }
                     .multilineTextAlignment(.leading)
                 }
-                    .foregroundColor(.black)
+                .foregroundColor(Color("ChuckText1"))
                 Divider().frame(height:2).background(.yellow)
                 DisclosureGroup("4 Steps", isExpanded: $isExpandedMore2){
                     VStack{
@@ -102,7 +102,7 @@ struct DisclosureGroupTeachMeAModelVerb: View {
                     }
                     .multilineTextAlignment(.leading)
                 }
-                    .foregroundColor(.black)
+                .foregroundColor(Color("ChuckText1"))
             }.modifier(DisclosureGroupModifier())
         }
     }
@@ -125,7 +125,7 @@ struct DisclosureGroupTeachMeAPatternVerb: View {
                     }
                     .multilineTextAlignment(.leading)
                 }
-                    .foregroundColor(.black)
+                .foregroundColor(Color("ChuckText1"))
                 Divider().frame(height:2).background(.yellow)
                 DisclosureGroup("4 Steps", isExpanded: $isExpandedMore2){
                     VStack{
@@ -151,7 +151,7 @@ struct DisclosureGroupTeachMeAPatternVerb: View {
                     }
                     .multilineTextAlignment(.leading)
                 }
-                    .foregroundColor(.black)
+                    .foregroundColor(Color("ChuckText1"))
             }.modifier(DisclosureGroupModifier())
         }
     }

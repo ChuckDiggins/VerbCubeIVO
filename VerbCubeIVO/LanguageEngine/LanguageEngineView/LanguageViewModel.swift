@@ -38,6 +38,18 @@ class LanguageViewModel : ObservableObject {
         currentLanguage = languageEngine.getCurrentLanguage()
     }
     
+    func getCurrentPatternList()->[SpecialPatternType]{
+        languageEngine.getCurrentPatternList()
+    }
+    
+    func getCurrentModelListAll()->[RomanceVerbModel]{
+        languageEngine.getCurrentModelListAll()
+    }
+        
+    func getCurrentModelList(ending: VerbEnding )->[RomanceVerbModel]{
+        languageEngine.getCurrentModelList(ending: ending)
+    }
+    
     func getTeachMeMode()->TeachMeMode{
         languageEngine.getTeachMeMode()
     }
@@ -172,7 +184,10 @@ class LanguageViewModel : ObservableObject {
         return languageEngine.getFinalVerbForms(person: person, verbList: verbList)
     }
     
-    
+    func findVerbFromString(verbString: String, language: LanguageType)->Verb{
+        return languageEngine.findVerbFromString(verbString: verbString, language: language)
+    }
+                                                 
     func getVerbPhrase()->String{
         languageEngine.getVerbPhrase()
     }

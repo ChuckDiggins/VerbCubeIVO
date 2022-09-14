@@ -11,6 +11,10 @@ import JumpLinguaHelpers
 
 extension LanguageViewModel{
     
+    func getSublistFilteredByVerbEnding(ending: VerbEnding)->[Verb]{
+        languageEngine.getSublistFilteredByVerbEnding(ending: ending)
+    }
+    
     func getCurrentVerbModel()->RomanceVerbModel{
         languageEngine.getCurrentVerbModel()
     }
@@ -19,6 +23,10 @@ extension LanguageViewModel{
         languageEngine.setCurrentVerbModel(model: model)
     }
 
+    func getModelAtModelWord(modelWord:String)->RomanceVerbModel{
+        languageEngine.getModelAtModelWord(modelWord:modelWord)
+    }
+    
     func getCurrentRandomVerb()->Verb{
         return languageEngine.getCurrentRandomVerb()
     }

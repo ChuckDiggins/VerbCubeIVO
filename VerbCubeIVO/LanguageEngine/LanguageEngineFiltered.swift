@@ -14,9 +14,34 @@ extension LanguageEngine{
         currentFilteredVerbIndex = 0
     }
     
+    func getSublistFilteredByVerbEnding(ending: VerbEnding)->[Verb]{
+        var verbSublist = [Verb]()
+        
+        for verb in filteredVerbList {
+            if getRomanceVerbEnding(verb: verb) == ending {
+                let v = verb
+                verbSublist.append(verb)
+            }
+        }
+        //if verb ending is .IR, look for accented ir ending also: oír, for example
+        
+        if ending == .IR {
+            for verb in filteredVerbList {
+                if getRomanceVerbEnding(verb: verb) == .accentIR { verbSublist.append(verb)}
+            }
+        }
+        return verbSublist
+    }
+    
     func resetFilteredVerbs(){
         filteredVerbList = verbList
         currentFilteredVerbIndex = 0
+    }
+    
+    func appendToFilteredVerbList(verbList: [Verb]){
+        for verb in verbList{
+            filteredVerbList.append(verb)
+        }
     }
     
     func setFilteredVerbList(verbList: [Verb]){
@@ -27,6 +52,7 @@ extension LanguageEngine{
     func getFilteredVerbs()->[Verb]{
         return filteredVerbList
     }
+
     
     func setNextFilteredVerb(){
         currentFilteredVerbIndex += 1
@@ -59,9 +85,18 @@ extension LanguageEngine{
         return currentRandomVerb
     }
     
+    func doesFilteredVerbExist(testVerb:Verb)->Bool{
+        for verb in filteredVerbList {
+            if verb == testVerb { return true}
+        }
+        return false
+    }
+    
     func addVerbToFilteredList(verb: Verb){
-        filteredVerbList.append(verb)
-        currentFilteredVerbIndex = filteredVerbList.count - 1
+        if !doesFilteredVerbExist(testVerb: verb){
+            filteredVerbList.append(verb)
+            currentFilteredVerbIndex = filteredVerbList.count - 1
+        }
     }
     
     func copyWordCollectionToFilteredList(wordCollection: dWordCollection){

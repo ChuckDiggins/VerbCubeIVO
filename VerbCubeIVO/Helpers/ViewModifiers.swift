@@ -21,6 +21,32 @@ struct TextModifier : ViewModifier {
     }
 }
 
+struct SquareButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(minWidth: 150, maxWidth: 150)
+            .foregroundColor(Color("BethanyGreenText"))
+            .font(.headline)
+            .background(Color("BethanyNavalBackground"))
+            .cornerRadius(10)
+    }
+}
+
+
+
+struct HeaderModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(minWidth: 0, maxWidth: 350)
+            .foregroundColor(.white)
+            .padding(.horizontal)
+            .font(.headline)
+            .background(.blue)
+            .cornerRadius(10)
+    }
+}
+
+
 
 struct BlueButtonModifier : ViewModifier {
     func body(content: Content) -> some View{
@@ -53,7 +79,19 @@ struct GreenButtonModifier : ViewModifier {
 struct ModelTensePersonButtonModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
-            .frame(width: 300, height: 45)
+            .frame(width: 300, height: 30)
+                .font(.callout)
+                .padding(.horizontal)
+                .background(Color("BethanyPurpleButtons"))
+                .foregroundColor(.white)
+                .cornerRadius(5)
+    }
+}
+
+struct DragAndDropButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(width: 210, height: 40)
                 .font(.callout)
                 .padding(.horizontal)
                 .background(Color("BethanyPurpleButtons"))
@@ -66,10 +104,10 @@ struct DisclosureGroupModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
             .padding(.horizontal, 10)
-                .padding(.vertical, 3)
+                .padding(.vertical, 2)
                 .background(Color("BethanyNavalBackground"))
                 .foregroundColor(Color("ChuckText1"))
-                .font(.title2)
+                .font(.title3)
     }
 }
 

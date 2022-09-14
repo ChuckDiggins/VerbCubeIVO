@@ -18,8 +18,8 @@ struct ShowMeVerbsPatternsAndModels: View {
             ScrollView{
                 
                 VStack{
-                    DisclosureGroupVerbsPatternsAndModels()
-                    Text("Select an exercise:")
+//                    DisclosureGroupVerbsPatternsAndModels()
+                    Text("Verbs, Models & Patterns")
                         .font(.title2)
                     HStack{
                         VStack{
@@ -45,7 +45,7 @@ struct ShowMeVerbsPatternsAndModels: View {
                                 .border(Color("ChuckText1"))
                             }
                             VStack{
-                                Text("Find verbs in a model")
+                                Text("Find verbs in model")
                             }
                         }
                         VStack{
@@ -99,12 +99,13 @@ struct ShowMeVerbsPatternsAndModels: View {
                                 .border(Color("ChuckText1"))
                             }
                             VStack{
-                                Text("Find verbs with same pattern")
+                                Text("Find verbs \nwith same pattern")
                             }
                         }
                         
                     }
                 }.font(.caption)
+                    
             }
                 .padding()
                 .foregroundColor(Color("BethanyGreenText"))

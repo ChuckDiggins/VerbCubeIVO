@@ -6,6 +6,32 @@
 //
 
 import SwiftUI
+import JumpLinguaHelpers
+
+struct LessonWordCellButton: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    
+    var verb: Verb
+    var backgroundColor = Color("BethanyPurpleButtons")
+    var foregroundColor = Color.yellow
+    var fontSize = Font.caption
+    //var function: (_ word: Word) -> Void
+    @State private var showingSheet = false
+    
+    var body: some View {
+        Button(verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())){
+            showingSheet.toggle()
+        }
+        .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+        .background(backgroundColor)
+        .foregroundColor(foregroundColor)
+        .cornerRadius(8)
+        .font(fontSize)
+        .sheet(isPresented: $showingSheet){
+            PlainSimpleVerbConjugation(languageViewModel: languageViewModel, verb: verb, residualPhrase: "", teachMeMode: .pattern)
+        }
+    }
+}
 
 struct WordCellButton: View {
     var wordText : String

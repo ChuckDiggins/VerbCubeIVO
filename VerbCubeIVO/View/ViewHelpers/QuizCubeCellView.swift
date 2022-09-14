@@ -90,6 +90,7 @@ struct QuizCubeCellView: View {
                     .border(Color.black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
+                    .disabled(!useAlert)
                     .font(.footnote)
                     
 //                    PopupButtonView(instruction: (subjectStr, tenseStr, verbStr), correctAnswer: correctAnswer, selectionString: buttonStrList, isShown: $isShown, selectedString: $selectedString)
@@ -104,7 +105,6 @@ struct QuizCubeCellView: View {
     }
     
     func getActionSheet() -> ActionSheet{
-        
         return ActionSheet(title: Text("This is the title of the action sheet"))
     }
     
@@ -167,7 +167,9 @@ extension QuizCubeCellView {
         let alert = UIAlertController(title: "Verb: \(vcci.verb.getWordAtLanguage(language: .Spanish)) ", message: "Subject \(vcci.person.getMaleString()), \(vcci.tense.rawValue) tense", preferredStyle: .alert)
         
         alert.addTextField{ studentAnswer in
-            studentAnswer.returnKeyType = .continue
+            studentAnswer.returnKeyType = .done
+//            studentAnswer.returnKeyType = .continue
+//            studentAnswer.returnKeyType = .go
             studentAnswer.placeholder = "answer here "
         }
         

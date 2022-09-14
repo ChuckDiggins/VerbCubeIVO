@@ -158,7 +158,7 @@ struct DisclosureGroupDragAndDrop: View {
     
     var body: some View {
         VStack{
-            DisclosureGroup("Drag and Drop: Verbs to Subjects", isExpanded: $isExpanded){
+            DisclosureGroup("Drag and Drop", isExpanded: $isExpanded){
                 VStack{
                     Text("The idea is to click (grab) a verb in the bottom part.")
                     Text("Then you drag the verb to the correct subject in the top part.")

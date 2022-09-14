@@ -19,6 +19,8 @@ class AppState: ObservableObject{
 
 @main
 struct VerbCubeIVOApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     @ObservedObject var appState = AppState(hasOnboarded: false)
     @StateObject private var tabs = Tabs(count: 3)
     @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
@@ -27,26 +29,22 @@ struct VerbCubeIVOApp: App {
         WindowGroup {
             
             NavigationView {
-                ScrollViewVC(languageViewModel: languageViewModel)
-//               TabBarClassicVC(languageViewModel: languageViewModel)
-//                if appState.hasOnboarded {
-//                    CircleButtonNavigationView()
-//                        .environmentObject(languageViewModel)
-//                        .environmentObject(appState)
-//                        .onAppear{
-//                            print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
-//                            UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
-//                        }
-//                } else {
-//                    OnboardingFlowView()
-//                        .environmentObject(languageViewModel)
-//                        .environmentObject(appState)
-//
-//                }
+                VStack{
+//                    ScrollViewVC(languageViewModel: languageViewModel)
+                    TabBarClassicVC(languageViewModel: languageViewModel)
+                    Spacer()
+                }.navigationViewStyle(StackNavigationViewStyle())
                 
-                Spacer()
             }
-            .navigationViewStyle(StackNavigationViewStyle())
+            
+            
         }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    static var orientationLock = UIInterfaceOrientationMask.all //by default, all views rotate freely
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
     }
 }

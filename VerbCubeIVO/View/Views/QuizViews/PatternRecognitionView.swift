@@ -118,7 +118,7 @@ struct PatternRecognitionView: View {
                     
                     
                     if showNavigationLink {
-                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: currentVerbString, french: currentVerbString, english: currentVerbString), residualPhrase: "", teachMeMode: .regular)){
+                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: currentVerbString, french: currentVerbString, english: currentVerbString), residualPhrase: "", teachMeMode: .pattern)){
                             HStack{
                                 Text("Show me ")
                                 Text(currentVerbString).bold()

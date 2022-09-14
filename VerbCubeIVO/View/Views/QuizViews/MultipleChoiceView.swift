@@ -75,8 +75,9 @@ struct MultipleChoiceView: View {
         ZStack{
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
-
-            VStack{
+            
+            ScrollView{
+                PreferencesButtonView(languageViewModel: languageViewModel).foregroundColor(Color("BethanyGreenText")).padding(.horizontal)
                 if multipleChoiceType == MultipleChoiceType.oneSubjectToFiveVerbs {
                     DisclosureGroupMultipleChoiceSubjectVerb().foregroundColor(Color("BethanyGreenText"))
                 }
@@ -159,7 +160,7 @@ struct MultipleChoiceView: View {
                                         languageViewModel.getStudentScoreModel().incrementPersonScore(value: currentPerson, correctScore: 1, wrongScore: 0)
                                         correctValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
                                         if languageViewModel.isSpeechModeActive(){
-                                            textToSpeech(text: "Correct", language: .English)
+                                            textToSpeech(text: leftHandString + correctRightHandString , language: .Spanish)
                                         }
                                         showCurrentStudentScores()
                                     } else {
@@ -187,10 +188,11 @@ struct MultipleChoiceView: View {
                             
                         }
                         
-                    }.padding(.horizontal)
-                }
+                    }
+                }.padding(.horizontal)
                 Spacer()
             }
+
             .foregroundColor(Color("BethanyGreenText"))
             .background(Color("BethanyNavalBackground"))
             .onAppear{

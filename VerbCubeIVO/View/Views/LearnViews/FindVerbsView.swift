@@ -8,7 +8,7 @@
 import SwiftUI
 import JumpLinguaHelpers
 
-extension VerbsOfAFeather {
+extension FindVerbsView {
     private var showFeatherInfo: some View {
         VStack{
             HStack{
@@ -35,7 +35,7 @@ extension VerbsOfAFeather {
             case .model: Text("The following \(featherVerbList.count) verbs with the same conjugation model were found:").bold().padding(.horizontal)
             case .pattern:  Text("The following \(featherVerbList.count) verbs with the same conjugation pattern were found:").bold().padding(.horizontal)
             }
-        }
+        }.border(.red)
     }
 }
 
@@ -44,7 +44,7 @@ enum FeatherMode {
     case pattern
 }
 
-struct VerbsOfAFeather: View {
+struct FindVerbsView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @Environment(\.dismiss) private var dismiss
     
@@ -103,17 +103,22 @@ struct VerbsOfAFeather: View {
                 
                 if selectedVerb.getWordAtLanguage(language: currentLanguage).count > 0 {
                     ZStack{
-                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "", teachMeMode: featherMode == .model ? .model : .regular)){
+                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "", teachMeMode: featherMode == .model ? .model : .pattern)){
                             HStack{
-                                Text("Show me ")
-                                Text(selectedVerb.getWordAtLanguage(language: currentLanguage)).bold()
+                                HStack{
+                                    Text("Show me ")
+                                    Text(selectedVerb.getWordAtLanguage(language: currentLanguage)).bold()
+                                }
+                                
+                                Spacer()
+                                Image(systemName: "chevron.right").foregroundColor(.yellow)
                             }
-                        }.frame(width: 300, height: 50)
-                            .padding(2)
-                            .buttonStyle(.bordered)
-                            .background(.green)
-                            .tint(.black)
-                            .cornerRadius(10)
+                                .frame(width: 325, height: 50)
+                                .padding(.leading, 10)
+                                .background(Color("BethanyPurpleButtons"))
+                                .cornerRadius(10)
+                                .foregroundColor(.white)
+                        }
                     }
                 }
                 Spacer()
@@ -216,6 +221,7 @@ struct VerbsOfAFeather: View {
     
     fileprivate func analyzeAndFind() {
         let result =  analyze(verbString: newVerbString)
+        var reconstructedVerbString = ""
         currentVerb = result.0
         featherVerbList = result.1
 //        activeList.removeAll()
@@ -245,6 +251,19 @@ struct VerbsOfAFeather: View {
         let vm = languageViewModel.findModelForThisVerbString(verbWord: currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))
         let verbList = languageViewModel.findVerbsOfSameModel(targetID: vm.id)
         languageViewModel.setFilteredVerbList(verbList: verbList)
+        if ( vm.id > 0 ){
+            let vu = VerbUtilities()
+            let result1 = vu.analyzeSpanishWordPhrase(testString: newVerbString)
+            reconstructedVerbString = result1.0
+            if result1.isReflexive {  reconstructedVerbString += "se" }
+            if result1.residualPhrase.count > 0 { reconstructedVerbString += " " + result1.residualPhrase }
+            var verb = Verb(spanish: reconstructedVerbString, french: "", english: "")
+//            newVerbString = verb.getWordAtLanguage(language: currentLanguage)
+//            languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
+            languageViewModel.addVerbToFilteredList(verb: verb)
+            featherVerbList = languageViewModel.getFilteredVerbs()
+        }
+        
         patternList = languageViewModel.getPatternsForThisModel(verbModel: vm)
         patternTenseStringList.removeAll()
         print(patternList.count)

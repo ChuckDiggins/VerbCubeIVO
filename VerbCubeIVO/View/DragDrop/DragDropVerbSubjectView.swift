@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import AVFoundation
+
 import JumpLinguaHelpers
 
 struct DragDropVerbSubjectView: View {
@@ -42,6 +44,7 @@ struct DragDropVerbSubjectView: View {
             
             
             ScrollView{
+                
                 DisclosureGroupDragAndDrop()
                 NavBar()
 //              Text("Drag and Drop: Verbs to Subjects   ")
@@ -58,23 +61,15 @@ struct DragDropVerbSubjectView: View {
                             Spacer()
                             Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
                         }
-                    }.modifier(ModelTensePersonButtonModifier())
+                    }.modifier(DragAndDropButtonModifier())
+                    PreferencesButtonView(languageViewModel: languageViewModel).foregroundColor(Color("BethanyGreenText"))
                     NavigationLink(destination: StudentScoreView(languageViewModel: languageViewModel)){
                         Text("👩🏻‍🎓")
                     }.frame(width: 40, height: 40)
                         .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
                         .cornerRadius(10)
                         .font(.title2)
-                }.padding(5)
-                
-                VStack(alignment: .leading, spacing: 30){
-                    Text("Number completed: \(Int(droppedCount)) out of \(verbWordsFrom.count)")
-                }
-                .padding(.top, 30)
-//                VStack{
-//                    Text("Drag from bottom box to upper box")
-//                }
-//                .modifier(TextModifier())
+                }.frame(width: 350, height: 50)
 
                 // Mark: Drag Drop Area
                 DropArea()
@@ -176,13 +171,18 @@ struct DragDropVerbSubjectView: View {
                                     let _ = first.loadObject(ofClass: URL.self){
                                         value, error in
                                         guard let url = value else{return}
-                                        currentPerson = getPerson(personString: item.valueTo)
+                                        currentPerson = getPerson(personString: item.valueFrom)
                                         if replaceAccentWithDoubleLetter(characterArray: item.valueTo) == "\(url)"{
                                             droppedCount += 1
                                             droppedCountInt = droppedCountInt
                                             //                                            print("onDrop: \(item)")
                                             let progress = (droppedCount / CGFloat(subjectWordsTo.count))
                                             incrementStudentCorrectScore()
+                                            let answerText =  item.valueFrom + item.valueTo
+                                            if languageViewModel.isSpeechModeActive(){
+                                                textToSpeech(text: answerText, language: .Spanish)
+                                            }
+                                                   
                                             withAnimation{
                                                 item.isShowing = true
                                                 updateShuffledArray(ddWord: item)
@@ -281,20 +281,24 @@ struct DragDropVerbSubjectView: View {
     // Mark: Custom Nav Bar
     @ViewBuilder
     func NavBar()->some View{
-        HStack(spacing: 25){
-            GeometryReader{proxy in
-                ZStack(alignment: .leading){
-                    Capsule()
-                        .fill(.gray.opacity(0.25))
-                    Capsule()
-                        .fill(.green)
-                        .frame(width: proxy.size.width * progress)
-                }
-            }.frame(height: 20)
-            
-            
+        ZStack{
+            HStack(spacing: 25){
+                GeometryReader{proxy in
+                    ZStack(alignment: .leading){
+                        Capsule()
+                            .fill(.gray.opacity(0.25))
+                        Capsule()
+                            .fill(.green)
+                            .frame(width: proxy.size.width * progress)
+                    }
+                }.frame(height: 20)
+                
+                
+            }
+            Text("Number completed: \(Int(droppedCount)) out of \(verbWordsFrom.count)")
+                .frame(height: 20)
+                .foregroundColor(.red)
         }
-        
     }
     
     func incrementStudentCorrectScore(){

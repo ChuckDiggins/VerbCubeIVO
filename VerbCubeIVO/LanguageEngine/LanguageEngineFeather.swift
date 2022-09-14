@@ -42,8 +42,8 @@ extension LanguageEngine{
     }
     
     func setSimilarModels(){
-        var encontrarSimilarModel = SimilarModelsTo(targetNum: 58, similarModelList: [56, 53, 35])
-        var pedirSimilarModel = SimilarModelsTo(targetNum: 55, similarModelList: [35, 75, 61])
+        let encontrarSimilarModel = SimilarModelsTo(targetNum: 58, similarModelList: [56, 53, 35])
+        let pedirSimilarModel = SimilarModelsTo(targetNum: 55, similarModelList: [35, 75, 61])
     }
     
     func getModelsAroundGivenPattern(patternType: SpecialPatternType)->[Int]{
@@ -212,7 +212,7 @@ extension LanguageEngine{
     
     func findVerbsFromSamePatternsAsVerb(verb: Verb, tense: Tense)->[Verb]{
         var newVerbList = [Verb]()
-        var patternStructList = getPatternsForVerb(verb: verb, tense: tense)
+        let patternStructList = getPatternsForVerb(verb: verb, tense: tense)
         
         newVerbList = verbList
         for spt in patternStructList {

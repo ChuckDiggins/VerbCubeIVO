@@ -7,15 +7,14 @@
 
 import SwiftUI
 
-struct HomePreferencesButtonView: View {
+struct PreferencesButtonView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     var body: some View {
         HStack{
-            NavigationLink(destination: ScrollViewVC(languageViewModel: languageViewModel)){
-                Image(systemName: "house.fill")}
             Spacer()
             NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel)){
-                Image(systemName: "globe")}
+                Image(systemName: "globe")
+            }
         }
     }
 }

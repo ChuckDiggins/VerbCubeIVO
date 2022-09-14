@@ -96,6 +96,7 @@ struct MixAndMatchView: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             ScrollView{
+                PreferencesButtonView(languageViewModel: languageViewModel).foregroundColor(Color("BethanyGreenText"))
                 DisclosureGroupMixAndMatch()
                 ListVerbModelsView(languageViewModel: languageViewModel)
                 RandomVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
@@ -288,7 +289,7 @@ struct MixAndMatchView: View {
             self.matchIndex = index
             self.verbString = verbString
             currentPerson = getPerson(personString: subjectString)
-            print("subjectString: \(subjectString), person: \(currentPerson)")
+            let answerText =  subjectString + verbString
             if verbString == matchString {
                 isThisVerbAMatch[index] = true
                 isThisVerbDisabled[index] = true
@@ -298,8 +299,14 @@ struct MixAndMatchView: View {
                 subjectString = ""
                 self.verbString = ""
                 incrementStudentCorrectScore()
-                AudioServicesPlayAlertSound(UInt32(1008))
+                if languageViewModel.isSpeechModeActive(){
+                    textToSpeech(text: answerText, language: .Spanish)
+                }
+                //AudioServicesPlayAlertSound(UInt32(1008))
             } else {
+                if languageViewModel.isSpeechModeActive(){
+                    textToSpeech(text: "wrong", language: .English)
+                }
                 incrementStudentWrongScore()
                 AudioServicesPlayAlertSound(UInt32(1003))
             }

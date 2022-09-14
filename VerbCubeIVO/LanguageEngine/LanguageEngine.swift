@@ -11,8 +11,9 @@ import Dot
 import RealmSwift
 
 enum  TeachMeMode : String {
-    case regular, model, subjunctive, reflexive, compound, none
+    case model, pattern
 }
+
 
 class LanguageEngine : ObservableObject {
     @Published private var currentLanguage = LanguageType.Agnostic
@@ -25,12 +26,14 @@ class LanguageEngine : ObservableObject {
     private var currentTenseIndex = 0
     private var currentPersonIndex = 0
     
+    var studentLevel = StudentLevel.level1001
+    
     var tenseList = [Tense.present, .preterite, .imperfect, .conditional, .presentSubjunctive]
     var verbList = [Verb]()
     
     var currentFilteredVerbIndex = 0
     @Published var filteredVerbList = [Verb]()
-    var currentPattern = SpecialPatternType.none
+    var currentPattern = SpecialPatternType.e2i
     
     var behavioralVerbModel = BehavioralVerbModel()
     var criticalVerbForms = CriticalVerbForms()
@@ -73,8 +76,17 @@ class LanguageEngine : ObservableObject {
     var studentScoreModel = StudentScoreModel()
     var currentRandomVerb = Verb()
     var useSpeechMode = false
-    var teachMeMode = TeachMeMode.none
-
+    var teachMeMode = TeachMeMode.model  //obsolete
+    
+    
+    var studentLessonLevel = StudentLessonLevelEnum.Beginnner
+    var studentLevelCompletion = StudentLevelCompletion(mode: .open)
+    var currentPatternList =  [SpecialPatternType]()
+    var currentModelListAll = [RomanceVerbModel]()
+    var currentModelListAR = [RomanceVerbModel]()
+    var currentModelListER = [RomanceVerbModel]()
+    var currentModelListIR = [RomanceVerbModel]()
+//    var currentPatternStructList =  [SpecialPatternStruct]()
     
 //    var realm : Realm
     
@@ -87,11 +99,6 @@ class LanguageEngine : ObservableObject {
 //        realm = try! Realm()
         
         verbModelConjugation = VerbModelConjugation(currentLanguage: currentLanguage)
-//        wsp = ViperWordStringParser(language: currentLanguage,
-//                                      span: spanishVerbModelConjugation,
-//                                      french: frenchVerbModelConjugation,
-//                                      english: englishVerbModelConjugation)
-        
         m_wsp = WordStringParser(language: currentLanguage,
                                       span: spanishVerbModelConjugation,
                                       french: frenchVerbModelConjugation,
@@ -112,13 +119,26 @@ class LanguageEngine : ObservableObject {
         
         //this should set the behavioral verb list and index
         setBehaviorType(bt: .likeGustar)
-        filteredVerbList = verbList
-        loadInitialVerbModel()      
+        
+        setStudentLevel(level: .level2001)
+        setLessonCompletionMode(sl: .level1001, lessonCompletionMode: .completed)
+        setLessonCompletionMode(sl: .level1002, lessonCompletionMode: .completed)
+        setLessonCompletionMode(sl: .level1003, lessonCompletionMode: .completed)
+        setLessonCompletionMode(sl: .level2001, lessonCompletionMode: .open)
+        setLessonCompletionMode(sl: .level2002, lessonCompletionMode: .open)
+        
         fillVerbCubeLists()   //verb cube list is a list of all the filtered verbs
         setPreviousCubeBlockVerbs()  //verbCubeBlock is a block of verbBlockCount verbs
         fillQuizCubeVerbList()
         fillQuizCubeBlock()
         initializeStudentScoreModel()
+        
+        //set for initial verb model learning
+        
+        if studentLevel.getLessonLevel() == 5 {
+            filteredVerbList = verbList
+            loadInitialVerbModel()
+        }
     }
 
     func loadInitialVerbModel(){
@@ -126,6 +146,23 @@ class LanguageEngine : ObservableObject {
         case .Spanish:
             setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 38))  //encontrar
         case .French:
+            setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 67))  //manger
+        case .English:
+            setFilteredVerbList(verbList: getRandomEnglishVerbs(maxCount : 30))
+        default:
+            return
+        }
+    }
+    
+    func loadInitialVerbPattern(){
+        switch currentLanguage {
+        case .Spanish:
+            let sps = SpecialPatternStruct(tense: .present, spt: .o2ue)
+            let vl = getVerbsOfPattern(verbList: verbList, thisPattern: sps)
+            setFilteredVerbList(verbList: vl)
+        case .French:
+            let sps = SpecialPatternStruct(tense: .present, spt: .o2ue)
+            let vl = getVerbsOfPattern(verbList: verbList, thisPattern: sps)
             setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 67))  //manger
         case .English:
             setFilteredVerbList(verbList: getRandomEnglishVerbs(maxCount : 30))
@@ -168,6 +205,8 @@ class LanguageEngine : ObservableObject {
         }
     }
     
+    
+    
     func getTeachMeMode()->TeachMeMode{
         teachMeMode
     }
@@ -176,6 +215,35 @@ class LanguageEngine : ObservableObject {
         self.teachMeMode = teachMeMode
     }
     
+    func getCurrentPatternList()->[SpecialPatternType]{
+        return currentPatternList
+    }
+    
+    func getCurrentModelListAll()->[RomanceVerbModel]{
+        if currentModelListAll.count > 0 {
+            return currentModelListAll
+        }
+        return currentModelListAR
+    }
+        
+    func getCurrentModelList(ending: VerbEnding )->[RomanceVerbModel]{
+        switch ending{
+        case .AR: return currentModelListAR
+        case .ER: return currentModelListER
+        case .IR: return currentModelListIR
+        default: return currentModelListAll
+        }
+    }
+        
+       
+       
+    func setStudentLessonLeve(level: StudentLessonLevelEnum){
+        self.studentLessonLevel = level
+    }
+    
+    func getStudentLessonLevel()->StudentLessonLevelEnum{
+        return studentLessonLevel
+    }
     
     func getWordCollections()->[dWordCollection] {
         return getWordCollectionList()
@@ -251,6 +319,23 @@ class LanguageEngine : ObservableObject {
         }
         currentVerbIndex = 0
         currentVerb = verbList[currentVerbIndex]
+    }
+    
+    func findVerbFromString(verbString: String, language: LanguageType)->Verb{
+        var verb = Verb()
+        for v in verbList {
+            switch language{
+            case .Spanish:
+                if v.spanish == verbString { return v}
+            case .French:
+                if v.french == verbString { return v}
+            case .English:
+                if v.english == verbString { return v}
+                
+            default: return verb
+            }
+        }
+        return verb
     }
     
     func fillCriticalVerbForms(verb: Verb, residualPhrase: String, isReflexive: Bool){

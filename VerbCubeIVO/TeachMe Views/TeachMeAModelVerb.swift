@@ -1,19 +1,18 @@
 //
-//  TeachMeAPatternVerb.swift
+//  TeachMeModelVerbs.swift
 //  VerbCubeIVO
 //
-//  Created by Charles Diggins on 8/13/22.
+//  Created by Charles Diggins on 8/9/22.
 //
 
 import SwiftUI
-
 import JumpLinguaHelpers
 
-struct TeachMeAPatternVerb: View {
+struct TeachMeAModelVerb: View {
     @ObservedObject var languageViewModel: LanguageViewModel
 
     @State var currentTenseString = "Present"
-    @State var currentPatternString = "xxx"
+    @State var currentModelString = "xxx"
     @State var currentVerbString = "xxx"
     @State var currentXVerbString = "xxxeguirse"
     
@@ -24,7 +23,7 @@ struct TeachMeAPatternVerb: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             ScrollView{
-                DisclosureGroupTeachMeAPatternVerb()
+                DisclosureGroupTeachMeAModelVerb()
                 VStack{
                     Text("Step 1: Pick a tense").font(.title2)
                     
@@ -45,16 +44,16 @@ struct TeachMeAPatternVerb: View {
                 Divider().frame(height:1).background(.white)
                 
                 VStack{
-                    Text("Step 2: Pick a verb pattern").font(.title2)
-                    Text("To change the pattern, click Button.")
-                    NavigationLink(destination: ListPatternsView(languageViewModel: languageViewModel)){
+                    Text("Step 2: Pick a verb model").font(.title2)
+                    Text("To change the model, click Button.")
+                    NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
                         HStack{
-                            Text("Current pattern: \(currentPatternString)")
+                            Text("Current model: \(currentModelString)")
                             Spacer()
                             Image(systemName: "chevron.right").foregroundColor(.yellow)
                         }.modifier(ModelTensePersonButtonModifier())
                     }.task {
-                        currentPatternString = languageViewModel.getCurrentPattern().rawValue
+                        currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleModelVerb()
                         currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
                     }
                 }
@@ -72,12 +71,7 @@ struct TeachMeAPatternVerb: View {
                     }){
                         HStack{
                             Text("Verb: ")
-                            if languageViewModel.getCurrentPattern() == .none {
-                                Text("")
-                            }
-                            else {
-                                Text(currentVerbString)
-                            }
+                            Text(currentVerbString)
                             Spacer()
                             Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
                         }.modifier(ModelTensePersonButtonModifier())
@@ -90,10 +84,10 @@ struct TeachMeAPatternVerb: View {
                 Divider().frame(height:1).background(.white)
                 
                 VStack{
-                    Text("Conjugate your verb").font(.title2)
-                    
+                    Text("Step 4: Conjugate your verb").font(.title2)
                     VStack{
-                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: currentVerbString, french: currentVerbString, english: currentVerbString), residualPhrase: "", teachMeMode: .regular))
+                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel,
+                                                                          verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", teachMeMode: .model))
                         {
                         HStack{
                             Text("Model verb = \(currentVerbString)")
@@ -103,7 +97,6 @@ struct TeachMeAPatternVerb: View {
                         }.modifier(ModelTensePersonButtonModifier())
                     }
                     .padding()
-                    
                 }
                 .frame(maxWidth: .infinity)
                 .padding(2)

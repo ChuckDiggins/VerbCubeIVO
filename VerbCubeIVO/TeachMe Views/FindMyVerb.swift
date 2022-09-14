@@ -9,24 +9,25 @@ import SwiftUI
 
 struct FindMyVerb: View {
     @ObservedObject var languageViewModel: LanguageViewModel
-    
+    var frameWidth = CGFloat(150)
+    var frameHeight = CGFloat(250)
     var body: some View {
         ZStack{
             Color("BethanyNavalBackground")
                 .edgesIgnoringSafeArea(.all)
 
             ScrollView{
-                DisclosureGroupFindMyVerb()
+//                DisclosureGroupFindMyVerb()
                 VStack{
                     
                     HStack{
                         VStack{
-                            NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .model))
+                            NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel, featherMode: .model))
                             {
                             Image("FindMyVerbModel")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 100, height: 200)
+                                .frame(width: frameWidth, height: frameHeight)
                                 .border(Color("ChuckText1"))
                             }
                             VStack{
@@ -35,12 +36,12 @@ struct FindMyVerb: View {
                         }
                        
                         VStack{
-                            NavigationLink(destination: VerbsOfAFeather(languageViewModel: languageViewModel, featherMode: .pattern))
+                            NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel, featherMode: .pattern))
                             {
                             Image("FindMyVerbPattern")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 100, height: 200)
+                                .frame(width: frameWidth, height: frameHeight)
                                 .border(Color("ChuckText1"))
                             }
                             VStack{
@@ -55,7 +56,7 @@ struct FindMyVerb: View {
                             Image("FindMyVerbAnalyze")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 100, height: 200)
+                                .frame(width: frameWidth, height: frameHeight)
                                 .border(Color("ChuckText1"))
                             }
                             VStack{
@@ -68,7 +69,7 @@ struct FindMyVerb: View {
                             Image("FindMyVerbUnconjugate")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 100, height: 200)
+                                .frame(width: frameWidth, height: frameHeight)
                                 .border(Color("ChuckText1"))
                             }
                             VStack{

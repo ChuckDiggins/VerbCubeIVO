@@ -90,8 +90,15 @@ struct VerbCubeView: View {
                     .padding(10)
                 Spacer()
             }
-//            .navigationViewStyle(StackNavigationViewStyle())
-                .navigationTitle(Text("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)"))
+            .onAppear{
+                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscapeLeft
+                        UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+                        UINavigationController.attemptRotationToDeviceOrientation()
+            }
+//            .onDisappear{
+//                AppDelegate.orientationLock = UIInterfaceOrientationMask.all
+//            }
+            .navigationTitle(Text("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)"))
         
 //        }
         .gesture(DragGesture()

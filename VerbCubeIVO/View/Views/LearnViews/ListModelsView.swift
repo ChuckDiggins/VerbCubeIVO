@@ -32,48 +32,47 @@ struct ListModelsView: View {
     var fontSize = Font.callout
     
     var body: some View {
-        ScrollView{
-            Button{
-                changeVerbEnding()
-                currentVerbEndingString = "Current ending = \(currentVerbEnding.rawValue)"
-            } label: {
-                Text(currentVerbEndingString)
-            } .frame(minWidth: 0, maxWidth: 300)
-                .padding()
-                .foregroundColor(.white)
-                .padding(.horizontal)
-                .font(.headline)
-                .background(.linearGradient(colors: [.red, .blue], startPoint: .bottomLeading, endPoint: .topTrailing))
-                .cornerRadius(10)
-            
-            let gridFixSize = CGFloat(200.0)
-            let gridItems = [GridItem(.fixed(gridFixSize)),
-                             GridItem(.fixed(gridFixSize))]
-            
-            LazyVGrid(columns: gridItems, spacing: 5){
-                ForEach (0..<modelStructList.count, id: \.self){ i in
-                    if modelStructList[i].count > 0 {
-                        Button{
-                            selectedModel(index: i)
-                        } label: {
-                            HStack{
-                                Text(modelStructList[i].name)
-                                Text(": \(modelStructList[i].count)").foregroundColor(.red)
+        ZStack{
+            Color("BethanyNavalBackground")
+                .ignoresSafeArea()
+            ScrollView{
+                Button{
+                    changeVerbEnding()
+                    currentVerbEndingString = "Current ending = \(currentVerbEnding.rawValue)"
+                } label: {
+                    Text(currentVerbEndingString)
+                    Spacer()
+                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                } .modifier(ModelTensePersonButtonModifier())
+                
+                let gridFixSize = CGFloat(200.0)
+                let gridItems = [GridItem(.fixed(gridFixSize)),
+                                 GridItem(.fixed(gridFixSize))]
+                
+                LazyVGrid(columns: gridItems, spacing: 5){
+                    ForEach (0..<modelStructList.count, id: \.self){ i in
+                        if modelStructList[i].count > 0 {
+                            Button{
+                                selectedModel(index: i)
+                            } label: {
+                                HStack{
+                                    Text(modelStructList[i].name)
+                                    Text(": \(modelStructList[i].count)")
+                                }
                             }
                         }
                     }
+                    .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+                    .cornerRadius(8)
+                    .font(fontSize)
                 }
-                .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                .background(backgroundColor)
-                .foregroundColor(foregroundColor)
-                .cornerRadius(8)
-                .font(fontSize)
+                .foregroundColor(Color("BethanyGreenText"))
+                    .background(Color("BethanyNavalBackground"))
+            }.onAppear{
+                loadVerbModels()
+                currentLanguage = languageViewModel.getCurrentLanguage()
+                currentVerbEndingString = "Current ending = \(currentVerbEnding.rawValue)"
             }
-            
-        }.onAppear{
-            loadVerbModels()
-            currentLanguage = languageViewModel.getCurrentLanguage()
-            currentVerbEndingString = "Current ending = \(currentVerbEnding.rawValue)"
         }
     }
     
