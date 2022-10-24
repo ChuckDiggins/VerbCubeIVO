@@ -1,0 +1,1076 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6E02076B2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E02076A2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift */; };
+		6E05543B28762034007CE454 /* ModelVerbTenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E05543A28762034007CE454 /* ModelVerbTenseView.swift */; };
+		6E0A6D3E2884AFD4009234C0 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0A6D3D2884AFD4009234C0 /* TextToSpeech.swift */; };
+		6E2174E3289857A60066C234 /* DisclosureGroupMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */; };
+		6E2174E5289857F70066C234 /* DisclosureGroupPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */; };
+		6E2174E728985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */; };
+		6E229CA027C68A26009F8E02 /* ShowWordTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */; };
+		6E229CA227C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */; };
+		6E229CB027C982B5009F8E02 /* CustomToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CAF27C982B5009F8E02 /* CustomToggleStyle.swift */; };
+		6E229CB227C98776009F8E02 /* ToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CB127C98776009F8E02 /* ToggleItem.swift */; };
+		6E36E3AA28B6D0680024C180 /* ThreeVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E36E3A928B6D0680024C180 /* ThreeVerbView.swift */; };
+		6E417482289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E417481289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift */; };
+		6E417484289EF0CA00EB5C00 /* TeachMeCommonControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */; };
+		6E41748A28A01F7500EB5C00 /* FindMyVerbDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41748928A01F7500EB5C00 /* FindMyVerbDispatcher.swift */; };
+		6E41748C28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41748B28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift */; };
+		6E447C9128A1831A00528DD9 /* TeachMeARegularVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447C9028A1831A00528DD9 /* TeachMeARegularVerb.swift */; };
+		6E447C9328A29ED900528DD9 /* TeachMeAModelVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447C9228A29ED900528DD9 /* TeachMeAModelVerb.swift */; };
+		6E447C9C28A4710800528DD9 /* SimpleVerbConjugation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447C9B28A4710700528DD9 /* SimpleVerbConjugation.swift */; };
+		6E447C9F28A6F64D00528DD9 /* ButtonAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447C9E28A6F64D00528DD9 /* ButtonAnimationView.swift */; };
+		6E447CA128A7FEE800528DD9 /* MultipleChoiceModeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA028A7FEE800528DD9 /* MultipleChoiceModeEnum.swift */; };
+		6E447CA328A81A8700528DD9 /* TeachMeAPatternVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA228A81A8700528DD9 /* TeachMeAPatternVerb.swift */; };
+		6E447CA728AAA4A900528DD9 /* DisclosureGroupTeachMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA628AAA4A900528DD9 /* DisclosureGroupTeachMe.swift */; };
+		6E447CA928AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CA828AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift */; };
+		6E447CAB28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CAA28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift */; };
+		6E447CB228B02D8600528DD9 /* ItemsToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447CB128B02D8600528DD9 /* ItemsToolbar.swift */; };
+		6E447D0828B3D7D600528DD9 /* QuizCubeView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447D0528B3D7D600528DD9 /* QuizCubeView2.swift */; };
+		6E447D0928B3D7D600528DD9 /* QuizVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447D0628B3D7D600528DD9 /* QuizVerbView.swift */; };
+		6E447D0A28B3D7D600528DD9 /* QuizCubeOptionsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447D0728B3D7D600528DD9 /* QuizCubeOptionsView2.swift */; };
+		6E447D2228B3E78900528DD9 /* StudentLessonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447D2128B3E78900528DD9 /* StudentLessonStruct.swift */; };
+		6E447D2428B5256600528DD9 /* Disclosure Beginner Level 1 .swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E447D2328B5256600528DD9 /* Disclosure Beginner Level 1 .swift */; };
+		6E62C6CD28B95A7600AD64FC /* Flashcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E62C6CC28B95A7600AD64FC /* Flashcard.swift */; };
+		6E69297527D152E0003BCD71 /* CustomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69297427D152E0003BCD71 /* CustomActionSheet.swift */; };
+		6E69297727D25E76003BCD71 /* LanguageEngineVerbCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69297627D25E76003BCD71 /* LanguageEngineVerbCube.swift */; };
+		6E69297927D2745A003BCD71 /* QuizCubeWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69297827D2745A003BCD71 /* QuizCubeWatcher.swift */; };
+		6E69297D27D2C6D1003BCD71 /* QuizCubeHandlerClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69297C27D2C6D0003BCD71 /* QuizCubeHandlerClass.swift */; };
+		6E69298227D2DCA6003BCD71 /* VerbCubeHandlerClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69298127D2DCA6003BCD71 /* VerbCubeHandlerClass.swift */; };
+		6E6CA06927C40B2000CCD8BE /* JumpLinguaHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 6E6CA06827C40B2000CCD8BE /* JumpLinguaHelpers */; };
+		6E6CA06D27C4599400CCD8BE /* QuizCubeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CA06C27C4599400CCD8BE /* QuizCubeCellView.swift */; };
+		6E6CA07127C5441800CCD8BE /* VerbCubeCellInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CA07027C5441800CCD8BE /* VerbCubeCellInfo.swift */; };
+		6E6CA07327C55E6200CCD8BE /* CellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CA07227C55E6200CCD8BE /* CellData.swift */; };
+		6E7BC3372901B163004708AC /* VerbModelEntityCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BC3362901B163004708AC /* VerbModelEntityCoreDataManager.swift */; };
+		6E7BC33F2902F61F004708AC /* VerbModelGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BC33E2902F61F004708AC /* VerbModelGroupManager.swift */; };
+		6E7BC34129031508004708AC /* VerbAndModelSublistUtilties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BC34029031508004708AC /* VerbAndModelSublistUtilties.swift */; };
+		6E7C176028E64A9E00CDF941 /* HomemadeBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C175F28E64A9E00CDF941 /* HomemadeBarChartView.swift */; };
+		6E7C176328EF81C200CDF941 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C176228EF81C200CDF941 /* HeaderView.swift */; };
+		6E978AD8285925BA0085EA4D /* FeatherVerbStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E978AD7285925BA0085EA4D /* FeatherVerbStepView.swift */; };
+		6E9A66B428F1E017007BC0C3 /* VerbModelEntityCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9A66B328F1E017007BC0C3 /* VerbModelEntityCoreData.swift */; };
+		6E9A66B728F1F459007BC0C3 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 6E9A66B628F1F459007BC0C3 /* Realm */; };
+		6E9A66B928F1F459007BC0C3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E9A66B828F1F459007BC0C3 /* RealmSwift */; };
+		6E9A673928F87F1E007BC0C3 /* VerbModelContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6E9A673728F87F1E007BC0C3 /* VerbModelContainer.xcdatamodeld */; };
+		6EA29CAB27E792F100CE0372 /* WordCellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA29CAA27E792F100CE0372 /* WordCellButton.swift */; };
+		6EA3FF6227FE1FAE0042676E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EA3FF6127FE1FAE0042676E /* LaunchScreen.storyboard */; };
+		6EA6639828DBC527005D25D8 /* ModelVerbChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA6639728DBC527005D25D8 /* ModelVerbChartView.swift */; };
+		6EA80F1927BDB27800D6061F /* LanguageEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F1827BDB27800D6061F /* LanguageEngine.swift */; };
+		6EA80F2A27BDB96C00D6061F /* LanguageEngineContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F2927BDB96C00D6061F /* LanguageEngineContainer.swift */; };
+		6EA80F3127BDBC2E00D6061F /* VerbCubeConjugationStringHandlerStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F3027BDBC2E00D6061F /* VerbCubeConjugationStringHandlerStruct.swift */; };
+		6EA80F3327BDBE0600D6061F /* VerbCubeXYZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F3227BDBE0600D6061F /* VerbCubeXYZ.swift */; };
+		6EA80F3527BDC65800D6061F /* VerbCubeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F3427BDC65800D6061F /* VerbCubeCellView.swift */; };
+		6EA80F3827BDC77400D6061F /* InteractiveVerbCubeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F3727BDC77400D6061F /* InteractiveVerbCubeCellView.swift */; };
+		6EA80F3E27BEA51300D6061F /* TabStackContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F3D27BEA51300D6061F /* TabStackContainerView.swift */; };
+		6EA80F4027BEE16C00D6061F /* VerbCubeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F3F27BEE16C00D6061F /* VerbCubeView.swift */; };
+		6EAB1D652818461800C7251C /* LanguageEngineViewVerbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAB1D642818461800C7251C /* LanguageEngineViewVerbModel.swift */; };
+		6EAD5FF027D42A8200027A49 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD5FEF27D42A8200027A49 /* ViewModifiers.swift */; };
+		6EB48219284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB48218284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift */; };
+		6EB4821B285009DB000CB206 /* VerbUtilitiesExtra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB4821A285009DB000CB206 /* VerbUtilitiesExtra.swift */; };
+		6EB757E627E90ED8005ADA66 /* LanguageEngineRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */; };
+		6EB76D662899A91E00E65641 /* PreferencesButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB76D652899A91D00E65641 /* PreferencesButtonView.swift */; };
+		6EBAC2ED27F39A5C004DB5D1 /* MultiVerbMorphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBAC2EC27F39A5C004DB5D1 /* MultiVerbMorphView.swift */; };
+		6EBAC2F727F758DF004DB5D1 /* DragDropVerbSubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBAC2F627F758DE004DB5D1 /* DragDropVerbSubjectView.swift */; };
+		6EBAC2FA27F759B1004DB5D1 /* DragDropUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBAC2F927F759B1004DB5D1 /* DragDropUtilities.swift */; };
+		6EBB89342820742E00A49376 /* TabEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB89332820742E00A49376 /* TabEnum.swift */; };
+		6EBB893F2821A89900A49376 /* TabBarClassic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB893E2821A89800A49376 /* TabBarClassic.swift */; };
+		6EBB894E28283EC900A49376 /* MixAndMatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB894D28283EC800A49376 /* MixAndMatchView.swift */; };
+		6EC3085F27D3CD630056F8F7 /* LanguageEngineQuizCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC3085E27D3CD630056F8F7 /* LanguageEngineQuizCube.swift */; };
+		6ECB854827E52AA30092033B /* FindVerbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECB854727E52AA30092033B /* FindVerbsView.swift */; };
+		6ECCD45927D7A9DC0049B9CA /* JSONVerbs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD45827D7A9DC0049B9CA /* JSONVerbs.swift */; };
+		6ECCD45D27D7B0170049B9CA /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD45C27D7B0170049B9CA /* Word.swift */; };
+		6ECCD46927D7D4790049B9CA /* JSONWordCollectionStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD46827D7D4790049B9CA /* JSONWordCollectionStructs.swift */; };
+		6ECCD47327D801D50049B9CA /* WordCollectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47227D801D50049B9CA /* WordCollectionScreen.swift */; };
+		6ECCD47527D8295D0049B9CA /* LanguageEngineFiltered.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47427D8295D0049B9CA /* LanguageEngineFiltered.swift */; };
+		6ECCD47727D900700049B9CA /* VerbMorphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47627D900700049B9CA /* VerbMorphView.swift */; };
+		6ECCD47927D928790049B9CA /* ColorExtender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47827D928790049B9CA /* ColorExtender.swift */; };
+		6ECCD47D27D96BAA0049B9CA /* AnalyzeUserVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD47C27D96BAA0049B9CA /* AnalyzeUserVerbView.swift */; };
+		6ECCD48127DBDEA40049B9CA /* LanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48027DBDEA40049B9CA /* LanguageView.swift */; };
+		6ECCD48327DBDEC60049B9CA /* TenseSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48227DBDEC60049B9CA /* TenseSelectionView.swift */; };
+		6ECCD48527DBDF200049B9CA /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48427DBDF200049B9CA /* PreferencesView.swift */; };
+		6ECCD48827DBE3600049B9CA /* LanguageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48727DBE3600049B9CA /* LanguageViewModel.swift */; };
+		6ECCD48A27DC02A40049B9CA /* LanguageEngineViewFilteredVerbs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48927DC02A30049B9CA /* LanguageEngineViewFilteredVerbs.swift */; };
+		6ECCD48C27DC02F80049B9CA /* LanguageEngineViewVerbCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48B27DC02F80049B9CA /* LanguageEngineViewVerbCube.swift */; };
+		6ECCD48E27DC03100049B9CA /* LanguageEngineViewQuizCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCD48D27DC03100049B9CA /* LanguageEngineViewQuizCube.swift */; };
+		6ECDC6CB28032EF6004083BA /* UnconjugateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECDC6CA28032EF6004083BA /* UnconjugateView.swift */; };
+		6ED156692849121C00BF0EEA /* ListModelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED156682849121C00BF0EEA /* ListModelsView.swift */; };
+		6ED179C62803986D00B23F3E /* WordCellViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED179C52803986D00B23F3E /* WordCellViews.swift */; };
+		6ED2A5B727BDADC400164F80 /* Feather2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED2A5B627BDADC400164F80 /* Feather2App.swift */; };
+		6ED2A5B927BDADC400164F80 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED2A5B827BDADC400164F80 /* ContentView.swift */; };
+		6ED2A5BB27BDADC800164F80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED2A5BA27BDADC800164F80 /* Assets.xcassets */; };
+		6ED2A5BE27BDADC800164F80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED2A5BD27BDADC800164F80 /* Preview Assets.xcassets */; };
+		6ED375432819F2380034DB47 /* RightWrongVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED375422819F2380034DB47 /* RightWrongVerbView.swift */; };
+		6ED37545281B3DB30034DB47 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED37544281B3DB20034DB47 /* ProgressBar.swift */; };
+		6EDADC2728C63D2D00C117AD /* PopupCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC2628C63D2D00C117AD /* PopupCellView.swift */; };
+		6EDADC2928C68B1A00C117AD /* StudentLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC2828C68B1A00C117AD /* StudentLevel.swift */; };
+		6EDADC2B28C7D6DE00C117AD /* ThreeVerbSimpleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC2A28C7D6DE00C117AD /* ThreeVerbSimpleView.swift */; };
+		6EDADC2D28C8008400C117AD /* VerbCubeDirectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC2C28C8008400C117AD /* VerbCubeDirectorView.swift */; };
+		6EDADC2F28C802CA00C117AD /* QuizCubeDirectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC2E28C802CA00C117AD /* QuizCubeDirectorView.swift */; };
+		6EDADC3128C9205800C117AD /* LanguageEngineStudentLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC3028C9205800C117AD /* LanguageEngineStudentLevel.swift */; };
+		6EDADC3328C936E600C117AD /* LanguageViewStudentLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC3228C936E600C117AD /* LanguageViewStudentLevel.swift */; };
+		6EDADC3A28D110BC00C117AD /* GeneralLessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC3928D110BC00C117AD /* GeneralLessonView.swift */; };
+		6EDADC3C28D110CC00C117AD /* PatternLessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC3B28D110CC00C117AD /* PatternLessonView.swift */; };
+		6EDADC3E28D110DE00C117AD /* ModelLessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC3D28D110DE00C117AD /* ModelLessonView.swift */; };
+		6EDADC8628D660A400C117AD /* StudentTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC8528D660A400C117AD /* StudentTestView.swift */; };
+		6EDADC8828D6610700C117AD /* FlashCardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC8728D6610700C117AD /* FlashCardManager.swift */; };
+		6EDE944F2814419900C1A3DB /* QuizVerbSingleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE944E2814419900C1A3DB /* QuizVerbSingleView.swift */; };
+		6EDE945128148D5700C1A3DB /* PatternRecognitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE945028148D5700C1A3DB /* PatternRecognitionView.swift */; };
+		6EDE94532815E45500C1A3DB /* LanguageEngineVerbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE94522815E45300C1A3DB /* LanguageEngineVerbModel.swift */; };
+		6EE2B0C328319D6600E239CC /* BehavioralVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE2B0C228319D6600E239CC /* BehavioralVerbView.swift */; };
+		6EE2B0C52831DCD600E239CC /* LanguageEngineBehavioral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE2B0C42831DCD600E239CC /* LanguageEngineBehavioral.swift */; };
+		6EE480B628106E270091F1D5 /* View Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE480B528106E270091F1D5 /* View Extensions.swift */; };
+		6EE480B82811AFA70091F1D5 /* QuizVerbViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE480B72811AFA70091F1D5 /* QuizVerbViewExtensions.swift */; };
+		6EE9B1E428FDFA09003B9155 /* CoreDataUtilitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE9B1E328FDFA09003B9155 /* CoreDataUtilitiesView.swift */; };
+		6EEA2AB6286231E500F7296D /* AudibleStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEA2AB5286231E400F7296D /* AudibleStyleView.swift */; };
+		6EF1762D27E14C9E0010B8DA /* ViewWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF1762C27E14C9E0010B8DA /* ViewWrappers.swift */; };
+		6EF2D5BE28578AF800B8839B /* FivePartVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF2D5BD28578AF800B8839B /* FivePartVerb.swift */; };
+		6EF60AE3283BFF06007E61F3 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF60AE2283BFF05007E61F3 /* CustomAlertView.swift */; };
+		6EF60AE5283E7ECC007E61F3 /* MultipleChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF60AE4283E7ECB007E61F3 /* MultipleChoiceView.swift */; };
+		6EF60AE728412D80007E61F3 /* StudentScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF60AE628412D80007E61F3 /* StudentScoreView.swift */; };
+		6EF60AEA2842B84E007E61F3 /* StudentScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF60AE92842B84E007E61F3 /* StudentScoreModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6E02076A2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMorphStructExtractInfo.swift; sourceTree = "<group>"; };
+		6E05543A28762034007CE454 /* ModelVerbTenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVerbTenseView.swift; sourceTree = "<group>"; };
+		6E0A6D3D2884AFD4009234C0 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
+		6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupMain.swift; sourceTree = "<group>"; };
+		6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupPreferences.swift; sourceTree = "<group>"; };
+		6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupVerbsPatternsAndModels.swift; sourceTree = "<group>"; };
+		6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWordTypeEnum.swift; sourceTree = "<group>"; };
+		6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveVerbCubeConfiguration.swift; sourceTree = "<group>"; };
+		6E229CAF27C982B5009F8E02 /* CustomToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleStyle.swift; sourceTree = "<group>"; };
+		6E229CB127C98776009F8E02 /* ToggleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleItem.swift; sourceTree = "<group>"; };
+		6E36E3A928B6D0680024C180 /* ThreeVerbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeVerbView.swift; sourceTree = "<group>"; };
+		6E417481289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeModelBasedVerbConjugation.swift; sourceTree = "<group>"; };
+		6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeCommonControls.swift; sourceTree = "<group>"; };
+		6E41748928A01F7500EB5C00 /* FindMyVerbDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindMyVerbDispatcher.swift; sourceTree = "<group>"; };
+		6E41748B28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMeVerbsPatternsAndModels.swift; sourceTree = "<group>"; };
+		6E447C9028A1831A00528DD9 /* TeachMeARegularVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeARegularVerb.swift; sourceTree = "<group>"; };
+		6E447C9228A29ED900528DD9 /* TeachMeAModelVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeAModelVerb.swift; sourceTree = "<group>"; };
+		6E447C9B28A4710700528DD9 /* SimpleVerbConjugation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleVerbConjugation.swift; sourceTree = "<group>"; };
+		6E447C9E28A6F64D00528DD9 /* ButtonAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonAnimationView.swift; sourceTree = "<group>"; };
+		6E447CA028A7FEE800528DD9 /* MultipleChoiceModeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceModeEnum.swift; sourceTree = "<group>"; };
+		6E447CA228A81A8700528DD9 /* TeachMeAPatternVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeAPatternVerb.swift; sourceTree = "<group>"; };
+		6E447CA628AAA4A900528DD9 /* DisclosureGroupTeachMe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupTeachMe.swift; sourceTree = "<group>"; };
+		6E447CA828AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupShowMeModelQuizzes.swift; sourceTree = "<group>"; };
+		6E447CAA28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupFindMyVerb.swift; sourceTree = "<group>"; };
+		6E447CB128B02D8600528DD9 /* ItemsToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsToolbar.swift; sourceTree = "<group>"; };
+		6E447D0528B3D7D600528DD9 /* QuizCubeView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizCubeView2.swift; sourceTree = "<group>"; };
+		6E447D0628B3D7D600528DD9 /* QuizVerbView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizVerbView.swift; sourceTree = "<group>"; };
+		6E447D0728B3D7D600528DD9 /* QuizCubeOptionsView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizCubeOptionsView2.swift; sourceTree = "<group>"; };
+		6E447D2128B3E78900528DD9 /* StudentLessonStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonStruct.swift; sourceTree = "<group>"; };
+		6E447D2328B5256600528DD9 /* Disclosure Beginner Level 1 .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Disclosure Beginner Level 1 .swift"; sourceTree = "<group>"; };
+		6E62C6CC28B95A7600AD64FC /* Flashcard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flashcard.swift; sourceTree = "<group>"; };
+		6E69297427D152E0003BCD71 /* CustomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionSheet.swift; sourceTree = "<group>"; };
+		6E69297627D25E76003BCD71 /* LanguageEngineVerbCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineVerbCube.swift; sourceTree = "<group>"; };
+		6E69297827D2745A003BCD71 /* QuizCubeWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCubeWatcher.swift; sourceTree = "<group>"; };
+		6E69297C27D2C6D0003BCD71 /* QuizCubeHandlerClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCubeHandlerClass.swift; sourceTree = "<group>"; };
+		6E69298127D2DCA6003BCD71 /* VerbCubeHandlerClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeHandlerClass.swift; sourceTree = "<group>"; };
+		6E6CA06C27C4599400CCD8BE /* QuizCubeCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCubeCellView.swift; sourceTree = "<group>"; };
+		6E6CA07027C5441800CCD8BE /* VerbCubeCellInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeCellInfo.swift; sourceTree = "<group>"; };
+		6E6CA07227C55E6200CCD8BE /* CellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellData.swift; sourceTree = "<group>"; };
+		6E7BC3362901B163004708AC /* VerbModelEntityCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelEntityCoreDataManager.swift; sourceTree = "<group>"; };
+		6E7BC33E2902F61F004708AC /* VerbModelGroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelGroupManager.swift; sourceTree = "<group>"; };
+		6E7BC34029031508004708AC /* VerbAndModelSublistUtilties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbAndModelSublistUtilties.swift; sourceTree = "<group>"; };
+		6E7C175A28DE1E4000CDF941 /* JumpLinguaHelpers */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = JumpLinguaHelpers; path = ../../JumpLinguaHelpers; sourceTree = "<group>"; };
+		6E7C175F28E64A9E00CDF941 /* HomemadeBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomemadeBarChartView.swift; sourceTree = "<group>"; };
+		6E7C176228EF81C200CDF941 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		6E978AD7285925BA0085EA4D /* FeatherVerbStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatherVerbStepView.swift; sourceTree = "<group>"; };
+		6E9A66B328F1E017007BC0C3 /* VerbModelEntityCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelEntityCoreData.swift; sourceTree = "<group>"; };
+		6E9A673828F87F1E007BC0C3 /* VerbModelContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VerbModelContainer.xcdatamodel; sourceTree = "<group>"; };
+		6EA29CAA27E792F100CE0372 /* WordCellButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCellButton.swift; sourceTree = "<group>"; };
+		6EA3FF6127FE1FAE0042676E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6EA6639728DBC527005D25D8 /* ModelVerbChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVerbChartView.swift; sourceTree = "<group>"; };
+		6EA80F1827BDB27800D6061F /* LanguageEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngine.swift; sourceTree = "<group>"; };
+		6EA80F2927BDB96C00D6061F /* LanguageEngineContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineContainer.swift; sourceTree = "<group>"; };
+		6EA80F3027BDBC2E00D6061F /* VerbCubeConjugationStringHandlerStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeConjugationStringHandlerStruct.swift; sourceTree = "<group>"; };
+		6EA80F3227BDBE0600D6061F /* VerbCubeXYZ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeXYZ.swift; sourceTree = "<group>"; };
+		6EA80F3427BDC65800D6061F /* VerbCubeCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeCellView.swift; sourceTree = "<group>"; };
+		6EA80F3727BDC77400D6061F /* InteractiveVerbCubeCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveVerbCubeCellView.swift; sourceTree = "<group>"; };
+		6EA80F3D27BEA51300D6061F /* TabStackContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabStackContainerView.swift; sourceTree = "<group>"; };
+		6EA80F3F27BEE16C00D6061F /* VerbCubeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeView.swift; sourceTree = "<group>"; };
+		6EAB1D642818461800C7251C /* LanguageEngineViewVerbModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineViewVerbModel.swift; sourceTree = "<group>"; };
+		6EAD5FEF27D42A8200027A49 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		6EB48218284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatherVerbQuizMorphView.swift; sourceTree = "<group>"; };
+		6EB4821A285009DB000CB206 /* VerbUtilitiesExtra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbUtilitiesExtra.swift; sourceTree = "<group>"; };
+		6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineRealm.swift; sourceTree = "<group>"; };
+		6EB76D652899A91D00E65641 /* PreferencesButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesButtonView.swift; sourceTree = "<group>"; };
+		6EBAC2EC27F39A5C004DB5D1 /* MultiVerbMorphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVerbMorphView.swift; sourceTree = "<group>"; };
+		6EBAC2F627F758DE004DB5D1 /* DragDropVerbSubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropVerbSubjectView.swift; sourceTree = "<group>"; };
+		6EBAC2F927F759B1004DB5D1 /* DragDropUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropUtilities.swift; sourceTree = "<group>"; };
+		6EBB89332820742E00A49376 /* TabEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabEnum.swift; sourceTree = "<group>"; };
+		6EBB893E2821A89800A49376 /* TabBarClassic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarClassic.swift; sourceTree = "<group>"; };
+		6EBB894D28283EC800A49376 /* MixAndMatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixAndMatchView.swift; sourceTree = "<group>"; };
+		6EC3085E27D3CD630056F8F7 /* LanguageEngineQuizCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineQuizCube.swift; sourceTree = "<group>"; };
+		6ECB854727E52AA30092033B /* FindVerbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindVerbsView.swift; sourceTree = "<group>"; };
+		6ECCD45827D7A9DC0049B9CA /* JSONVerbs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONVerbs.swift; path = ../../../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/JSON/JSONVerbs.swift; sourceTree = "<group>"; };
+		6ECCD45C27D7B0170049B9CA /* Word.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Word.swift; path = ../../../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/LanguageEngine/Word.swift; sourceTree = "<group>"; };
+		6ECCD46827D7D4790049B9CA /* JSONWordCollectionStructs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONWordCollectionStructs.swift; path = "../../../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/JSON Lesson Bundle Phrase and Collection/JSONWordCollectionStructs.swift"; sourceTree = "<group>"; };
+		6ECCD47227D801D50049B9CA /* WordCollectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCollectionScreen.swift; sourceTree = "<group>"; };
+		6ECCD47427D8295D0049B9CA /* LanguageEngineFiltered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineFiltered.swift; sourceTree = "<group>"; };
+		6ECCD47627D900700049B9CA /* VerbMorphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbMorphView.swift; sourceTree = "<group>"; };
+		6ECCD47827D928790049B9CA /* ColorExtender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtender.swift; sourceTree = "<group>"; };
+		6ECCD47C27D96BAA0049B9CA /* AnalyzeUserVerbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeUserVerbView.swift; sourceTree = "<group>"; };
+		6ECCD48027DBDEA40049B9CA /* LanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageView.swift; sourceTree = "<group>"; };
+		6ECCD48227DBDEC60049B9CA /* TenseSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenseSelectionView.swift; sourceTree = "<group>"; };
+		6ECCD48427DBDF200049B9CA /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		6ECCD48727DBE3600049B9CA /* LanguageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageViewModel.swift; sourceTree = "<group>"; };
+		6ECCD48927DC02A30049B9CA /* LanguageEngineViewFilteredVerbs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineViewFilteredVerbs.swift; sourceTree = "<group>"; };
+		6ECCD48B27DC02F80049B9CA /* LanguageEngineViewVerbCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineViewVerbCube.swift; sourceTree = "<group>"; };
+		6ECCD48D27DC03100049B9CA /* LanguageEngineViewQuizCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineViewQuizCube.swift; sourceTree = "<group>"; };
+		6ECDC6CA28032EF6004083BA /* UnconjugateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconjugateView.swift; sourceTree = "<group>"; };
+		6ED156682849121C00BF0EEA /* ListModelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModelsView.swift; sourceTree = "<group>"; };
+		6ED179C52803986D00B23F3E /* WordCellViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCellViews.swift; sourceTree = "<group>"; };
+		6ED2A5B327BDADC400164F80 /* Verbs of a Feather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Verbs of a Feather.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6ED2A5B627BDADC400164F80 /* Feather2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feather2App.swift; sourceTree = "<group>"; };
+		6ED2A5B827BDADC400164F80 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6ED2A5BA27BDADC800164F80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6ED2A5BD27BDADC800164F80 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6ED375422819F2380034DB47 /* RightWrongVerbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightWrongVerbView.swift; sourceTree = "<group>"; };
+		6ED37544281B3DB20034DB47 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		6EDADC2628C63D2D00C117AD /* PopupCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupCellView.swift; sourceTree = "<group>"; };
+		6EDADC2828C68B1A00C117AD /* StudentLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLevel.swift; sourceTree = "<group>"; };
+		6EDADC2A28C7D6DE00C117AD /* ThreeVerbSimpleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeVerbSimpleView.swift; sourceTree = "<group>"; };
+		6EDADC2C28C8008400C117AD /* VerbCubeDirectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeDirectorView.swift; sourceTree = "<group>"; };
+		6EDADC2E28C802CA00C117AD /* QuizCubeDirectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCubeDirectorView.swift; sourceTree = "<group>"; };
+		6EDADC3028C9205800C117AD /* LanguageEngineStudentLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineStudentLevel.swift; sourceTree = "<group>"; };
+		6EDADC3228C936E600C117AD /* LanguageViewStudentLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageViewStudentLevel.swift; sourceTree = "<group>"; };
+		6EDADC3928D110BC00C117AD /* GeneralLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralLessonView.swift; sourceTree = "<group>"; };
+		6EDADC3B28D110CC00C117AD /* PatternLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternLessonView.swift; sourceTree = "<group>"; };
+		6EDADC3D28D110DE00C117AD /* ModelLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLessonView.swift; sourceTree = "<group>"; };
+		6EDADC8528D660A400C117AD /* StudentTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentTestView.swift; sourceTree = "<group>"; };
+		6EDADC8728D6610700C117AD /* FlashCardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashCardManager.swift; sourceTree = "<group>"; };
+		6EDE944E2814419900C1A3DB /* QuizVerbSingleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizVerbSingleView.swift; sourceTree = "<group>"; };
+		6EDE945028148D5700C1A3DB /* PatternRecognitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternRecognitionView.swift; sourceTree = "<group>"; };
+		6EDE94522815E45300C1A3DB /* LanguageEngineVerbModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineVerbModel.swift; sourceTree = "<group>"; };
+		6EE2B0C228319D6600E239CC /* BehavioralVerbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehavioralVerbView.swift; sourceTree = "<group>"; };
+		6EE2B0C42831DCD600E239CC /* LanguageEngineBehavioral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineBehavioral.swift; sourceTree = "<group>"; };
+		6EE480B528106E270091F1D5 /* View Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View Extensions.swift"; sourceTree = "<group>"; };
+		6EE480B72811AFA70091F1D5 /* QuizVerbViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizVerbViewExtensions.swift; sourceTree = "<group>"; };
+		6EE9B1E328FDFA09003B9155 /* CoreDataUtilitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUtilitiesView.swift; sourceTree = "<group>"; };
+		6EEA2AB5286231E400F7296D /* AudibleStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudibleStyleView.swift; sourceTree = "<group>"; };
+		6EF1762C27E14C9E0010B8DA /* ViewWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewWrappers.swift; sourceTree = "<group>"; };
+		6EF2D5BD28578AF800B8839B /* FivePartVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FivePartVerb.swift; sourceTree = "<group>"; };
+		6EF60AE2283BFF05007E61F3 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
+		6EF60AE4283E7ECB007E61F3 /* MultipleChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceView.swift; sourceTree = "<group>"; };
+		6EF60AE628412D80007E61F3 /* StudentScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentScoreView.swift; sourceTree = "<group>"; };
+		6EF60AE92842B84E007E61F3 /* StudentScoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentScoreModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6ED2A5B027BDADC400164F80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E9A66B928F1F459007BC0C3 /* RealmSwift in Frameworks */,
+				6E9A66B728F1F459007BC0C3 /* Realm in Frameworks */,
+				6E6CA06927C40B2000CCD8BE /* JumpLinguaHelpers in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6E2174E1289857630066C234 /* DisclosureViews - Help */ = {
+			isa = PBXGroup;
+			children = (
+				6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */,
+				6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */,
+				6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */,
+				6E447CA628AAA4A900528DD9 /* DisclosureGroupTeachMe.swift */,
+				6E447CA828AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift */,
+				6E447CAA28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift */,
+				6E447D2328B5256600528DD9 /* Disclosure Beginner Level 1 .swift */,
+			);
+			path = "DisclosureViews - Help";
+			sourceTree = "<group>";
+		};
+		6E257DBB28988C41007D7314 /* Views on Hold */ = {
+			isa = PBXGroup;
+			children = (
+				6E2174E1289857630066C234 /* DisclosureViews - Help */,
+				6EBB89332820742E00A49376 /* TabEnum.swift */,
+				6E69297427D152E0003BCD71 /* CustomActionSheet.swift */,
+				6E229CB127C98776009F8E02 /* ToggleItem.swift */,
+				6ED2A5B827BDADC400164F80 /* ContentView.swift */,
+				6EA80F3D27BEA51300D6061F /* TabStackContainerView.swift */,
+				6EA80F2927BDB96C00D6061F /* LanguageEngineContainer.swift */,
+				6E229CAF27C982B5009F8E02 /* CustomToggleStyle.swift */,
+				6EDE945028148D5700C1A3DB /* PatternRecognitionView.swift */,
+				6E417481289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift */,
+				6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */,
+				6E41748928A01F7500EB5C00 /* FindMyVerbDispatcher.swift */,
+				6E41748B28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift */,
+				6E447C9028A1831A00528DD9 /* TeachMeARegularVerb.swift */,
+				6EE2B0C228319D6600E239CC /* BehavioralVerbView.swift */,
+				6E447CA228A81A8700528DD9 /* TeachMeAPatternVerb.swift */,
+				6ECCD47227D801D50049B9CA /* WordCollectionScreen.swift */,
+				6EDADC3B28D110CC00C117AD /* PatternLessonView.swift */,
+			);
+			path = "Views on Hold";
+			sourceTree = "<group>";
+		};
+		6E447C9D28A5571B00528DD9 /* Next time */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Next time";
+			sourceTree = "<group>";
+		};
+		6E447D0428B3D7D600528DD9 /* QuizCube */ = {
+			isa = PBXGroup;
+			children = (
+				6EE480B72811AFA70091F1D5 /* QuizVerbViewExtensions.swift */,
+				6EA80F3F27BEE16C00D6061F /* VerbCubeView.swift */,
+				6E69297827D2745A003BCD71 /* QuizCubeWatcher.swift */,
+				6EA80F3027BDBC2E00D6061F /* VerbCubeConjugationStringHandlerStruct.swift */,
+				6E69297C27D2C6D0003BCD71 /* QuizCubeHandlerClass.swift */,
+				6E69298127D2DCA6003BCD71 /* VerbCubeHandlerClass.swift */,
+				6E447D0528B3D7D600528DD9 /* QuizCubeView2.swift */,
+				6E447D0628B3D7D600528DD9 /* QuizVerbView.swift */,
+				6E447D0728B3D7D600528DD9 /* QuizCubeOptionsView2.swift */,
+				6EDADC2C28C8008400C117AD /* VerbCubeDirectorView.swift */,
+				6EDADC2E28C802CA00C117AD /* QuizCubeDirectorView.swift */,
+			);
+			path = QuizCube;
+			sourceTree = "<group>";
+		};
+		6E447D2028B3E75900528DD9 /* StudentLessons */ = {
+			isa = PBXGroup;
+			children = (
+				6E447D2128B3E78900528DD9 /* StudentLessonStruct.swift */,
+			);
+			path = StudentLessons;
+			sourceTree = "<group>";
+		};
+		6E7C173428DCA31100CDF941 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				6E7C175A28DE1E4000CDF941 /* JumpLinguaHelpers */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		6E7C176128EF815800CDF941 /* SwiftUI_Views Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6E7C176228EF81C200CDF941 /* HeaderView.swift */,
+			);
+			path = "SwiftUI_Views Resources";
+			sourceTree = "<group>";
+		};
+		6E9A669028F1D5A6007BC0C3 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				6E9A66B328F1E017007BC0C3 /* VerbModelEntityCoreData.swift */,
+				6E9A673728F87F1E007BC0C3 /* VerbModelContainer.xcdatamodeld */,
+				6EE9B1E328FDFA09003B9155 /* CoreDataUtilitiesView.swift */,
+				6E7BC3362901B163004708AC /* VerbModelEntityCoreDataManager.swift */,
+				6E7BC33E2902F61F004708AC /* VerbModelGroupManager.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		6EA80F1527BDB23000D6061F /* LanguageEngine */ = {
+			isa = PBXGroup;
+			children = (
+				6EA80F1827BDB27800D6061F /* LanguageEngine.swift */,
+				6EDE94522815E45300C1A3DB /* LanguageEngineVerbModel.swift */,
+				6EDADC3028C9205800C117AD /* LanguageEngineStudentLevel.swift */,
+				6E69297627D25E76003BCD71 /* LanguageEngineVerbCube.swift */,
+				6EC3085E27D3CD630056F8F7 /* LanguageEngineQuizCube.swift */,
+				6ECCD47427D8295D0049B9CA /* LanguageEngineFiltered.swift */,
+				6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */,
+				6EE2B0C42831DCD600E239CC /* LanguageEngineBehavioral.swift */,
+			);
+			path = LanguageEngine;
+			sourceTree = "<group>";
+		};
+		6EA80F2527BDB6C600D6061F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6EA80F3627BDC73500D6061F /* ViewHelpers */,
+				6EA80F2627BDB6D700D6061F /* Views */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6EA80F2627BDB6D700D6061F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6EDADC8428D6608A00C117AD /* Utilities */,
+				6E447D0428B3D7D600528DD9 /* QuizCube */,
+				6EE2B0C128319D3500E239CC /* HomeViews */,
+				6EBB895128283FD600A49376 /* LookViews */,
+				6EBB895028283F3700A49376 /* LearnViews */,
+				6EBB894F28283EF100A49376 /* TestViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6EA80F2F27BDBBED00D6061F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6EA80F3227BDBE0600D6061F /* VerbCubeXYZ.swift */,
+				6E6CA07027C5441800CCD8BE /* VerbCubeCellInfo.swift */,
+				6E6CA07227C55E6200CCD8BE /* CellData.swift */,
+				6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */,
+				6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */,
+				6EAD5FEF27D42A8200027A49 /* ViewModifiers.swift */,
+				6ECCD47827D928790049B9CA /* ColorExtender.swift */,
+				6EA29CAA27E792F100CE0372 /* WordCellButton.swift */,
+				6ED179C52803986D00B23F3E /* WordCellViews.swift */,
+				6ED37544281B3DB20034DB47 /* ProgressBar.swift */,
+				6EB4821A285009DB000CB206 /* VerbUtilitiesExtra.swift */,
+				6E02076A2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift */,
+				6EF2D5BD28578AF800B8839B /* FivePartVerb.swift */,
+				6E05543A28762034007CE454 /* ModelVerbTenseView.swift */,
+				6E0A6D3D2884AFD4009234C0 /* TextToSpeech.swift */,
+				6E447CA028A7FEE800528DD9 /* MultipleChoiceModeEnum.swift */,
+				6EDADC2628C63D2D00C117AD /* PopupCellView.swift */,
+				6EDADC2828C68B1A00C117AD /* StudentLevel.swift */,
+				6E7BC34029031508004708AC /* VerbAndModelSublistUtilties.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6EA80F3627BDC73500D6061F /* ViewHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				6EF1762C27E14C9E0010B8DA /* ViewWrappers.swift */,
+				6EA80F3427BDC65800D6061F /* VerbCubeCellView.swift */,
+				6EA80F3727BDC77400D6061F /* InteractiveVerbCubeCellView.swift */,
+				6E6CA06C27C4599400CCD8BE /* QuizCubeCellView.swift */,
+				6ECCD48427DBDF200049B9CA /* PreferencesView.swift */,
+				6EE480B528106E270091F1D5 /* View Extensions.swift */,
+				6EF60AE2283BFF05007E61F3 /* CustomAlertView.swift */,
+				6E447C9E28A6F64D00528DD9 /* ButtonAnimationView.swift */,
+				6E447CB128B02D8600528DD9 /* ItemsToolbar.swift */,
+				6E62C6CC28B95A7600AD64FC /* Flashcard.swift */,
+			);
+			path = ViewHelpers;
+			sourceTree = "<group>";
+		};
+		6EBAC2F827F7598C004DB5D1 /* DragDrop */ = {
+			isa = PBXGroup;
+			children = (
+				6EBAC2F627F758DE004DB5D1 /* DragDropVerbSubjectView.swift */,
+				6EBAC2F927F759B1004DB5D1 /* DragDropUtilities.swift */,
+			);
+			path = DragDrop;
+			sourceTree = "<group>";
+		};
+		6EBB894F28283EF100A49376 /* TestViews */ = {
+			isa = PBXGroup;
+			children = (
+				6EDADC8728D6610700C117AD /* FlashCardManager.swift */,
+				6EDADC8528D660A400C117AD /* StudentTestView.swift */,
+				6EB48218284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift */,
+				6EDE944E2814419900C1A3DB /* QuizVerbSingleView.swift */,
+				6EBB894D28283EC800A49376 /* MixAndMatchView.swift */,
+				6EF60AE4283E7ECB007E61F3 /* MultipleChoiceView.swift */,
+				6EF60AE628412D80007E61F3 /* StudentScoreView.swift */,
+			);
+			path = TestViews;
+			sourceTree = "<group>";
+		};
+		6EBB895028283F3700A49376 /* LearnViews */ = {
+			isa = PBXGroup;
+			children = (
+				6E978AD7285925BA0085EA4D /* FeatherVerbStepView.swift */,
+				6EBAC2F827F7598C004DB5D1 /* DragDrop */,
+				6EDADC2A28C7D6DE00C117AD /* ThreeVerbSimpleView.swift */,
+				6ECCD47627D900700049B9CA /* VerbMorphView.swift */,
+				6EBAC2EC27F39A5C004DB5D1 /* MultiVerbMorphView.swift */,
+			);
+			path = LearnViews;
+			sourceTree = "<group>";
+		};
+		6EBB895128283FD600A49376 /* LookViews */ = {
+			isa = PBXGroup;
+			children = (
+				6E36E3A928B6D0680024C180 /* ThreeVerbView.swift */,
+				6E447C9B28A4710700528DD9 /* SimpleVerbConjugation.swift */,
+				6ED375422819F2380034DB47 /* RightWrongVerbView.swift */,
+			);
+			path = LookViews;
+			sourceTree = "<group>";
+		};
+		6ECCD45527D7A8500049B9CA /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				6ECCD45827D7A9DC0049B9CA /* JSONVerbs.swift */,
+				6ECCD45C27D7B0170049B9CA /* Word.swift */,
+				6ECCD46827D7D4790049B9CA /* JSONWordCollectionStructs.swift */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
+		6ECCD48627DBE3270049B9CA /* LanguageEngineView */ = {
+			isa = PBXGroup;
+			children = (
+				6ECCD48727DBE3600049B9CA /* LanguageViewModel.swift */,
+				6EAB1D642818461800C7251C /* LanguageEngineViewVerbModel.swift */,
+				6ECCD48927DC02A30049B9CA /* LanguageEngineViewFilteredVerbs.swift */,
+				6ECCD48B27DC02F80049B9CA /* LanguageEngineViewVerbCube.swift */,
+				6ECCD48D27DC03100049B9CA /* LanguageEngineViewQuizCube.swift */,
+				6EDADC3228C936E600C117AD /* LanguageViewStudentLevel.swift */,
+			);
+			name = LanguageEngineView;
+			path = LanguageEngine/LanguageEngineView;
+			sourceTree = "<group>";
+		};
+		6ED2A5AA27BDADC400164F80 = {
+			isa = PBXGroup;
+			children = (
+				6E7C173428DCA31100CDF941 /* Packages */,
+				6ED2A5B527BDADC400164F80 /* Feather2 */,
+				6ED2A5B427BDADC400164F80 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6ED2A5B427BDADC400164F80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6ED2A5B327BDADC400164F80 /* Verbs of a Feather.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6ED2A5B527BDADC400164F80 /* Feather2 */ = {
+			isa = PBXGroup;
+			children = (
+				6ED2A5B627BDADC400164F80 /* Feather2App.swift */,
+				6E9A669028F1D5A6007BC0C3 /* Core Data */,
+				6E7C176128EF815800CDF941 /* SwiftUI_Views Resources */,
+				6E447D2028B3E75900528DD9 /* StudentLessons */,
+				6E447C9D28A5571B00528DD9 /* Next time */,
+				6E257DBB28988C41007D7314 /* Views on Hold */,
+				6ED2A5BA27BDADC800164F80 /* Assets.xcassets */,
+				6EA80F2F27BDBBED00D6061F /* Helpers */,
+				6ECCD45527D7A8500049B9CA /* JSON */,
+				6EA80F1527BDB23000D6061F /* LanguageEngine */,
+				6ECCD48627DBE3270049B9CA /* LanguageEngineView */,
+				6EA3FF6127FE1FAE0042676E /* LaunchScreen.storyboard */,
+				6ED2A5BC27BDADC800164F80 /* Preview Content */,
+				6EA80F2527BDB6C600D6061F /* View */,
+			);
+			path = Feather2;
+			sourceTree = "<group>";
+		};
+		6ED2A5BC27BDADC800164F80 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				6ED2A5BD27BDADC800164F80 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		6EDADC8428D6608A00C117AD /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				6EF60AE82842B82E007E61F3 /* StudentScores */,
+				6ECCD48027DBDEA40049B9CA /* LanguageView.swift */,
+				6ECDC6CA28032EF6004083BA /* UnconjugateView.swift */,
+				6ECB854727E52AA30092033B /* FindVerbsView.swift */,
+				6ECCD47C27D96BAA0049B9CA /* AnalyzeUserVerbView.swift */,
+				6ECCD48227DBDEC60049B9CA /* TenseSelectionView.swift */,
+				6EEA2AB5286231E400F7296D /* AudibleStyleView.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		6EE2B0C128319D3500E239CC /* HomeViews */ = {
+			isa = PBXGroup;
+			children = (
+				6EB76D652899A91D00E65641 /* PreferencesButtonView.swift */,
+				6EDADC3928D110BC00C117AD /* GeneralLessonView.swift */,
+				6EDADC3D28D110DE00C117AD /* ModelLessonView.swift */,
+				6E447C9228A29ED900528DD9 /* TeachMeAModelVerb.swift */,
+				6EA6639728DBC527005D25D8 /* ModelVerbChartView.swift */,
+				6EBB893E2821A89800A49376 /* TabBarClassic.swift */,
+				6ED156682849121C00BF0EEA /* ListModelsView.swift */,
+				6E7C175F28E64A9E00CDF941 /* HomemadeBarChartView.swift */,
+			);
+			path = HomeViews;
+			sourceTree = "<group>";
+		};
+		6EF60AE82842B82E007E61F3 /* StudentScores */ = {
+			isa = PBXGroup;
+			children = (
+				6EF60AE92842B84E007E61F3 /* StudentScoreModel.swift */,
+			);
+			path = StudentScores;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6ED2A5B227BDADC400164F80 /* Feather2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6ED2A5C127BDADC800164F80 /* Build configuration list for PBXNativeTarget "Feather2" */;
+			buildPhases = (
+				6ED2A5AF27BDADC400164F80 /* Sources */,
+				6ED2A5B027BDADC400164F80 /* Frameworks */,
+				6ED2A5B127BDADC400164F80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Feather2;
+			packageProductDependencies = (
+				6E6CA06827C40B2000CCD8BE /* JumpLinguaHelpers */,
+				6E9A66B628F1F459007BC0C3 /* Realm */,
+				6E9A66B828F1F459007BC0C3 /* RealmSwift */,
+			);
+			productName = VerbCubeIVO;
+			productReference = 6ED2A5B327BDADC400164F80 /* Verbs of a Feather.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6ED2A5AB27BDADC400164F80 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
+				TargetAttributes = {
+					6ED2A5B227BDADC400164F80 = {
+						CreatedOnToolsVersion = 13.0;
+					};
+				};
+			};
+			buildConfigurationList = 6ED2A5AE27BDADC400164F80 /* Build configuration list for PBXProject "Feather2" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6ED2A5AA27BDADC400164F80;
+			packageReferences = (
+				6E6CA06727C40B2000CCD8BE /* XCRemoteSwiftPackageReference "JumpLinguaHelpers" */,
+				6E9A66B528F1F459007BC0C3 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
+			productRefGroup = 6ED2A5B427BDADC400164F80 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6ED2A5B227BDADC400164F80 /* Feather2 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6ED2A5B127BDADC400164F80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EA3FF6227FE1FAE0042676E /* LaunchScreen.storyboard in Resources */,
+				6ED2A5BE27BDADC800164F80 /* Preview Assets.xcassets in Resources */,
+				6ED2A5BB27BDADC800164F80 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6ED2A5AF27BDADC400164F80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E7BC33F2902F61F004708AC /* VerbModelGroupManager.swift in Sources */,
+				6EA80F1927BDB27800D6061F /* LanguageEngine.swift in Sources */,
+				6E417482289EC08B00EB5C00 /* TeachMeModelBasedVerbConjugation.swift in Sources */,
+				6E229CA227C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift in Sources */,
+				6ECCD48327DBDEC60049B9CA /* TenseSelectionView.swift in Sources */,
+				6E447CB228B02D8600528DD9 /* ItemsToolbar.swift in Sources */,
+				6ECCD48127DBDEA40049B9CA /* LanguageView.swift in Sources */,
+				6ECCD47D27D96BAA0049B9CA /* AnalyzeUserVerbView.swift in Sources */,
+				6EA29CAB27E792F100CE0372 /* WordCellButton.swift in Sources */,
+				6ED179C62803986D00B23F3E /* WordCellViews.swift in Sources */,
+				6EAD5FF027D42A8200027A49 /* ViewModifiers.swift in Sources */,
+				6E41748A28A01F7500EB5C00 /* FindMyVerbDispatcher.swift in Sources */,
+				6E447CA128A7FEE800528DD9 /* MultipleChoiceModeEnum.swift in Sources */,
+				6E9A66B428F1E017007BC0C3 /* VerbModelEntityCoreData.swift in Sources */,
+				6EDADC2728C63D2D00C117AD /* PopupCellView.swift in Sources */,
+				6EA6639828DBC527005D25D8 /* ModelVerbChartView.swift in Sources */,
+				6ECCD47527D8295D0049B9CA /* LanguageEngineFiltered.swift in Sources */,
+				6EBAC2ED27F39A5C004DB5D1 /* MultiVerbMorphView.swift in Sources */,
+				6E978AD8285925BA0085EA4D /* FeatherVerbStepView.swift in Sources */,
+				6E69297D27D2C6D1003BCD71 /* QuizCubeHandlerClass.swift in Sources */,
+				6E447C9F28A6F64D00528DD9 /* ButtonAnimationView.swift in Sources */,
+				6EDADC3128C9205800C117AD /* LanguageEngineStudentLevel.swift in Sources */,
+				6ECCD47727D900700049B9CA /* VerbMorphView.swift in Sources */,
+				6EBB89342820742E00A49376 /* TabEnum.swift in Sources */,
+				6EDE945128148D5700C1A3DB /* PatternRecognitionView.swift in Sources */,
+				6EA80F2A27BDB96C00D6061F /* LanguageEngineContainer.swift in Sources */,
+				6E447CA928AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift in Sources */,
+				6E7C176328EF81C200CDF941 /* HeaderView.swift in Sources */,
+				6E62C6CD28B95A7600AD64FC /* Flashcard.swift in Sources */,
+				6EDADC3328C936E600C117AD /* LanguageViewStudentLevel.swift in Sources */,
+				6E229CB227C98776009F8E02 /* ToggleItem.swift in Sources */,
+				6E69298227D2DCA6003BCD71 /* VerbCubeHandlerClass.swift in Sources */,
+				6ECB854827E52AA30092033B /* FindVerbsView.swift in Sources */,
+				6EDADC8628D660A400C117AD /* StudentTestView.swift in Sources */,
+				6EBB893F2821A89900A49376 /* TabBarClassic.swift in Sources */,
+				6EF60AEA2842B84E007E61F3 /* StudentScoreModel.swift in Sources */,
+				6EF1762D27E14C9E0010B8DA /* ViewWrappers.swift in Sources */,
+				6E7BC3372901B163004708AC /* VerbModelEntityCoreDataManager.swift in Sources */,
+				6E02076B2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift in Sources */,
+				6E447C9328A29ED900528DD9 /* TeachMeAModelVerb.swift in Sources */,
+				6E6CA06D27C4599400CCD8BE /* QuizCubeCellView.swift in Sources */,
+				6EE9B1E428FDFA09003B9155 /* CoreDataUtilitiesView.swift in Sources */,
+				6EA80F3E27BEA51300D6061F /* TabStackContainerView.swift in Sources */,
+				6EF60AE728412D80007E61F3 /* StudentScoreView.swift in Sources */,
+				6EEA2AB6286231E500F7296D /* AudibleStyleView.swift in Sources */,
+				6E447CA328A81A8700528DD9 /* TeachMeAPatternVerb.swift in Sources */,
+				6EAB1D652818461800C7251C /* LanguageEngineViewVerbModel.swift in Sources */,
+				6EDADC2928C68B1A00C117AD /* StudentLevel.swift in Sources */,
+				6EA80F3127BDBC2E00D6061F /* VerbCubeConjugationStringHandlerStruct.swift in Sources */,
+				6E69297727D25E76003BCD71 /* LanguageEngineVerbCube.swift in Sources */,
+				6E447C9C28A4710800528DD9 /* SimpleVerbConjugation.swift in Sources */,
+				6E69297527D152E0003BCD71 /* CustomActionSheet.swift in Sources */,
+				6ECCD45D27D7B0170049B9CA /* Word.swift in Sources */,
+				6E447D0A28B3D7D600528DD9 /* QuizCubeOptionsView2.swift in Sources */,
+				6EB757E627E90ED8005ADA66 /* LanguageEngineRealm.swift in Sources */,
+				6E6CA07127C5441800CCD8BE /* VerbCubeCellInfo.swift in Sources */,
+				6EB4821B285009DB000CB206 /* VerbUtilitiesExtra.swift in Sources */,
+				6E41748C28A0250300EB5C00 /* ShowMeVerbsPatternsAndModels.swift in Sources */,
+				6EBAC2F727F758DF004DB5D1 /* DragDropVerbSubjectView.swift in Sources */,
+				6EDADC3C28D110CC00C117AD /* PatternLessonView.swift in Sources */,
+				6E229CA027C68A26009F8E02 /* ShowWordTypeEnum.swift in Sources */,
+				6EDADC3E28D110DE00C117AD /* ModelLessonView.swift in Sources */,
+				6EBAC2FA27F759B1004DB5D1 /* DragDropUtilities.swift in Sources */,
+				6EE2B0C52831DCD600E239CC /* LanguageEngineBehavioral.swift in Sources */,
+				6EDE94532815E45500C1A3DB /* LanguageEngineVerbModel.swift in Sources */,
+				6EDE944F2814419900C1A3DB /* QuizVerbSingleView.swift in Sources */,
+				6EC3085F27D3CD630056F8F7 /* LanguageEngineQuizCube.swift in Sources */,
+				6E447D0828B3D7D600528DD9 /* QuizCubeView2.swift in Sources */,
+				6EBB894E28283EC900A49376 /* MixAndMatchView.swift in Sources */,
+				6E6CA07327C55E6200CCD8BE /* CellData.swift in Sources */,
+				6E447D2428B5256600528DD9 /* Disclosure Beginner Level 1 .swift in Sources */,
+				6EB48219284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift in Sources */,
+				6ED156692849121C00BF0EEA /* ListModelsView.swift in Sources */,
+				6EDADC8828D6610700C117AD /* FlashCardManager.swift in Sources */,
+				6E2174E5289857F70066C234 /* DisclosureGroupPreferences.swift in Sources */,
+				6EE480B82811AFA70091F1D5 /* QuizVerbViewExtensions.swift in Sources */,
+				6ECCD48A27DC02A40049B9CA /* LanguageEngineViewFilteredVerbs.swift in Sources */,
+				6ECCD47327D801D50049B9CA /* WordCollectionScreen.swift in Sources */,
+				6E0A6D3E2884AFD4009234C0 /* TextToSpeech.swift in Sources */,
+				6EDADC2F28C802CA00C117AD /* QuizCubeDirectorView.swift in Sources */,
+				6EB76D662899A91E00E65641 /* PreferencesButtonView.swift in Sources */,
+				6E2174E728985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift in Sources */,
+				6ED37545281B3DB30034DB47 /* ProgressBar.swift in Sources */,
+				6ECCD48E27DC03100049B9CA /* LanguageEngineViewQuizCube.swift in Sources */,
+				6ECCD45927D7A9DC0049B9CA /* JSONVerbs.swift in Sources */,
+				6ECCD46927D7D4790049B9CA /* JSONWordCollectionStructs.swift in Sources */,
+				6E447CA728AAA4A900528DD9 /* DisclosureGroupTeachMe.swift in Sources */,
+				6E05543B28762034007CE454 /* ModelVerbTenseView.swift in Sources */,
+				6E2174E3289857A60066C234 /* DisclosureGroupMain.swift in Sources */,
+				6ECCD47927D928790049B9CA /* ColorExtender.swift in Sources */,
+				6EE2B0C328319D6600E239CC /* BehavioralVerbView.swift in Sources */,
+				6E447C9128A1831A00528DD9 /* TeachMeARegularVerb.swift in Sources */,
+				6E36E3AA28B6D0680024C180 /* ThreeVerbView.swift in Sources */,
+				6ED2A5B927BDADC400164F80 /* ContentView.swift in Sources */,
+				6E447D2228B3E78900528DD9 /* StudentLessonStruct.swift in Sources */,
+				6ECDC6CB28032EF6004083BA /* UnconjugateView.swift in Sources */,
+				6EF2D5BE28578AF800B8839B /* FivePartVerb.swift in Sources */,
+				6EA80F3327BDBE0600D6061F /* VerbCubeXYZ.swift in Sources */,
+				6EDADC2D28C8008400C117AD /* VerbCubeDirectorView.swift in Sources */,
+				6EF60AE3283BFF06007E61F3 /* CustomAlertView.swift in Sources */,
+				6E69297927D2745A003BCD71 /* QuizCubeWatcher.swift in Sources */,
+				6ED2A5B727BDADC400164F80 /* Feather2App.swift in Sources */,
+				6ECCD48C27DC02F80049B9CA /* LanguageEngineViewVerbCube.swift in Sources */,
+				6E447D0928B3D7D600528DD9 /* QuizVerbView.swift in Sources */,
+				6E417484289EF0CA00EB5C00 /* TeachMeCommonControls.swift in Sources */,
+				6EA80F3827BDC77400D6061F /* InteractiveVerbCubeCellView.swift in Sources */,
+				6EF60AE5283E7ECC007E61F3 /* MultipleChoiceView.swift in Sources */,
+				6ECCD48827DBE3600049B9CA /* LanguageViewModel.swift in Sources */,
+				6E7BC34129031508004708AC /* VerbAndModelSublistUtilties.swift in Sources */,
+				6EDADC3A28D110BC00C117AD /* GeneralLessonView.swift in Sources */,
+				6E447CAB28AAA4F400528DD9 /* DisclosureGroupFindMyVerb.swift in Sources */,
+				6EE480B628106E270091F1D5 /* View Extensions.swift in Sources */,
+				6EDADC2B28C7D6DE00C117AD /* ThreeVerbSimpleView.swift in Sources */,
+				6EA80F3527BDC65800D6061F /* VerbCubeCellView.swift in Sources */,
+				6E9A673928F87F1E007BC0C3 /* VerbModelContainer.xcdatamodeld in Sources */,
+				6E229CB027C982B5009F8E02 /* CustomToggleStyle.swift in Sources */,
+				6EA80F4027BEE16C00D6061F /* VerbCubeView.swift in Sources */,
+				6ED375432819F2380034DB47 /* RightWrongVerbView.swift in Sources */,
+				6E7C176028E64A9E00CDF941 /* HomemadeBarChartView.swift in Sources */,
+				6ECCD48527DBDF200049B9CA /* PreferencesView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6ED2A5BF27BDADC800164F80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6ED2A5C027BDADC800164F80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6ED2A5C227BDADC800164F80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Feather2/Preview Content\"";
+				DEVELOPMENT_TEAM = 4NB5TKGZKF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Feather 2";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.Feather2;
+				PRODUCT_NAME = "Verbs of a Feather";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		6ED2A5C327BDADC800164F80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Feather2/Preview Content\"";
+				DEVELOPMENT_TEAM = 4NB5TKGZKF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Feather 2";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.Feather2;
+				PRODUCT_NAME = "Verbs of a Feather";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6ED2A5AE27BDADC400164F80 /* Build configuration list for PBXProject "Feather2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6ED2A5BF27BDADC800164F80 /* Debug */,
+				6ED2A5C027BDADC800164F80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6ED2A5C127BDADC800164F80 /* Build configuration list for PBXNativeTarget "Feather2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6ED2A5C227BDADC800164F80 /* Debug */,
+				6ED2A5C327BDADC800164F80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6E6CA06727C40B2000CCD8BE /* XCRemoteSwiftPackageReference "JumpLinguaHelpers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChuckDiggins/JumpLinguaHelpers.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.3;
+			};
+		};
+		6E9A66B528F1F459007BC0C3 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6E6CA06827C40B2000CCD8BE /* JumpLinguaHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E6CA06727C40B2000CCD8BE /* XCRemoteSwiftPackageReference "JumpLinguaHelpers" */;
+			productName = JumpLinguaHelpers;
+		};
+		6E9A66B628F1F459007BC0C3 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E9A66B528F1F459007BC0C3 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		6E9A66B828F1F459007BC0C3 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E9A66B528F1F459007BC0C3 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		6E9A673728F87F1E007BC0C3 /* VerbModelContainer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6E9A673828F87F1E007BC0C3 /* VerbModelContainer.xcdatamodel */,
+			);
+			currentVersion = 6E9A673828F87F1E007BC0C3 /* VerbModelContainer.xcdatamodel */;
+			path = VerbModelContainer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 6ED2A5AB27BDADC400164F80 /* Project object */;
+}
