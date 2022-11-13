@@ -17,11 +17,12 @@ func textToSpeech(text: String, language: LanguageType ){
     case .French:
         utterance.voice = AVSpeechSynthesisVoice(language:  "fr-FR")
     case .English:
-        utterance.voice = AVSpeechSynthesisVoice(language:  "en-US")
+//        utterance.voice = AVSpeechSynthesisVoice(language:  "en-US")
+        utterance.voice = AVSpeechSynthesisVoice(language:  "en-NZ")
     default:
         utterance.voice = AVSpeechSynthesisVoice(language:  "es-US")
     }
-    utterance.rate = 0.43
+    utterance.rate = 0.25
     let synthesizer = AVSpeechSynthesizer()
     synthesizer.speak(utterance)
 }

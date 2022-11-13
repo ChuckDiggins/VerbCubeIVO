@@ -65,6 +65,19 @@ enum StudentScoreEnum : String {
     case pattern = "Patterns"
 }
 
+enum ScoringMode {
+    case practice
+    case test
+}
+
+class StudentScoreModelManager{
+    var scoringMode = ScoringMode.practice
+    var studentScoreModel = StudentScoreModel()
+    
+    
+}
+
+
 class StudentScoreModel {
     
     var verbScoreList = [VerbScore]()
@@ -110,6 +123,7 @@ class StudentScoreModel {
         modelScoreList.removeAll()
         patternScoreList.removeAll()
     }
+    
    func createStudentScoreModels(verbList: [Verb], tenseList: [Tense], personList: [Person],
                                            modelList: [RomanceVerbModel], patternList: [SpecialPatternType]){
        clearAllScores()

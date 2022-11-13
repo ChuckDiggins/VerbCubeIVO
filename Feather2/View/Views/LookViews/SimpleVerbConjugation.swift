@@ -214,8 +214,7 @@ struct PlainSimpleVerbConjugation: View {
 
 struct SimpleVerbConjugation: View {
     @ObservedObject var languageViewModel: LanguageViewModel
-   
-    
+
     @State var currentLanguage = LanguageType.Agnostic
     @State var verb = Verb()
     var residualPhrase: String
@@ -270,7 +269,9 @@ struct SimpleVerbConjugation: View {
                     Text(verbModelString).bold().foregroundColor(Color("BethanyGreenText"))
                     Text("verb model")
                 }.foregroundColor(Color("ChuckText1"))
-               
+//                if ( languageViewModel.getSelectedVerbModelList().count > 1){
+//                    ListVerbModelsView(languageViewModel: languageViewModel, currentModelString: languageViewModel.getSelectedVerbModelList()[0].modelVerb)
+//                }
                 CurrentVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 

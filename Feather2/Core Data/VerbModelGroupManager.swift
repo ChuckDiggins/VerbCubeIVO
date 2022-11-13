@@ -9,29 +9,29 @@ import SwiftUI
 import JumpLinguaHelpers
 
 struct VerbModelGroup{
-    private var verbModelType: VerbModelType
+    private var verbModelType: NewVerbModelType
     private var language: LanguageType
     private var verbModelList = [RomanceVerbModel]()
     
     init(){
-        verbModelType = VerbModelType.undefined
+        verbModelType = NewVerbModelType.undefined
         language = .Agnostic
     }
     
-    init(verbModelType: VerbModelType, language: LanguageType, verbModel: RomanceVerbModel){
+    init(verbModelType: NewVerbModelType, language: LanguageType, verbModel: RomanceVerbModel){
         self.verbModelType = verbModelType
         self.language = language
         self.verbModelList.append(verbModel)
     }
     
-    init(verbModelType: VerbModelType, language: LanguageType, verbModelList: [RomanceVerbModel]){
+    init(verbModelType: NewVerbModelType, language: LanguageType, verbModelList: [RomanceVerbModel]){
         self.verbModelType = verbModelType
         self.language = language
         self.verbModelList = verbModelList
     }
     
     func getName()->String{
-        return verbModelType.rawValue
+        return verbModelType.getTypeName()
     }
     func getVerbModelCount()->Int{
         verbModelList.count
@@ -53,6 +53,10 @@ struct VerbModelGroup{
         if !verbModelExists(verbModel: verbModel){
             verbModelList.append(verbModel)
         }
+    }
+    
+    mutating func setVerbModelList(verbModel: [RomanceVerbModel]){
+        verbModelList = verbModel
     }
     
     func getVerbModelListAtVerbEnding(verbEnding: VerbEnding)->[RomanceVerbModel]{
@@ -97,8 +101,30 @@ struct VerbModelGroupManager{
     }
     
     func getVerbModelListAtVerbEnding(name: String, verbEnding: VerbEnding)->[RomanceVerbModel]{
-        var group = getGroupAtName(name: name)
+        let group = getGroupAtName(name: name)
         return group.getVerbModelListAtVerbEnding(verbEnding: verbEnding)
+    }
+    
+    func getModelListAtSelectedPattern(languageViewModel: LanguageViewModel, inputModelList: [RomanceVerbModel], selectedPattern: SpecialPatternType)->[RomanceVerbModel]{
+        var modelList = [RomanceVerbModel]()
+        for model in inputModelList {
+            var spt = languageViewModel.getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: model, verbType: languageViewModel.getSelectedNewVerbModelType())
+            if spt == selectedPattern {
+                modelList.append(model)
+            }
+        }
+        return modelList
+        
+    }
+    
+    func getModelListAtSelectedVerbModelTypeAndVerbPattern(languageViewModel: LanguageViewModel, inputModelList: [RomanceVerbModel])->[RomanceVerbModel]{
+        let selectedPattern = languageViewModel.getSelectedSpecialPatternType()
+        let selectedType = languageViewModel.getSelectedNewVerbModelType()
+        
+        var modelList = [RomanceVerbModel]()
+        for model in inputModelList {
+        }
+        return modelList
     }
     
 }

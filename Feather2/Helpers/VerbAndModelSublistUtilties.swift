@@ -28,7 +28,7 @@ struct VerbAndModelSublistUtilities{
         var modelDictionary: [String: Int] = [:]
         
         for model in inputModelList {
-            let verbList = languageViewModel.findVerbsOfSameModel(targetID: model.id)
+            let verbList = languageViewModel.findSingletonVerbsOfSameModel(targetID: model.id)
             modelDictionary.updateValue(verbList.count, forKey: model.modelVerb)
         }
         let sortInfo = modelDictionary.sorted(by: { $0.value > $1.value } )

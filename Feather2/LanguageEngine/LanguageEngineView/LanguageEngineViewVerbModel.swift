@@ -11,6 +11,47 @@ import JumpLinguaHelpers
 
 extension LanguageViewModel{
     
+    func setSelectedVerbModelsComplete(){
+        languageEngine.setSelectedVerbModelsComplete()
+    }
+    
+    func restoreSelectedVerbs(){
+        languageEngine.restoreSelectedVerbs()
+    }
+    
+    func setSelectedNewVerbModelType(selectedType : NewVerbModelType){
+        languageEngine.setSelectedNewVerbModelType(selectedType: selectedType)
+    }
+    
+    func getSelectedNewVerbModelType()->NewVerbModelType{
+        languageEngine.getSelectedNewVerbModelType()
+    }
+    
+    func setSelectedSpecialPatternType(selectedPattern : SpecialPatternType){
+        languageEngine.setSelectedSpecialPatternType(selectedPattern: selectedPattern)
+    }
+    
+    func getSelectedSpecialPatternType()->SpecialPatternType{
+        languageEngine.getSelectedSpecialPatternType()
+    }
+    
+    func setCurrentSpecialPatternTypeList(patternList: [SpecialPatternType]){
+        languageEngine.setCurrentSpecialPatternTypeList(patternList: patternList)
+    }
+    
+    func getCurrentSpecialPatternTypeList()->[SpecialPatternType]{
+        languageEngine.selectedSpecialPatternTypeList
+    }
+    
+    
+    func getVerbModelEntityCoreDataManager()->VerbModelEntityCoreDataManager{
+        languageEngine.getVerbModelEntityCoreDataManager()
+    }
+    
+    func setVerbModelEntityCoreDataManager(vmecdm: VerbModelEntityCoreDataManager){
+        languageEngine.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
+    }
+    
     func getVerbModels()->[RomanceVerbModel]{
         languageEngine.getVerbModels()
     }
@@ -19,11 +60,19 @@ extension LanguageViewModel{
         languageEngine.getCurrentVerbModel()
     }
     
+    func fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: Int){
+        languageEngine.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: maxVerbCountPerModel)
+    }
+    
     func setCurrentVerbModel(model: RomanceVerbModel){
         languageEngine.setCurrentVerbModel(model: model)
         setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: getCurrentVerbModel().id)) 
     }
 
+    func getSelectedVerbModelList()->[RomanceVerbModel]{
+        languageEngine.getSelectedVerbModelList()
+    }
+    
     func getModelAtModelWord(modelWord:String)->RomanceVerbModel{
         languageEngine.getModelAtModelWord(modelWord:modelWord)
     }
@@ -56,12 +105,8 @@ extension LanguageViewModel{
         return languageEngine.findVerbsFromSameModel(verb: verb)
     }
     
-    func setCurrentPattern(pattern: SpecialPatternType){
-        languageEngine.setCurrentPattern(pattern: pattern)
-    }
-    
-    func getCurrentPattern()->SpecialPatternType{
-        languageEngine.getCurrentPattern()
+    func getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: RomanceVerbModel, verbType: NewVerbModelType)->SpecialPatternType{
+        languageEngine.getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: verbModel, verbType: verbType)
     }
     
     func getPatternsForVerb(verb: Verb, tense: Tense)->[SpecialPatternStruct]{
@@ -78,6 +123,10 @@ extension LanguageViewModel{
     
     func findVerbsOfSameModel(targetID: Int)->[Verb]{
         return languageEngine.findVerbsOfSameModel(targetID: targetID)
+    }
+    
+    func findSingletonVerbsOfSameModel(targetID: Int)->[Verb]{
+        return languageEngine.findSingletonVerbsOfSameModel(targetID: targetID)
     }
     
     func getModelStringAtTensePerson(bVerb: BRomanceVerb, tense: Tense, person: Person)->(String, String){

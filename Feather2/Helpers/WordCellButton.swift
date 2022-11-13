@@ -74,13 +74,14 @@ struct MatchCellButton: View {
         .font(fontSize)
     }
 }
+
 struct MixCellButton: View {
     var index : Int
     var wordText : String
     var matchText : String
     var matchID : Int
     var backgroundColor = Color.green
-    var foregroundColor =  Color.black
+    var foregroundColor =  Color.yellow
     var fontSize = Font.callout
     var disabled = false
     var function: (_ index: Int, _ matchText: String) -> Void
@@ -91,7 +92,8 @@ struct MixCellButton: View {
         }
         .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
         .background(backgroundColor)
-        .disabled(disabled)
+        .foregroundColor(foregroundColor)
+//        .foregroundColor(disabled ? foregroundColor : backgroundColor)
         .cornerRadius(8)
         .font(fontSize)
     }

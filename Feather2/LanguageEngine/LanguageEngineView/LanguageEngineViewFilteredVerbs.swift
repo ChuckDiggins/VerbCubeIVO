@@ -9,6 +9,8 @@ import Foundation
 import JumpLinguaHelpers
 
 extension LanguageViewModel{
+    
+    
     func clearFilteredVerbList(){
         languageEngine.clearFilteredVerbList()
     }

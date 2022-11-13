@@ -87,8 +87,6 @@ struct TextMorphStruct : Identifiable, Hashable{
 struct VerbMorphView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     
-    //@EnvironmentObject var currentVerbAndTense : CurrentVerbAndTense
-    
     @State var personString = ""
     @State var verbString = ""
     @State var currentLanguage = LanguageType.Spanish
@@ -197,91 +195,17 @@ struct VerbMorphView: View {
                 .ignoresSafeArea()
             
             ScrollView{
-                PreferencesButtonView(languageViewModel: languageViewModel)
+                PreferencesButtonView(languageViewModel: languageViewModel )
                 Text("Verb Morphing").font(.title2).foregroundColor(Color("ChuckText1"))
 //                VerbTenseView(languageViewModel: languageViewModel, mvtp: mvtp, function: setCurrentVerb)
                 CurrentVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 
                 Spacer()
-                    .frame(height: 20)
+//                    .frame(height: 20)
                 
                 //Morphing for each person here ....
-                VStack {
-                    ForEach(personList, id: \.self){person in
-                        
-                        VStack(spacing: 0){
-                            
-                            HStack{
-
-                                // person string here
-
-                                HStack{
-                                    Text(subjunctiveWord)
-                                    Text(getPersonString(person: person))
-                                }
-
-                                //conjugated string here
-
-                                HStack(spacing: 0)
-                                {
-                                if ( tmsList[person.getIndex()].getBold(index: 0) ){
-                                    Text(tmsList[person.getIndex()].getString(index: 0))
-                                        .foregroundColor(tmsList[person.getIndex()].getColor(index: 0))
-                                }
-                                else {
-                                    Text(tmsList[person.getIndex()].getString(index: 0))
-                                        .foregroundColor(tmsList[person.getIndex()].getColor(index: 0))
-                                }
-
-                                if ( tmsList[person.getIndex()].getBold(index: 1) ){
-                                    Text(tmsList[person.getIndex()].getString(index: 1))
-                                        .foregroundColor(tmsList[person.getIndex()].getColor(index: 1))
-                                }
-                                else {
-                                    Text(tmsList[person.getIndex()].getString(index: 1))
-                                        .foregroundColor(tmsList[person.getIndex()].getColor(index: 1))
-                                }
-
-                                if ( tmsList[person.getIndex()].getBold(index: 2) ){
-                                    Text(tmsList[person.getIndex()].getString(index: 2))
-                                        .foregroundColor(tmsList[person.getIndex()].getColor(index: 2))
-                                }
-                                else {
-                                    Text(tmsList[person.getIndex()].getString(index: 2))
-                                        .foregroundColor(tmsList[person.getIndex()].getColor(index: 2))
-                                }
-
-                                }//HStack - conjugated string
-
-                            }.frame(width: 350, height: 25, alignment: .leading)
-                                .padding(.horizontal, 20)
-                            
-                            Button(action: {
-                                showMorph(person: person)
-                                if languageViewModel.isSpeechModeActive(){
-                                    let morphCommentClean = VerbUtilities().removeNonAlphaCharactersButLeaveBlanks(characterArray: commentList[person.getIndex()])
-                                    textToSpeech(text: morphCommentClean, language: .English)
-                                }
-                            }){
-                                HStack{
-                                    Text(commentList[person.getIndex()])
-                                    Spacer()
-                                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-                                }
-                                .frame(width: 350, height: 25)
-                                .padding(.horizontal)
-                                .background(Color("BethanyPurpleButtons"))
-                                .foregroundColor(.white)
-                            }
-                        }.frame(minWidth: 350)
-                            .background(Color("BethanyNavalBackground"))
-                     
-                        
-                    }//for each person
-                    
-                    
-                }//VStack all
+                showMorphs()
                 .onAppear {
                     currentLanguage = languageViewModel.getCurrentLanguage()
                     setCurrentVerb()
@@ -294,6 +218,83 @@ struct VerbMorphView: View {
         
     }//body view
     
+    fileprivate func showMorphs() -> some View {
+        return VStack{
+            ForEach(personList, id: \.self){person in
+                
+                VStack(spacing: 0){
+                    
+                    HStack{
+
+                        // person string here
+
+                        HStack{
+                            Text(subjunctiveWord)
+                            Text(getPersonString(person: person))
+                        }
+
+                        //conjugated string here
+
+                        HStack(spacing: 0)
+                        {
+                        if ( tmsList[person.getIndex()].getBold(index: 0) ){
+                            Text(tmsList[person.getIndex()].getString(index: 0))
+                                .foregroundColor(tmsList[person.getIndex()].getColor(index: 0))
+                        }
+                        else {
+                            Text(tmsList[person.getIndex()].getString(index: 0))
+                                .foregroundColor(tmsList[person.getIndex()].getColor(index: 0))
+                        }
+
+                        if ( tmsList[person.getIndex()].getBold(index: 1) ){
+                            Text(tmsList[person.getIndex()].getString(index: 1))
+                                .foregroundColor(tmsList[person.getIndex()].getColor(index: 1))
+                        }
+                        else {
+                            Text(tmsList[person.getIndex()].getString(index: 1))
+                                .foregroundColor(tmsList[person.getIndex()].getColor(index: 1))
+                        }
+
+                        if ( tmsList[person.getIndex()].getBold(index: 2) ){
+                            Text(tmsList[person.getIndex()].getString(index: 2))
+                                .foregroundColor(tmsList[person.getIndex()].getColor(index: 2))
+                        }
+                        else {
+                            Text(tmsList[person.getIndex()].getString(index: 2))
+                                .foregroundColor(tmsList[person.getIndex()].getColor(index: 2))
+                        }
+
+                        }//HStack - conjugated string
+
+                    }.frame(width: 350, height: 25, alignment: .leading)
+                        .padding(.horizontal, 20)
+                    
+                    Button(action: {
+                        showMorph(person: person)
+                        if languageViewModel.isSpeechModeActive(){
+                            let vu = VerbUtilities()
+                            let morphCommentClean = vu.removeNonAlphaCharactersButLeaveBlanks(characterArray: commentList[person.getIndex()])
+                            textToSpeech(text: morphCommentClean, language: .English)
+                        }
+                    }){
+                        HStack{
+                            Text(commentList[person.getIndex()])
+                            Spacer()
+                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                        }
+                        .frame(width: 350, height: 25)
+                        .padding(.horizontal)
+                        .background(Color("BethanyPurpleButtons"))
+                        .foregroundColor(.white)
+                    }
+                }.frame(minWidth: 350)
+                    .background(Color("BethanyNavalBackground"))
+             
+                
+            }//for each person
+            
+        }
+    }
     
     func setSubjunctiveStuff(){
         subjunctiveWord = ""

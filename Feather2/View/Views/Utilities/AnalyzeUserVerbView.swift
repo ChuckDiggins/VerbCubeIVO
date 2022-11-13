@@ -144,7 +144,7 @@ struct AnalyzeUserVerbView: View {
                                     }
                                 }
 
-                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .model)){
+                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel,  verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .model)){
                                     HStack{
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()

@@ -29,20 +29,24 @@ class VerbModelEntityCoreDataManager: ObservableObject{
         return vm.isVerbModelEntityActive(verbModelString: verbModelString)
     }
     
-    func toggleSelected(verbModelString: String){
-        vm.toggleVerbModelEntitySelected(verbModelString: verbModelString)
+    func setAllSelected(flag: Bool){
+        vm.setAllVerbModelEntitiesSelected(flag: flag)
+        savedModels = vm.savedVerbModelEnties
+    }
+    func setSelected(verbModelString: String, flag: Bool){
+        vm.setVerbModelEntitySelected(verbModelString: verbModelString, flag: flag)
         savedModels = vm.savedVerbModelEnties
     }
 
     func isSelected(verbModelString: String)->Bool{
         return vm.isVerbModelEntitySelected(verbModelString: verbModelString)
     }
-    
-    
+
     func toggleCompleted(verbModelString: String){
         vm.toggleVerbModelEntityCompleted(verbModelString: verbModelString)
         savedModels = vm.savedVerbModelEnties
     }
+    
 
     func isCompleted(verbModelString: String)->Bool{
         return vm.hasVerbModelEntityBeenCompleted(verbModelString: verbModelString)
@@ -51,6 +55,10 @@ class VerbModelEntityCoreDataManager: ObservableObject{
     func clearModelEntities(){
         vm.clearAllVerbModelEntities()
         savedModels = vm.savedVerbModelEnties
+    }
+    
+    func setAllSelectedToCompleted(){
+        vm.setAllSelectedToCompleted()
     }
     
     func saveData(){

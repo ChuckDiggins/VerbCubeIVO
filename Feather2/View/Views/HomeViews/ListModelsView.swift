@@ -276,20 +276,6 @@ struct ListSortedModelsView: View {
         }
     }
     
-    
-    
-//    func changeModelVerbType(){
-//        switch modelVerbType {
-//        case .regular: modelVerbType = .critical
-//        case .critical: modelVerbType = .common
-//        case .common: modelVerbType = .difficult
-//        case .difficult: modelVerbType = .uncommon
-//        case .uncommon : modelVerbType = .regular
-//        }
-//
-//        loadVerbModels()
-//    }
-//
     func changeVerbEnding(){
         switch languageViewModel.getCurrentLanguage() {
         case .Spanish:

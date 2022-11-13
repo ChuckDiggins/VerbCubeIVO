@@ -19,7 +19,7 @@ class VerbModelEntityCoreData: ObservableObject{
                 print("Error loading core data: \(error)")
                 return
             } else {
-                print("CoreData View Model Container was created correctly.")
+//                print("CoreData View Model Container was created correctly.")
             }
         }
         self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -79,7 +79,7 @@ class VerbModelEntityCoreData: ObservableObject{
 //
     func getVerbModelEntityAtVerbModelString(verbModelString: String)->VerbModelEntity{
         fetchVerbModelEntities()
-        //set all models inActive
+        //set all models inActive"
         for m in savedVerbModelEnties {
             if verbModelString == m.modelName {
                 return m
@@ -126,30 +126,12 @@ class VerbModelEntityCoreData: ObservableObject{
 
     func setVerbModelEntityCompleted(model: VerbModelEntity){
         model.hasBeenCompleted = true
+        model.isActive = false
+        model.isSelected = false
         saveData()
     }
 
-    func getCompletedVerbModelEntityStringList()->[String]{
-        fetchVerbModelEntities()
-        var modelStringList = [String]()
-        for m in savedVerbModelEnties {
-            if m.hasBeenCompleted {
-                modelStringList.append(m.modelName ?? "No model name")
-            }
-        }
-        return modelStringList
-    }
-
-    func getActiveVerbModelEntityStringList()->[String]{
-        fetchVerbModelEntities()
-        var modelStringList = [String]()
-        for m in savedVerbModelEnties {
-            if m.isActive {
-                modelStringList.append(m.modelName ?? "No model name")
-            }
-        }
-        return modelStringList
-    }
+    
 
     func hasVerbModelEntityBeenCompleted(verbModelString: String)->Bool{
         fetchVerbModelEntities()
@@ -174,13 +156,20 @@ class VerbModelEntityCoreData: ObservableObject{
         return getVerbModelEntityAtVerbModelString(verbModelString: verbModelString).isSelected
     }
     
-    func toggleVerbModelEntitySelected(verbModelString: String){
-        toggleVerbModelEntitySelected(model: getVerbModelEntityAtVerbModelString(verbModelString: verbModelString))
+    func setVerbModelEntitySelected(verbModelString: String, flag: Bool){
+        setVerbModelEntitySelected(model: getVerbModelEntityAtVerbModelString(verbModelString: verbModelString), flag: flag)
+    }
+    func setAllVerbModelEntitiesSelected(flag: Bool){
+        fetchVerbModelEntities()
+        for m in savedVerbModelEnties {
+           m.isSelected = flag
+        }
+        saveData()
     }
     
-    func toggleVerbModelEntitySelected(model: VerbModelEntity){
+    func setVerbModelEntitySelected(model: VerbModelEntity, flag: Bool){
         fetchVerbModelEntities()
-        model.isSelected.toggle()
+        model.isSelected = flag
         if ( model.isSelected ){
             model.isActive = false
             model.hasBeenCompleted = false
@@ -189,6 +178,18 @@ class VerbModelEntityCoreData: ObservableObject{
             model.hasBeenCompleted = false
         }
         saveData()
+        
+        print("setVerbModelEntitySelected: selected count = \(getSelectedModelEntityCount())")
+    }
+    
+    func getSelectedModelEntityCount()->Int{
+        fetchVerbModelEntities()
+        var selectedCount = 0
+        for m in savedVerbModelEnties {
+            if m.isSelected { selectedCount += 1}
+        }
+        
+        return selectedCount
     }
     
     //active logic ................................................
@@ -199,7 +200,7 @@ class VerbModelEntityCoreData: ObservableObject{
     }
     
     func setVerbModelEntityActive(verbModelString: String){
-        var model = getVerbModelEntityAtVerbModelString(verbModelString: verbModelString)
+        let model = getVerbModelEntityAtVerbModelString(verbModelString: verbModelString)
         model.isActive = true
         model.isSelected = false
         model.hasBeenCompleted = false
@@ -245,7 +246,61 @@ class VerbModelEntityCoreData: ObservableObject{
         saveData()
     }
 
+    func getCompletedVerbModelEntityList()->[String]{
+        fetchVerbModelEntities()
+        var modelStringList = [String]()
+        for m in savedVerbModelEnties {
+            if m.hasBeenCompleted {
+                modelStringList.append(m.modelName ?? "No model name")
+            }
+        }
+        return modelStringList
+    }
     
+    func getCompletedVerbModelEntityStringList()->[String]{
+        fetchVerbModelEntities()
+        var modelStringList = [String]()
+        for m in savedVerbModelEnties {
+            if m.hasBeenCompleted {
+                modelStringList.append(m.modelName ?? "No model name")
+            }
+        }
+        return modelStringList
+    }
+
+    func getSelectedVerbModelEntityStringList()->[String]{
+        fetchVerbModelEntities()
+        var modelStringList = [String]()
+        for m in savedVerbModelEnties {
+            if m.isSelected {
+                modelStringList.append(m.modelName ?? "No model name")
+            }
+        }
+        return modelStringList
+    }
+
+    func getActiveVerbModelEntityStringList()->[String]{
+        fetchVerbModelEntities()
+        var modelStringList = [String]()
+        for m in savedVerbModelEnties {
+            if m.isActive {
+                modelStringList.append(m.modelName ?? "No model name")
+            }
+        }
+        return modelStringList
+    }
+    
+    func setAllSelectedToCompleted(){
+        fetchVerbModelEntities()
+        for m in savedVerbModelEnties {
+            if m.isSelected {
+                m.isSelected = false
+                m.isActive = false
+                m.hasBeenCompleted = true
+            }
+        }
+        saveData()
+    }
     
 }
 

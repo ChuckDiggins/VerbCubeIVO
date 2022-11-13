@@ -5,7 +5,7 @@
 //  Created by Charles Diggins on 2/16/22.
 //
 
-import Foundation
+import SwiftUI
 import JumpLinguaHelpers
 //import RealmSwift
 
@@ -15,8 +15,13 @@ enum  TeachMeMode : String {
 
 
 class LanguageEngine : ObservableObject {
-    @Published private var currentLanguage = LanguageType.Agnostic
     var vmecdm = VerbModelEntityCoreDataManager()
+//    @ObservedObject var vmecdm : VerbModelEntityCoreDataManager
+    @Published private var currentLanguage = LanguageType.Agnostic
+    @Published var filteredVerbList = [Verb]()
+    
+    var selectedNewVerbModelType = NewVerbModelType.StemChanging1
+    var selectedSpecialPatternType = SpecialPatternType.e2ie
     
     private var currentVerb = Verb()
     private var currentTense = Tense.present
@@ -33,8 +38,7 @@ class LanguageEngine : ObservableObject {
     var verbList = [Verb]()
     
     var currentFilteredVerbIndex = 0
-    @Published var filteredVerbList = [Verb]()
-    var currentPattern = SpecialPatternType.e2i
+   
     
     var behavioralVerbModel = BehavioralVerbModel()
     var criticalVerbForms = CriticalVerbForms()
@@ -85,25 +89,42 @@ class LanguageEngine : ObservableObject {
     var useSpeechMode = false
     var teachMeMode = TeachMeMode.model  //obsolete
 
-    var studentLessonLevel = StudentLessonLevelEnum.Beginnner
     var studentLevelCompletion = StudentLevelCompletion(mode: .open)
-    var currentPatternList =  [SpecialPatternType]()
-    var currentModelListAll = [RomanceVerbModel]()
     
     var verbModelGroupManager = VerbModelGroupManager()
     
     var generalVerbModelFlag = false
     var criticalVerbModelFlag = false
     var currentVerbModel = RomanceVerbModel()
-    var modelListAR = [RomanceVerbModel]()
-    var modelListER = [RomanceVerbModel]()
-    var modelListIR = [RomanceVerbModel]()
-    var mpsListAR = [ModelPatternStruct]()
-    var mpsListER = [ModelPatternStruct]()
-    var mpsListIR = [ModelPatternStruct]()
+    var selectedVerbModelList = [RomanceVerbModel]()
+    
+    var criticalModelList = [RomanceVerbModel]()
+    var regularModelList = [RomanceVerbModel]()
+    var stemChangingList1 = [RomanceVerbModel]()
+    var stemChangingList2 = [RomanceVerbModel]()
+    var stemChangingList3 = [RomanceVerbModel]()
+    var spellChangingList1 = [RomanceVerbModel]()
+    var spellChangingList2 = [RomanceVerbModel]()
+    var irregularModelList = [RomanceVerbModel]()
+    var selectedSpecialPatternTypeList = [SpecialPatternType]()
+    
     var verbsExistForAll3Endings = true  //initially all verbs are live
     
-    
+    let regularStringList = ["regularAR", "regularER", "regularIR"]
+    let criticalStringList = ["estar", "haber", "hacer", "ir", "oír", "reír", "saber", "ser", "ver" ]
+//    let specialStringList = ["andar", "dar", "jugar", "pensar",
+//                             "parecer", "poder", "poner", "tener", "traer", "querer", "volver",
+//                             "decir", "dormir", "salir", "seguir", "venir", "abrir",  ]  //17
+//
+//    let importantStringList = ["airar", "averiguar", "cazar", "empezar", "encontrar", "enraizar", "guiar", "pagar", "regar", "sacar",
+//                                "caer", "cocer", "coger", "creer", "defender", "mover",
+//                               "adquirir", "bruñir", "dirigir", "influir", "lucir",
+//                                "pedir", "predecir", "producir", "reír", "sentir", ]
+//    let sparseStringList = ["actuar", "ahincar", "aullar", "avergonzar", "caber",
+//                         "colgar", "delinquir", "desosar", "discernir", "distinguir", "elegir",
+//                            "asir", "erguir", "errar", "forzar", "llover", "mecer", "oler",
+//                         "placer", "podrir", "prohibir", "raer", "reñir", "reunir",
+//                         "roer", "satisfacer", "soler", "tañer", "trocar", "valer", "yacer", "zurcir",  ]
     
     init(){  //default init
     }
@@ -111,6 +132,7 @@ class LanguageEngine : ObservableObject {
     init(language: LanguageType) {   //real init
         
         currentLanguage = language
+        
 //        realm = try! Realm()
         
         verbModelConjugation = VerbModelConjugation(currentLanguage: currentLanguage)
@@ -135,47 +157,57 @@ class LanguageEngine : ObservableObject {
         //this should set the behavioral verb list and index
 //        setBehaviorType(bt: .likeGustar)
         
-//        setStudentLevel(level: .level2001)
-//        setLessonCompletionMode(sl: .level1001, lessonCompletionMode: .completed)
-//        setLessonCompletionMode(sl: .level1002, lessonCompletionMode: .completed)
-//        setLessonCompletionMode(sl: .level1003, lessonCompletionMode: .completed)
-//        setLessonCompletionMode(sl: .level2001, lessonCompletionMode: .open)
-//        setLessonCompletionMode(sl: .level2002, lessonCompletionMode: .open)
-        
         filteredVerbList = verbList
         
        
         //set for initial verb model learning
         
         loadInitialVerbModel()
+       
+        
+        fillVerbCubeAndQuizCubeLists()
+        
+        fillVerbModelLists()
+        loadVerbModelManager()  //this loads the verb models of
+        restoreSelectedVerbs()
+        
+//        dumpModelStuff()
+        
+        
+//        fillSimpleFlashCardProblem()
+//        initializeStudentScoreModel()
+    }
+
+    func dumpModelStuff(){
         var model = findModelForThisVerbString(verbWord: "oír")
         print("languageEngine: oír - modelVerb \(model.modelVerb)")
-        model = findModelForThisVerbString(verbWord: "conjugar")
-        print("languageEngine: conjugar - modelVerb \(model.modelVerb)")
-        model = findModelForThisVerbString(verbWord: "vivir")
-        print("languageEngine: vivir - modelVerb \(model.modelVerb)")
+        model = findModelForThisVerbString(verbWord: "xyzoír")
+        print("languageEngine: xyzoír - modelVerb \(model.modelVerb)")
+        model = findModelForThisVerbString(verbWord: "conocer")
+        print("languageEngine: conocer - modelVerb \(model.modelVerb)")
+        model = findModelForThisVerbString(verbWord: "comprar")
+        print("languageEngine: comprar - modelVerb \(model.modelVerb)")
         model = findModelForThisVerbString(verbWord: "cortar")
         print("languageEngine: cortar - modelVerb \(model.modelVerb)")
         model = findModelForThisVerbString(verbWord: "deber")
         print("languageEngine: deber - modelVerb \(model.modelVerb)")
         model = findModelForThisVerbString(verbWord: "encarbronar")
         print("languageEngine: encarbronar - modelVerb \(model.modelVerb)")
-//        loadSpanishModelListsForEachVerbEnding()  //obsolete
-//        reloadModelVerbEntitiesWithModelVerbs()
-        loadVerbModelManager()
-        fillVerbCubeAndQuizCubeLists()
+        model = findModelForThisVerbString(verbWord: "regularER")
+        print("languageEngine: regularER - modelVerb \(model.modelVerb)")
         
-        fillSimpleFlashCardProblem()
-        initializeStudentScoreModel()
+        let verbStr = "parecer"
+        print("languageEngine: \(verbStr) ... \(findNewVerbTypeForVerbString(verbStr).getTypeName())")
+        
+        
     }
-
 
     func reloadModelVerbEntitiesWithModelVerbs(){
         vmecdm.clearModelEntities()
         let vm =  vmecdm.vm
         var vmList = [RomanceVerbModel]()
 
-        if (vm.savedVerbModelEnties.isEmpty) {
+        if vm.savedVerbModelEnties.isEmpty {
             switch currentLanguage{
             case .Spanish:
                 vmList = spanishVerbModelConjugation.getVerbModels()
@@ -216,7 +248,7 @@ class LanguageEngine : ObservableObject {
             setFilteredVerbList(verbList: vl)
         case .French:
             let sps = SpecialPatternStruct(tense: .present, spt: .o2ue)
-            let vl = getVerbsOfPattern(verbList: verbList, thisPattern: sps)
+//            let vl = getVerbsOfPattern(verbList: verbList, thisPattern: sps)
             setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 67))  //manger
         case .English:
             setFilteredVerbList(verbList: getRandomEnglishVerbs(maxCount : 30))
@@ -267,42 +299,29 @@ class LanguageEngine : ObservableObject {
         }
     }
     
-    func setGeneralVerbModelFlag(flag: Bool){
-        generalVerbModelFlag = flag
-        if generalVerbModelFlag { setRegularVerbsAsCombinedModel() }
-    }
     
-    func setCriticalVerbModelFlag(flag: Bool){
-        criticalVerbModelFlag = flag
-        if criticalVerbModelFlag { setCriticalVerbsAsCombinedModel() }  
+    func setVerbTypeCompleted(){
+        var verbType = VerbModelType.undefined
+        vmecdm.setAllSelectedToCompleted()
     }
     
     func getTeachMeMode()->TeachMeMode{
         teachMeMode
     }
-    
+
     func setTeachMeMode(teachMeMode: TeachMeMode){
         self.teachMeMode = teachMeMode
     }
     
-    func getCurrentPatternList()->[SpecialPatternType]{
-        return currentPatternList
-    }
-    
-    func getCurrentModelListAll()->[RomanceVerbModel]{
-        if currentModelListAll.count > 0 {
-            return currentModelListAll
-        }
-        return modelListAR
-    }
+    func computeVerbsExistForAll3Endings()->Bool{
+        verbsExistForAll3Endings = false
+        let vamslu = VerbAndModelSublistUtilities()
+        let ARcount = vamslu.getVerbSublistAtVerbEnding(inputVerbList: getFilteredVerbs(), ending: .AR,  language: getCurrentLanguage()).count
+        let ERcount = vamslu.getVerbSublistAtVerbEnding(inputVerbList: getFilteredVerbs(), ending: .ER,  language: getCurrentLanguage()).count
+        let IRcount = vamslu.getVerbSublistAtVerbEnding(inputVerbList: getFilteredVerbs(), ending: .IR,  language: getCurrentLanguage()).count
         
-    func getCurrentModelList(ending: VerbEnding )->[RomanceVerbModel]{
-        switch ending{
-        case .AR: return modelListAR
-        case .ER: return modelListER
-        case .IR: return modelListIR
-        default: return currentModelListAll
-        }
+        if ARcount > 0 && ERcount > 0 && IRcount > 0 { verbsExistForAll3Endings = true}
+        return verbsExistForAll3Endings
     }
     
     func setVerbsExistForAll3Endings(flag: Bool){
@@ -321,14 +340,14 @@ class LanguageEngine : ObservableObject {
         fillQuizCubeBlock()
     }
     
-    func setStudentLessonLeve(level: StudentLessonLevelEnum){
-        self.studentLessonLevel = level
-    }
-    
-    func getStudentLessonLevel()->StudentLessonLevelEnum{
-        return studentLessonLevel
-    }
-    
+//    func setStudentLessonLeve(level: StudentLessonLevelEnum){
+//        self.studentLessonLevel = level
+//    }
+//
+//    func getStudentLessonLevel()->StudentLessonLevelEnum{
+//        return studentLessonLevel
+//    }
+//
     func getWordCollections()->[dWordCollection] {
         return getWordCollectionList()
     }

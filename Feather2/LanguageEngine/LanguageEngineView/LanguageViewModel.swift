@@ -12,15 +12,20 @@ import JumpLinguaHelpers
 //émouvoir
 //déchoir
 class LanguageViewModel : ObservableObject {
+    
     var insertQueQuiBeforeSubjunctive = true
     //var useFeminineSubjectPronouns = true
     var useUstedForS3 = false
     var useVoceForm = false
     var useAlertMode = true
     
+    
+    
 //    @Published var spt = SubjectPronounType.maleInformal
     
     @Published var languageEngine = LanguageEngine()
+    
+    
    var currentLanguage = LanguageType.Spanish
     
     init(){
@@ -28,7 +33,9 @@ class LanguageViewModel : ObservableObject {
     }
     
     init(language: LanguageType){
+
         languageEngine = LanguageEngine(language: language)
+        
     }
     
     func changeLanguage(){
@@ -38,13 +45,17 @@ class LanguageViewModel : ObservableObject {
     
     
     
-    func getModelPatternStructList(ending: VerbEnding)->[ModelPatternStruct]{
-        languageEngine.getModelPatternStructList(ending: ending)
-    }
+//    func getModelPatternStructList(ending: VerbEnding)->[ModelPatternStruct]{
+//        languageEngine.getModelPatternStructList(ending: ending)
+//    }
     
     func setLanguage(language: LanguageType){
         languageEngine.setLanguage(language: language)
         currentLanguage = languageEngine.getCurrentLanguage()
+    }
+    
+    func computeVerbsExistForAll3Endings()->Bool{
+        languageEngine.computeVerbsExistForAll3Endings()
     }
     
     func setVerbsExistForAll3Endings(flag: Bool){
@@ -55,36 +66,8 @@ class LanguageViewModel : ObservableObject {
         languageEngine.getVerbsExistForAll3Endings()
     }
     
-    func setGeneralVerbModelFlag(flag: Bool){
-        languageEngine.setGeneralVerbModelFlag(flag: flag)
-    }
-    
-    func setCriticalVerbModelFlag(flag: Bool){
-        languageEngine.setCriticalVerbModelFlag(flag: flag)
-    }
-    
-    func setRegularVerbsAsCombinedModel(){
-        languageEngine.setRegularVerbsAsCombinedModel()
-    }
-    
-    func setCriticalVerbsAsCombinedModel(){
-        languageEngine.setCriticalVerbsAsCombinedModel()
-    }
-    
     func fillVerbCubeAndQuizCubeLists(){
         languageEngine.fillVerbCubeAndQuizCubeLists()
-    }
-    
-    func getCurrentPatternList()->[SpecialPatternType]{
-        languageEngine.getCurrentPatternList()
-    }
-    
-    func getCurrentModelListAll()->[RomanceVerbModel]{
-        languageEngine.getCurrentModelListAll()
-    }
-        
-    func getCurrentModelList(ending: VerbEnding )->[RomanceVerbModel]{
-        languageEngine.getCurrentModelList(ending: ending)
     }
     
     func getTeachMeMode()->TeachMeMode{

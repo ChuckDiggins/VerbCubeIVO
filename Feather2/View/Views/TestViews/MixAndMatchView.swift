@@ -403,9 +403,3 @@ struct MixAndMatchView: View {
     
 //
 }
-
-struct MixAndMatchView_Previews: PreviewProvider {
-    static var previews: some View {
-        MixAndMatchView(languageViewModel: LanguageViewModel(language: .Spanish))
-    }
-}

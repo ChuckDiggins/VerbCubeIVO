@@ -6,6 +6,7 @@
 //  bruñir
 
 import SwiftUI
+import JumpLinguaHelpers
 
 struct AllNavigationLinks: View {
     @ObservedObject var languageViewModel: LanguageViewModel
@@ -37,7 +38,7 @@ struct AllNavigationLinks: View {
                         Text("Model Verb Step")
                     }.modifier(NavLinkModifier())
                     //
-                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
+                    NavigationLink(destination: PatternRecognitionView( languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
                         Text("Models for Pattern")
                     }.modifier(NavLinkModifier())
                     
@@ -100,6 +101,95 @@ struct AllNavigationLinks: View {
     }
 }
 
+struct VerbModelSelectionWrapper: View {
+    @ObservedObject var languageViewModel: LanguageViewModel
+    @Binding var selectedCount: Int
+    @Binding var selectedModelString : String
+    @State var selectedType = NewVerbModelType.undefined
+    @EnvironmentObject var vmecdm: VerbModelEntityCoreDataManager
+    
+    
+    
+    @State var verbsExistForAll3Endings = true
+    var body: some View {
+        ZStack{
+            LinearGradient(gradient: Gradient(colors: [
+                Color(.systemYellow),
+                Color(.systemPink),
+                Color(.systemPurple),
+            ]),
+                           startPoint: .top,
+                           endPoint: .bottomTrailing)
+            .ignoresSafeArea()
+            
+            VStack{
+//                NavigationLink(destination: TabBarVerbModelTypes(languageViewModel: languageViewModel, selectedCount: $selectedCount))
+//                    {
+//                    Text("Tab Bar Shell")
+//                    } .modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: ModelVerbChartView(languageViewModel: languageViewModel))
+//                    {
+//                    Text("All Verbs")
+//                    } .modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedType: $selectedType, selectedModelString: $selectedModelString ))
+//                    {
+//                    Text("Regular Verbs")
+//                    } .modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedType: $selectedType, selectedModelString: $selectedModelString ))
+//                    {
+//                    Text("Critical Verbs")
+//                    } .modifier(NavLinkModifier())
+                
+                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedModelString: $selectedModelString ))
+                    {
+                    Text("Select Model by Pattern")
+                    } .modifier(NavLinkModifier())
+                
+//                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedType: $selectedType, selectedModelString: $selectedModelString ))
+//                    {
+//                    Text("Uncommon Stem-Changing Verbs")
+//                    } .modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedType: $selectedType, selectedModelString: $selectedModelString ))
+//                    {
+//                    Text("Spell-changing Verbs")
+//                    } .modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedType: $selectedType, selectedModelString: $selectedModelString ))
+//                    {
+//                    Text("Irregular Verbs")
+//                    } .modifier(NavLinkModifier())
+                
+                Button{
+                    vmecdm.setAllSelectedToCompleted()
+                    languageViewModel.restoreSelectedVerbs()
+                } label: {
+                    Text("Set all selected to completed")
+                }.modifier(NavLinkModifier())
+                
+                Button{
+                    vmecdm.resetAllToActive()
+                    languageViewModel.restoreSelectedVerbs()
+                } label: {
+                    Text("Reset All")
+                }.modifier(NavLinkModifier())
+                
+            }.onAppear{
+//                print("AllVerbModelTypesView: \(vmecdm.vm.getVerbModelEntityCount())")
+            }
+            .onDisappear{
+                selectedType = languageViewModel.getSelectedNewVerbModelType()
+                if selectedType != .undefined && languageViewModel.getSelectedVerbModelList().count > 0 {
+                    selectedModelString = languageViewModel.getSelectedVerbModelList()[0].modelVerb
+                }
+            }
+        }
+    }
+}
+
 struct VerbSeeWrapper: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @State var verbsExistForAll3Endings = true
@@ -115,7 +205,11 @@ struct VerbSeeWrapper: View {
             .ignoresSafeArea()
             
             VStack{
-                
+//                NavigationLink(destination: ListVerbsForModelView(languageViewModel: languageViewModel, model:  languageViewModel.getSelectedVerbModelList()[0], selectedType: languageViewModel.getSelectedVerbType()  ))
+//                {
+//                Text("List current verbs")
+//                }.modifier(NavLinkModifier())
+//                
                 if verbsExistForAll3Endings {
                     NavigationLink(destination:  ThreeVerbSimpleView(languageViewModel: languageViewModel))
                     {
@@ -142,25 +236,10 @@ struct VerbSeeWrapper: View {
                     Text("Right & Wrong")
                 }.modifier(NavLinkModifier())
                 
-                NavigationLink(destination: UnconjugateView(languageViewModel: languageViewModel)){
-                    Text("Unconjugate")
-                }.modifier(NavLinkModifier())
                 
-                NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-                    Text("List models view")
-                }.modifier(NavLinkModifier())
-               
-                NavigationLink(destination: FeatherVerbStepView(languageViewModel: languageViewModel)){
-                    Text("Feather Step")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
-                    Text("Feather Step 2")
-                }.modifier(NavLinkModifier())
-
                 
             }.onAppear{
-                verbsExistForAll3Endings = languageViewModel.getVerbsExistForAll3Endings()
+                verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
             }
         }.navigationTitle("See your verbs")
     }
@@ -190,7 +269,7 @@ struct VerbLearnWrapper: View {
                         .cornerRadius(10)
                         .border(.red)
                     
-                    NavigationLink(destination: DragDropVerbSubjectView(languageViewModel: languageViewModel))
+                    NavigationLink(destination: DragDropVerbSubjectView(languageViewModel: languageViewModel ))
                     {
                     Text("Drag and Drop")
                     
@@ -221,6 +300,24 @@ struct VerbLearnWrapper: View {
                         .border(.red)
 
                 }
+                NavigationLink(destination: FlashCardsView(languageViewModel: languageViewModel))
+                {
+                VStack{
+                    Text("FlashCards")
+                    Text("Quick Flash")
+                }
+                }.frame(width: 150, height: 150)
+                    .cornerRadius(10)
+                    .border(.red)
+                
+//                NavigationLink(destination: FeatherVerbStepView(languageViewModel: languageViewModel)){
+//                    Text("Feather Step")
+//                }.modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
+//                    Text("Feather Step 2")
+//                }.modifier(NavLinkModifier())
+
             }
             .navigationTitle("Learn your verbs")
             
@@ -234,6 +331,9 @@ struct VerbLearnWrapper: View {
 
 struct VerbTestWrapper: View {
     @ObservedObject var languageViewModel: LanguageViewModel
+    @State var multipleChoiceShown = true
+    @State var textEditorShown = true
+    
     var body: some View {
         ZStack{
             LinearGradient(gradient: Gradient(colors: [
@@ -246,17 +346,21 @@ struct VerbTestWrapper: View {
             .ignoresSafeArea()
             
             VStack{
-                NavigationLink(destination: StudentTestView(languageViewModel: languageViewModel)){
-                    Text("Student Test Cards")
+//                NavigationLink(destination: StudentTestView(languageViewModel: languageViewModel)){
+//                    Text("Student Test Cards")
+//                }.modifier(NavLinkModifier())
+                NavigationLink(destination: CombinedAlert(languageViewModel: languageViewModel, flashMode: .MultipleChoice, shown: $multipleChoiceShown)){
+                    Text("Multiple Choice Test")
                 }.modifier(NavLinkModifier())
                
-                NavigationLink(destination:  QuizCubeDirectorView(languageViewModel: languageViewModel, alertToggle: true, isActive: true)){
-                    Text("Quiz Cube")
+                NavigationLink(destination: CombinedAlert(languageViewModel: languageViewModel, flashMode: .TextField, shown: $textEditorShown)){
+                    Text("Fill-in Blank")
                 }.modifier(NavLinkModifier())
-
+            }.onAppear{
+                languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
             }
             
-        }.navigationTitle("Verb Quizzes")
+        }.navigationTitle("Final Exams")
     }
 }
 

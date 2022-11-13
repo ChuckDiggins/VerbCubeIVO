@@ -44,10 +44,10 @@ struct TeachMeAPatternVerb: View {
 //
 //                Divider().frame(height:1).background(.white)
                 
-                VStack{
-                    Text("Step 1: Pick a verb pattern").font(.title2)
-                    Text("To change the pattern, click Button.")
-//                    NavigationLink(destination: ListPatternsView(languageViewModel: languageViewModel)){
+//                VStack{
+//                    Text("Step 1: Pick a verb pattern").font(.title2)
+//                    Text("To change the pattern, click Button.")
+//                    NavigationLink(destination: ListPatternsView(languageViewModel: languageViewModel, function: <#(SpecialPatternType) -> Void#>)){
 //                        HStack{
 //                            Text("Current pattern: \(currentPatternString)")
 //                            Spacer()
@@ -57,9 +57,9 @@ struct TeachMeAPatternVerb: View {
 //                        currentPatternString = languageViewModel.getCurrentPattern().rawValue
 //                        currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
 //                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(2)
+//                }
+//                .frame(maxWidth: .infinity)
+//                .padding(2)
                 
                 Divider().frame(height:1).background(.white)
                 
@@ -72,7 +72,7 @@ struct TeachMeAPatternVerb: View {
                     }){
                         HStack{
                             Text("Verb: ")
-                            if languageViewModel.getCurrentPattern() == .none {
+                            if languageViewModel.getSelectedSpecialPatternType() == .none {
                                 Text("")
                             }
                             else {
@@ -108,9 +108,9 @@ struct TeachMeAPatternVerb: View {
                 .frame(maxWidth: .infinity)
                 .padding(2)
             }.onAppear{    
-                let verbList = languageViewModel.getVerbsForPatternGroup(patternType:languageViewModel.getCurrentPattern())
+                let verbList = languageViewModel.getVerbsForPatternGroup(patternType:languageViewModel.getSelectedSpecialPatternType())
                 languageViewModel.setFilteredVerbList(verbList: verbList)
-                currentPatternString = languageViewModel.getCurrentPattern().rawValue
+                currentPatternString = languageViewModel.getSelectedSpecialPatternType().rawValue
                 currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
             }
             .foregroundColor(Color("BethanyGreenText"))

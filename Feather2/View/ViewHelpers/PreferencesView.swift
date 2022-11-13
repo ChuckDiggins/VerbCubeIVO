@@ -55,6 +55,16 @@ struct PreferencesView: View {
                     ListVerbModelsView(languageViewModel: languageViewModel)
                     PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
                     ChangeLanguageView(languageViewModel: languageViewModel)
+                    
+                    Button{
+                        languageViewModel.restoreSelectedVerbs()
+                        for vm in languageViewModel.getSelectedVerbModelList(){
+                            print("On exit: modelVerb \(vm.modelVerb)")
+                        }
+                       exit(0)
+                    } label: {
+                        Text("Exit Application")
+                    }.foregroundColor(.red).border(.red)
                 }
                 Spacer()
             }.onAppear{

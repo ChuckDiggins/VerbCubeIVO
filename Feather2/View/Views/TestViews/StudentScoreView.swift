@@ -60,12 +60,6 @@ struct StudentScoreView: View {
     }
 }
 
-struct StudentScoreView_Previews: PreviewProvider {
-    static var previews: some View {
-        StudentScoreView(languageViewModel: LanguageViewModel(language: .Spanish))
-    }
-}
-
 struct VerbScoreView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @State var verbScoreList = [VerbScore]()

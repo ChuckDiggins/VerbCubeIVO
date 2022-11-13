@@ -19,39 +19,30 @@ struct FindMyVerbDispatcher: View {
             ScrollView{
 //                DisclosureGroupFindMyVerb()
                 VStack{
+                    NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel,  featherMode: .model))
+                    {
+                    Text("Find Verb Model")
+                    }.modifier(NavLinkModifier())
                     
-                    HStack{
-                        VStack{
-                            NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel, featherMode: .model))
-                            {
-                            Text("Find Verb Model")
-                            }
-                        }
-                       
-                        VStack{
-                            NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel, featherMode: .pattern))
-                            {
-                            Text("Find Verb Pattern")
-                            }
-                        }
-                    }.font(.caption)
-                    HStack{
-                        VStack{
-                            NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel))
-                            {
-                            Text("Analyze My Verb")
-                            }
-                        }
-                        VStack{
-                            NavigationLink(destination: UnconjugateView(languageViewModel: languageViewModel))
-                            {
-                            Text("Unconjugate")
-                            }
-                            
-                        }
-                        
-                    }.font(.caption)
-                }
+                    NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel, featherMode: .pattern))
+                    {
+                    Text("Find Verb Pattern")
+                    }.modifier(NavLinkModifier())
+                    
+                    
+                    
+                    NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel))
+                    {
+                    Text("Analyze My Verb")
+                    }.modifier(NavLinkModifier())
+                    
+                    NavigationLink(destination: UnconjugateView(languageViewModel: languageViewModel))
+                    {
+                    Text("Unconjugate")
+                    }.modifier(NavLinkModifier())
+                    
+                    
+                }.font(.caption)
                     .padding()
                     .foregroundColor(Color("ChuckText1"))
             }

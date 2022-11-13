@@ -9,7 +9,7 @@ import SwiftUI
 import JumpLinguaHelpers
 
 struct TeachMeModelBasedVerbConjugation: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
+    @EnvironmentObject var languageViewModel: LanguageViewModel
      var windowsForegroundColor = Color.black
 
     var body: some View {

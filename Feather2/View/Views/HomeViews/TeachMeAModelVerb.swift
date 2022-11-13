@@ -86,8 +86,7 @@ struct TeachMeAModelVerb: View {
                 VStack{
                     Text("Step 4: Conjugate your verb").font(.title2)
                     VStack{
-                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel,
-                                                                          verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", teachMeMode: .model))
+                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", teachMeMode: .model))
                         {
                         HStack{
                             Text("Model verb = \(currentVerbString)")

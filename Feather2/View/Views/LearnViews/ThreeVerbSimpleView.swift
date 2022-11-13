@@ -123,7 +123,7 @@ struct ThreeVerbSimpleView: View {
             .onAppear(){
                 
                 currentLanguage = languageViewModel.getCurrentLanguage()
-                var vamslu =  VerbAndModelSublistUtilities()
+                let vamslu =  VerbAndModelSublistUtilities()
                 verb1List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), ending: .AR,  language: languageViewModel.getCurrentLanguage())
                 verb2List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), ending: .ER,  language: languageViewModel.getCurrentLanguage())
                 verb3List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), ending: .IR,  language: languageViewModel.getCurrentLanguage())

@@ -321,7 +321,7 @@ struct PatternRecognitionView: View {
     func fillIdentifyModelsThatHaveGivenPattern(){
         zColor = colorList[2]
         var modelList = [RomanceVerbModel]()
-        let patternList = SpecialPatternType.stemChangingCommonSpanish.shuffled()
+        let patternList = SpecialPatternType.stemChangingSpanish1.shuffled()
         let primaryPattern = patternList[0]
         headerStringPart1 = multipleChoiceMode.rawValue
         headerStringPart2 = primaryPattern.rawValue
@@ -351,7 +351,7 @@ struct PatternRecognitionView: View {
         zColor = colorList[3]
         //select a random pattern
         
-        let patternList = SpecialPatternType.stemChangingCommonSpanish.shuffled()
+        let patternList = SpecialPatternType.stemChangingSpanish1.shuffled()
         let primaryPattern = patternList[0]
         
         
@@ -391,7 +391,7 @@ struct PatternRecognitionView: View {
         zColor = colorList[4]
         //select a random pattern
         
-        let patternList = SpecialPatternType.stemChangingCommonSpanish.shuffled()
+        let patternList = SpecialPatternType.stemChangingSpanish1.shuffled()
         let primaryPattern = patternList[0]
         headerStringPart1 = multipleChoiceMode.rawValue
         headerStringPart2 = primaryPattern.rawValue

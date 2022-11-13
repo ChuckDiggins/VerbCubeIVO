@@ -20,11 +20,11 @@ struct ItemsToolbar: ToolbarContent{
 //            Label("Flashcard", systemImage: "bolt")
 //            }
             
-            NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel))
+            NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
             {
             Label("Find", systemImage: "magnifyingglass")
             }
-            NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel))
+            NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
             {
             Label("Settings", systemImage: "gear")
             }

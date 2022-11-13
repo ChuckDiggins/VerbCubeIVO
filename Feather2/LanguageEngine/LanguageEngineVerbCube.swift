@@ -21,7 +21,6 @@ extension LanguageEngine{
         verbBlockCount = min(6, verbCubeList.count)
         startingVerbCubeListIndex = 0
         verbCubeVerbIndex = 0
-        print("fillVerbCubeLists: filteredVerbList count = \(filteredVerbList.count), verbCubeList count = \(verbCubeList.count)")
     }
     
     func getVerbCubeVerb(index: Int)->Verb{

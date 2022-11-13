@@ -320,7 +320,6 @@ struct TenseRadioButtons : View {
 }
 
 struct PersonRadioButtons : View {
-//    @EnvironmentObject var languageEngine: LanguageEngine
     @ObservedObject  var languageViewModel: LanguageViewModel
     @State var selectedPerson : Person
     @Binding var configurationChoiceString: String
@@ -378,7 +377,6 @@ struct PersonRadioButtons : View {
 
 
 struct ConfigRadioButtons : View {
-//    @EnvironmentObject var languageEngine: LanguageEngine
     @ObservedObject  var languageViewModel: LanguageViewModel
     @Binding var selected : ActiveVerbCubeConfiguration
     @State var selectedConfigurationString = ActiveVerbCubeConfiguration.PersonTense.getString()

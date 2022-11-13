@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @EnvironmentObject var languageViewModel: LanguageViewModel
-    @State var isVerbCubeActive = false
-    @State var currentTab: Tab = .bookmark
-    
-    init(){
-        UITabBar.appearance().isHidden = true
-    }
-    var body: some View {
-        Text("hello world")
+//struct ContentView: View {
+//    @EnvironmentObject var languageViewModel: LanguageViewModel
+//    @State var isVerbCubeActive = false
+//    @State var currentTab: Tab = .bookmark
+//
+//    init(){
+//        UITabBar.appearance().isHidden = true
+//    }
+//    var body: some View {
+//        Text("hello world")
         //        VStack(spacing:0) {
         //            TabView(selection: $currentTab){
         //                Text("Bookmark")
@@ -98,13 +98,13 @@ struct ContentView: View {
         //                .onAppear{
         ////                    isVerbCubeActive = true
         //                }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//    }
+//}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
 
 

@@ -43,7 +43,7 @@ struct DragDropVerbSubjectView: View {
 //                .ignoresSafeArea()
             
             
-            ScrollView{
+            VStack{
                 
                 DisclosureGroupDragAndDrop()
                 NavBar()

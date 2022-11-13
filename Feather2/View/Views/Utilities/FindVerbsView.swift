@@ -8,6 +8,37 @@
 import SwiftUI
 import JumpLinguaHelpers
 
+struct ShowPatternInfo: View{
+    @State private var modelNumberString = ""
+    @State private var modelNameString = ""
+    @State private var patternTenseStringList = [String]()
+    @State private var patternTypeStringList = [String]()
+    
+    var body : some View {
+        VStack{
+            HStack{
+                VStack{
+                    Text("Verb information:")
+                    Text(modelNumberString)
+                    Text(modelNameString)
+                }
+                VStack{
+                    Text("Pattern information:")
+                    ForEach( 0..<patternTenseStringList.count, id: \.self){i in
+                        HStack{
+                            Text(patternTenseStringList[i])
+                            Text(patternTypeStringList[i])
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+}
+
+
 extension FindVerbsView {
     private var showFeatherInfo: some View {
         VStack{
@@ -257,7 +288,7 @@ struct FindVerbsView: View {
             reconstructedVerbString = result1.0
             if result1.isReflexive {  reconstructedVerbString += "se" }
             if result1.residualPhrase.count > 0 { reconstructedVerbString += " " + result1.residualPhrase }
-            var verb = Verb(spanish: reconstructedVerbString, french: "", english: "")
+            let verb = Verb(spanish: reconstructedVerbString, french: "", english: "")
 //            newVerbString = verb.getWordAtLanguage(language: currentLanguage)
 //            languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
             languageViewModel.addVerbToFilteredList(verb: verb)
@@ -285,6 +316,7 @@ struct FindVerbsView: View {
 //            }
 //        }.modifier(NeumorphicTextfieldModifier())
 //    }
+    
     func analyze(verbString: String)-> (Verb, [Verb]){
         let vu = VerbUtilities()
         var verb = Verb()

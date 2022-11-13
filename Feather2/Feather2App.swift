@@ -25,25 +25,34 @@ struct Feather2App: SwiftUI.App {
     
     @ObservedObject var appState = AppState(hasOnboarded: false)
     @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
-    
+    @StateObject var vmecdm = VerbModelEntityCoreDataManager()
+   
 //    @StateObject private var dataController = DataController()
     
     var body: some Scene {
         WindowGroup {
-            
             NavigationView {
                 VStack{
+//                    Text("Feather2App: vmecdm count: \(vmecdm.vm.getVerbModelEntityCount())")
                     TabBarClassicVC(languageViewModel: languageViewModel)
+                        
+                        .onAppear{
+                            languageViewModel.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
+                        }
                     Spacer()
                 }.navigationViewStyle(StackNavigationViewStyle())
-//                    .environment(\.managedObjectContext, dataController.container.viewContext)
-                
+                    .environmentObject(languageViewModel)
+                    .environmentObject(vmecdm)
+                    
+                    
             }
-            
-            
         }
     }
+    
+    
 }
+
+
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     static var orientationLock = UIInterfaceOrientationMask.all //by default, all views rotate freely

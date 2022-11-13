@@ -15,6 +15,8 @@ struct SimilarModelsTo {
 }
 
 extension LanguageEngine{
+    
+    
     func getVerbModels()->[RomanceVerbModel]{
         switch getCurrentLanguage(){
         case .Spanish: return spanishVerbModelConjugation.getVerbModels()
@@ -37,112 +39,170 @@ extension LanguageEngine{
     func setCurrentVerbModel(model: RomanceVerbModel){
         currentVerbModel = model
     }
+
+    func setSelectedNewVerbModelType(selectedType : NewVerbModelType){
+        self.selectedNewVerbModelType = selectedType
+    }
+    
+    func getSelectedNewVerbModelType()->NewVerbModelType{
+        selectedNewVerbModelType
+    }
+    
+    func setSelectedSpecialPatternType(selectedPattern : SpecialPatternType){
+        self.selectedSpecialPatternType = selectedPattern
+    }
+    
+    func getSelectedSpecialPatternType()->SpecialPatternType{
+        selectedSpecialPatternType
+    }
+    
+    func setCurrentSpecialPatternTypeList(patternList: [SpecialPatternType]){
+        selectedSpecialPatternTypeList = patternList
+    }
+    
+    func getCurrentPatternList()->[SpecialPatternType]{
+        selectedSpecialPatternTypeList
+    }
+    
+    
+    func loadVerbModelManager(){
+        createNewVerbModelGroupAndAppend(type: .Regular, strList: regularStringList)
+        createNewVerbModelGroupAndAppend(type: .Critical, strList: criticalStringList)
+        verbModelGroupManager.appendGroup(verbModelGroup: VerbModelGroup(verbModelType: .StemChanging1, language: getCurrentLanguage(), verbModelList: stemChangingList1))
+        verbModelGroupManager.appendGroup(verbModelGroup: VerbModelGroup(verbModelType: .StemChanging2, language: getCurrentLanguage(), verbModelList: stemChangingList2))
+        verbModelGroupManager.appendGroup(verbModelGroup: VerbModelGroup(verbModelType: .StemChanging3, language: getCurrentLanguage(), verbModelList: stemChangingList3))
+        verbModelGroupManager.appendGroup(verbModelGroup: VerbModelGroup(verbModelType: .SpellChanging1, language: getCurrentLanguage(), verbModelList: spellChangingList1))
+        verbModelGroupManager.appendGroup(verbModelGroup: VerbModelGroup(verbModelType: .SpellChanging2, language: getCurrentLanguage(), verbModelList: spellChangingList2))
+        verbModelGroupManager.appendGroup(verbModelGroup: VerbModelGroup(verbModelType: .Irregular, language: getCurrentLanguage(), verbModelList: irregularModelList))
+    }
+    
+    func restoreSelectedVerbs(){
+        selectedNewVerbModelType = restoreSelectedVerbType()
+//        print("restoreSelectedVerbs: selectedType = \(selectedNewVerbModelType.getTypeName())")
+        fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: 10)
+    }
+    
+    func findNewVerbTypeForVerbString(_ verbString: String)->NewVerbModelType{
+        for vmStr in regularModelList{
+            if vmStr.modelVerb == verbString { return .Regular }
+        }
+        for vmStr in criticalModelList{
+            if vmStr.modelVerb == verbString { return .Critical }
+        }
+        for vmStr in irregularModelList{
+            if vmStr.modelVerb == verbString { return .Irregular }
+        }
+        for vmStr in stemChangingList1{
+            if vmStr.modelVerb == verbString { return .StemChanging1}
+        }
+        for vmStr in stemChangingList2{
+            if vmStr.modelVerb == verbString { return .StemChanging2}
+        }
+        for vmStr in stemChangingList3{
+            if vmStr.modelVerb == verbString { return .StemChanging3}
+        }
+        for vmStr in spellChangingList1{
+            if vmStr.modelVerb == verbString { return .SpellChanging1}
+        }
+        for vmStr in spellChangingList2{
+            if vmStr.modelVerb == verbString { return .SpellChanging2}
+        }
+        
+        return .undefined
+    }
+    
+    func restoreSelectedVerbType()->NewVerbModelType{
+        let vmStrList = vmecdm.vm.getSelectedVerbModelEntityStringList()
+        if vmStrList.count > 0 {
+            let targetStr = vmStrList[0]
+            return findNewVerbTypeForVerbString(targetStr)
+        }
+        return .undefined
+    }
+    
+    func computeSelectedVerbType(){
+        let modelVerb = filteredVerbList[0]
+        let currentVerbModel = findModelForThisVerbString(verbWord: modelVerb.getWordAtLanguage(language: getCurrentLanguage()))
+    }
+    
+    func fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: Int){
+        var newVerbList = [Verb]()
+        computeSelectedVerbModels()
+        selectedVerbModelList = getSelectedVerbModelList()
+        if selectedVerbModelList.count > 0 {
+            for model in selectedVerbModelList{
+                var verbCount = 0
+                var tempVerbList = findSingletonVerbsOfSameModel(targetID: model.id)
+                tempVerbList.shuffle()
+                for verb in tempVerbList{
+                    verbCount += 1
+                    newVerbList.append(verb)
+                    if verbCount > maxVerbCountPerModel {
+                        break
+                    }
+                }
+            }
+            setFilteredVerbList(verbList: newVerbList)
+            fillVerbCubeAndQuizCubeLists()
+            computeVerbsExistForAll3Endings()
+        } else {
+            filteredVerbList = verbList
+            fillVerbCubeAndQuizCubeLists()
+        }
+    }
+    
+    func setSelectedVerbModelsComplete(){
+        vmecdm.setAllSelectedToCompleted()
+        computeSelectedVerbModels()
+        filteredVerbList = verbList
+        fillVerbCubeAndQuizCubeLists()
+    }
+    
+    
+    
+    func getSelectedVerbModelList()->[RomanceVerbModel]{
+        selectedVerbModelList
+    }
+    
+    func computeSelectedVerbModels(){
+        var vmList = [RomanceVerbModel]()
+        let vmStringList = vmecdm.vm.getSelectedVerbModelEntityStringList()
+        for verbModelString in vmStringList{
+            vmList.append(findModelForThisVerbString(verbWord: verbModelString))
+        }
+        selectedVerbModelList = vmList
+    }
+    
+    func computeCompletedVerbModels(){
+        var vmList = [RomanceVerbModel]()
+        let vmStringList = vmecdm.vm.getSelectedVerbModelEntityStringList()
+        for verbModelString in vmStringList{
+            vmList.append(findModelForThisVerbString(verbWord: verbModelString))
+        }
+        selectedVerbModelList = vmList
+    }
+    
+    func setVerbModelEntityCoreDataManager(vmecdm: VerbModelEntityCoreDataManager){
+        self.vmecdm = vmecdm
+    }
     
     func getVerbModelEntityCoreDataManager()->VerbModelEntityCoreDataManager{
-        return vmecdm
+        vmecdm
     }
     
     func getVerbModelGroupManager()->VerbModelGroupManager{
         return verbModelGroupManager
     }
     
-    func loadVerbModelManager(){
-        let regularStringList = ["regularAR", "regularER", "regularIR"]
-        createVerbModelGroupAndAppend(type: .regular, strList: regularStringList)
-        let criticalStringList = ["estar", "haber", "hacer", "ir", "oír", "reír", "saber", "ser", "ver" ]
-        createVerbModelGroupAndAppend(type: .critical, strList: criticalStringList)
-        let specialStringList = ["andar", "abrir", "conocer", "dar", "decir", "dormir",
-                                   "jugar", "pensar", "poder", "poner",
-                                 "querer", "salir", "seguir", "tener", "traer", "venir", "volver" ]
-        createVerbModelGroupAndAppend(type: .special, strList: specialStringList)
-        let importantStringList = ["airar", "averiguar", "cazar", "encontrar", "enraizar", "pagar", "regar", "sacar",
-                                    "caer", "cocer", "coger", "creer", "defender", "empezar", "mover", "parecer",
-                                   "adquirir", "bruñir", "dirigir", "influir", "lucir",
-                                    "pedir", "predecir", "producir", "sentir"]
-        createVerbModelGroupAndAppend(type: .important, strList: importantStringList)
-        let sparseStringList = ["actuar", "ahincar", "asir", "aullar", "avergonzar", "caber",
-                             "cocer", "colgar", "delinquir", "desosar", "discernir", "distinguir", "elegir",
-                             "erguir", "errar", "forzar", "guiar", "llover", "mecer", "oler",
-                             "placer", "podrir", "prohibir", "raer", "regar", "reñir", "reunir",
-                             "roer", "satisfacer", "soler", "tañer", "trocar", "valer", "yacer", "zurcir",  ]
-        createVerbModelGroupAndAppend(type: .sparse, strList: sparseStringList)
-    }
-    
-    func createVerbModelGroupAndAppend(type: VerbModelType, strList: [String]){
+    func createNewVerbModelGroupAndAppend(type: NewVerbModelType, strList: [String]){
         var vmList = [RomanceVerbModel]()
-    
-        
-        
+
         vmList.removeAll()
         for str in strList {
             vmList.append( findModelForThisVerbString(verbWord: str) )
         }
         let vmGroup = VerbModelGroup(verbModelType: type, language: getCurrentLanguage(), verbModelList: vmList)
         verbModelGroupManager.appendGroup(verbModelGroup: vmGroup)
-    }
-    
-    func loadSpanishModelListsForEachVerbEnding(){
-        let endingList = [VerbEnding.AR, .ER, .IR]
-        var modelDictionary: [String: Int] = [:]
-        
-        for ending in endingList {
-            var verbEndingModelList = getModelsWithVerbEnding(verbEnding: ending)
-            
-            //sort the verbEndingModelList by verb counts
-            
-            for model in verbEndingModelList {
-                let verbList = findVerbsOfSameModel(targetID: model.id)
-                modelDictionary.updateValue(verbList.count, forKey: model.modelVerb)
-            }
-            let sortInfo = modelDictionary.sorted(by: { $0.value > $1.value } )
-            
-            var tempList = [ModelPatternStruct]()
-            sortInfo.forEach {key, value in
-                print(key)
-                for model in verbEndingModelList {
-                    if model.modelVerb == "\(key)" {
-                        tempList.append(ModelPatternStruct(id: model.id, model: model, count: value, completed: false))
-                        break
-                    }
-                }
-            }
-            
-            switch ending {
-            case .AR: mpsListAR = tempList
-            case .ER: mpsListER = tempList
-            case .IR: mpsListIR = tempList
-            default: break
-            }
-            
-        }
-        
-        print("model counts AR: \(mpsListAR.count), ER: \(mpsListER.count), IR: \(mpsListIR.count)")
-    }
-    
-    func getModelList(ending: VerbEnding)->[RomanceVerbModel]{
-        switch ending {
-        case .AR:  return modelListAR
-        case .ER: return modelListER
-        case .IR: return modelListIR
-        default: return modelListAR
-        }
-    }
-    
-    func getModelPatternStructList(ending: VerbEnding)->[ModelPatternStruct]{
-        switch ending {
-        case .AR: return mpsListAR
-        case .ER: return mpsListER
-        case .IR: return mpsListIR
-        default: return mpsListAR
-        }
-    }
-    
-    func setCurrentPattern(pattern: SpecialPatternType){
-        currentPattern = pattern
-    }
-    
-    func getCurrentPattern()->SpecialPatternType{
-        return currentPattern
     }
     
     func findModelForThisVerbString(verbWord: String)->RomanceVerbModel{
@@ -153,17 +213,6 @@ extension LanguageEngine{
         }
     }
     
-    
-//    func setSimilarModels(){
-//        let encontrarSimilarModel = SimilarModelsTo(targetNum: 58, similarModelList: [56, 53, 35])
-//        let pedirSimilarModel = SimilarModelsTo(targetNum: 55, similarModelList: [35, 75, 61])
-//    }
-//    
-//    func getModelsAroundGivenPattern(patternType: SpecialPatternType)->[Int]{
-//        var modelList = [Int]()
-//        return modelList
-//    }
-//    
     func countVerbsOfSelectedType(showVerbType: ShowVerbType)->Int{
         var count = 0
         for verb in verbList {
@@ -193,6 +242,74 @@ extension LanguageEngine{
         var tempVM = verbModel
         return tempVM.parseSpecialPatterns()
     }
+    
+    func getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: RomanceVerbModel, verbType: NewVerbModelType)->SpecialPatternType{
+        var vm = verbModel
+        for pattern in vm.specialPatternList {
+            let sps = vm.parseSpecialPattern(tenseStr: pattern.tenseStr, patternStr: pattern.patternStr)
+            switch verbType {
+            case .StemChanging1:  if sps.pattern.isStemChangingSpanish1() {return sps.pattern}
+            case .StemChanging2:  if sps.pattern.isStemChangingSpanish2() {return sps.pattern}
+            case .StemChanging3:  if  sps.pattern.isStemChangingSpanish3() {return sps.pattern}
+            case .SpellChanging1: if sps.pattern.isSpellChangingSpanish1() { return sps.pattern }
+            case .SpellChanging2: if sps.pattern.isSpellChangingSpanish2() { return sps.pattern }
+            case .Irregular: if sps.pattern.isIrregularSpanish() { return sps.pattern }
+            case .Regular:  return SpecialPatternType.none
+            case .Critical: return SpecialPatternType.none
+            case .StemAndSpellChanging: return SpecialPatternType.none
+            case .undefined: return SpecialPatternType.none
+            }
+            return SpecialPatternType.none
+        }
+        return SpecialPatternType.none
+    }
+    
+    func fillVerbModelLists(targetTense: Tense = .present){
+        stemChangingList1.removeAll()
+        stemChangingList2.removeAll()
+        stemChangingList3.removeAll()
+        spellChangingList1.removeAll()
+        spellChangingList2.removeAll()
+        irregularModelList.removeAll()
+        
+        switch getCurrentLanguage() {
+        case .Spanish:
+            let vmList = getVerbModels()
+            for vm in getVerbModels(){
+                var verbModel = vm
+                for pattern in verbModel.specialPatternList {
+                    let spt = verbModel.parseSpecialPattern(tenseStr: pattern.tenseStr, patternStr: pattern.patternStr)
+                    if pattern.tenseStr == targetTense.rawValue {
+                        if spt.pattern.isStemChangingSpanish1() { stemChangingList1.append(verbModel) }
+                        if spt.pattern.isStemChangingSpanish2() { stemChangingList2.append(verbModel) }
+                        if spt.pattern.isStemChangingSpanish3() { stemChangingList3.append(verbModel) }
+                        if spt.pattern.isSpellChangingSpanish1() { spellChangingList1.append(verbModel) }
+                        if spt.pattern.isSpellChangingSpanish2() { spellChangingList2.append(verbModel) }
+                        if spt.pattern.isIrregularSpanish() { irregularModelList.append(verbModel) }
+                    }
+                }
+            }
+
+        case .French:
+//            for vm in getVerbModels(){
+//                var verbModel = vm
+//                for pattern in verbModel.specialPatternList {
+//                    var spt = verbModel.parseSpecialPattern(tenseStr: pattern.tenseStr, patternStr: pattern.patternStr)
+//                    if spt.pattern.isStemChangingFrench() { stemChangingModelList.append(verbModel) }
+//                }
+//            }
+            break
+        default:
+            break
+        }
+//        print("stemChangingList1: count = \(stemChangingList1.count)")
+//        print("stemChangingList2: count = \(stemChangingList2.count)")
+//        print("stemChangingList3: count = \(stemChangingList3.count)")
+//        print("spellChangingList1: count = \(spellChangingList1.count)")
+//        print("spellChangingList2: count = \(spellChangingList2.count)")
+//        print("irregularModelList: count = \(irregularModelList.count)")
+    }
+    
     
     func getModelsOfPattern(verbList: [Verb], thisPattern: SpecialPatternStruct)->[RomanceVerbModel]{
         switch getCurrentLanguage() {
@@ -237,7 +354,7 @@ extension LanguageEngine{
                     if spt.tense == thisPattern.tense && spt.pattern.rawValue == thisPattern.pattern.rawValue {
                         newVerbList.append(verb)
 //                        print("verb: \(verbWord) - has tense \(tense.rawValue), pattern \(pattern.rawValue) ")
-                        print("verb: \(verbWord) - has tense \(tense.rawValue), pattern \(pattern.rawValue), targetPattern: \(thisPattern.pattern.rawValue), modelID = \(id) ")
+//                        print("verb: \(verbWord) - has tense \(tense.rawValue), pattern \(pattern.rawValue), targetPattern: \(thisPattern.pattern.rawValue), modelID = \(id) ")
                     }
                 }
             case .French:
@@ -269,7 +386,7 @@ extension LanguageEngine{
                     let pattern = spt.pattern
                     if spt.tense == thisPattern.tense && spt.pattern.rawValue != thisPattern.pattern.rawValue {
                         newVerbList.append(verb)
-                        print("verb: \(verbWord) - has tense \(tense.rawValue), pattern \(pattern.rawValue), targetPattern: \(thisPattern.pattern.rawValue), modelID = \(id) ")
+                        print("getVerbsOfDifferentPattern: verb: \(verbWord) - has tense \(tense.rawValue), pattern \(pattern.rawValue), targetPattern: \(thisPattern.pattern.rawValue), modelID = \(id) ")
                     }
                 }
             case .French:
@@ -518,7 +635,7 @@ extension LanguageEngine{
         var newVerb = false
         for v in verbList {
             newVerb = true
-            let rv = getRomanceVerb(verb: v)
+                let rv = getRomanceVerb(verb: v)
             if rv.m_verbWord.count > 0 {
                 let id = rv.getBescherelleID()
                 if id == targetID {
@@ -532,6 +649,28 @@ extension LanguageEngine{
         }
         return vList
     }
+    
+    func findSingletonVerbsOfSameModel(targetID: Int)->[Verb]{
+        var vu = VerbUtilities()
+        var vList = [Verb]()
+        var newVerb = false
+        for v in verbList {
+            newVerb = true
+            let rv = getRomanceVerb(verb: v)
+            let id = rv.getBescherelleID()
+            if id == targetID {
+                if vu.getListOfWords(characterArray: rv.m_verbPhrase).count < 2 {
+                    //make sure this verb hasn't been seen before
+                    for vv in vList {
+                        if vv == v { newVerb = false }
+                    }
+                    if newVerb{ vList.append(v) }
+                }
+            }
+        }
+        return vList
+    }
+    
     
     func findVerbsFromSameModel(verb: Verb)->[Verb]{
         
