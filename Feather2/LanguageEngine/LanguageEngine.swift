@@ -14,9 +14,12 @@ enum  TeachMeMode : String {
 }
 
 
-class LanguageEngine : ObservableObject {
+class LanguageEngine : ObservableObject, Equatable {
+    static func == (lhs: LanguageEngine, rhs: LanguageEngine) -> Bool {
+        return lhs.currentLanguage.rawValue == rhs.currentLanguage.rawValue
+    }
+    
     var vmecdm = VerbModelEntityCoreDataManager()
-//    @ObservedObject var vmecdm : VerbModelEntityCoreDataManager
     @Published private var currentLanguage = LanguageType.Agnostic
     @Published var filteredVerbList = [Verb]()
     
@@ -97,35 +100,23 @@ class LanguageEngine : ObservableObject {
     var criticalVerbModelFlag = false
     var currentVerbModel = RomanceVerbModel()
     var selectedVerbModelList = [RomanceVerbModel]()
+    var completedVerbModelList = [RomanceVerbModel]()
     
-    var criticalModelList = [RomanceVerbModel]()
-    var regularModelList = [RomanceVerbModel]()
-    var stemChangingList1 = [RomanceVerbModel]()
-    var stemChangingList2 = [RomanceVerbModel]()
-    var stemChangingList3 = [RomanceVerbModel]()
-    var spellChangingList1 = [RomanceVerbModel]()
-    var spellChangingList2 = [RomanceVerbModel]()
-    var irregularModelList = [RomanceVerbModel]()
+//    var criticalModelList = [RomanceVerbModel]()
+//    var regularOnlyModelList = [RomanceVerbModel]()
+//    var stemChangingList1 = [RomanceVerbModel]()
+//    var stemChangingList2 = [RomanceVerbModel]()
+//    var stemChangingList3 = [RomanceVerbModel]()
+//    var spellChangingList1 = [RomanceVerbModel]()
+//    var spellChangingList2 = [RomanceVerbModel]()
+//    var irregularModelList = [RomanceVerbModel]()
     var selectedSpecialPatternTypeList = [SpecialPatternType]()
     
     var verbsExistForAll3Endings = true  //initially all verbs are live
     
     let regularStringList = ["regularAR", "regularER", "regularIR"]
     let criticalStringList = ["estar", "haber", "hacer", "ir", "oír", "reír", "saber", "ser", "ver" ]
-//    let specialStringList = ["andar", "dar", "jugar", "pensar",
-//                             "parecer", "poder", "poner", "tener", "traer", "querer", "volver",
-//                             "decir", "dormir", "salir", "seguir", "venir", "abrir",  ]  //17
-//
-//    let importantStringList = ["airar", "averiguar", "cazar", "empezar", "encontrar", "enraizar", "guiar", "pagar", "regar", "sacar",
-//                                "caer", "cocer", "coger", "creer", "defender", "mover",
-//                               "adquirir", "bruñir", "dirigir", "influir", "lucir",
-//                                "pedir", "predecir", "producir", "reír", "sentir", ]
-//    let sparseStringList = ["actuar", "ahincar", "aullar", "avergonzar", "caber",
-//                         "colgar", "delinquir", "desosar", "discernir", "distinguir", "elegir",
-//                            "asir", "erguir", "errar", "forzar", "llover", "mecer", "oler",
-//                         "placer", "podrir", "prohibir", "raer", "reñir", "reunir",
-//                         "roer", "satisfacer", "soler", "tañer", "trocar", "valer", "yacer", "zurcir",  ]
-    
+
     init(){  //default init
     }
  
@@ -159,21 +150,24 @@ class LanguageEngine : ObservableObject {
         
         filteredVerbList = verbList
         
-       
+        
+        
         //set for initial verb model learning
         
         loadInitialVerbModel()
-       
+        if vmecdm.vm.getVerbModelEntityCount() < getVerbModels().count {
+            reloadModelVerbEntitiesWithModelVerbs()
+        }
         
         fillVerbCubeAndQuizCubeLists()
-        
+        loadVerbModelManager()
         fillVerbModelLists()
-        loadVerbModelManager()  //this loads the verb models of
+        
+       
         restoreSelectedVerbs()
+        dumpSelectedAndCompletedModels()
         
 //        dumpModelStuff()
-        
-        
 //        fillSimpleFlashCardProblem()
 //        initializeStudentScoreModel()
     }

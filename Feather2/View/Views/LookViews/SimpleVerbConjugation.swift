@@ -264,11 +264,13 @@ struct SimpleVerbConjugation: View {
                     Text("Current verb")
                     Text(currentVerbPhrase).bold().font(.title3).foregroundColor(Color("BethanyGreenText"))
                 }.foregroundColor(Color("ChuckText1"))
-                HStack{
-                    Text("belongs to")
-                    Text(verbModelString).bold().foregroundColor(Color("BethanyGreenText"))
-                    Text("verb model")
-                }.foregroundColor(Color("ChuckText1"))
+                if verbModelString.count > 0 {
+                    HStack{
+                        Text("belongs to")
+                        Text(verbModelString).bold().foregroundColor(Color("BethanyGreenText"))
+                        Text("verb model")
+                    }.foregroundColor(Color("ChuckText1"))
+                }
 //                if ( languageViewModel.getSelectedVerbModelList().count > 1){
 //                    ListVerbModelsView(languageViewModel: languageViewModel, currentModelString: languageViewModel.getSelectedVerbModelList()[0].modelVerb)
 //                }
@@ -354,6 +356,9 @@ struct SimpleVerbConjugation: View {
                             languageViewModel.addVerbToFilteredList(verb: verb)
                         }
                         setCurrentVerb()
+                        if languageViewModel.getSelectedVerbModelList().count > 0 {
+                            verbModelString = languageViewModel.getSelectedVerbModelList()[0].modelVerb
+                        }
                     }
 //                    processTextField()
                     Spacer()

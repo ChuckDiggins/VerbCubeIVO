@@ -24,12 +24,6 @@ struct FindMyVerbDispatcher: View {
                     Text("Find Verb Model")
                     }.modifier(NavLinkModifier())
                     
-                    NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel, featherMode: .pattern))
-                    {
-                    Text("Find Verb Pattern")
-                    }.modifier(NavLinkModifier())
-                    
-                    
                     
                     NavigationLink(destination: AnalyzeUserVerbView(languageViewModel: languageViewModel))
                     {

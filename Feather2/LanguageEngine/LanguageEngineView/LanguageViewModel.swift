@@ -11,7 +11,11 @@ import JumpLinguaHelpers
 
 //émouvoir
 //déchoir
-class LanguageViewModel : ObservableObject {
+class LanguageViewModel : ObservableObject, Equatable {
+    static func == (lhs: LanguageViewModel, rhs: LanguageViewModel) -> Bool {
+        return lhs.languageEngine == rhs.languageEngine
+    }
+    
     
     var insertQueQuiBeforeSubjunctive = true
     //var useFeminineSubjectPronouns = true

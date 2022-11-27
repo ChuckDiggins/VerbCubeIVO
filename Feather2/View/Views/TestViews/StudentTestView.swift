@@ -12,65 +12,69 @@ enum FlashMode {
     case TextField, MultipleChoice, Random
 }
 
-struct StudentTestView: View {
-    @ObservedObject var languageViewModel : LanguageViewModel
-    @Environment(\.dismiss) private var dismiss
-    @State var multipleChoiceShown = false
-    @State var textEditorShown = false
-    @State var randomShown = false
-    @State var wrong = 3
-    @State var correct = 5
-    
-    var body: some View {
-        ZStack {
-            NavigationView{
-                
-                List{
-                   
-                    Button{
-                        textEditorShown = false
-                        randomShown = false
-                        multipleChoiceShown.toggle()
-                    } label: {
-                        Text("Multiple choice flash cards")
-                    }
-                    Button{
-                        multipleChoiceShown = false
-                        randomShown = false
-                        textEditorShown.toggle()
-                    } label: {
-                        Text("Text editor flash cards")
-                    }
-                    
-                    
-                }.navigationBarTitle("Testing")
-                    .padding()
-                
-            }
-            //            .blur(radius: shown ? 30 : 0)
-            
-            if multipleChoiceShown {
-                CombinedAlert(languageViewModel: languageViewModel, flashMode: .MultipleChoice, shown: $multipleChoiceShown)
-            }
-            
-            if textEditorShown {
-                CombinedAlert(languageViewModel: languageViewModel, flashMode: .TextField, shown: $textEditorShown)
-            }
-            
-            if randomShown {
-                CombinedAlert(languageViewModel: languageViewModel, flashMode: .Random, shown: $randomShown)
-            }
-        }.foregroundColor(Color("BethanyGreenText"))
-            .background(Color("BethanyNavalBackground"))
-            .onAppear{
-                languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
-            }
-        
-    }
-}
+//struct StudentTestView: View {
+//    @ObservedObject var languageViewModel : LanguageViewModel
+//    @State var path: Wrapper
+//    @State var multipleChoiceShown = false
+//    @State var textEditorShown = false
+//    @State var randomShown = false
+//    @State var wrong = 3
+//    @State var correct = 5
+//
+//
+//    var body: some View {
+//        ZStack {
+//            NavigationView{
+//
+//                List{
+//
+//                    Button{
+//                        textEditorShown = false
+//                        randomShown = false
+//                        multipleChoiceShown.toggle()
+//                    } label: {
+//                        Text("Multiple choice flash cards")
+//                    }
+//                    Button{
+//                        multipleChoiceShown = false
+//                        randomShown = false
+//                        textEditorShown.toggle()
+//                    } label: {
+//                        Text("Text editor flash cards")
+//                    }
+//
+//
+//                }.navigationBarTitle("Testing")
+//                    .padding()
+//
+//            }
+//            //            .blur(radius: shown ? 30 : 0)
+//
+//            if multipleChoiceShown {
+//                CombinedAlert(languageViewModel: languageViewModel, path: path, flashMode: .MultipleChoice, shown: $multipleChoiceShown)
+//            }
+//
+//            if textEditorShown {
+//                CombinedAlert(languageViewModel: languageViewModel, path: path, flashMode: .TextField, shown: $textEditorShown)
+//            }
+//
+//            if randomShown {
+//                CombinedAlert(languageViewModel: languageViewModel, path: path, flashMode: .Random, shown: $randomShown)
+//            }
+//        }.foregroundColor(Color("BethanyGreenText"))
+//            .background(Color("BethanyNavalBackground"))
+//            .onAppear{
+//                languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
+//            }
+//
+//    }
+//}
 
 struct CombinedAlert: View {
     @ObservedObject var languageViewModel : LanguageViewModel
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var router: Router
+    
     var flashMode : FlashMode
     @State var currentLanguage = LanguageType.Agnostic
     
@@ -83,8 +87,6 @@ struct CombinedAlert: View {
     @State var answerComplete = false
     @State var previousCorrectAnswer = ""
     @State var previousWrongAnswer = ""
-    
-    @State var isComplete = false
     
     enum FocusField: Hashable {
         case field
@@ -99,12 +101,16 @@ struct CombinedAlert: View {
     @State var userMsg2 = ""
     @State var personString = ""
     @State var isMale = true
+    @State var modelCompleted = false
+    @State var newModel = false
+    @State var completedModelsToPass = 3
     
     @FocusState private var focusedField: FocusField?
     
     var body: some View {
         ZStack{
             VStack(spacing: 5){
+                
                 showHeaderInfo()
                     .padding(.horizontal, 3)
                 Spacer(minLength: 5)
@@ -129,7 +135,10 @@ struct CombinedAlert: View {
                 getNextStudentProblem()
             }
             
-        }.frame(width: UIScreen.main.bounds.width - 25, height: 400)
+        }
+        .navigationTitle("Verb Model Testing")
+            .navigationBarTitleDisplayMode(.inline)
+        .frame(width: UIScreen.main.bounds.width - 25, height: 400)
             .background(Color("BethanyNavalBackground"))
             .cornerRadius(20)
             .border(.green)
@@ -164,7 +173,11 @@ struct CombinedAlert: View {
                         personString = fcp.person.getMaleString()
                         fillMessageFooter(isCorrect: isCorrect)
                         answerComplete = true
-                        //                            getNextStudentProblem()
+                        
+                        if correct > completedModelsToPass {
+                            modelCompleted.toggle()
+                            languageViewModel.setCoreAndModelSelectedToComplete()
+                        }
                     } label: {
                         Text(fcp.getAnswer(i: i))
                             .frame(width:160, height:40)
@@ -203,6 +216,8 @@ struct CombinedAlert: View {
                     .frame(width: 150, alignment: .trailing)
                 
                 TextField("", text: $answerText)
+//                FirstResponderTextField(text: $answerText, placeHolder: "Answer here")
+                    .frame(height: 40)
                     .padding(.horizontal, 3)
                     .textFieldStyle(.roundedBorder)
                     .foregroundColor(.red)
@@ -239,6 +254,10 @@ struct CombinedAlert: View {
                         //                                getNextStudentProblem()
                         //                            }
                         answerComplete = true
+                        if correct > completedModelsToPass {
+                            modelCompleted.toggle()
+                            languageViewModel.setCoreAndModelSelectedToComplete()
+                        }
                     }
                 //                if ( answerText.count > 1 ){
                 //                    HStack{
@@ -268,7 +287,7 @@ struct CombinedAlert: View {
             userMsg1 = "Correct answer was"
             userMsg2 = personString + " " + previousCorrectAnswer
             if languageViewModel.isSpeechModeActive(){
-                let vu = VerbUtilities()
+//                let vu = VerbUtilities()
 //                textToSpeech(text: "Wrong, your answer was", language: .English)
 //                textToSpeech(text: previousWrongAnswer, language: .Spanish)
 //                textToSpeech(text: "The correct answer was", language: .English)
@@ -276,7 +295,7 @@ struct CombinedAlert: View {
             }
         }
         if languageViewModel.isSpeechModeActive(){
-            let vu = VerbUtilities()
+//            let vu = VerbUtilities()
             textToSpeech(text: userMsg2, language: .Spanish)
         }
         
@@ -310,36 +329,59 @@ struct CombinedAlert: View {
     
     fileprivate func showHeaderInfo() -> some View {
         return  VStack{
-            HStack{
-                Text("Wrong: \(wrong)")
-                Spacer()
-                Button{
-                    languageViewModel.resetScores()
-                    correct = languageViewModel.getCorrectScore()
-                    wrong = languageViewModel.getWrongScore()
-                } label: {
-                    Text("Reset").padding()
+            VStack(spacing: 0){
+                if ( languageViewModel.getSelectedVerbModelList().count > 0 ){
+                    Text("Selected verb model: \(languageViewModel.getSelectedVerbModelList()[0].modelVerb)")
+                } else {
+                    Text("No model has been selected")
                 }
-                Spacer()
-                Text("Correct: \(correct)")
+                HStack{
+                    
+                    Text("Wrong: \(wrong)")
+                    Spacer()
+                    Button{
+                        languageViewModel.resetScores()
+                        correct = languageViewModel.getCorrectScore()
+                        wrong = languageViewModel.getWrongScore()
+                    } label: {
+                        Text("Reset").padding()
+                    }
+                    Spacer()
+                    Text("Correct: \(correct)")
+                }
+            }
+            .alert("Model changed to \(languageViewModel.getCurrentVerbModel().modelVerb)", isPresented: $newModel){
+                Button("OK", role: .cancel){
+                    
+                }
+            }
+            .alert("Congratulations!", isPresented: $modelCompleted){
+                Button("Load next verb model", role: .destructive){
+                    languageViewModel.setNextVerbModelInCurrentNewVerbModelType()
+                    languageViewModel.resetScores()
+                    wrong = languageViewModel.getWrongScore()
+                    correct = languageViewModel.getCorrectScore()
+                    languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
+                    getNextStudentProblem()
+                    newModel.toggle()
+                }
+            } message: {
+                Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
             }
             .padding(.horizontal, 5)
             .border(.red)
-            Button{
-                setVerbCompleted()
-               
-            } label: {
-                Text("Set complete")
-            }
+//            Button{
+//                languageViewModel.setSelectedVerbModelsComplete()
+//                router.reset()
+//                dismiss()
+//            } label: {
+//                Text("Set complete")
+//                    .modifier(BlueButtonModifier())
+//            }
         }
         .padding(.horizontal, 3)
     }
     
-    func setVerbCompleted(){
-        isComplete = true
-        languageViewModel.setSelectedVerbModelsComplete()
-        dismiss()
-    }
     
     func getNextStudentProblem(){
         answerComplete = false

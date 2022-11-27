@@ -82,16 +82,6 @@ extension LanguageEngine{
         return probStruct
     }
     
-    func fillSimpleFlashCardProblem(){
-        addVerbToFilteredList(verb: findVerbFromString(verbString: "abrir", language: getCurrentLanguage()))
-        addVerbToFilteredList(verb: findVerbFromString(verbString: "añadir", language: getCurrentLanguage()))
-        addVerbToFilteredList(verb: findVerbFromString(verbString: "comprar", language: getCurrentLanguage()))
-        addVerbToFilteredList(verb: findVerbFromString(verbString: "vivir", language: getCurrentLanguage()))
-        addVerbToFilteredList(verb: findVerbFromString(verbString: "beber", language: getCurrentLanguage()))
-        tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future]
-        fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
-    }
-    
     enum ProblemTypeEnum {
         case Tense, Person
     }
@@ -113,29 +103,34 @@ extension LanguageEngine{
         var personString = ""
         var tenseString = ""
         var ps = ProblemStruct()
-        for verb in verbList {
+        
+        for _ in 0 ..< maxCount {
+            verbList.shuffle()
+            var verb = verbList.randomElement()
             
             let problemType = problemList.randomElement()!
             switch problemType{
             case .Person:
                 personCount += 1
                 let targetPerson = personList.randomElement()!
-                ps = createProblemForThisPerson(verb: verb, person: targetPerson)
+                ps = createProblemForThisPerson(verb: verb!, person: targetPerson)
                 personString = targetPerson.getMaleString()
                 tenseString = ps.tense.rawValue
                 if ps.tense == .presentSubjunctive { personString = "que " + personString}
             case .Tense:
                 tenseCount += 1
                 let targetTense = tenseList.randomElement()!
-                ps = createProblemForThisTense(verb: verb, tense: targetTense)
+                ps = createProblemForThisTense(verb: verb!, tense: targetTense)
                 
                 personString = ps.person.getFemaleString()
                 if targetTense == .presentSubjunctive { personString = "que " + personString}
                 tenseString = targetTense.rawValue
             }
-            filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb.getWordAtLanguage(language: getCurrentLanguage())) \n\(tenseString) tense  \n\(personString) ____________ ", answer: ps.correctAnswer))
+            filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb!.getWordAtLanguage(language: getCurrentLanguage())) \n\(tenseString) tense  \n\(personString) ____________ ", answer: ps.correctAnswer))
             
-            if verbList.count > maxCount { break }
+            if verbList.count > maxCount {
+                break
+            }
             
         }
         
@@ -153,29 +148,31 @@ extension LanguageEngine{
         personList.shuffle()
         
         let problemList = [ProblemTypeEnum.Tense, ProblemTypeEnum.Person]
+        let maxCardCount = 30
         
         
         var personCount = 0
         var tenseCount = 0
         
         for verb in verbList {
-            
+            var randomVerb = verbList.randomElement()!
             let problemType = problemList.randomElement()!
             switch problemType{
             case .Person:
                 personCount += 1
                 let targetPerson = personList.randomElement()!
-                let ps = createProblemForThisPerson(verb: verb, person: targetPerson)
-                flashCardMgr.addFlashCard( fcp: FlashCard(verb: verb, tense: ps.tense, person: targetPerson,
+                let ps = createProblemForThisPerson(verb: randomVerb, person: targetPerson)
+                flashCardMgr.addFlashCard( fcp: FlashCard(verb: randomVerb, tense: ps.tense, person: targetPerson,
                                                           answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
                                                           answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
                                                           answer5: ps.getAnswer(index:4), answer6: ps.getAnswer(index:5),
                                                           correctAnswer: ps.correctAnswer, question: ps.question))
+                
             case .Tense:
                 tenseCount += 1
                 let targetTense = tenseList.randomElement()!
-                let ps = createProblemForThisTense(verb: verb, tense: targetTense)
-                flashCardMgr.addFlashCard( fcp: FlashCard(verb: verb, tense: targetTense, person: ps.person,
+                let ps = createProblemForThisTense(verb: randomVerb, tense: targetTense)
+                flashCardMgr.addFlashCard( fcp: FlashCard(verb: randomVerb, tense: targetTense, person: ps.person,
                                                           answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
                                                           answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
                                                           answer5: ps.getAnswer(index:4), answer6: ps.getAnswer(index:5),

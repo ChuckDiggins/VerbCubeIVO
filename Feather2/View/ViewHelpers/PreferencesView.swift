@@ -29,7 +29,7 @@ struct PreferencesView: View {
                         .font(.largeTitle)
                     
                 }
-                VStack(spacing: 25) {
+                ScrollView {
                     DisclosureGroupPreferences()
                     NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel)){
                         HStack{

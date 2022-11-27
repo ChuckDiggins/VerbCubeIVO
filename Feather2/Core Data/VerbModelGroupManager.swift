@@ -11,6 +11,8 @@ import JumpLinguaHelpers
 struct VerbModelGroup{
     private var verbModelType: NewVerbModelType
     private var language: LanguageType
+    private var isSelected = false
+    private var isCompleted = false
     private var verbModelList = [RomanceVerbModel]()
     
     init(){
@@ -30,15 +32,35 @@ struct VerbModelGroup{
         self.verbModelList = verbModelList
     }
     
+    mutating func setIsCompleted(_ flag: Bool=true){
+        self.isCompleted = flag
+    }
+    
+    mutating func setIsSelected(_ flag: Bool=true){
+        self.isSelected = flag
+    }
+    
+    func completed()->Bool{
+        isCompleted
+    }
+    
+    func selected()->Bool{
+        isSelected
+    }
+    
+    func getVerbModelType()->NewVerbModelType{
+        return verbModelType
+    }
+    
+    func getVerbModelList()->[RomanceVerbModel]{
+        return verbModelList
+    }
+    
     func getName()->String{
         return verbModelType.getTypeName()
     }
     func getVerbModelCount()->Int{
         verbModelList.count
-    }
-    
-    func getVerbModelList()->[RomanceVerbModel]{
-        verbModelList
     }
     
     func verbModelExists(verbModel: RomanceVerbModel)->Bool{
@@ -59,7 +81,7 @@ struct VerbModelGroup{
         verbModelList = verbModel
     }
     
-    func getVerbModelListAtVerbEnding(verbEnding: VerbEnding)->[RomanceVerbModel]{
+    func getVerbModelSublistAtVerbEnding(verbEnding: VerbEnding)->[RomanceVerbModel]{
         let vamslu = VerbAndModelSublistUtilities()
 //        dumpVerbModelList()
         return vamslu.getModelSublistAtVerbEnding(inputModelList: verbModelList, verbEnding: verbEnding)
@@ -89,9 +111,9 @@ struct VerbModelGroupManager{
         verbModelGroupList.append(verbModelGroup)
     }
     
-    func getGroupAtName(name: String)->VerbModelGroup{
+    func getGroupAtName(modelName: String)->VerbModelGroup{
         for vmg in verbModelGroupList {
-            if name == vmg.getName() { return vmg }
+            if modelName == vmg.getName() { return vmg }
         }
         return nullGroup
     }
@@ -100,9 +122,25 @@ struct VerbModelGroupManager{
         return verbModelGroupList
     }
     
-    func getVerbModelListAtVerbEnding(name: String, verbEnding: VerbEnding)->[RomanceVerbModel]{
-        let group = getGroupAtName(name: name)
-        return group.getVerbModelListAtVerbEnding(verbEnding: verbEnding)
+    func getSelectedVerbModelGroup()->[VerbModelGroup]{
+        var selectedList = [VerbModelGroup]()
+        for vmg in getList(){
+            if vmg.selected() {selectedList.append(vmg)}
+        }
+        return selectedList
+    }
+    
+    func getCompletedVerbModelGroup()->[VerbModelGroup]{
+        var completedList = [VerbModelGroup]()
+        for vmg in getList(){
+            if vmg.completed() {completedList.append(vmg)}
+        }
+        return completedList
+    }
+    
+    func getVerbModelSublistAtVerbEnding(modelName: String, verbEnding: VerbEnding)->[RomanceVerbModel]{
+        let group = getGroupAtName(modelName: modelName)
+        return group.getVerbModelSublistAtVerbEnding(verbEnding: verbEnding)
     }
     
     func getModelListAtSelectedPattern(languageViewModel: LanguageViewModel, inputModelList: [RomanceVerbModel], selectedPattern: SpecialPatternType)->[RomanceVerbModel]{
@@ -117,14 +155,12 @@ struct VerbModelGroupManager{
         
     }
     
-    func getModelListAtSelectedVerbModelTypeAndVerbPattern(languageViewModel: LanguageViewModel, inputModelList: [RomanceVerbModel])->[RomanceVerbModel]{
-        let selectedPattern = languageViewModel.getSelectedSpecialPatternType()
-        let selectedType = languageViewModel.getSelectedNewVerbModelType()
-        
-        var modelList = [RomanceVerbModel]()
-        for model in inputModelList {
+    func getVerbModelList(newVerbType: NewVerbModelType)->[RomanceVerbModel]{
+        for vmg in verbModelGroupList{
+            if vmg.getVerbModelType() == newVerbType {
+                return vmg.getVerbModelList()
+            }
         }
-        return modelList
+        return [RomanceVerbModel]()
     }
-    
 }

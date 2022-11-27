@@ -26,26 +26,24 @@ struct Feather2App: SwiftUI.App {
     @ObservedObject var appState = AppState(hasOnboarded: false)
     @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
     @StateObject var vmecdm = VerbModelEntityCoreDataManager()
+    @StateObject var router = Router()
    
 //    @StateObject private var dataController = DataController()
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                VStack{
-//                    Text("Feather2App: vmecdm count: \(vmecdm.vm.getVerbModelEntityCount())")
-                    TabBarClassicVC(languageViewModel: languageViewModel)
-                        
-                        .onAppear{
-                            languageViewModel.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
-                        }
-                    Spacer()
-                }.navigationViewStyle(StackNavigationViewStyle())
-                    .environmentObject(languageViewModel)
-                    .environmentObject(vmecdm)
-                    
-                    
-            }
+            NavigationStack{
+                //                    TabBarClassicVC(languageViewModel: languageViewModel)
+//                NavigationStackView(languageViewModel: languageViewModel)
+//                CircleView(languageViewModel: languageViewModel)
+                CircleButtonView(languageViewModel: languageViewModel)
+                    .onAppear{
+                        languageViewModel.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
+                    }
+                Spacer()
+            }.environmentObject(languageViewModel)
+                .environmentObject(vmecdm)
+                .environmentObject(router)
         }
     }
     

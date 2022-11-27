@@ -13,6 +13,10 @@
 		6E2174E3289857A60066C234 /* DisclosureGroupMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */; };
 		6E2174E5289857F70066C234 /* DisclosureGroupPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */; };
 		6E2174E728985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */; };
+		6E2224E0292EE32B0069C541 /* VerbChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2224DF292EE32B0069C541 /* VerbChartView.swift */; };
+		6E2224E229315B4A0069C541 /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2224E129315B4A0069C541 /* Bar.swift */; };
+		6E2224E42932751B0069C541 /* FirstResponderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2224E32932751B0069C541 /* FirstResponderTextField.swift */; };
+		6E2224E62933CF3F0069C541 /* VerbModelStatusWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2224E52933CF3F0069C541 /* VerbModelStatusWrapper.swift */; };
 		6E229CA027C68A26009F8E02 /* ShowWordTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */; };
 		6E229CA227C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */; };
 		6E229CB027C982B5009F8E02 /* CustomToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CAF27C982B5009F8E02 /* CustomToggleStyle.swift */; };
@@ -78,6 +82,10 @@
 		6EAD5FF027D42A8200027A49 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD5FEF27D42A8200027A49 /* ViewModifiers.swift */; };
 		6EB48219284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB48218284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift */; };
 		6EB4821B285009DB000CB206 /* VerbUtilitiesExtra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB4821A285009DB000CB206 /* VerbUtilitiesExtra.swift */; };
+		6EB66D60292BF04800D43B47 /* CircleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB66D5F292BF04800D43B47 /* CircleButtonView.swift */; };
+		6EB66D62292BF08200D43B47 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB66D61292BF08200D43B47 /* MenuButton.swift */; };
+		6EB66D64292BF0C700D43B47 /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB66D63292BF0C700D43B47 /* MenuViewModel.swift */; };
+		6EB66D66292BF10100D43B47 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB66D65292BF10100D43B47 /* MenuItem.swift */; };
 		6EB757E627E90ED8005ADA66 /* LanguageEngineRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */; };
 		6EB76D662899A91E00E65641 /* PreferencesButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB76D652899A91D00E65641 /* PreferencesButtonView.swift */; };
 		6EBAC2ED27F39A5C004DB5D1 /* MultiVerbMorphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBAC2EC27F39A5C004DB5D1 /* MultiVerbMorphView.swift */; };
@@ -124,6 +132,8 @@
 		6EDADC3E28D110DE00C117AD /* ModelLessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC3D28D110DE00C117AD /* ModelLessonView.swift */; };
 		6EDADC8628D660A400C117AD /* StudentTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC8528D660A400C117AD /* StudentTestView.swift */; };
 		6EDADC8828D6610700C117AD /* FlashCardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDADC8728D6610700C117AD /* FlashCardManager.swift */; };
+		6EDE6D8B292944D900060C03 /* NavStackRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE6D8A292944D900060C03 /* NavStackRouter.swift */; };
+		6EDE6D8D292A981000060C03 /* NavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE6D8C292A981000060C03 /* NavigationStackView.swift */; };
 		6EDE944F2814419900C1A3DB /* QuizVerbSingleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE944E2814419900C1A3DB /* QuizVerbSingleView.swift */; };
 		6EDE945128148D5700C1A3DB /* PatternRecognitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE945028148D5700C1A3DB /* PatternRecognitionView.swift */; };
 		6EDE94532815E45500C1A3DB /* LanguageEngineVerbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE94522815E45300C1A3DB /* LanguageEngineVerbModel.swift */; };
@@ -148,6 +158,10 @@
 		6E2174E2289857A60066C234 /* DisclosureGroupMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupMain.swift; sourceTree = "<group>"; };
 		6E2174E4289857F70066C234 /* DisclosureGroupPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupPreferences.swift; sourceTree = "<group>"; };
 		6E2174E628985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupVerbsPatternsAndModels.swift; sourceTree = "<group>"; };
+		6E2224DF292EE32B0069C541 /* VerbChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbChartView.swift; sourceTree = "<group>"; };
+		6E2224E129315B4A0069C541 /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
+		6E2224E32932751B0069C541 /* FirstResponderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstResponderTextField.swift; sourceTree = "<group>"; };
+		6E2224E52933CF3F0069C541 /* VerbModelStatusWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelStatusWrapper.swift; sourceTree = "<group>"; };
 		6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWordTypeEnum.swift; sourceTree = "<group>"; };
 		6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveVerbCubeConfiguration.swift; sourceTree = "<group>"; };
 		6E229CAF27C982B5009F8E02 /* CustomToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleStyle.swift; sourceTree = "<group>"; };
@@ -211,6 +225,10 @@
 		6EAD5FEF27D42A8200027A49 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		6EB48218284FBBDC000CB206 /* FeatherVerbQuizMorphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatherVerbQuizMorphView.swift; sourceTree = "<group>"; };
 		6EB4821A285009DB000CB206 /* VerbUtilitiesExtra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbUtilitiesExtra.swift; sourceTree = "<group>"; };
+		6EB66D5F292BF04800D43B47 /* CircleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButtonView.swift; sourceTree = "<group>"; };
+		6EB66D61292BF08200D43B47 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		6EB66D63292BF0C700D43B47 /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
+		6EB66D65292BF10100D43B47 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		6EB757E527E90ED8005ADA66 /* LanguageEngineRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineRealm.swift; sourceTree = "<group>"; };
 		6EB76D652899A91D00E65641 /* PreferencesButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesButtonView.swift; sourceTree = "<group>"; };
 		6EBAC2EC27F39A5C004DB5D1 /* MultiVerbMorphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVerbMorphView.swift; sourceTree = "<group>"; };
@@ -258,6 +276,8 @@
 		6EDADC3D28D110DE00C117AD /* ModelLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLessonView.swift; sourceTree = "<group>"; };
 		6EDADC8528D660A400C117AD /* StudentTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentTestView.swift; sourceTree = "<group>"; };
 		6EDADC8728D6610700C117AD /* FlashCardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashCardManager.swift; sourceTree = "<group>"; };
+		6EDE6D8A292944D900060C03 /* NavStackRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavStackRouter.swift; sourceTree = "<group>"; };
+		6EDE6D8C292A981000060C03 /* NavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackView.swift; sourceTree = "<group>"; };
 		6EDE944E2814419900C1A3DB /* QuizVerbSingleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizVerbSingleView.swift; sourceTree = "<group>"; };
 		6EDE945028148D5700C1A3DB /* PatternRecognitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternRecognitionView.swift; sourceTree = "<group>"; };
 		6EDE94522815E45300C1A3DB /* LanguageEngineVerbModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineVerbModel.swift; sourceTree = "<group>"; };
@@ -426,6 +446,7 @@
 		6EA80F2627BDB6D700D6061F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6EB66D5E292BF00500D43B47 /* CircleButtonNavigation-Lynch */,
 				6EDADC8428D6608A00C117AD /* Utilities */,
 				6E447D0428B3D7D600528DD9 /* QuizCube */,
 				6EE2B0C128319D3500E239CC /* HomeViews */,
@@ -433,6 +454,7 @@
 				6EBB895028283F3700A49376 /* LearnViews */,
 				6E2D25BD290B1C3A00D8F35E /* 5VerbModelViews */,
 				6EBB894F28283EF100A49376 /* TestViews */,
+				6E2224E52933CF3F0069C541 /* VerbModelStatusWrapper.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -459,6 +481,8 @@
 				6EDADC2628C63D2D00C117AD /* PopupCellView.swift */,
 				6EDADC2828C68B1A00C117AD /* StudentLevel.swift */,
 				6E7BC34029031508004708AC /* VerbAndModelSublistUtilties.swift */,
+				6E2224E129315B4A0069C541 /* Bar.swift */,
+				6E2224E32932751B0069C541 /* FirstResponderTextField.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -480,6 +504,17 @@
 			path = ViewHelpers;
 			sourceTree = "<group>";
 		};
+		6EB66D5E292BF00500D43B47 /* CircleButtonNavigation-Lynch */ = {
+			isa = PBXGroup;
+			children = (
+				6EB66D5F292BF04800D43B47 /* CircleButtonView.swift */,
+				6EB66D61292BF08200D43B47 /* MenuButton.swift */,
+				6EB66D63292BF0C700D43B47 /* MenuViewModel.swift */,
+				6EB66D65292BF10100D43B47 /* MenuItem.swift */,
+			);
+			path = "CircleButtonNavigation-Lynch";
+			sourceTree = "<group>";
+		};
 		6EBAC2F827F7598C004DB5D1 /* DragDrop */ = {
 			isa = PBXGroup;
 			children = (
@@ -499,6 +534,7 @@
 				6EBB894D28283EC800A49376 /* MixAndMatchView.swift */,
 				6EF60AE4283E7ECB007E61F3 /* MultipleChoiceView.swift */,
 				6EF60AE628412D80007E61F3 /* StudentScoreView.swift */,
+				6E2224DF292EE32B0069C541 /* VerbChartView.swift */,
 			);
 			path = TestViews;
 			sourceTree = "<group>";
@@ -608,6 +644,7 @@
 				6ECCD47C27D96BAA0049B9CA /* AnalyzeUserVerbView.swift */,
 				6ECCD48227DBDEC60049B9CA /* TenseSelectionView.swift */,
 				6EEA2AB5286231E400F7296D /* AudibleStyleView.swift */,
+				6EDE6D8A292944D900060C03 /* NavStackRouter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -615,6 +652,7 @@
 		6EE2B0C128319D3500E239CC /* HomeViews */ = {
 			isa = PBXGroup;
 			children = (
+				6EDE6D8C292A981000060C03 /* NavigationStackView.swift */,
 				6EB76D652899A91D00E65641 /* PreferencesButtonView.swift */,
 				6EDADC3928D110BC00C117AD /* GeneralLessonView.swift */,
 				6E447C9228A29ED900528DD9 /* TeachMeAModelVerb.swift */,
@@ -724,6 +762,7 @@
 				6E447CB228B02D8600528DD9 /* ItemsToolbar.swift in Sources */,
 				6ECCD48127DBDEA40049B9CA /* LanguageView.swift in Sources */,
 				6ECCD47D27D96BAA0049B9CA /* AnalyzeUserVerbView.swift in Sources */,
+				6EB66D64292BF0C700D43B47 /* MenuViewModel.swift in Sources */,
 				6EA29CAB27E792F100CE0372 /* WordCellButton.swift in Sources */,
 				6ED179C62803986D00B23F3E /* WordCellViews.swift in Sources */,
 				6EAD5FF027D42A8200027A49 /* ViewModifiers.swift in Sources */,
@@ -735,6 +774,8 @@
 				6EA6639828DBC527005D25D8 /* ModelVerbChartView.swift in Sources */,
 				6ECCD47527D8295D0049B9CA /* LanguageEngineFiltered.swift in Sources */,
 				6EBAC2ED27F39A5C004DB5D1 /* MultiVerbMorphView.swift in Sources */,
+				6EDE6D8B292944D900060C03 /* NavStackRouter.swift in Sources */,
+				6EDE6D8D292A981000060C03 /* NavigationStackView.swift in Sources */,
 				6E978AD8285925BA0085EA4D /* FeatherVerbStepView.swift in Sources */,
 				6E69297D27D2C6D1003BCD71 /* QuizCubeHandlerClass.swift in Sources */,
 				6E447C9F28A6F64D00528DD9 /* ButtonAnimationView.swift in Sources */,
@@ -800,10 +841,12 @@
 				6ECCD47327D801D50049B9CA /* WordCollectionScreen.swift in Sources */,
 				6E0A6D3E2884AFD4009234C0 /* TextToSpeech.swift in Sources */,
 				6EDADC2F28C802CA00C117AD /* QuizCubeDirectorView.swift in Sources */,
+				6E2224E42932751B0069C541 /* FirstResponderTextField.swift in Sources */,
 				6EB76D662899A91E00E65641 /* PreferencesButtonView.swift in Sources */,
 				6E2174E728985D680066C234 /* DisclosureGroupVerbsPatternsAndModels.swift in Sources */,
 				6ED37545281B3DB30034DB47 /* ProgressBar.swift in Sources */,
 				6ECCD48E27DC03100049B9CA /* LanguageEngineViewQuizCube.swift in Sources */,
+				6E2224E0292EE32B0069C541 /* VerbChartView.swift in Sources */,
 				6ECCD45927D7A9DC0049B9CA /* JSONVerbs.swift in Sources */,
 				6ECCD46927D7D4790049B9CA /* JSONWordCollectionStructs.swift in Sources */,
 				6E447CA728AAA4A900528DD9 /* DisclosureGroupTeachMe.swift in Sources */,
@@ -815,8 +858,10 @@
 				6E36E3AA28B6D0680024C180 /* ThreeVerbView.swift in Sources */,
 				6ED2A5B927BDADC400164F80 /* ContentView.swift in Sources */,
 				6E447D2228B3E78900528DD9 /* StudentLessonStruct.swift in Sources */,
+				6EB66D62292BF08200D43B47 /* MenuButton.swift in Sources */,
 				6ECDC6CB28032EF6004083BA /* UnconjugateView.swift in Sources */,
 				6EF2D5BE28578AF800B8839B /* FivePartVerb.swift in Sources */,
+				6E2224E62933CF3F0069C541 /* VerbModelStatusWrapper.swift in Sources */,
 				6EA80F3327BDBE0600D6061F /* VerbCubeXYZ.swift in Sources */,
 				6EDADC2D28C8008400C117AD /* VerbCubeDirectorView.swift in Sources */,
 				6EF60AE3283BFF06007E61F3 /* CustomAlertView.swift in Sources */,
@@ -824,6 +869,7 @@
 				6ED2A5B727BDADC400164F80 /* Feather2App.swift in Sources */,
 				6ECCD48C27DC02F80049B9CA /* LanguageEngineViewVerbCube.swift in Sources */,
 				6E447D0928B3D7D600528DD9 /* QuizVerbView.swift in Sources */,
+				6EB66D60292BF04800D43B47 /* CircleButtonView.swift in Sources */,
 				6E417484289EF0CA00EB5C00 /* TeachMeCommonControls.swift in Sources */,
 				6EA80F3827BDC77400D6061F /* InteractiveVerbCubeCellView.swift in Sources */,
 				6EF60AE5283E7ECC007E61F3 /* MultipleChoiceView.swift in Sources */,
@@ -838,7 +884,9 @@
 				6E9A673928F87F1E007BC0C3 /* VerbModelContainer.xcdatamodeld in Sources */,
 				6E229CB027C982B5009F8E02 /* CustomToggleStyle.swift in Sources */,
 				6EA80F4027BEE16C00D6061F /* VerbCubeView.swift in Sources */,
+				6E2224E229315B4A0069C541 /* Bar.swift in Sources */,
 				6ED375432819F2380034DB47 /* RightWrongVerbView.swift in Sources */,
+				6EB66D66292BF10100D43B47 /* MenuItem.swift in Sources */,
 				6E7C176028E64A9E00CDF941 /* HomemadeBarChartView.swift in Sources */,
 				6ECCD48527DBDF200049B9CA /* PreferencesView.swift in Sources */,
 			);
@@ -983,7 +1031,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1017,7 +1065,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

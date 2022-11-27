@@ -51,14 +51,13 @@ struct HeaderModifier : ViewModifier {
 struct BlueButtonModifier : ViewModifier {
     func body(content: Content) -> some View{
         content
+            .frame(height: 55)
             .frame(minWidth: 0, maxWidth: 300)
-            .padding()
             .foregroundColor(.white)
-            .padding(.horizontal)
+            .padding(.horizontal, 30)
             .font(.headline)
             .background(Color.blue)
-            .border(Color(red: 7/255, green: 42/255, blue: 171/255),
-                    width: 5)
+            .cornerRadius(10)
     }
 }
 

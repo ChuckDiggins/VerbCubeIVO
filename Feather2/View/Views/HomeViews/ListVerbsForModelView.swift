@@ -12,7 +12,6 @@ struct ListVerbsForModelView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @Environment(\.presentationMode) var presentationMode
     @State var model: RomanceVerbModel
-    @Binding var selectedNewVerbType : NewVerbModelType
     @State var verbList = [Verb]()
     @State var show10Verbs = false
     @State var maxVerbCount = 10
@@ -95,14 +94,7 @@ struct ListVerbsForModelView: View {
                             Text("Current verb list").font(.title2)
                         }
                     footer:{
-                        switch selectedNewVerbType {
-                        case .Regular:
-                            Text("\nIf you select Regular verbs, these will be some of your exercise verbs.").font(.callout).bold()
-                        case .Critical:
-                            Text("\nIf you select Critical verbs, these will be some of your exercise verbs.").font(.callout).bold()
-                        default:
-                            Text("\nIf you select this model, these will be your exercise verbs.").font(.callout).bold()
-                        }
+                        Text("\nThese will be your exercise verbs.").font(.callout).bold()
                     }
                         
                     }
@@ -115,7 +107,9 @@ struct ListVerbsForModelView: View {
                     
                 }
                 .onAppear{
-                    model = languageViewModel.getCurrentVerbModel()
+                    if languageViewModel.getSelectedVerbModelList().count > 0 {
+                        model = languageViewModel.getSelectedVerbModelList()[0]
+                    }
                     shuffleVerbList()
                     analyzeModel()
                 }

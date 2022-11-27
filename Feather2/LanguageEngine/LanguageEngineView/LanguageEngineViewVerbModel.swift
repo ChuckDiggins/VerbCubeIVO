@@ -11,6 +11,34 @@ import JumpLinguaHelpers
 
 extension LanguageViewModel{
     
+    func computeCompletedVerbCountsForAllNewVerbModelTypes(){
+        languageEngine.computeCompletedVerbCountsForAllNewVerbModelTypes()
+    }
+    
+    func computeCompletedVerbCountByNewVerbModelType(newVerbModelType: NewVerbModelType)->Int{
+        languageEngine.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: newVerbModelType)
+    }
+    
+    func computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: NewVerbModelType)->Int{
+        languageEngine.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: newVerbModelType)
+    }
+    
+    func setNextVerbModelInCurrentNewVerbModelType(){
+        _ = languageEngine.setNextVerbModelInCurrentNewVerbModelType()
+    }
+    
+    func isCompleted(verbModel: RomanceVerbModel)->Bool{
+        languageEngine.isCompleted(verbModel: verbModel)
+    }
+    
+    func dumpSelectedAndCompletedModels(){
+        languageEngine.dumpSelectedAndCompletedModels()
+    }
+     
+    func setCoreAndModelSelectedToComplete(){
+        languageEngine.setCoreAndModelSelectedToComplete()
+    }
+    
     func setSelectedVerbModelsComplete(){
         languageEngine.setSelectedVerbModelsComplete()
     }
@@ -71,6 +99,18 @@ extension LanguageViewModel{
 
     func getSelectedVerbModelList()->[RomanceVerbModel]{
         languageEngine.getSelectedVerbModelList()
+    }
+    
+    func setSelectedVerbModelList(vml: [RomanceVerbModel]){
+        languageEngine.setSelectedVerbModelList(vml: vml)
+    }
+    
+    func getCompletedVerbModelList()->[RomanceVerbModel]{
+        languageEngine.getCompletedVerbModelList()
+    }
+    
+    func setCompletedVerbModelList(vml: [RomanceVerbModel]){
+        languageEngine.setCompletedVerbModelList(vml: vml)
     }
     
     func getModelAtModelWord(modelWord:String)->RomanceVerbModel{

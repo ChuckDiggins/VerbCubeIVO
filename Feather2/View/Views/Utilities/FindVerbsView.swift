@@ -399,6 +399,7 @@ struct FindVerbsView: View {
             ScrollView{
                 LazyVGrid(columns: gridItems, spacing: 5){
                     ForEach(0..<featherVerbList.count, id: \.self){ index in
+//                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "", teachMeMode: featherMode == .model ? .model : .pattern))
                         Button(featherVerbList[index].getWordAtLanguage(language: currentLanguage)){
                             selectedVerb = featherVerbList[index]
                         }

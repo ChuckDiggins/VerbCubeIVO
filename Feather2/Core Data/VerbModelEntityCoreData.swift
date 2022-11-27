@@ -19,7 +19,7 @@ class VerbModelEntityCoreData: ObservableObject{
                 print("Error loading core data: \(error)")
                 return
             } else {
-//                print("CoreData View Model Container was created correctly.")
+                print("CoreData View Model Container was created correctly.")
             }
         }
         self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -157,8 +157,10 @@ class VerbModelEntityCoreData: ObservableObject{
     }
     
     func setVerbModelEntitySelected(verbModelString: String, flag: Bool){
-        setVerbModelEntitySelected(model: getVerbModelEntityAtVerbModelString(verbModelString: verbModelString), flag: flag)
+        let model = getVerbModelEntityAtVerbModelString(verbModelString: verbModelString)
+        setVerbModelEntitySelected(model: model, flag: flag)
     }
+    
     func setAllVerbModelEntitiesSelected(flag: Bool){
         fetchVerbModelEntities()
         for m in savedVerbModelEnties {
@@ -179,7 +181,9 @@ class VerbModelEntityCoreData: ObservableObject{
         }
         saveData()
         
+        
         print("setVerbModelEntitySelected: selected count = \(getSelectedModelEntityCount())")
+        print("\(model.modelName ?? "unknown name") - selected = \(model.isSelected)")
     }
     
     func getSelectedModelEntityCount()->Int{
