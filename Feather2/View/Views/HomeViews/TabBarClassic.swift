@@ -20,63 +20,49 @@ struct TabBarClassicVC: View {
     @State var showTest = false
     
     var body: some  View{
-        if languageViewModel.getSelectedNewVerbModelType() != .undefined {
-            SelectedTypeView(selectedNewVerbModelType: languageViewModel.getSelectedNewVerbModelType(), selectedModelString: $selectedModelString)
-            Text("\(languageViewModel.getFilteredVerbs().count) active verbs")
-        }
-        else {
-            Text("No verbs are currently selected").font(.title)
-        }
         NavigationStack(path: $router.path){
             TabView (selection: $selectedTab) {
+                ModelSelectionWrapper()
+                    .tabItem{
+                        Image(systemName: "s.circle")
+                        Text("Select")
+                    }.tag(0)
                 
-//                VerbModelSelectionWrapper(selectedCount: $selectedCount, selectedModelString: $selectedModelString )
-//                    .tabItem{
-//                        Image(systemName: "pencil.circle.fill")
-//                        Text("Verb Model Selection")
-//                    }.tag(0)
+                VerbSeeWrapper()
+                    .tabItem{
+                        Image(systemName: "e.circle")
+                        Text("Explore")
+                    }.tag(1)
                 
+                VerbLearnWrapper()
+                    .tabItem{
+                        Image(systemName: "l.circle")
+                        Text("Learn")
+                    }.tag(2)
                 
-                if (selectedCount>0 ){  //I should check verb count, not model count here
-                    VerbSeeWrapper()
-                        .tabItem{
-                            Image(systemName: "pencil.circle.fill")
-                            Text("See")
-                        }.tag(1)
-                    
-                    VerbLearnWrapper()
-                        .tabItem{
-                            Image(systemName: "person.text.rectangle.fill")
-                            Text("Learn")
-                        }.tag(2)
-                    
-                    VerbTestWrapper()
-                        .tabItem{
-                            Image(systemName: "pencil.circle.fill")
-                            Text("Test")
-                        }.tag(3)
-
-//                    VerbFindWrapper(languageViewModel: languageViewModel)
-//                        .tabItem{
-//                            Image(systemName: "person.fill")
-//                            Text("Find")
-//                        }.tag(4)
-//                    
-//                    //            if languageViewModel.getStudentLevel().getLessonLevel() == ( 2 | 4 | 5)
-//                    
-//                    OddJobsView(languageViewModel: languageViewModel)
-//                        .tabItem{
-//                            Image(systemName: "cube.fill")
-//                            Text("Verb Cubes")
-//                        }.tag(5)
+                VerbTestWrapper()
+                    .tabItem{
+                        Image(systemName: "t.circle")
+                        Text("Test")
+                    }.tag(3)
+                
+            }.navigationTitle("Lesson: \(languageViewModel.getStudyPackage().lesson)")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarTrailing){
+                        NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
+                        {
+                        Label("Find", systemImage: "magnifyingglass")
+                        }
+                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
+                        {
+                        Label("Settings", systemImage: "gear")
+                        }
+                    }
                 }
-                    
-                
-            }
-            
             
         }.accentColor(.green)
-           
+        
             .onAppear{
                 selectedCount = languageViewModel.getSelectedVerbModelList().count
                 if languageViewModel.getSelectedNewVerbModelType() != .undefined && languageViewModel.getSelectedVerbModelList().count > 0 {

@@ -43,7 +43,7 @@ struct InteractiveVerbCubeCellView: View {
     // MARK: - Body
     var body: some View {
             Button(action:{
-                alertView()
+//                alertView()
             }){
                 Text(cellData.cellString)
                     .frame(width: columnWidth, height: 30, alignment: .center)

@@ -8,6 +8,25 @@
 import SwiftUI
 import JumpLinguaHelpers
 
+enum NewVerbModelType{
+    case Regular, Critical, StemChanging, SpellChanging, Irregular, LikeGustar, ALL, undefined
+    
+    public func getTypeName()->String{
+        switch self{
+        case .Regular: return "Regular"
+        case .Critical: return "Critical"
+        case .StemChanging: return "Stem-changing"
+        case .SpellChanging: return "Spell-changing"
+        case .Irregular: return "Irregular"
+        case .LikeGustar: return "Like Gustar"
+        case .ALL: return "All"
+        case .undefined: return "Undefined"
+        }
+    }
+ 
+    public static var spanishVerbModelTypes =  [NewVerbModelType.Regular, .Critical]
+}
+
 struct SelectedTypeView: View {
     var selectedNewVerbModelType : NewVerbModelType
     @Binding var selectedModelString: String
@@ -29,7 +48,6 @@ struct SelectedTypeView: View {
 struct NewVerbTypePicker: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @Binding var selectedNewVerbModelType : NewVerbModelType
-    @State var newVerbTypeList = [NewVerbModelType]()
     var function: () -> Void
     var body: some View{
         let gridFixSize = CGFloat(200.0)
@@ -38,7 +56,7 @@ struct NewVerbTypePicker: View {
                         ]
         
         LazyVGrid(columns: gridItems, spacing: 5){
-            ForEach (newVerbTypeList, id:\.self){ type in
+            ForEach (NewVerbModelType.spanishVerbModelTypes, id:\.self){ type in
                 Button{
                     languageViewModel.setSelectedNewVerbModelType(selectedType: type)
                     function()
@@ -50,18 +68,6 @@ struct NewVerbTypePicker: View {
             }
         }
         .onAppear{
-            switch selectedNewVerbModelType {
-            case .Regular, .Critical:
-                newVerbTypeList = [NewVerbModelType]()
-            case .Irregular:
-                newVerbTypeList = NewVerbModelType.irregularSpanishVerbModelTypeList
-            case .StemChanging1,.StemChanging2:
-                newVerbTypeList = NewVerbModelType.stemChangingSpanishVerbModelTypeList
-            case .SpellChanging1, .SpellChanging2:
-                newVerbTypeList = NewVerbModelType.spellChangingSpanishVerbModelTypeList
-            case .undefined:
-                newVerbTypeList = [NewVerbModelType]()
-            }
         }
     }
 }
@@ -80,7 +86,7 @@ struct SpecialPatternTypePicker: View {
                 
                 Text("Pattern List").font(.callout).foregroundColor(Color("ChuckText1"))
                 
-                VStack{
+                ScrollView{
                     let gridFixSize = CGFloat(100.0)
                     let gridItems = [GridItem(.fixed(gridFixSize)),
                                      GridItem(.fixed(gridFixSize)),
@@ -117,7 +123,7 @@ struct AllVerbModelTypesView: View {
     @State var selectedSpecialPatternType = SpecialPatternType.e2ie
     @Binding var selectedModelString : String
     @State var selectedVerbModel = RomanceVerbModel()
-    @State var selectedVerbEnding = VerbEnding.ALL
+    @State var selectedVerbEnding = VerbEnding.IR
     @ObservedObject var homemadeBarChartMgr = HomemadeBarChartManager()
     @State private var currentLanguage = LanguageType.Spanish
     @State private var patternRelatedBarList = [Bar]()
@@ -137,33 +143,39 @@ struct AllVerbModelTypesView: View {
                         Text("All regular verbs")
                     }
                     else if selectedNewVerbModelType == .Critical {
-                        Text("All critical verbs")
+                        Text("Critical verbs")
                     }
                     else { Text("\(homemadeBarChartMgr.selectedModel.modelVerb)") }
                 }.modifier(NeumorphicTextfieldModifier())
             }
-            if selectedNewVerbModelType != .Regular && selectedNewVerbModelType != .Critical {
-                NewVerbTypePicker(languageViewModel: languageViewModel, selectedNewVerbModelType: $selectedNewVerbModelType, function: fillSpecialPatternTypeList)
+            if selectedNewVerbModelType != .Regular {
+//                NewVerbTypePicker(languageViewModel: languageViewModel, selectedNewVerbModelType: $selectedNewVerbModelType, function: fillSpecialPatternTypeList)
+                Text(selectedNewVerbModelType.getTypeName()).font(.title2)
                 Divider().frame(height:2).background(.yellow)
                 if languageViewModel.getCurrentSpecialPatternTypeList().count>0 {
                     SpecialPatternTypePicker(languageViewModel: languageViewModel, selectedSpecialPatternType: $selectedSpecialPatternType, function: fillVerbListForSelectedPatternType)
                     Divider().frame(height:2).background(.yellow)
+                }
+                if homemadeBarChartMgr.getBarCount() > 0 {
                     GeneralVerbBarChartView(languageViewModel: languageViewModel, homemadeBarChartMgr: homemadeBarChartMgr, selectedNewVerbType: $selectedNewVerbModelType, selectedVerbEnding: $selectedVerbEnding)
                 }
             }
         }.onAppear{
 //            selectedNewVerbModelType = languageViewModel.getSelectedNewVerbModelType()
             switch selectedNewVerbModelType {
-            case .Regular, .Critical:
+            case .Regular:
                 fillSelectedModelsAndFindTheirVerbs()
 //                dismiss()
-            case .StemChanging1:
+            case .Critical:
+                languageViewModel.setSelectedNewVerbModelType(selectedType: selectedNewVerbModelType)
+                fillSpecialPatternTypeList()
+            case .StemChanging:
                 languageViewModel.setSelectedNewVerbModelType(selectedType: selectedNewVerbModelType)
                 selectedSpecialPatternType = .o2ue
                 languageViewModel.setSelectedSpecialPatternType(selectedPattern: selectedSpecialPatternType)
                 selectedSpecialPatternType = languageViewModel.getSelectedSpecialPatternType()
                 fillSpecialPatternTypeList()
-            case .SpellChanging1:
+            case .SpellChanging:
                 languageViewModel.setSelectedNewVerbModelType(selectedType: selectedNewVerbModelType)
                 selectedSpecialPatternType = .a2aig
                 languageViewModel.setSelectedSpecialPatternType(selectedPattern: selectedSpecialPatternType)
@@ -204,16 +216,15 @@ struct AllVerbModelTypesView: View {
         var patternList = [SpecialPatternType]()
         
         switch languageViewModel.getSelectedNewVerbModelType() {
-        case .StemChanging1: patternList = SpecialPatternType.stemChangingSpanish1
-        case .StemChanging2: patternList = SpecialPatternType.stemChangingSpanish2
-        case .SpellChanging1: patternList = SpecialPatternType.spellChangingSpanish1
-        case .SpellChanging2: patternList = SpecialPatternType.spellChangingSpanish2
+        case .StemChanging: patternList = SpecialPatternType.stemChangingAllSpanish
+        case .SpellChanging: patternList = SpecialPatternType.orthoChangingSpanish
         case .Irregular: patternList = SpecialPatternType.irregPreteriteSpanish
         default: break
         }
         languageViewModel.setCurrentSpecialPatternTypeList(patternList: patternList)
-        setSelectedSpecialPatternType(patternList: patternList)
-        
+        if patternList.count > 0 {   //critical verbs will not have a pattern list
+            setSelectedSpecialPatternType(patternList: patternList)
+        }
         selectedNewVerbModelType = languageViewModel.getSelectedNewVerbModelType()
         selectedSpecialPatternType = languageViewModel.getSelectedSpecialPatternType()
         
@@ -232,17 +243,28 @@ struct AllVerbModelTypesView: View {
     }
     
     func createBarListForPatternType(){
+        var spt = SpecialPatternType.none
         let mpsList = getModelPatternStructListAtSelectedTypeAndEnding()
         homemadeBarChartMgr.createBarList(mpsList: mpsList, maxCount: 100)
         patternRelatedBarList.removeAll()
-        for bar in homemadeBarChartMgr.getBars(){
-            let spt = languageViewModel.getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: bar.model, verbType: languageViewModel.getSelectedNewVerbModelType())
-            if spt == languageViewModel.getSelectedSpecialPatternType(){
-                patternRelatedBarList.append(bar)
+        let currentSelectedSpecialPatternType = languageViewModel.getSelectedSpecialPatternType()
+        //if nvmt is not .Critical, then fill list with only those models which pertain to current pattern
+        
+        if selectedNewVerbModelType != .Critical {
+            for bar in homemadeBarChartMgr.getBars(){
+                var sptList = languageViewModel.getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: bar.model, verbType: languageViewModel.getSelectedNewVerbModelType())
+                for spt in sptList {
+                    if spt == currentSelectedSpecialPatternType{
+                        patternRelatedBarList.append(bar)
+                    }
+                }
             }
+            homemadeBarChartMgr.setBarList(barList: patternRelatedBarList)
         }
-        homemadeBarChartMgr.setBarList(barList: patternRelatedBarList)
+//        print("createBarListForPatternType: bar count = \(homemadeBarChartMgr.getBars().count)")
+        
     }
+
     
     func fillSelectedModelsAndFindTheirVerbs(){
         vmecdm.setAllSelected(flag: false)
@@ -252,7 +274,7 @@ struct AllVerbModelTypesView: View {
             vmecdm.setSelected(verbModelString: "regularAR", flag: true)
             vmecdm.setSelected(verbModelString: "regularER", flag: true)
             vmecdm.setSelected(verbModelString: "regularIR", flag: true)
-            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:5)
+            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:5, inputStudyPackage: StudyPackageClass())
         case .Critical:
             vmecdm.setSelected(verbModelString: "estar", flag: true)
             vmecdm.setSelected(verbModelString: "ser", flag: true)
@@ -263,11 +285,11 @@ struct AllVerbModelTypesView: View {
             vmecdm.setSelected(verbModelString: "ver", flag: true)
             vmecdm.setSelected(verbModelString: "saber", flag: true)
             vmecdm.setSelected(verbModelString: "reír", flag: true)
-            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:10)
-        case .StemChanging1, .StemChanging2, .Irregular, .SpellChanging1, .SpellChanging2:
+            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:10, inputStudyPackage: StudyPackageClass())
+        case .StemChanging, .Irregular, .SpellChanging:
             let currentVerbModel = languageViewModel.getCurrentVerbModel()
             vmecdm.setSelected(verbModelString: currentVerbModel.modelVerb, flag: true)
-            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:10)
+            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:10, inputStudyPackage: StudyPackageClass())
         default:
             break
         }
@@ -288,7 +310,7 @@ struct AllVerbModelTypesView: View {
     
     func getModelPatternStructListAtSelectedTypeSelectedPatternAndSelectedEnding()->[ModelPatternStruct]{
         var currentModelList = languageViewModel.getVerbModelGroupManager().getVerbModelSublistAtVerbEnding(modelName: selectedNewVerbModelType.getTypeName(), verbEnding: selectedVerbEnding)
-        currentModelList = languageViewModel.getVerbModelGroupManager().getModelListAtSelectedPattern(languageViewModel: languageViewModel, inputModelList: currentModelList, selectedPattern: languageViewModel.getSelectedSpecialPatternType() )
+        currentModelList = languageViewModel.getVerbModelGroupManager().getModelListAtSelectedPattern(languageViewModel: languageViewModel, inputModelList: languageViewModel.getVerbModelGroupManager().getVerbModelList(newVerbType: selectedNewVerbModelType), selectedPattern: languageViewModel.getSelectedSpecialPatternType() )
         return VerbAndModelSublistUtilities().getModelPatternStructListSortedByTheirVerbCount(languageViewModel: languageViewModel, inputModelList: currentModelList)
     }
     
@@ -341,9 +363,6 @@ struct GeneralVerbBarChartView: View {
         }.onAppear{
             languageViewModel.setSelectedNewVerbModelType(selectedType: selectedNewVerbType)
         }
-        //        .onChange(of: selectedType){
-        //
-        //        }
     }
     
     
@@ -390,7 +409,7 @@ struct ShowVerbModelListSection: View {
                         Text(getModelName(bar: bar)).frame(width: textLength)
                             .foregroundColor(bar.status == .Completed ? .red : Color("BethanyGreenText") )
                     }
-                    Text(getPatternName(bar.model))
+//                    Text(getPatternName(bar.model))
                     ZStack {
                         Rectangle()
                             .foregroundColor(bar.color)
@@ -419,8 +438,8 @@ struct ShowVerbModelListSection: View {
     
     
     func getPatternName(_ model: RomanceVerbModel)->String{
-        let spt = languageViewModel.getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: model, verbType: selectedNewVerbType)
-        return spt.rawValue
+        let sptList = languageViewModel.getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: model, verbType: selectedNewVerbType)
+        return sptList[0].rawValue
     }
     
     

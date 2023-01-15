@@ -8,6 +8,7 @@
 import SwiftUI
 import JumpLinguaHelpers
 
+
 struct VerbModelStatusWrapper: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel
     @EnvironmentObject var vmecdm: VerbModelEntityCoreDataManager
@@ -45,7 +46,12 @@ struct VerbModelStatusWrapper: View {
             VStack{
 
                 if totalVerbCount > 0 {
-                    
+//                    VStack{
+//                        Text("Study level is: \(languageViewModel.getVerbStudyLevel().rawValue)")
+//                            .font(.title)
+//                            .foregroundColor(Color("BethanyGreenText"))
+//                            .background(Color("BethanyNavalBackground"))
+//                    }
                     Picker("Select model type", selection: $displayMode){
                         ForEach(displayModeList, id:\.self){Text($0.getName())}
                     }.pickerStyle(SegmentedPickerStyle())
@@ -105,23 +111,9 @@ struct VerbModelStatusWrapper: View {
                         }
                     }
                 }
-                //                    .navigationTitle("\(displayMode.getName())")
-                
-                //            Button{
-                //                setAllSelectedToCompleted()
-                //            } label: {
-                //                Text("Set all selected to completed")
-                //            }.modifier(NavLinkModifier())
-//                Button{
-//                    setAllToActive()
-//                } label: {
-//                    Text("Reset all to active")
-//                }.modifier(BlueButtonModifier())
-//
                 
             }.onAppear{
                 totalVerbCount = languageViewModel.getVerbList().count
-                languageViewModel.computeCompletedVerbCountsForAllNewVerbModelTypes()
                 computeCounts()
             }
             .fullScreenCover(isPresented: $showSheet, content: {
@@ -144,39 +136,33 @@ struct VerbModelStatusWrapper: View {
         coreCompletedModelCount = vmecdm.vm.getCompletedVerbModelEntityList().count
         
         //combine this logic for computing complete and incomplete
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        regularCompleteCount = languageViewModel.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: .Regular)
-        regularIncompleteCount = languageViewModel.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: .Regular)
+
+        var result = languageViewModel.computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: .Regular)
+        regularIncompleteCount = result.1
+        regularCompleteCount = result.0
         print("regular: complete: \(regularCompleteCount), incomplete: \(regularIncompleteCount)")
         
-        criticalCompleteCount = languageViewModel.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: .Critical)
-        criticalIncompleteCount = languageViewModel.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: .Critical)
+        result = languageViewModel.computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: .Critical)
+        criticalIncompleteCount = result.1
+        criticalCompleteCount = result.0
         print("critical: complete: \(criticalCompleteCount), incomplete: \(criticalIncompleteCount)")
         
-        stemCompleteCount = languageViewModel.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: .StemChanging1) +
-                            languageViewModel.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: .StemChanging2)
-        stemIncompleteCount = languageViewModel.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: .StemChanging1) +
-                            languageViewModel.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: .StemChanging2)
+        var result1 = languageViewModel.computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: .StemChanging)
+        stemIncompleteCount = result1.1
+        stemCompleteCount = result1.0
         print("stem: complete: \(stemCompleteCount), incomplete: \(stemIncompleteCount)")
         
-        spellCompleteCount = languageViewModel.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: .SpellChanging1) +
-                            languageViewModel.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: .SpellChanging1)
-        spellIncompleteCount = languageViewModel.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: .SpellChanging1) +
-                            languageViewModel.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: .SpellChanging1)
+        result1 = languageViewModel.computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: .SpellChanging)
+        spellIncompleteCount = result1.1
+        spellCompleteCount = result1.0
         print("spell: complete: \(spellCompleteCount), incomplete: \(spellIncompleteCount)")
         
-        irregularCompleteCount = languageViewModel.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: .Irregular)
-        irregularIncompleteCount = languageViewModel.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: .Irregular)
+        result = languageViewModel.computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: .Irregular)
+        irregularIncompleteCount = result.1
+        irregularCompleteCount = result.0
         print("irregular: complete: \(irregularCompleteCount), incomplete: \(irregularIncompleteCount)")
         isLoading = false
+        completedVerbCount = regularCompleteCount + stemCompleteCount + spellCompleteCount + criticalCompleteCount + irregularCompleteCount
     }
     
     func reconcileLanguageViewModelWithCoreData(){
@@ -184,7 +170,7 @@ struct VerbModelStatusWrapper: View {
         var tempVerbList = [Verb]()
         completedVerbCount = 0
         for veString in vmecdm.vm.getCompletedVerbModelEntityList(){
-            var verbModel = languageViewModel.getModelAtModelWord(modelWord: veString)
+            let verbModel = languageViewModel.getModelAtModelWord(modelWord: veString)
             tempModelList.append(verbModel)
             tempVerbList = languageViewModel.findVerbsOfSameModel(targetID: verbModel.id)
             completedVerbCount += tempVerbList.count
@@ -196,7 +182,7 @@ struct VerbModelStatusWrapper: View {
         tempVerbList = [Verb]()
         selectedVerbCount = 0
         for veString in vmecdm.vm.getSelectedVerbModelEntityStringList(){
-            var verbModel = languageViewModel.getModelAtModelWord(modelWord: veString)
+            let verbModel = languageViewModel.getModelAtModelWord(modelWord: veString)
             tempModelList.append(verbModel)
             tempVerbList = languageViewModel.findVerbsOfSameModel(targetID: verbModel.id)
             selectedModelCount = selectedModelCount + tempVerbList.count

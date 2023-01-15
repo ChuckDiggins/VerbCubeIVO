@@ -55,8 +55,21 @@ struct BlueButtonModifier : ViewModifier {
             .frame(minWidth: 0, maxWidth: 300)
             .foregroundColor(.white)
             .padding(.horizontal, 30)
-            .font(.headline)
+            .font(.caption)
             .background(Color.blue)
+            .cornerRadius(10)
+    }
+}
+
+struct RedButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(height: 55)
+            .frame(minWidth: 0, maxWidth: 300)
+            .foregroundColor(.white)
+            .padding(.horizontal, 30)
+            .font(.headline)
+            .background(Color.red)
             .cornerRadius(10)
     }
 }

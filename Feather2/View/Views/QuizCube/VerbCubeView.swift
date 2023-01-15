@@ -92,8 +92,8 @@ struct VerbCubeView: View {
             }
             .onAppear{
                 AppDelegate.orientationLock = UIInterfaceOrientationMask.landscapeLeft
-                        UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-                        UINavigationController.attemptRotationToDeviceOrientation()
+                UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+//                        UINavigationController.attemptRotationToDeviceOrientation()
             }
 //            .onDisappear{
 //                AppDelegate.orientationLock = UIInterfaceOrientationMask.all

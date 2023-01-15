@@ -33,10 +33,10 @@ struct Feather2App: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
             NavigationStack{
-                //                    TabBarClassicVC(languageViewModel: languageViewModel)
+                TabBarClassicVC(languageViewModel: languageViewModel)
 //                NavigationStackView(languageViewModel: languageViewModel)
 //                CircleView(languageViewModel: languageViewModel)
-                CircleButtonView(languageViewModel: languageViewModel)
+//                CircleButtonView(languageViewModel: languageViewModel, selectedNewVerbModelType: NewVerbModelType.Regular)
                     .onAppear{
                         languageViewModel.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
                     }
@@ -46,11 +46,8 @@ struct Feather2App: SwiftUI.App {
                 .environmentObject(router)
         }
     }
-    
-    
+  
 }
-
-
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     static var orientationLock = UIInterfaceOrientationMask.all //by default, all views rotate freely

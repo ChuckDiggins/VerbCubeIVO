@@ -45,12 +45,13 @@ struct VerbAndModelSublistUtilities{
         return modelPatternStructList
     }
     
-    func getVerbSublistAtVerbEnding(inputVerbList: [Verb], ending: VerbEnding, language: LanguageType)->[Verb]{
+    func getVerbSublistAtVerbEnding(inputVerbList: [Verb], inputEnding: VerbEnding, language: LanguageType)->[Verb]{
         var verbSublist = [Verb]()
         
         for verb in inputVerbList {
             var isNew = true
-            if getRomanceVerbEnding(verb: verb, language: language) == ending {
+            var verbEnding = getRomanceVerbEnding(verb: verb, language: language)
+            if inputEnding == .ALL || verbEnding == inputEnding  {
                 for subVerb in verbSublist {
                     if subVerb == verb {
                         isNew = false
@@ -61,7 +62,7 @@ struct VerbAndModelSublistUtilities{
         }
         //if verb ending is .IR, look for accented ir ending also: oír, for example
         
-        if ending == .IR {
+        if inputEnding == .IR {
             for verb in inputVerbList {
                 var isNew = true
                 if getRomanceVerbEnding(verb: verb, language: language) == .accentIR {

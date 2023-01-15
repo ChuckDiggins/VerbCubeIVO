@@ -26,6 +26,8 @@ struct RightWrongVerbView: View {
     @State var irregularColor = Color.white
     @State var newVerbPhrase = ""
     @State var subjunctiveWord = "que "
+    @State var rightPhrase = ["", "", "", "", "", ""]
+    @State var wrongPhrase = ["", "", "", "", "", ""]
     
     @State var vvm = ["", "", "", "", "", ""]
     @State var vvr = ["", "", "", "", "", ""]
@@ -36,6 +38,11 @@ struct RightWrongVerbView: View {
     @State private var isRight = true
     @State private var verbModelVerb = ""
     var fontSize = Font.footnote
+    @State var specialVerbType = SpecialVerbType.normal
+    @State private var number = Number.singular
+    @State private var dependentVerb = Verb()
+    @State private var isAnalyzed = false
+    
     
     var body: some View {
         ZStack{
@@ -49,16 +56,14 @@ struct RightWrongVerbView: View {
                     
                     VStack {
                         HStack {
-                            Text("Mode:")
+                            Text("")
                                 .frame(width: 100, height: 20, alignment: .trailing)
-//                                .background(.white )
-//                                .foregroundColor(.black)
-                            Text("as Model")
-                                .frame(width:100, height:20, alignment: .trailing)
+                            Text("Right")
+                                .frame(width:200, height:20, alignment: .trailing)
 //                                .background(.green )
 //                                .foregroundColor(.black)
-                            Text("as Regular")
-                                .frame(width:100, height:20, alignment: .trailing)
+                            Text("Wrong")
+                                .frame(width:200, height:20, alignment: .trailing)
 //                                .background(.yellow)
 //                                .foregroundColor(.black)
                         }.font(fontSize)
@@ -67,33 +72,44 @@ struct RightWrongVerbView: View {
                             HStack{
                                 Text(person[i])
                                     .frame(width: 100, height: 20, alignment: .trailing)
-                                    .background(vvm[i] == vvr[i] ? .white : .red  )
+                                    .background(rightPhrase[i] == wrongPhrase[i] ? .white : .red  )
                                     .foregroundColor(.black)
 //                                    .foregroundColor(vvm[i] == vvr[i] ? .black : .yellow)
                                 
                                 Text(vvm[i])
-                                    .frame(width: 100, height: 20, alignment: .trailing)
+                                    .frame(width: 200, height: 20, alignment: .trailing)
 //                                    .background(.green )
                                     .foregroundColor(Color("BethanyGreenText"))
+                                    .animation(Animation.linear(duration: 1), value: isAnalyzed)
                                 
                                 Text(vvr[i])
-                                    .frame(width: 100, height: 20, alignment: .trailing)
+                                    .frame(width: 200, height: 20, alignment: .trailing)
 //                                    .background(.yellow)
                                     .foregroundColor(Color("BethanyGreenText"))
+                                    .animation(Animation.linear(duration: 2), value: isAnalyzed)
                             }.font(fontSize)
                         }
+                        Divider().background(Color("BethanyNavalBackground"))
+                    }
+                    .onDisappear {
+                        AppDelegate.orientationLock = .all // Unlocking the rotation when leaving the view
                     }
                     .onAppear {
-                        
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscapeLeft
+                        UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+                        UINavigationController.attemptRotationToDeviceOrientation()
+                        currentTense = languageViewModel.getCurrentTense()
                         currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
-                        
                         currentVerb = languageViewModel.getCurrentFilteredVerb()
                         currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
                         currentTenseString = currentTense.rawValue
+                        specialVerbType = languageViewModel.getStudyPackage().specialVerbType
+                        dependentVerb = languageViewModel.findVerbFromString(verbString: "bailar", language: currentLanguage)
                         setCurrentVerb()
                     }
                 }
             }
+            
             .foregroundColor(Color("BethanyGreenText"))
             .background(Color("BethanyNavalBackground"))
         }
@@ -167,7 +183,9 @@ struct RightWrongVerbView: View {
         
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: languageViewModel.getCurrentTense())
+        var thisVerb = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb())
         currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
+
         print("currentModelString = \(currentModelString)")
         print("currentVerbString = \(currentVerbString)")
         print("isReflexive = \(isReflexive)")
@@ -176,11 +194,24 @@ struct RightWrongVerbView: View {
         var msm = languageViewModel.getMorphStructManager()
         vvm.removeAll()
         vvr.removeAll()
-        for i in 0..<6 {
-            vvm.append(msm.getFinalVerbForm(person: Person.all[i]))
-            vvr.append(languageViewModel.conjugateAsRegularVerb(verb: currentVerb, tense: currentTense, person: Person.all[i], isReflexive: isReflexive, residPhrase: residPhrase))
-            person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: vvm[i]))
+        var pp = ""
+        if languageViewModel.getCurrentTense().isProgressive(){
+            pp = thisVerb.createDefaultGerund()
+        } else if languageViewModel.getCurrentTense().isPerfectIndicative(){
+            pp = thisVerb.createDefaultPastParticiple()
         }
+         let vu = VerbUtilities()
+        for i in 0..<6 {
+            rightPhrase[i] = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+            rightPhrase[i] = vu.removeLeadingOrFollowingBlanks(characterArray: rightPhrase[i])
+            vvm.append(rightPhrase[i])
+            person[i] = languageViewModel.getPersonString(personIndex: i, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: vvm[i])
+            wrongPhrase[i] = languageViewModel.conjugateAsRegularVerb(verb: currentVerb, tense: languageViewModel.getCurrentTense(), person: Person.all[i], isReflexive: isReflexive, residPhrase: residPhrase) + pp
+            wrongPhrase[i] = vu.removeLeadingOrFollowingBlanks(characterArray: wrongPhrase[i])
+            vvr.append(wrongPhrase[i])
+            print("i: \(i).  rightPhrase \(rightPhrase[i]), wrongPhrase \(wrongPhrase[i])")
+        }
+        isAnalyzed.toggle()
     }
     
     func setSubjunctiveStuff(){

@@ -145,15 +145,17 @@ struct CombinedAlert: View {
     }
     
     fileprivate func MultipleChoiceView() -> some View {
-        let gridFixSize = CGFloat(160.0)
+        let gridFixSize = CGFloat(300.0)
         let gridItems = [GridItem(.fixed(gridFixSize)),
-                         GridItem(.fixed(gridFixSize))]
+//                         GridItem(.fixed(gridFixSize))
+        ]
         return  VStack{
             VStack{
-                Text("Verb: \(fcp.verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())), Tense: \(fcp.tense.rawValue.lowercased())").font(.callout)
-                Text("Subject: \(fcp.person.getMaleString())" ).font(.title3)
-            }
-            LazyVGrid(columns: gridItems, spacing: 5){
+                Text("Verb: \(fcp.verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))")
+                Text("\(fcp.tense.rawValue.lowercased()) tense")
+                //                Text("Subject: \(personString)" ).font(.title3)
+            }.font(.callout)
+            LazyVGrid(columns: gridItems, spacing: 4){
                 ForEach(0..<fcp.getAnswerCount(), id: \.self ){i in
                     Button{
                         if fcp.isCorrectAnswer(ans: fcp.getAnswer(i: i)) {
@@ -170,7 +172,7 @@ struct CombinedAlert: View {
                             previousCorrectAnswer = fcp.correctAnswer
                             previousWrongAnswer = fcp.getAnswer(i: i)
                         }
-                        personString = fcp.person.getMaleString()
+                        personString = fcp.personString
                         fillMessageFooter(isCorrect: isCorrect)
                         answerComplete = true
                         
@@ -179,8 +181,11 @@ struct CombinedAlert: View {
                             languageViewModel.setCoreAndModelSelectedToComplete()
                         }
                     } label: {
-                        Text(fcp.getAnswer(i: i))
-                            .frame(width:160, height:40)
+                        HStack(spacing: 2){
+                            Text(personString).foregroundColor(.red)
+                            Text(fcp.getAnswer(i: i))
+                            
+                        }.frame(width:300, height:30)
                             .font(.callout)
                             .background(.yellow)
                             .foregroundColor(.black)
@@ -195,10 +200,6 @@ struct CombinedAlert: View {
             else {
                 emptyFooter()
             }
-            
-            
-            
-            
         }
         .background(Color("BethanyNavalBackground"))
         //        .frame(width: UIScreen.main.bounds.width - 25, height: 500)
@@ -209,7 +210,9 @@ struct CombinedAlert: View {
         VStack(spacing: 5){
             HStack {
                 Text("Verb: \(fcp.verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))")
+                    .background(.yellow).foregroundColor(.black).padding(3)
                 Text("Tense: \(fcp.tense.rawValue.lowercased())")
+                    .background(.green).foregroundColor(.black).padding(3)
             }
             HStack{
                 Text("\(personString)").font(.title2).foregroundColor(.yellow)
@@ -330,13 +333,15 @@ struct CombinedAlert: View {
     fileprivate func showHeaderInfo() -> some View {
         return  VStack{
             VStack(spacing: 0){
-                if ( languageViewModel.getSelectedVerbModelList().count > 0 ){
-                    Text("Selected verb model: \(languageViewModel.getSelectedVerbModelList()[0].modelVerb)")
-                } else {
-                    Text("No model has been selected")
-                }
+                Text(languageViewModel.isModelMode() ? "Verb model \(languageViewModel.getCurrentVerbModel().modelVerb)"
+                     : "Lesson: \(languageViewModel.getStudyPackage().lesson) ")
+                .frame(width: .infinity)
+                .font(.callout)
+                .bold()
+                .background(.yellow)
+                .foregroundColor(.black)
+                .padding(4)
                 HStack{
-                    
                     Text("Wrong: \(wrong)")
                     Spacer()
                     Button{
@@ -350,14 +355,19 @@ struct CombinedAlert: View {
                     Text("Correct: \(correct)")
                 }
             }
-            .alert("Model changed to \(languageViewModel.getCurrentVerbModel().modelVerb)", isPresented: $newModel){
-                Button("OK", role: .cancel){
-                    
-                }
-            }
+//            .alert(languageViewModel.isModelMode() ? "Model changed to \(languageViewModel.getCurrentVerbModel().modelVerb)" :
+//                    "Lesson changed to \(languageViewModel.getStudyPackage().getLesson()) ": isPresented: $newModel ) {
+//                Button("OK", role: .cancel){
+//
+//                }
+//            }
             .alert("Congratulations!", isPresented: $modelCompleted){
-                Button("Load next verb model", role: .destructive){
-                    languageViewModel.setNextVerbModelInCurrentNewVerbModelType()
+                Button(languageViewModel.isModelMode() ? "Load next verb model"  : "Load next lesson", role: .destructive){
+                    if languageViewModel.isModelMode() {
+                        _ = languageViewModel.selectNextOrderedVerbModel()
+                    } else {
+                        _ = languageViewModel.selectNextV2MGroup()
+                    }
                     languageViewModel.resetScores()
                     wrong = languageViewModel.getWrongScore()
                     correct = languageViewModel.getCorrectScore()
@@ -366,7 +376,8 @@ struct CombinedAlert: View {
                     newModel.toggle()
                 }
             } message: {
-                Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
+//                Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
+                Text("Current package: \(languageViewModel.getStudyPackage().name)")
             }
             .padding(.horizontal, 5)
             .border(.red)
@@ -388,7 +399,7 @@ struct CombinedAlert: View {
         answerText = ""
         languageViewModel.setNextFlashCard()
         fcp = languageViewModel.getCurrentFlashCard()
-        personString = fcp.person.getMaleString()
+        personString = fcp.personString
         if fcp.tense.isSubjunctive() {
             personString = "que " + personString
         }

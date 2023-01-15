@@ -78,8 +78,8 @@ struct ShowListSection: View {
     }
     
     func getPatternName(_ model: RomanceVerbModel)->String{
-        let spt = languageViewModel.getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: model, verbType: selectedType)
-        return spt.rawValue
+        let sptList = languageViewModel.getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: model, verbType: selectedType)
+        return sptList[0].rawValue
     }
     
     

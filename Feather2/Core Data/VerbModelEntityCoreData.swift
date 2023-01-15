@@ -131,6 +131,14 @@ class VerbModelEntityCoreData: ObservableObject{
         saveData()
     }
 
+    func setAllVerbModelEntitiesCompleted(flag: Bool){
+        fetchVerbModelEntities()
+        for m in savedVerbModelEnties {
+            m.hasBeenCompleted = flag
+        }
+        saveData()
+    }
+    
     
 
     func hasVerbModelEntityBeenCompleted(verbModelString: String)->Bool{
@@ -161,7 +169,7 @@ class VerbModelEntityCoreData: ObservableObject{
         setVerbModelEntitySelected(model: model, flag: flag)
     }
     
-    func setAllVerbModelEntitiesSelected(flag: Bool){
+    func setAllVerbModelEntitiesSelected(_ flag: Bool){
         fetchVerbModelEntities()
         for m in savedVerbModelEnties {
            m.isSelected = flag
@@ -182,8 +190,8 @@ class VerbModelEntityCoreData: ObservableObject{
         saveData()
         
         
-        print("setVerbModelEntitySelected: selected count = \(getSelectedModelEntityCount())")
-        print("\(model.modelName ?? "unknown name") - selected = \(model.isSelected)")
+//        print("setVerbModelEntitySelected: selected count = \(getSelectedModelEntityCount())")
+//        print("\(model.modelName ?? "unknown name") - selected = \(model.isSelected)")
     }
     
     func getSelectedModelEntityCount()->Int{

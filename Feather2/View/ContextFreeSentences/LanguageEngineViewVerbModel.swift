@@ -10,17 +10,52 @@ import Foundation
 import JumpLinguaHelpers
 
 extension LanguageViewModel{
-    
-    func computeCompletedVerbCountsForAllNewVerbModelTypes(){
-        languageEngine.computeCompletedVerbCountsForAllNewVerbModelTypes()
+    func getStudyPackageManagerList()->[StudyPackageManager]{
+        languageEngine.getStudyPackageManagerList()
     }
     
-    func computeCompletedVerbCountByNewVerbModelType(newVerbModelType: NewVerbModelType)->Int{
-        languageEngine.computeCompletedVerbCountByNewVerbModelType(newVerbModelType: newVerbModelType)
+    func setStudyPackage(sp: StudyPackageClass){
+        languageEngine.studyPackage = sp
+        setTenses(tenseList: sp.tenseList)
     }
     
-    func computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: NewVerbModelType)->Int{
-        languageEngine.computeIncompletedVerbCountByNewVerbModelType(newVerbModelType: newVerbModelType)
+    func getStudyPackage()->StudyPackageClass{
+        languageEngine.studyPackage
+    }
+    
+    func installStudyPackage(sp: StudyPackageClass){
+        languageEngine.installStudyPackage(sp: sp)
+    }
+    
+    func computeSelectedVerbModels(){
+        languageEngine.computeSelectedVerbModels()
+    }
+    
+    func computeCompletedVerbModels(){
+        languageEngine.computeCompletedVerbModels()
+    }
+    
+    func getOrderedVerbModelList()->[RomanceVerbModel]{
+        languageEngine.getOrderedVerbModelList()
+    }
+    
+    func selectNextOrderedVerbModel()->Bool{
+        languageEngine.selectNextOrderedVerbModel()
+    }
+    
+    func selectNextV2MGroup()->Bool{
+        languageEngine.selectNextV2MGroup()
+    }
+    
+//    func computeCompletedVerbCountsForAllNewVerbModelTypes(){
+//        languageEngine.computeCompletedVerbCountsForAllNewVerbModelTypes()
+//    }
+    
+    func setAllVerbModelsIncomplete(){
+        languageEngine.setAllVerbModelsIncomplete()
+    }
+    func computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: NewVerbModelType)->(Int, Int) {
+        languageEngine.computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: newVerbModelType)
     }
     
     func setNextVerbModelInCurrentNewVerbModelType(){
@@ -88,8 +123,8 @@ extension LanguageViewModel{
         languageEngine.getCurrentVerbModel()
     }
     
-    func fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: Int){
-        languageEngine.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: maxVerbCountPerModel)
+    func fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: Int, inputStudyPackage: StudyPackageClass){
+        languageEngine.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList( maxVerbCountPerModel, inputStudyPackage: inputStudyPackage)
     }
     
     func setCurrentVerbModel(model: RomanceVerbModel){
@@ -145,8 +180,8 @@ extension LanguageViewModel{
         return languageEngine.findVerbsFromSameModel(verb: verb)
     }
     
-    func getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: RomanceVerbModel, verbType: NewVerbModelType)->SpecialPatternType{
-        languageEngine.getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: verbModel, verbType: verbType)
+    func getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: RomanceVerbModel, verbType: NewVerbModelType)->[SpecialPatternType]{
+        languageEngine.getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: verbModel, verbType: verbType)
     }
     
     func getPatternsForVerb(verb: Verb, tense: Tense)->[SpecialPatternStruct]{

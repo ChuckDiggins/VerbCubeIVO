@@ -145,7 +145,7 @@ struct ListModelsView: View {
         let sortInfo = modelDictionary.sorted(by: { $0.value > $1.value } )
         
         sortInfo.forEach {key, value in
-          print(key)
+//          print(key)
             for model in verbEndingModelList {
                 if model.modelVerb == "\(key)" {
                     modelStructList.append(ModelPatternStruct(id: model.id, model: model, count: value))
@@ -246,7 +246,7 @@ struct ListSortedModelsView: View {
     
     @State var modelStructList = [ModelPatternStruct]()
     @State private var rvmList = [RomanceVerbModel]()
-    @State var modelVerbType = VerbModelType.undefined
+   
     @State var modelVerbTypeString = "regular"
     
     var backgroundColor = Color.yellow

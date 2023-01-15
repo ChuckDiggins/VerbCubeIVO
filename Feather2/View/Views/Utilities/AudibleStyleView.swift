@@ -15,6 +15,15 @@ enum LessonType : String {
     case ODDS = "ODDS"
 }
 
+enum SpecialVerbType : String{
+    case verbsLikeGustar = "Verbs like Gustar"  //paracer, quedar
+    case weatherAndTime = "Weather and Time Verbs"
+    case ThirdPersonOnly = "3rd Person Only Verbs"
+    case auxiliaryVerbsInfinitives = "Auxiliary Verbs - infinitives"
+    case auxiliaryVerbsGerunds = "Auxiliary Verbs - gerunds"
+    case defective = "Defective"
+    case normal = "Normal"
+}
 
 enum LessonNameEnum : String {
     case findModelForUserVerb = "Find Model for User Verb"

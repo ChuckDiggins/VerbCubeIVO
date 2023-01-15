@@ -28,217 +28,59 @@ struct GrayButton: ButtonStyle {
     }
 }
 
-
-struct VerbSelectionWrapper: View {
+struct ModelSelectionWrapper: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel
     @EnvironmentObject var vmecdm: VerbModelEntityCoreDataManager
-    @State var selectedCount = 0
-    @State var selectedModelString = ""
-    @State var selectedType = NewVerbModelType.undefined
-    @State var regularVerbsCompleted = false
-    @State var criticalVerbsCompleted = false
-    @State var currentSelectedModelCompleted = false
-    
     var body: some View {
         ZStack{
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
             VStack{
-                HStack{
-                    NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedNewVerbModelType: .Regular, selectedModelString: $selectedModelString ))
-                    {
-                    Text("Select Regular Verbs")
-                    }.frame(width: 200, height: 45)
-                        .background (regularVerbsCompleted ? .gray : .blue )
-                        .foregroundColor (regularVerbsCompleted ? .black : .white )
-                        .clipShape(Capsule())
-                        .disabled(regularVerbsCompleted)
-                    if regularVerbsCompleted { Text("✅").font(.title)}
-                }
-                
-                HStack{
-                    NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedNewVerbModelType: .Critical, selectedModelString: $selectedModelString ))
-                    {
-                    Text("Select Critical Verbs")
-                    
-                    }
-                    .frame(width: 200, height: 45)
-                    .background (criticalVerbsCompleted ? .gray : .blue )
-                    .foregroundColor (criticalVerbsCompleted ? .black : .white )
+                NavigationLink(destination: VerbModelListView(languageViewModel: languageViewModel, vmecdm: vmecdm))
+                {
+                Text("Verb Model List")
+                }.frame(width: 200, height: 45)
+                    .background ( .blue )
+                    .foregroundColor ( .white )
                     .clipShape(Capsule())
-                    .disabled(criticalVerbsCompleted)
-                    if criticalVerbsCompleted { Text("✅").font(.title)}
-                }
                 
-                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount, selectedNewVerbModelType: .StemChanging1, selectedModelString: $selectedModelString ))
+//                NavigationLink(destination: StudyPackageView(languageViewModel: languageViewModel))
+//                {
+//                Text("Study packages")
+//                }.frame(width: 200, height: 45)
+//                    .background ( .blue )
+//                    .foregroundColor ( .white )
+//                    .clipShape(Capsule())
+                
+                NavigationLink(destination: AllModelsView(languageViewModel: languageViewModel, vmecdm: vmecdm))
                 {
-                Text("Stem-changing models")
-                }.buttonStyle(BlueButton())
+                Text("All models scan")
+                }.frame(width: 200, height: 45)
+                    .background ( .blue )
+                    .foregroundColor ( .white )
+                    .clipShape(Capsule())
                 
-               
-                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount,
-                                                                  selectedNewVerbModelType: .SpellChanging1, selectedModelString: $selectedModelString ))
+                NavigationLink(destination: TextBookView2(languageViewModel: languageViewModel))
                 {
-                Text("Spell-changing models")
-                }.buttonStyle(BlueButton())
+                Text("Realidades 1 - Style 2")
+                }.frame(width: 300, height: 45)
+                    .background ( .blue )
+                    .foregroundColor ( .white )
+                    .clipShape(Capsule())
                 
-                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount,
-                                                                  selectedNewVerbModelType: .Irregular, selectedModelString: $selectedModelString ))
+                NavigationLink(destination: TextBookView3(languageViewModel: languageViewModel))
                 {
-                Text("Irregular models")
-                }.buttonStyle(BlueButton())
-                
-               
-                Spacer()
-            }
-            .onAppear{
-                setCompletedFlags()
-//                print("AllVerbModelTypesView: \(vmecdm.vm.getVerbModelEntityCount())")
-            }
-            .onDisappear{
-                selectedType = languageViewModel.getSelectedNewVerbModelType()
-                if selectedType != .undefined && languageViewModel.getSelectedVerbModelList().count > 0 {
-                    selectedModelString = languageViewModel.getSelectedVerbModelList()[0].modelVerb
-                }
+                Text("Chuck 1 - Advanced verbs")
+                }.frame(width: 300, height: 45)
+                    .background ( .blue )
+                    .foregroundColor ( .white )
+                    .clipShape(Capsule())
             }
         }
     }
-    func setCompletedFlags(){
-        regularVerbsCompleted = false
-        
-        print("setCompletedFlags regularAR completed \(vmecdm.isCompleted(verbModelString: "regularAR"))")
-        print("setCompletedFlags regularER completed \(vmecdm.isCompleted(verbModelString: "regularER"))")
-        print("setCompletedFlags regularIR completed \(vmecdm.isCompleted(verbModelString: "regularIR"))")
-        
-        regularVerbsCompleted = vmecdm.isCompleted(verbModelString: "regularAR") &&
-            vmecdm.isCompleted(verbModelString: "regularER") &&
-            vmecdm.isCompleted(verbModelString: "regularIR")
-        print("setCompletedFlags regularVerbsCompleted \(regularVerbsCompleted))")
-        
-        criticalVerbsCompleted = vmecdm.isCompleted(verbModelString: "estar")  &&
-                vmecdm.isCompleted(verbModelString: "ser") &&
-                vmecdm.isCompleted(verbModelString: "haber")  &&
-                vmecdm.isCompleted(verbModelString: "hacer") &&
-                vmecdm.isCompleted(verbModelString: "oír") &&
-                vmecdm.isCompleted(verbModelString: "ir") &&
-                vmecdm.isCompleted(verbModelString: "ver") &&
-                vmecdm.isCompleted(verbModelString: "saber") &&
-                vmecdm.isCompleted(verbModelString: "reír")
-        
-        if !languageViewModel.getSelectedVerbModelList().isEmpty {
-            currentSelectedModelCompleted = vmecdm.isCompleted(verbModelString: languageViewModel.getSelectedVerbModelList()[0].modelVerb)
-            selectedType = languageViewModel.getSelectedNewVerbModelType()
-            var sptList = languageViewModel.getCurrentSpecialPatternTypeList()
-            for spt in sptList{
-                print("setCompletedFlags: \(spt.rawValue)")
-            }
-        }
-    }
-                
 }
-//struct VerbModelSelectionWrapper: View {
-//    @EnvironmentObject var languageViewModel: LanguageViewModel
-//    @Binding var selectedCount: Int
-//    @Binding var selectedModelString : String
-//    @State var selectedType = NewVerbModelType.undefined
-//    @EnvironmentObject var vmecdm: VerbModelEntityCoreDataManager
-//    @State var regularVerbsCompleted = false
-//    @State var criticalVerbsCompleted = false
-//
-//    @State var verbsExistForAll3Endings = true
-//    var body: some View {
-//        ZStack{
-//            Color("BethanyNavalBackground")
-//                .ignoresSafeArea()
-//
-//            VStack{
-////                NavigationLink(destination: TabBarVerbModelTypes(languageViewModel: languageViewModel, selectedCount: $selectedCount))
-////                    {
-////                    Text("Tab Bar Shell")
-////                    } .modifier(NavLinkModifier())
-//
-//
-//                Button{
-//                    vmecdm.setAllSelected(flag: false)
-//                    languageViewModel.setSelectedNewVerbModelType(selectedType: .Regular)
-//                    vmecdm.setSelected(verbModelString: "regularAR", flag: true)
-//                    vmecdm.setSelected(verbModelString: "regularER", flag: true)
-//                    vmecdm.setSelected(verbModelString: "regularIR", flag: true)
-//                    languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:5)
-//                    languageViewModel.initializeStudentScoreModel()
-//                    selectedCount = vmecdm.vm.getSelectedModelEntityCount()
-//                } label: {
-//                    Text("Regular Verb Models")
-//                }.buttonStyle(.bordered)
-//                    .disabled(regularVerbsCompleted)
-//
-//                Button{
-//                    vmecdm.setAllSelected(flag: false)
-//                    languageViewModel.setSelectedNewVerbModelType(selectedType: .Critical)
-//                    vmecdm.setSelected(verbModelString: "estar", flag: true)
-//                    vmecdm.setSelected(verbModelString: "ser", flag: true)
-//                    vmecdm.setSelected(verbModelString: "haber", flag: true)
-//                    vmecdm.setSelected(verbModelString: "hacer", flag: true)
-//                    vmecdm.setSelected(verbModelString: "oír", flag: true)
-//                    vmecdm.setSelected(verbModelString: "ir", flag: true)
-//                    vmecdm.setSelected(verbModelString: "ver", flag: true)
-//                    vmecdm.setSelected(verbModelString: "saber", flag: true)
-//                    vmecdm.setSelected(verbModelString: "reír", flag: true)
-//                    languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:10)
-//                    languageViewModel.initializeStudentScoreModel()
-//                    selectedCount = vmecdm.vm.getSelectedModelEntityCount()
-//                } label: {
-//                    Text("Critical Verb Models")
-//                } .buttonStyle(.bordered)
-//                    .disabled(criticalVerbsCompleted)
-//
-//                NavigationLink(destination: AllVerbModelTypesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selectedCount: $selectedCount,
-//                                        selectedNewVerbModelType: languageViewModel.getSelectedNewVerbModelType(),selectedModelString: $selectedModelString ))
-//                    {
-//                    Text("Select Model by Pattern")
-//                    }.buttonStyle(.bordered)
-//
-//
-//            }
-//            .foregroundColor(Color("BethanyGreenText"))
-//                .background(Color("BethanyNavalBackground"))
-//                .font(.headline)
-//                .padding()
-//            .onAppear{
-//                setCompletedFlags()
-////                print("AllVerbModelTypesView: \(vmecdm.vm.getVerbModelEntityCount())")
-//            }
-//            .onDisappear{
-//                selectedType = languageViewModel.getSelectedNewVerbModelType()
-//                if selectedType != .undefined && languageViewModel.getSelectedVerbModelList().count > 0 {
-//                    selectedModelString = languageViewModel.getSelectedVerbModelList()[0].modelVerb
-//                }
-//            }
-//        } .foregroundColor(Color("BethanyGreenText"))
-//            .background(Color("BethanyNavalBackground"))
-//            .font(.headline)
-//            .padding()
-//    }
-//
-//    func setCompletedFlags(){
-//        regularVerbsCompleted = false
-//        if vmecdm.isCompleted(verbModelString: "regularAR") &&
-//            vmecdm.isCompleted(verbModelString: "regularER") &&
-//            vmecdm.isCompleted(verbModelString: "regularIR") { regularVerbsCompleted = true }
-//
-//        criticalVerbsCompleted = false
-//        if vmecdm.isCompleted(verbModelString: "estar")  &&
-//                vmecdm.isCompleted(verbModelString: "ser") &&
-//                vmecdm.isCompleted(verbModelString: "haber")  &&
-//                vmecdm.isCompleted(verbModelString: "hacer") &&
-//                vmecdm.isCompleted(verbModelString: "oír") &&
-//                vmecdm.isCompleted(verbModelString: "ir") &&
-//                vmecdm.isCompleted(verbModelString: "ver") &&
-//                vmecdm.isCompleted(verbModelString: "saber") &&
-//                vmecdm.isCompleted(verbModelString: "reír") { criticalVerbsCompleted = true}
-//    }
-//}
+
 
 struct VerbSeeWrapper: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel
@@ -255,20 +97,20 @@ struct VerbSeeWrapper: View {
                     Text("List current verbs")
                     }.buttonStyle(.bordered)
                 }
-                if verbsExistForAll3Endings {
+                if verbsExistForAll3Endings && languageViewModel.getStudyPackage().specialVerbType == .normal{
                     NavigationLink(destination:  ThreeVerbSimpleView(languageViewModel: languageViewModel))
                     {
                     Text("3 Verbs View")
                     } .buttonStyle(.bordered)
                 }
-                if languageViewModel.getFilteredVerbs().count > 5 {
+                if languageViewModel.getFilteredVerbs().count > 4 && languageViewModel.getStudyPackage().specialVerbType == .normal {
                     NavigationLink(destination:  VerbCubeDirectorView(languageViewModel: languageViewModel))
                     {
                     Text("Verb Cubes")
                     }.buttonStyle(.bordered)
                 }
             
-                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", teachMeMode: .model))
+                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", multipleVerbFlag: true))
                 {
                 Text("Conjugate your verbs")
                 }.buttonStyle(.bordered)
@@ -277,8 +119,29 @@ struct VerbSeeWrapper: View {
                     Text("Right & Wrong")
                 }.buttonStyle(.bordered)
                 
+                NavigationLink(destination: Dictionary3View(languageViewModel: languageViewModel)){
+                    Text("Multi-language dictionary")
+                }.buttonStyle(.bordered)
+                
+                NavigationLink(destination: DictionaryView(languageViewModel: languageViewModel)){
+                    Text("Spanish verb dictionary")
+                }.buttonStyle(.bordered)
                 
                 
+                switch languageViewModel.getStudyPackage().specialVerbType{
+                case .verbsLikeGustar:
+                    NavigationLink(destination: VerbsLikeGustarView(languageViewModel: languageViewModel)){
+                        Text("Explore verbs like gustar")
+                    }.buttonStyle(.bordered)
+                case .auxiliaryVerbsInfinitives, .auxiliaryVerbsGerunds:
+                    NavigationLink(destination: AuxiliaryPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getStudyPackage().specialVerbType)){
+                        Text("Explore auxiliary verbs")
+                    }.buttonStyle(.bordered)
+                default:
+                    NavigationLink(destination: NormalPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getStudyPackage().specialVerbType)){
+                        Text("Explore normal verbs")
+                    }.buttonStyle(.bordered)
+                }
             }.onAppear{
                 verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
             }
@@ -467,46 +330,46 @@ struct ShowSegmentedModelStatusPicker: View {
     }
 }
 
-struct ModelQuizWrapper: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    var body: some View {
-        ZStack{
-            LinearGradient(gradient: Gradient(colors: [
-                Color(.systemYellow),
-                Color(.systemPink),
-                Color(.systemPurple),
-            ]),
-                           startPoint: .top,
-                           endPoint: .bottomTrailing)
-            .ignoresSafeArea()
-            
-            VStack{
-
-                NavigationLink(destination: FeatherVerbStepView(languageViewModel: languageViewModel)){
-                    Text("Model Verb Step")
-                }.modifier(NavLinkModifier())
+//struct ModelQuizWrapper: View {
+//    @ObservedObject var languageViewModel: LanguageViewModel
+//    var body: some View {
+//        ZStack{
+//            LinearGradient(gradient: Gradient(colors: [
+//                Color(.systemYellow),
+//                Color(.systemPink),
+//                Color(.systemPurple),
+//            ]),
+//                           startPoint: .top,
+//                           endPoint: .bottomTrailing)
+//            .ignoresSafeArea()
 //
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
-                    Text("Models for Pattern")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsBelongingToModel)){
-                    Text("Verbs in Model")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelForGivenVerb)){
-                    Text("Model for Given Verb")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveSameModelAsVerb)){
-                    Text("Verbs for Same Model")
-                }.modifier(NavLinkModifier())
-                
-            }
-            
-        }.navigationTitle("Model-based Quizzes")
-    }
-}
+//            VStack{
+//
+//                NavigationLink(destination: FeatherVerbStepView(languageViewModel: languageViewModel)){
+//                    Text("Model Verb Step")
+//                }.modifier(NavLinkModifier())
+////
+//                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
+//                    Text("Models for Pattern")
+//                }.modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsBelongingToModel)){
+//                    Text("Verbs in Model")
+//                }.modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelForGivenVerb)){
+//                    Text("Model for Given Verb")
+//                }.modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveSameModelAsVerb)){
+//                    Text("Verbs for Same Model")
+//                }.modifier(NavLinkModifier())
+//
+//            }
+//
+//        }.navigationTitle("Model-based Quizzes")
+//    }
+//}
 
 
           
@@ -532,36 +395,36 @@ struct PatternLearnWrapper: View {
     }
 }
 
-struct PatternQuizWrapper: View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    var body: some View {
-        ZStack{
-            LinearGradient(gradient: Gradient(colors: [
-                Color(.systemYellow),
-                Color(.systemPink),
-                Color(.systemPurple),
-            ]),
-                           startPoint: .top,
-                           endPoint: .bottomTrailing)
-            .ignoresSafeArea()
-            
-            VStack{
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
-                    Text("Models for Pattern")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveGivenPattern)){
-                    Text("Verbs with Given Pattern")
-                }.modifier(NavLinkModifier())
-                
-                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsWithSamePatternAsVerb)){
-                    Text("Verbs with Verb's Pattern")
-                }.modifier(NavLinkModifier())
-            }
-        }.navigationTitle("Pattern-based Verbs")
-    }
-}
-
+//struct PatternQuizWrapper: View {
+//    @ObservedObject var languageViewModel: LanguageViewModel
+//    var body: some View {
+//        ZStack{
+//            LinearGradient(gradient: Gradient(colors: [
+//                Color(.systemYellow),
+//                Color(.systemPink),
+//                Color(.systemPurple),
+//            ]),
+//                           startPoint: .top,
+//                           endPoint: .bottomTrailing)
+//            .ignoresSafeArea()
+//
+//            VStack{
+//                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
+//                    Text("Models for Pattern")
+//                }.modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveGivenPattern)){
+//                    Text("Verbs with Given Pattern")
+//                }.modifier(NavLinkModifier())
+//
+//                NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsWithSamePatternAsVerb)){
+//                    Text("Verbs with Verb's Pattern")
+//                }.modifier(NavLinkModifier())
+//            }
+//        }.navigationTitle("Pattern-based Verbs")
+//    }
+//}
+//
 
 struct NavLinkModifier : ViewModifier {
     func body(content: Content) -> some View{
@@ -728,38 +591,38 @@ struct AllNavigationLinks: View {
                         Text("Model Verb Step")
                     }.modifier(NavLinkModifier())
                     //
-                    NavigationLink(destination: PatternRecognitionView( languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
-                        Text("Models for Pattern")
-                    }.modifier(NavLinkModifier())
-                    
-                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsBelongingToModel)){
-                        Text("Verbs in Model")
-                    }.modifier(NavLinkModifier())
-                    
-                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelForGivenVerb)){
-                        Text("Model for Given Verb")
-                    }.modifier(NavLinkModifier())
-                    
-                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveSameModelAsVerb)){
-                        Text("Verbs for Same Model")
-                    }.modifier(NavLinkModifier())
+//                    NavigationLink(destination: PatternRecognitionView( languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
+//                        Text("Models for Pattern")
+//                    }.modifier(NavLinkModifier())
+//
+//                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsBelongingToModel)){
+//                        Text("Verbs in Model")
+//                    }.modifier(NavLinkModifier())
+//
+//                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelForGivenVerb)){
+//                        Text("Model for Given Verb")
+//                    }.modifier(NavLinkModifier())
+//
+//                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveSameModelAsVerb)){
+//                        Text("Verbs for Same Model")
+//                    }.modifier(NavLinkModifier())
                 }
                 Section{
                     NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel, featherMode: .pattern)){
                         Text("Find Pattern for User Verb")
                     }.modifier(NavLinkModifier())
                     
-                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
-                        Text("Models for Pattern")
-                    }.modifier(NavLinkModifier())
-                    
-                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveGivenPattern)){
-                        Text("Verbs with Given Pattern")
-                    }.modifier(NavLinkModifier())
-                    
-                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsWithSamePatternAsVerb)){
-                        Text("Verbs with Verb's Pattern")
-                    }.modifier(NavLinkModifier())
+//                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyModelsThatHaveGivenPattern)){
+//                        Text("Models for Pattern")
+//                    }.modifier(NavLinkModifier())
+//
+//                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsThatHaveGivenPattern)){
+//                        Text("Verbs with Given Pattern")
+//                    }.modifier(NavLinkModifier())
+//
+//                    NavigationLink(destination: PatternRecognitionView(languageViewModel: languageViewModel, multipleChoiceMode: .IdentifyVerbsWithSamePatternAsVerb)){
+//                        Text("Verbs with Verb's Pattern")
+//                    }.modifier(NavLinkModifier())
                     
                     NavigationLink(destination: VerbCubeView(languageViewModel: languageViewModel, vccsh: VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1:  .Verb, d2: .Person))){
                         Text("VerbCube")

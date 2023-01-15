@@ -89,7 +89,9 @@ struct MixAndMatchView: View {
     @State private var isHelpExpanded = false
     @State private var allSubjects = false
     @State private var showAlert = false
-    
+    @State private var number = Number.singular
+    @State private var dependentVerb = Verb()
+    @State var specialVerbType = SpecialVerbType.normal
     
     var body: some View {
         ZStack{
@@ -123,6 +125,9 @@ struct MixAndMatchView: View {
                     currentVerb = languageViewModel.getCurrentRandomVerb()
                     currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
                     currentTenseString = currentTense.rawValue
+                    specialVerbType = languageViewModel.getStudyPackage().specialVerbType
+                    dependentVerb = languageViewModel.findVerbFromString(verbString: "bailar", language: currentLanguage)
+                    setCurrentVerb()
                     fillPersonMixStruct()
                     fillMixMatchList()
                 }.background( isThisVerbAMatch[matchIndex] && isThisSubjectAMatch[mixIndex] ? .green : .yellow)
@@ -140,21 +145,38 @@ struct MixAndMatchView: View {
                     
                     VStack{
                         
-                        ForEach(subjectStringList.indices, id: \.self) { index in
-                            MixCellButton(index: index, wordText: subjectStringList[index], matchText: matchStringList[index], matchID: 0,
-                                          backgroundColor : isThisSubjectAMatch[index] ? .green: Color("BethanyNavalBackground"),
-                                          disabled: isThisSubjectDisabled[index] ? true : false,
-                                          function: getWordToMatch )
+                        ForEach(subjectStringList.indices, id: \.self) { subjectIndex in
+                            
+                            Button(subjectStringList[subjectIndex]){
+                                getWordToMatch(subjectIndex: subjectIndex, matchString: matchStringList[subjectIndex])
+                            }
+                            .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+                            .background(isThisSubjectAMatch[subjectIndex] ? .green.opacity(0.3): Color("BethanyNavalBackground"))
+                             .foregroundColor(isThisSubjectDisabled[subjectIndex] ? .black: Color("BethanyGreenText"))
+                            .cornerRadius(8)
+                            .rotationEffect(Angle.degrees(isThisSubjectDisabled[subjectIndex] ? 360 : 0))
+                            .animation(.linear(duration: 1), value: isThisSubjectDisabled[subjectIndex] ) // Delay the animation
+                            .disabled(isThisSubjectDisabled[subjectIndex])
+                            .font(Font.callout)
+                                    
                         }
                     }
                     
                     VStack{
-                        
-                        ForEach(verbStringList.indices, id: \.self) { index in
-                            MatchCellButton(index: index, wordText: verbStringList[index], matchID: 0, backgroundColor : isThisVerbAMatch[index] ? .green :  Color("BethanyNavalBackground"),
-                                            disabled: isThisVerbDisabled[index] ? true : false,
-                                            function: isMatch)
+                        ForEach(verbStringList.indices, id: \.self) { verbIndex in
+                            Button(verbStringList[verbIndex]){
+                                isMatch(verbIndex: verbIndex, verbString: verbStringList[verbIndex])
+                            }
+                            .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+                            .background(isThisVerbAMatch[verbIndex] ? .green.opacity(0.3): Color("BethanyNavalBackground"))
+                             .foregroundColor(isThisVerbDisabled[verbIndex] ? .black: Color("BethanyGreenText"))
+                            .cornerRadius(8)
+                            .rotationEffect(Angle.degrees(isThisVerbAMatch[verbIndex] ? 360 : 0))
+                            .animation(.linear(duration: 1), value: isThisVerbDisabled[verbIndex]) // Delay the animation
+                            .disabled(isThisVerbDisabled[verbIndex])
+                            .font(Font.callout)
                         }
+                       
                     }
                     
                 }
@@ -202,18 +224,6 @@ struct MixAndMatchView: View {
         }.padding()
     }
     
-//
-//    func showVerbsOfAFeatherNavigationLink()->some View{
-//            NavigationLink(destination: ListModelsView(languageViewModel: languageViewModel)){
-//                Text("New Model")
-//            }.font(.callout)
-//                .padding(2)
-//                .background(.linearGradient(colors: [.orange, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing))
-//                .foregroundColor(.black)
-//                .cornerRadius(4)
-//    }
-//
-    
     func getSubjectStringAtPerson(person : Person)->String{
         return person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
     }
@@ -221,13 +231,12 @@ struct MixAndMatchView: View {
     func fillPersonMixStruct(){
         
         personMixString.removeAll()
-        personMixString.append(PersonMixStruct(person: .S1, personString: getSubjectStringAtPerson(person : .S1)))
-        personMixString.append(PersonMixStruct(person: .S2, personString: getSubjectStringAtPerson(person : .S2)))
-        personMixString.append(PersonMixStruct(person: .S3, personString: getSubjectStringAtPerson(person : .S3)))
-        personMixString.append(PersonMixStruct(person: .P1, personString: getSubjectStringAtPerson(person : .P1)))
-        personMixString.append(PersonMixStruct(person: .P2, personString: getSubjectStringAtPerson(person : .P2)))
-        personMixString.append(PersonMixStruct(person: .P3, personString: getSubjectStringAtPerson(person : .P3)))
-
+        personMixString.append(PersonMixStruct(person: .S1, personString: languageViewModel.getPersonString(personIndex: 0, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .S2, personString: languageViewModel.getPersonString(personIndex: 1, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .S3, personString: languageViewModel.getPersonString(personIndex: 2, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P1, personString: languageViewModel.getPersonString(personIndex: 3, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P2, personString: languageViewModel.getPersonString(personIndex: 4, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P3, personString: languageViewModel.getPersonString(personIndex: 5, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
     }
     
     func setSubjunctiveParticiple(){
@@ -241,8 +250,9 @@ struct MixAndMatchView: View {
     func fillMixMatchList(){
         mixMatchList.removeAll()
         for pms in personMixString {
+            var verbString = languageViewModel.getVerbString(personIndex: pms.person.getIndex(), number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
             mixMatchList.append(MixMatchStruct(matchID: pms.person.getIndex(), person: pms.person, subjectString: pms.personString,
-                                               verbString: languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: currentTense, person: pms.person)))
+                                               verbString: verbString))
         }
         
         mixMatchList.shuffle()
@@ -270,29 +280,29 @@ struct MixAndMatchView: View {
         correctAnswerCount = 0
         totalCorrectCount = mixMatchList.count
         progressValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
-        if correctAnswerCount == totalCorrectCount { showAlert.toggle() }
+        if correctAnswerCount == totalCorrectCount && correctAnswerCount > 0 { showAlert.toggle() }
     }
     
-    func getWordToMatch(index: Int, matchString: String){
+    func getWordToMatch(subjectIndex: Int, matchString: String){
         if isThisSubjectAMatch[mixIndex] && !isThisSubjectDisabled[mixIndex] {isThisSubjectAMatch[mixIndex] = false}
-        self.mixIndex = index
+        self.mixIndex = subjectIndex
         self.matchString = matchString
-        subjectString = subjectStringList[index]
+        subjectString = subjectStringList[subjectIndex]
         isThisSubjectAMatch[mixIndex] = true
         verbString = ""
         //        print("mixIndex: \(mixIndex), getWordToMatch \(matchString)")
     }
     
-    func isMatch(index: Int, verbString: String){
+    func isMatch(verbIndex: Int, verbString: String){
         //if subject string has content
         if subjectString.count>0 {
-            self.matchIndex = index
+            self.matchIndex = verbIndex
             self.verbString = verbString
             currentPerson = getPerson(personString: subjectString)
             let answerText =  subjectString + verbString
             if verbString == matchString {
-                isThisVerbAMatch[index] = true
-                isThisVerbDisabled[index] = true
+                isThisVerbAMatch[verbIndex] = true
+                isThisVerbDisabled[verbIndex] = true
                 isThisSubjectAMatch[mixIndex] = true
                 isThisSubjectDisabled[mixIndex] = true
                 matchString = ""
@@ -321,11 +331,22 @@ struct MixAndMatchView: View {
             }
             
             progressValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
-            if correctAnswerCount == totalCorrectCount { showAlert = true }
+            if correctAnswerCount == totalCorrectCount && correctAnswerCount > 0 { showAlert = true }
             else {showAlert = false}
+            
+            printFlags()
         }
     }
     
+    func printFlags(){
+        print("\n")
+        for i in 0 ..< 6 {
+            print("index \(i)")
+            print ("subject \(subjectStringList[i]), match \(matchStringList[i]), verb \(verbStringList[i])")
+            print ("isMatch? - subject \(isThisSubjectAMatch[i]), verb \(isThisVerbAMatch[i]) ")
+            print ("disabled? - subject \(isThisSubjectDisabled[i]), verb \(isThisVerbDisabled[i])")
+        }
+    }
     func getPerson(personString: String)->Person{
         switch (languageViewModel.getCurrentLanguage()){
         case .Spanish:
@@ -389,8 +410,8 @@ struct MixAndMatchView: View {
     func setCurrentVerb(){
         currentVerb = languageViewModel.getCurrentRandomVerb()
         currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
-        languageViewModel.createAndConjugateCurrentRandomVerb()
         currentTense = languageViewModel.getCurrentTense()
+        languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: currentTense)
         //this sets up the initial invitation message to the user "Click here"
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         

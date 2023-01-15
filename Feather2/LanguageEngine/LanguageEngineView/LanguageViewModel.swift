@@ -47,7 +47,22 @@ class LanguageViewModel : ObservableObject, Equatable {
         currentLanguage = languageEngine.getCurrentLanguage()
     }
     
+    func setVerbOrModelMode(mode: VerbOrModelMode){
+        languageEngine.setVerbOrModelMode(mode)
+    }
     
+    func isModelMode()->Bool{
+        if languageEngine.verbOrModelMode == .modelMode { return true }
+        return false
+    }
+    
+    func getRandomSentenceObject()->FeatherSentenceHandler{
+        languageEngine.getRandomSentenceObject()
+    }
+    
+    func getVerbOrModelMode()->VerbOrModelMode{
+        languageEngine.getVerbOrModelMode()
+    }
     
 //    func getModelPatternStructList(ending: VerbEnding)->[ModelPatternStruct]{
 //        languageEngine.getModelPatternStructList(ending: ending)
@@ -56,6 +71,14 @@ class LanguageViewModel : ObservableObject, Equatable {
     func setLanguage(language: LanguageType){
         languageEngine.setLanguage(language: language)
         currentLanguage = languageEngine.getCurrentLanguage()
+    }
+    
+    func getPersonString(personIndex: Int, tense: Tense, specialVerbType: SpecialVerbType, verbString: String)->String{
+        languageEngine.getPersonString(personIndex: personIndex, tense: tense, specialVerbType: specialVerbType, verbString: verbString)
+    }
+    
+    func getVerbString(personIndex: Int, number: Number, tense: Tense, specialVerbType: SpecialVerbType,  verbString: String, dependentVerb: Verb, residualPhrase: String)->String{
+        languageEngine.getVerbString(personIndex: personIndex, number: number, tense: tense, specialVerbType: specialVerbType, verbString: verbString, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
     }
     
     func computeVerbsExistForAll3Endings()->Bool{
@@ -72,14 +95,6 @@ class LanguageViewModel : ObservableObject, Equatable {
     
     func fillVerbCubeAndQuizCubeLists(){
         languageEngine.fillVerbCubeAndQuizCubeLists()
-    }
-    
-    func getTeachMeMode()->TeachMeMode{
-        languageEngine.getTeachMeMode()
-    }
-    
-    func setTeachMeMode(teachMeMode: TeachMeMode){
-        languageEngine.setTeachMeMode(teachMeMode: teachMeMode)
     }
     
     func toggleSpeechMode(){
@@ -176,12 +191,24 @@ class LanguageViewModel : ObservableObject, Equatable {
         languageEngine.getPreviousPerson()
     }
     
+    func getRandomPerson()->Person{
+        languageEngine.getRandomPerson()
+    }
+    
     func getNextTense()->Tense {
         languageEngine.getNextTense()
     }
     
     func getPreviousTense()->Tense {
         languageEngine.getPreviousTense()
+    }
+    
+    func getRandomTense()->Tense {
+        languageEngine.getRandomTense()
+    }
+    
+    func setRandomTense(){
+        languageEngine.setRandomTense()
     }
     
     func getCurrentTense()->Tense{
@@ -236,6 +263,10 @@ class LanguageViewModel : ObservableObject, Equatable {
         languageEngine.fillCriticalVerbForms(verb: verb, residualPhrase:residualPhrase, isReflexive: isReflexive)
     }
 
+    func createAndConjugateAgnosticVerb(language: LanguageType, verb: Verb, tense: Tense, person: Person, isReflexive: Bool)->String{
+        languageEngine.createAndConjugateAgnosticVerb(language: language, verb: verb, tense: tense, person: person, isReflexive: isReflexive)
+    }
+    
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense, person: Person)->String{
         languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
     }

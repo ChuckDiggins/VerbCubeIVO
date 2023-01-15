@@ -60,7 +60,7 @@ struct NavigationStackView: View {
                         case .See: VerbSeeWrapper()
                         case .Learn: VerbLearnWrapper()
                         case .Test: VerbTestWrapper()
-                        case .Circle: CircleButtonView(languageViewModel: languageViewModel)
+                        case .Circle: CircleButtonView(languageViewModel: languageViewModel, selectedNewVerbModelType: .Regular)
                         }
                     }
                     .toolbar {

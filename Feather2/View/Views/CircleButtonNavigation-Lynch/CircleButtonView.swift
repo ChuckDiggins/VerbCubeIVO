@@ -31,7 +31,7 @@ struct CircleView: View {
     var body: some View {
         NavigationView{
             Spacer()
-                NavigationLink(destination: CircleButtonView(languageViewModel:  languageViewModel)){
+            NavigationLink(destination: CircleButtonView(languageViewModel:  languageViewModel, selectedNewVerbModelType: .Regular)){
                     Text("Circle Button View")
                 }.modifier(BlueButtonModifier())
             Spacer()
@@ -44,17 +44,21 @@ struct CircleButtonView: View {
     @ObservedObject var menuVM = MenuViewModel()
     @ObservedObject var languageViewModel: LanguageViewModel
     @State var selectedModelString = "No model yet"
-    @State var selectedNewVerbModelType = NewVerbModelType.undefined
+    @State var selectedNewVerbModelType : NewVerbModelType
     @State var selectedCount = 0
+    
+    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
+    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
     
     var body: some View {
         ZStack {
+            
             menuVM.selectedMenu.menuView
             ZStack {
                 Color.black.opacity(isActivated ? 0.2 : 0.0)
                 VStack {
-                    
-                    
+                    Text(currentV2mChapter)
+                    Text(currentV2mLesson)
                     Spacer()
                     ZStack{
                         ForEach(0..<menuVM.menus.count, id:\.self) { i in
@@ -62,17 +66,19 @@ struct CircleButtonView: View {
                         }
                         SelectedMenuButton(isActivated: self.$isActivated, menuItem: menuVM.selectedMenu)
                     }
-                    if getSelectedNewVerbModelType() != .undefined {
+//                    if getSelectedNewVerbModelType() != .undefined {
                         HStack{
-                            Text("Selected model:")
-                            SelectedNewVerbTypeView(selectedNewVerbModelType: $selectedNewVerbModelType, selectedModelString: $selectedModelString)
+                            Text("Study package: ")
+                            Text(languageViewModel.getStudyPackage().name)
+//                            SelectedNewVerbTypeView(selectedNewVerbModelType: $selectedNewVerbModelType, selectedModelString: $selectedModelString)
                         }
                         .frame(width: 300)
                         .frame(height: 35)
                         .border(.red)
-                    } else {
-                        Text("No verb models selected")
-                    }
+//                    }
+//                else {
+//                        Text("No verb models selected")
+//                    }
                 }
                 .navigationTitle("Verbs of a Feather")
                 .toolbar {
@@ -99,11 +105,14 @@ struct CircleButtonView: View {
                 }
                 AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
                 UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                UINavigationController.attemptRotationToDeviceOrientation()
+//                UINavigationController.attemptRotationToDeviceOrientation()
             }
         }
         .edgesIgnoringSafeArea(isActivated ? .all : .horizontal)
-        .animation(.spring())
+//        .animation(.spring())
+    }
+    
+    func setStudyPackageData(){
     }
     
     func getSelectedNewVerbModelType()->NewVerbModelType{
@@ -114,6 +123,6 @@ struct CircleButtonView: View {
 
 struct CircleButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        CircleButtonView(languageViewModel: LanguageViewModel())
+        CircleButtonView(languageViewModel: LanguageViewModel(), selectedNewVerbModelType: NewVerbModelType.Regular)
     }
 }

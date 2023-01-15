@@ -74,24 +74,24 @@ struct FlashCardsView: View {
                 }
             }
             
-            VStack{
-                HStack{
-                    Spacer()
-                    Button {
-                        showingEditScreen = true
-                    } label : {
-                        Image(systemName: "plus.circle")
-                            .padding()
-                            .background(.black.opacity(0.7))
-                            .clipShape(Circle())
-                    }
-                
-                }
-                Spacer()
-            }
-            .foregroundColor(.white)
-            .font(.largeTitle)
-            .padding()
+//            VStack{
+//                HStack{
+//                    Spacer()
+//                    Button {
+//                        showingEditScreen = true
+//                    } label : {
+//                        Image(systemName: "plus.circle")
+//                            .padding()
+//                            .background(.black.opacity(0.7))
+//                            .clipShape(Circle())
+//                    }
+//
+//                }
+//                Spacer()
+//            }
+//            .foregroundColor(.white)
+//            .font(.largeTitle)
+//            .padding()
             
             if differentiateWithoutColor || voiceOverEnabled {
                 VStack{

@@ -13,6 +13,7 @@ class FlashCard: ObservableObject {
     var tense : Tense
     var person : Person
     
+    var personString: String
     var answer = [String]()
     var correctAnswer : String
     @Published var question: String
@@ -21,6 +22,7 @@ class FlashCard: ObservableObject {
         self.verb = Verb()
         self.tense = Tense.present
         self.person = Person.S1
+        self.personString = ""
         
         for i in 0..<5 {
             answer.append( "answer \(i)" )
@@ -29,13 +31,15 @@ class FlashCard: ObservableObject {
         self.question = ""
     }
     
-    init(verb: Verb, tense: Tense, person: Person,
+    init(verb: Verb, tense: Tense, person: Person, personString: String,
         answer1: String, answer2: String, answer3: String,
          answer4: String, answer5: String, answer6: String,
          correctAnswer: String, question: String){
         self.verb = verb
         self.tense = tense
         self.person = person
+        self.personString = personString
+
         answer.append(answer1)
         answer.append(answer2)
         answer.append(answer3)

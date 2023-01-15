@@ -34,8 +34,8 @@ struct DragDropVerbSubjectView: View {
     @State var currentVerbString = ""
     @State var currentTenseString = ""
     @State var width = 0.0
-    var subjectList = ["yo", "tú", "usted", "nosotros", "ellos", "ellas", "vosotros", "él", "ella", "ustedes"]
-    var personList = [Person.S1, .S2, .S3, .P1, .P3, .P3, .P2, .S3, .S3, .P3]
+    var subjectList = ["yo", "tú", "usted", "nosotros", "ellos", "ellas", "vosotros", "él", "ella", "ustedes", "nosotras", "vosotras"]
+    var personList = [Person.S1, .S2, .S3, .P1, .P3, .P3, .P2, .S3, .S3, .P3, .P1, .P2]
     
     var body: some View {
         ZStack{

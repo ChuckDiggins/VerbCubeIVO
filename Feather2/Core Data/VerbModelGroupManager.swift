@@ -146,9 +146,11 @@ struct VerbModelGroupManager{
     func getModelListAtSelectedPattern(languageViewModel: LanguageViewModel, inputModelList: [RomanceVerbModel], selectedPattern: SpecialPatternType)->[RomanceVerbModel]{
         var modelList = [RomanceVerbModel]()
         for model in inputModelList {
-            var spt = languageViewModel.getPatternForGivenVerbModelTypeForThisVerbModel(verbModel: model, verbType: languageViewModel.getSelectedNewVerbModelType())
-            if spt == selectedPattern {
-                modelList.append(model)
+            var sptList = languageViewModel.getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: model, verbType: languageViewModel.getSelectedNewVerbModelType())
+            for spt in sptList {
+                if spt == selectedPattern {
+                    modelList.append(model)
+                }
             }
         }
         return modelList

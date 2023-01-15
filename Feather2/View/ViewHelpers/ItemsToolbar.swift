@@ -13,12 +13,6 @@ struct ItemsToolbar: ToolbarContent{
     var body: some ToolbarContent {
         
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-//            NavigationLink(destination: Flashcard(
-//                front: { Text("Hello")},
-//                back: { Text("Goodbye")}))
-//            {
-//            Label("Flashcard", systemImage: "bolt")
-//            }
             
             NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
             {

@@ -46,36 +46,42 @@ struct ListVerbsForModelView: View {
                                      //                                 GridItem(.fixed(gridFixSize)),
                                      GridItem(.fixed(gridFixSize))]
                     
-                    Text("Model: \(model.modelVerb)").font(.title)
-                    VStack(spacing: 5) {
-                        if patternTenseStringList.count > 0 {
-                            Text("Pattern information:")
-                            ForEach( 0..<patternTenseStringList.count, id: \.self){i in
-                                HStack{
-                                    Text(patternTenseStringList[i])
-                                    Text(patternTypeStringList[i])
-                                    Text(patternLabelStringList[i])
+                    Text("Study package: \(languageViewModel.getStudyPackage().name)").font(.title)
+                    
+                    //only show pattern stuff for singleton study package
+                    
+                    if ( languageViewModel.getStudyPackage().verbModelList.count == 1 ){
+                        VStack(spacing: 5) {
+                            if patternTenseStringList.count > 0 {
+                                Text("Pattern information:")
+                                ForEach( 0..<patternTenseStringList.count, id: \.self){i in
+                                    HStack{
+                                        Text(patternTenseStringList[i])
+                                        Text(patternTypeStringList[i])
+                                        Text(patternLabelStringList[i])
+                                    }
                                 }
                             }
-                        }
-                    }.background(.yellow)
-                        .foregroundColor(.black)
-                        .border(.black)
-                    Divider().frame(height:2).background(.yellow)
+                        }.background(.yellow)
+                            .foregroundColor(.black)
+                            .padding(5)
+                            .border(.black)
+                        Divider().frame(height:2).background(.yellow)
+                    }
                     
                     HStack{
-                        Button{
-                            showEnglish.toggle()
-                            currentLanguage = showEnglish ? .English : .Spanish
-                        } label: {
-                            Text(showEnglish ? "Spanish" : "English")
-                        }
-                        .frame(width: 150, height: 30)
-                        .font(.callout)
-                        .padding(2)
-                        .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .foregroundColor(.black)
-                        .cornerRadius(4)
+//                        Button{
+//                            showEnglish.toggle()
+//                            currentLanguage = showEnglish ? .English : .Spanish
+//                        } label: {
+//                            Text(showEnglish ? "Spanish" : "English")
+//                        }
+//                        .frame(width: 150, height: 30)
+//                        .font(.callout)
+//                        .padding(2)
+//                        .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
+//                        .foregroundColor(.black)
+//                        .cornerRadius(4)
                    
                 }
                     LazyVGrid(columns: gridItems, spacing: 5){
@@ -93,9 +99,9 @@ struct ListVerbsForModelView: View {
                         } header:{
                             Text("Current verb list").font(.title2)
                         }
-                    footer:{
-                        Text("\nThese will be your exercise verbs.").font(.callout).bold()
-                    }
+//                    footer:{
+//                        Text("\nThese will be your exercise verbs.").font(.callout).bold()
+//                    }
                         
                     }
                     .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
@@ -110,7 +116,7 @@ struct ListVerbsForModelView: View {
                     if languageViewModel.getSelectedVerbModelList().count > 0 {
                         model = languageViewModel.getSelectedVerbModelList()[0]
                     }
-                    shuffleVerbList()
+                    loadVerbList()
                     analyzeModel()
                 }
             }
@@ -132,9 +138,13 @@ struct ListVerbsForModelView: View {
         for sps in patternList {
             if sps.pattern.isOrthoChangingSpanish(){ patternLabelStringList.append("(Spell)") }
             if sps.pattern.isIrregularPreteriteSpanish(){ patternLabelStringList.append("(Spell)") }
-            else if sps.pattern.isStemChangingPresentSpanish(){ patternLabelStringList.append("(Stem)")}
+            else if sps.pattern.isStemChangingPresentSpanish(){
+                patternLabelStringList.append("(Stem)")
+            }
             else if sps.pattern.isStemChangingPreteriteSpanish(){ patternLabelStringList.append("(Stem)")}
-            else {patternLabelStringList.append("")}
+            else {
+                patternLabelStringList.append("None")
+            }
             
             patternTenseStringList.append(sps.tense.rawValue)
             patternTypeStringList.append(sps.pattern.rawValue)
@@ -170,6 +180,10 @@ struct ListVerbsForModelView: View {
     
     func loadVerbList(){
         verbList = languageViewModel.getFilteredVerbs()
+        print("loadVerbList: verbList count = \(verbList.count)")
+        for verb in verbList{
+            print(verb.spanish)
+        }
     }
     
     func getVerbStringAtIndex(_ index: Int)->String{

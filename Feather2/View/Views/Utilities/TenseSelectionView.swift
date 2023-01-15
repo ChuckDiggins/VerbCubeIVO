@@ -10,7 +10,9 @@ import JumpLinguaHelpers
 
 struct TenseSelectionView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
+    @Binding var tenseList: [Tense]
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @Environment(\.dismiss) private var dismiss
     
     @State var indicativeTenses: [TenseThing] = [
         TenseThing(tense : .present),
@@ -236,11 +238,20 @@ struct TenseSelectionView: View {
                 .font(.caption)
             } //Section Subjunctive
             
-            
-            Button(action: {
-                self.mode.wrappedValue.dismiss()
-            }){
-                Text("Don't save")
+            HStack{
+                Button(action: {
+                    saveTenses()
+                    self.mode.wrappedValue.dismiss()
+                }){
+                    Text("Save")
+                }.modifier(BlueButtonModifier())
+                
+                
+                Button(action: {
+                    self.mode.wrappedValue.dismiss()
+                }){
+                    Text("Don't save")
+                }.modifier(RedButtonModifier())
             }
             
         }
@@ -359,26 +370,27 @@ struct TenseSelectionView: View {
     func saveTenses(){
         //var tenseManager = TenseManager()
         
-        var tenseList = [Tense]()
+        var tempTenseList = [Tense]()
         
         
         for index in 0..<indicativeTenses.count {
-            if ( indicativeTenses[index].isSelected ){tenseList.append(indicativeTenses[index].tense)}
+            if ( indicativeTenses[index].isSelected ){tempTenseList.append(indicativeTenses[index].tense)}
         }
         for index in 0..<subjunctiveTenses.count {
-            if ( subjunctiveTenses[index].isSelected ){tenseList.append(subjunctiveTenses[index].tense)}
+            if ( subjunctiveTenses[index].isSelected ){tempTenseList.append(subjunctiveTenses[index].tense)}
         }
         for index in 0..<indicativePerfectTenses.count {
-            if ( indicativePerfectTenses[index].isSelected ){tenseList.append(indicativePerfectTenses[index].tense)}
+            if ( indicativePerfectTenses[index].isSelected ){tempTenseList.append(indicativePerfectTenses[index].tense)}
         }
         for index in 0..<subjunctivePerfectTenses.count {
-            if ( subjunctivePerfectTenses[index].isSelected ){tenseList.append(subjunctivePerfectTenses[index].tense)}
+            if ( subjunctivePerfectTenses[index].isSelected ){tempTenseList.append(subjunctivePerfectTenses[index].tense)}
         }
-        if ( imperative.isSelected ){tenseList.append(imperative.tense)}
+        if ( imperative.isSelected ){tempTenseList.append(imperative.tense)}
         
-        if ( tenseList.count > 0 ){
-            languageViewModel.setTenses(tenseList : tenseList )
+        if ( tempTenseList.count > 0 ){
+            languageViewModel.setTenses(tenseList : tempTenseList )
         }
+        tenseList = tempTenseList
     }
 }
 

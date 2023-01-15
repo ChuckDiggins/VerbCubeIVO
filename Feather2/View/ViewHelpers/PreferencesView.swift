@@ -13,6 +13,8 @@ struct PreferencesView: View {
     @State var currenSubjectPronounType = SubjectPronounType.all
     @State var currenSubjectPronounTypeString = "whatever"
     @State var speechModeActiveString = "Speech mode is ACTIVE"
+    @State var tenseList = [Tense]()
+    @State var modelCompleted = false
     
     var body: some View {
         
@@ -31,7 +33,7 @@ struct PreferencesView: View {
                 }
                 ScrollView {
                     DisclosureGroupPreferences()
-                    NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel)){
+                    NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel, tenseList: $tenseList)){
                         HStack{
                             Text("Set tenses")
                             Spacer()
@@ -56,6 +58,7 @@ struct PreferencesView: View {
                     PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
                     ChangeLanguageView(languageViewModel: languageViewModel)
                     
+                    
                     Button{
                         languageViewModel.restoreSelectedVerbs()
                         for vm in languageViewModel.getSelectedVerbModelList(){
@@ -65,6 +68,31 @@ struct PreferencesView: View {
                     } label: {
                         Text("Exit Application")
                     }.foregroundColor(.red).border(.red)
+                       
+                    VStack{
+                        Text("Testing buttons")
+                        
+                        Button{
+                            languageViewModel.setAllVerbModelsIncomplete()
+                        } label: {
+                            Text("Set all verb models incomplete")
+                        }.modifier(ModelTensePersonButtonModifier())
+                        
+                        Button{
+                            languageViewModel.setSelectedVerbModelsComplete()
+                            languageViewModel.selectNextOrderedVerbModel()
+                            modelCompleted.toggle()
+                        } label: {
+                            Text("Set all selected verb models to completed")
+                        }.modifier(ModelTensePersonButtonModifier())
+                    }
+                    .alert("", isPresented: $modelCompleted){
+                        //no action
+                    } message: {
+                        Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
+                    }
+                    .padding(25)
+                    .border(.red)
                 }
                 Spacer()
             }.onAppear{

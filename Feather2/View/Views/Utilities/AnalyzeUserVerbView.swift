@@ -144,7 +144,7 @@ struct AnalyzeUserVerbView: View {
                                     }
                                 }
 
-                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel,  verb: currentVerb, residualPhrase: residualPhrase, teachMeMode: .model)){
+                                NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel,  verb: currentVerb, residualPhrase: residualPhrase, multipleVerbFlag: true)){
                                     HStack{
                                         Text("Show me ")
                                         Text("\(currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))").bold()
@@ -256,14 +256,14 @@ struct AnalyzeUserVerbView: View {
         currentVerb = verb
         setBescherelleModelInfo()
         let vm = languageViewModel.findModelForThisVerbString(verbWord: reconstructedVerbString)
-        languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
+//        languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
         return (verb, residualPhrase, true)
     }
     
     func blankOutCvfs(){
         let vsList = languageViewModel.getCriticalVerbForms()
         for i in 0 ..< vsList.count{
-            CriticalFormView(comment: vsList[i].comment,
+            _ = CriticalFormView(comment: vsList[i].comment,
                              person: vsList[i].person.getSubjectString(language: languageViewModel.getCurrentLanguage(), gender : languageViewModel.getSubjectGender(), verbStartsWithVowel: false, useUstedForm: languageViewModel.useUstedForS3),
                              cvf: "", subjunctiveString: "")
         }

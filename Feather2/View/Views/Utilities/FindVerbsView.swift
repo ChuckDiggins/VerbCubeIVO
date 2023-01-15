@@ -134,7 +134,7 @@ struct FindVerbsView: View {
                 
                 if selectedVerb.getWordAtLanguage(language: currentLanguage).count > 0 {
                     ZStack{
-                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "", teachMeMode: featherMode == .model ? .model : .pattern)){
+                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "", multipleVerbFlag: true)){
                             HStack{
                                 HStack{
                                     Text("Show me ")

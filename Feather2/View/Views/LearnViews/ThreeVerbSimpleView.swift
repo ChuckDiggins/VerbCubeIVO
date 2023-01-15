@@ -37,12 +37,17 @@ struct ThreeVerbSimpleView: View {
     @State var columnWidth = CGFloat(160)
     @State var subjectWidth = CGFloat(100)
     
+    @State var verb1Changed = false
+    @State var verb2Changed = false
+    @State var verb3Changed = false
+    
     var body: some View {
         ZStack{
             
             VStack{
                 Button(action: {
-                    currentTenseString = languageViewModel.getNextTense().rawValue
+                    currentTense = languageViewModel.getNextTense()
+                    currentTenseString = currentTense.rawValue
                     reloadAll()
                 }){
                     HStack{
@@ -104,17 +109,20 @@ struct ThreeVerbSimpleView: View {
                             } label: {
                                 Text(verb1String[index])
                             }.frame(width: columnWidth, height: 30, alignment: .center)
+                                .animation(.linear(duration: 1), value: verb1Changed)
                             
                             Button{
                                 
                             } label: {
                                 Text(verb2String[index])
                             }.frame(width: columnWidth, height: 30, alignment: .center)
+                                .animation(.linear(duration: 1), value: verb2Changed)
                             Button{
                                 
                             } label: {
                                 Text(verb3String[index])
                             }.frame(width: columnWidth, height: 30, alignment: .center)
+                                .animation(.linear(duration: 1), value: verb3Changed)
                             
                         }.font(.system(size: 20))
                     }
@@ -124,9 +132,9 @@ struct ThreeVerbSimpleView: View {
                 
                 currentLanguage = languageViewModel.getCurrentLanguage()
                 let vamslu =  VerbAndModelSublistUtilities()
-                verb1List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), ending: .AR,  language: languageViewModel.getCurrentLanguage())
-                verb2List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), ending: .ER,  language: languageViewModel.getCurrentLanguage())
-                verb3List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), ending: .IR,  language: languageViewModel.getCurrentLanguage())
+                verb1List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), inputEnding: .AR,  language: languageViewModel.getCurrentLanguage())
+                verb2List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), inputEnding: .ER,  language: languageViewModel.getCurrentLanguage())
+                verb3List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), inputEnding: .IR,  language: languageViewModel.getCurrentLanguage())
                 if verb1List.count == 0 || verb2List.count == 0 || verb3List.count == 0
                 {
                 Alert(title: Text("AR, ER and IR verbs are all required to use this window"), message: nil, dismissButton: .default(Text("OK"), action: {
@@ -165,7 +173,6 @@ struct ThreeVerbSimpleView: View {
             verb1Index = 0
         }
         verb1 = verb1List[verb1Index]
-        
         reloadVerb1()
     }
     
@@ -176,7 +183,6 @@ struct ThreeVerbSimpleView: View {
             verb2Index = 0
         }
         verb2 = verb2List[verb2Index]
-        
         reloadVerb2()
     }
     
@@ -211,6 +217,7 @@ struct ThreeVerbSimpleView: View {
         for i in 0..<6 {
             verb1String[i] = msm.getFinalVerbForm(person: Person.all[i])
         }
+        verb1Changed.toggle()
     }
     
     func  reloadVerb2(){
@@ -219,6 +226,7 @@ struct ThreeVerbSimpleView: View {
         for i in 0..<6 {
             verb2String[i] = msm.getFinalVerbForm(person: Person.all[i])
         }
+        verb2Changed.toggle()
     }
     
     func  reloadVerb3(){
@@ -227,6 +235,7 @@ struct ThreeVerbSimpleView: View {
         for i in 0..<6 {
             verb3String[i] = msm.getFinalVerbForm(person: Person.all[i])
         }
+        verb3Changed.toggle()
     }
     
 }

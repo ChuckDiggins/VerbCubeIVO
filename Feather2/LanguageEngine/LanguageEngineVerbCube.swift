@@ -11,7 +11,11 @@ import JumpLinguaHelpers
 extension LanguageEngine{
     
     func fillVerbCubeLists(){
-        verbCubeList.removeAll()
+        print("VerbCubeList 3:\(verbCubeList.count) verbs")
+        if verbCubeList.count > 0 {
+            verbCubeList.removeAll()
+        }
+        
         for verb in filteredVerbList {
             let bVerb = verb.getBVerb()
             if !bVerb.isPhrasalVerb(){

@@ -520,7 +520,7 @@ struct FeatherVerbStepView: View {
                     .cornerRadius(4)
                 
                 if verbString.count > 1 {
-                    NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "", teachMeMode: .model)){
+                    NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "", multipleVerbFlag: true)){
                         HStack{
                             Text("Show me ")
                             Text(modelVerb).bold()

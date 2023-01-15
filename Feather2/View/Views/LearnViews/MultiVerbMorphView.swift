@@ -54,6 +54,8 @@ struct MultiVerbMorphView: View {
     @State var simpleAlert = false
     @State var currentVerbModelString = ""
     @State var subjunctiveWord = "que "
+    @State var currentEnding = VerbEnding.none
+    @State var verbsExistForAll3Endings = false
     
     //    @State var tmeList = Array(repeating: TextMorphStruct(), count: 12)
     @State var tmsList = [TextMorphStruct(),TextMorphStruct(),TextMorphStruct(),
@@ -151,7 +153,7 @@ struct MultiVerbMorphView: View {
                     .cornerRadius(4)
                 
                 if currentVerbString.count > 1 {
-                    NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "", teachMeMode: .model)){
+                    NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: Verb(spanish: modelVerb, french: modelVerb, english: modelVerb), residualPhrase: "", multipleVerbFlag: true)){
                         HStack{
                             Text("Show me ")
                             Text(modelVerb).bold()
@@ -184,6 +186,7 @@ struct MultiVerbMorphView: View {
         }
         setMorphStructsAtPerson(person: languageViewModel.getCurrentPerson())
         setMorphComment()
+        setCurrentVerbEnding()
     }
     
     func loadVerbList(){
@@ -194,9 +197,15 @@ struct MultiVerbMorphView: View {
             verbsFromSameFeather = true
         }
         verbList = removeReflexiveVerbs()
+        if verbsExistForAll3Endings {
+            let vamslu =  VerbAndModelSublistUtilities()
+            verbList = vamslu.getVerbSublistAtVerbEnding(inputVerbList: verbList, inputEnding: currentEnding,  language: languageViewModel.getCurrentLanguage())
+        }
     }
     
     func initializeStuff(){
+        verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
+        if verbsExistForAll3Endings { currentEnding = .AR }
         currentVerbModelString = languageViewModel.getCurrentVerbModel().modelVerb
         loadVerbList()
         verbCount = verbList.count
@@ -205,6 +214,21 @@ struct MultiVerbMorphView: View {
             verbCount = verbList.count
         }
         setTensePersonVerb()
+    }
+    
+    func setCurrentVerbEnding(){
+        if verbsExistForAll3Endings {
+            switch currentEnding{
+            case .AR: currentEnding = .ER
+            case .ER: currentEnding = .IR
+            case .IR: currentEnding = .AR
+            case .ALL: currentEnding = .AR
+            default: currentEnding = .ALL
+            }
+        } else {
+            currentEnding = .ALL
+        }
+        
     }
     
     func setSubjunctiveStuff(){

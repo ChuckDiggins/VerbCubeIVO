@@ -70,6 +70,10 @@ struct MultipleChoiceView: View {
     @State private var totalCorrectCount = 0
     @State private var isNew = true
     @State private var headerText = "Multiple Choice"
+    @State private var number = Number.singular
+    @State private var dependentVerb = Verb()
+    @State var specialVerbType = SpecialVerbType.normal
+    @State var rightHandRotate = [false, false, false, false, false, false]
     
     var body: some View {
         ZStack{
@@ -84,29 +88,6 @@ struct MultipleChoiceView: View {
                 else {
                     DisclosureGroupMultipleChoiceSubjectTense().foregroundColor(Color("BethanyGreenText"))
                 }
- 
-//                ListVerbModelsView(languageViewModel: languageViewModel)
-//                .task {
-//                    setBescherelleModelInfo()
-//                    setVerbList()
-//                }
-
-//                HStack{
-//                    Button{
-//                        switch multipleChoiceDifficulty {
-//                        case .simple: multipleChoiceDifficulty = .medium
-//                        case .medium: multipleChoiceDifficulty = .hard
-//                        case .hard: multipleChoiceDifficulty = .simple
-//                        }
-//                    } label: {
-//                        HStack{
-//                            Text("Change mode: \(multipleChoiceDifficulty.rawValue)")
-//                            Spacer()
-//                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-//                        }.modifier(ModelTensePersonButtonModifier())
-//                    }
-//                    
-//                }
                 HStack{
                     Spacer()
                     Text("Wrong \(wrongAnswerCount)").foregroundColor(Color("BethanyGreenText"))
@@ -129,14 +110,12 @@ struct MultipleChoiceView: View {
                 VStack{
                    
                     VStack{
-                        HStack{
-//                            Text("Problem:")
-                            Text(problemInstructionString)
+                        VStack{
+                            Text("Verb: \(currentVerbString)")
+                            Text("Tense: \(currentTenseString)")
                         }.font(.headline)
-//                        Text("Click on the correct answer on the right")
-//                            .font(.subheadline)
                     }
-                    .frame(width: 350, height: 40)
+                    .frame(width: 350, height: 50)
                     .padding(2)
                     .cornerRadius(4)
                     .border(Color("ChuckText1"))
@@ -146,14 +125,17 @@ struct MultipleChoiceView: View {
 //                            print("soon I will do something cool with this")
                         }
                         .frame(width: 150, height: 30)
+                        .rotationEffect(Angle.degrees(rightHandRotate[0] ? 360 : 0))
+                        .animation(.linear(duration: 1), value: rightHandRotate[0]) // Delay the animation
                         .font(.headline)
                         .cornerRadius(3)
                         .border(Color("ChuckText1"))
                         
                         VStack{
                             ForEach(rightHandStringList.indices, id: \.self) { index in
-                                Button(rightHandStringList[index]){
+                                Button{
                                     if rightHandStringList[index] == correctRightHandString {
+                                        rightHandRotate[0].toggle()
                                         correctAnswerCount += 1
                                         languageViewModel.getStudentScoreModel().incrementVerbScore(value: currentVerb, correctScore: 1, wrongScore: 0)
                                         languageViewModel.getStudentScoreModel().incrementTenseScore(value: currentTense, correctScore: 1, wrongScore: 0)
@@ -175,15 +157,18 @@ struct MultipleChoiceView: View {
                                         }
                                         showCurrentStudentScores()
                                     }
-//                                    showCurrentStudentScores()
                                     showNewProblem()
-                                    
-                                }
-                                .frame(width: 200, height: 30)
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .background(Color("BethanyPurpleButtons"))
-                                .cornerRadius(8)
+                                } label: {
+                                    Text(rightHandStringList[index])
+                                        .frame(width: 200, height: 30)
+                                        .rotationEffect(Angle.degrees(rightHandRotate[0] ? 360 : 0))
+                                        .animation(.linear(duration: 1), value: rightHandRotate[0]) // Delay the animation
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .background(Color("BethanyPurpleButtons"))
+                                        .cornerRadius(8)
+                                }.padding(1)
+//
                             }
                             
                         }
@@ -196,6 +181,8 @@ struct MultipleChoiceView: View {
             .foregroundColor(Color("BethanyGreenText"))
             .background(Color("BethanyNavalBackground"))
             .onAppear{
+                specialVerbType = languageViewModel.getStudyPackage().specialVerbType
+                dependentVerb = languageViewModel.findVerbFromString(verbString: "bailar", language: currentLanguage)
                 if isNew {
                     initialize()
                 }
@@ -213,11 +200,12 @@ struct MultipleChoiceView: View {
         currentLanguage = languageViewModel.getCurrentLanguage()
         setVerbList()
         tenseList = languageViewModel.getTenseList()
-        currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
-        currentTenseString = currentTense.rawValue
+        
         fillPersonMixStruct()
         setProblemMode()
         createNextProblem()
+        currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
+        currentTenseString = currentTense.rawValue
         isNew = false
         setBescherelleModelInfo()
     }
@@ -390,29 +378,30 @@ struct MultipleChoiceView: View {
         case .oneSubjectToFiveVerbs:
             randomPersonList.shuffle()
             for person in randomPersonList {
-                let str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                var str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: currentTense, person: person)
+                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
                 rightHandStringList.append( str )
                 if person == currentPerson {
                     correctRightHandString = str
                 }
             }
-            problemInstructionString = "Problem tense: \(currentTense.rawValue.lowercased())"
+            
         case .oneSubjectToFiveTenses:
             randomTenseList.shuffle()
             for tense in randomTenseList {
-                let str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                var str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
                 rightHandStringList.append( str )
                 if tense == currentTense {
                     correctRightHandString = str
                 }
             }
-            problemInstructionString = "Problem tense: \(currentTense.rawValue.lowercased())"
         case .oneVerbToFiveSubjects:
             correctRightHandString = ""
         case .oneVerbToFiveModels:
             correctRightHandString = ""
         }
-        
+        currentTenseString = currentTense.rawValue.lowercased()
     }
     
     func loadSubjectsForThisVerb(verb: Verb, tense: Tense, person: Person)->[String]{
@@ -452,11 +441,15 @@ struct MultipleChoiceView: View {
     
     func getSubjectStringAtPersonIndex(index : Int)->String{
         let person = Person.all[index]
-        return person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+//        let personString = person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+        let personString = languageViewModel.getPersonString(personIndex: index, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString)
+        return personString
     }
     
     func getSubjectStringAtPerson(person : Person)->String{
-        return person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+//        let personString = person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
+        let personString = languageViewModel.getPersonString(personIndex: person.getIndex(), tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString)
+        return personString
     }
     
     
@@ -506,12 +499,19 @@ struct MultipleChoiceView: View {
     
     func fillPersonMixStruct(){
         personMixString.removeAll()
-        personMixString.append(PersonMixStruct(person: .S1, personString: getSubjectStringAtPerson(person : .S1)))
-        personMixString.append(PersonMixStruct(person: .S2, personString: getSubjectStringAtPerson(person : .S2)))
-        personMixString.append(PersonMixStruct(person: .S3, personString: getSubjectStringAtPerson(person : .S3)))
-        personMixString.append(PersonMixStruct(person: .P1, personString: getSubjectStringAtPerson(person : .P1)))
-        personMixString.append(PersonMixStruct(person: .P2, personString: getSubjectStringAtPerson(person : .P2)))
-        personMixString.append(PersonMixStruct(person: .P3, personString: getSubjectStringAtPerson(person : .P3)))
+//        personMixString.append(PersonMixStruct(person: .S1, personString: getSubjectStringAtPerson(person : .S1)))
+//        personMixString.append(PersonMixStruct(person: .S2, personString: getSubjectStringAtPerson(person : .S2)))
+//        personMixString.append(PersonMixStruct(person: .S3, personString: getSubjectStringAtPerson(person : .S3)))
+//        personMixString.append(PersonMixStruct(person: .P1, personString: getSubjectStringAtPerson(person : .P1)))
+//        personMixString.append(PersonMixStruct(person: .P2, personString: getSubjectStringAtPerson(person : .P2)))
+//        personMixString.append(PersonMixStruct(person: .P3, personString: getSubjectStringAtPerson(person : .P3)))
+//
+        personMixString.append(PersonMixStruct(person: .S1, personString: languageViewModel.getPersonString(personIndex: 0, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .S2, personString: languageViewModel.getPersonString(personIndex: 1, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .S3, personString: languageViewModel.getPersonString(personIndex: 2, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P1, personString: languageViewModel.getPersonString(personIndex: 3, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P2, personString: languageViewModel.getPersonString(personIndex: 4, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P3, personString: languageViewModel.getPersonString(personIndex: 5, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
     }
 }
 

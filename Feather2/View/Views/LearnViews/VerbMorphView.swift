@@ -101,10 +101,11 @@ struct VerbMorphView: View {
     @State var isPassive = false
     @State var isFeminine = false
     @State var isNegative = false
-    @State var showPhrase = true
+    @State var showMorphPhrase = true
     @State var personIndex = 0
     @State var needsRefresh = false
-    
+
+    @State var speechModeActive = false
     @State var morphStepIndex = [0, 0, 0, 0, 0, 0]
     
     @State var morphStep = MorphStep()
@@ -119,6 +120,7 @@ struct VerbMorphView: View {
                               "Conjugate vosotros form",
                               "Conjugate ellos form"]
     @State var subjunctiveWord = ""
+    @State var isFinished = [false, false, false, false, false, false]
     
     func fillTheCommentList(){
         //let vu = VerbUtilities()
@@ -195,8 +197,9 @@ struct VerbMorphView: View {
                 .ignoresSafeArea()
             
             ScrollView{
-                PreferencesButtonView(languageViewModel: languageViewModel )
+              
                 Text("Verb Morphing").font(.title2).foregroundColor(Color("ChuckText1"))
+
 //                VerbTenseView(languageViewModel: languageViewModel, mvtp: mvtp, function: setCurrentVerb)
                 CurrentVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
@@ -217,6 +220,18 @@ struct VerbMorphView: View {
         Spacer()
         
     }//body view
+    
+    func setSpeechModeActive(){
+        speechModeActive.toggle()
+        if speechModeActive {
+            if speechModeActive {
+                textToSpeech(text : "speech mode is active", language: .English)
+            } else {
+                textToSpeech(text : "speech mode has been turned off", language: .English)
+            }
+                
+        }
+    }
     
     fileprivate func showMorphs() -> some View {
         return VStack{
@@ -240,6 +255,7 @@ struct VerbMorphView: View {
                         if ( tmsList[person.getIndex()].getBold(index: 0) ){
                             Text(tmsList[person.getIndex()].getString(index: 0))
                                 .foregroundColor(tmsList[person.getIndex()].getColor(index: 0))
+                                
                         }
                         else {
                             Text(tmsList[person.getIndex()].getString(index: 0))
@@ -265,6 +281,8 @@ struct VerbMorphView: View {
                         }
 
                         }//HStack - conjugated string
+                        .transition(AnyTransition.slide)
+                        .animation(Animation.linear(duration: 1), value: showMorphPhrase)
 
                     }.frame(width: 350, height: 25, alignment: .leading)
                         .padding(.horizontal, 20)
@@ -286,6 +304,8 @@ struct VerbMorphView: View {
                         .padding(.horizontal)
                         .background(Color("BethanyPurpleButtons"))
                         .foregroundColor(.white)
+                        .transition(AnyTransition.slide)
+                        .animation(Animation.linear(duration: 1), value: showMorphPhrase)
                     }
                 }.frame(minWidth: 350)
                     .background(Color("BethanyNavalBackground"))
@@ -354,7 +374,7 @@ struct VerbMorphView: View {
             tms.setTextMorphStruct(inputTms:newTms )
             tmsList[person.getIndex()] = tms
         }
-        
+        showMorphPhrase.toggle()
     }
     
     func showFinalMorph(person:Person){
@@ -363,7 +383,7 @@ struct VerbMorphView: View {
         let newTms = createInitialMorphStruct(person: person)
         tms.setTextMorphStruct(inputTms:newTms )
         tmsList[person.getIndex()] = tms
-        
+        isFinished[person.getIndex()].toggle()
         languageViewModel.resetCurrentMorphStepIndex(person: person)
     }
     

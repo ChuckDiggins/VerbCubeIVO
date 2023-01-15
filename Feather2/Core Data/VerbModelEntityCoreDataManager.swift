@@ -29,10 +29,16 @@ class VerbModelEntityCoreDataManager: ObservableObject{
         return vm.isVerbModelEntityActive(verbModelString: verbModelString)
     }
     
-    func setAllSelected(flag: Bool){
-        vm.setAllVerbModelEntitiesSelected(flag: flag)
+    func setAllCompleted(flag: Bool){
+        vm.setAllVerbModelEntitiesCompleted(flag: flag)
         savedModels = vm.savedVerbModelEnties
     }
+    
+    func setAllSelected(flag: Bool){
+        vm.setAllVerbModelEntitiesSelected(flag)
+        savedModels = vm.savedVerbModelEnties
+    }
+    
     func setSelected(verbModelString: String, flag: Bool){
         vm.setVerbModelEntitySelected(verbModelString: verbModelString, flag: flag)
         savedModels = vm.savedVerbModelEnties
