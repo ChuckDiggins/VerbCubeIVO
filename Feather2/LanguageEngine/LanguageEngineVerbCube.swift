@@ -10,6 +10,13 @@ import JumpLinguaHelpers
 
 extension LanguageEngine{
     
+    func fillVerbCubeAndQuizCubeLists(){
+        fillVerbCubeLists()   //verb cube list is a list of all the filtered verbs
+        setPreviousCubeBlockVerbs()  //verbCubeBlock is a block of verbBlockCount verbs
+        fillQuizCubeVerbList()
+        fillQuizCubeBlock()
+    }
+    
     func fillVerbCubeLists(){
         print("VerbCubeList 3:\(verbCubeList.count) verbs")
         if verbCubeList.count > 0 {

@@ -150,7 +150,7 @@ class LanguageViewModel : ObservableObject, Equatable {
         return languageEngine.getCurrentLanguage()
     }
     
-        func setNextVerb(){
+    func setNextVerb(){
         languageEngine.setNextVerb()
     }
     
@@ -169,6 +169,10 @@ class LanguageViewModel : ObservableObject, Equatable {
     
     func getRandomVerb()->Verb{
         languageEngine.getRandomVerb()
+    }
+    
+    func getCoreVerb(verb: Verb)->Verb{
+        languageEngine.getCoreVerb(verb: verb)
     }
     
     func getTenseList()->[Tense]{
@@ -339,34 +343,34 @@ class LanguageViewModel : ObservableObject, Equatable {
         return languageEngine.unConjugate(verbForm: verbForm)
     }
     
-    func getBehavioralVerbModel()->BehavioralVerbModel{
-        languageEngine.getBehavioralVerbModel()
-    }
-    
-    func getBehavioralVerbType()->BehaviorType{
-        return languageEngine.behaviorType
-    }
-    
-    func getCurrentBehavioralVerb()->Verb{
-        languageEngine.getCurrentBehavioralVerb()
-    }
-    
-    func setNextBehavioralVerb(){
-        languageEngine.setNextBehavioralVerb()
-    }
-    
-    func setPreviousBehavioralVerb(){
-        languageEngine.setPreviousBehavioralVerb()
-    }
-    
-    func setBehaviorType(bt: BehaviorType){
-        languageEngine.setBehaviorType(bt: bt)
-    }
-    
-    func getBehaviorType()->BehaviorType{
-        languageEngine.behaviorType
-    }
-    
+//    func getBehavioralVerbModel()->BehavioralVerbModel{
+//        languageEngine.getBehavioralVerbModel()
+//    }
+//    
+//    func getBehavioralVerbType()->BehaviorType{
+//        return languageEngine.behaviorType
+//    }
+//    
+//    func getCurrentBehavioralVerb()->Verb{
+//        languageEngine.getCurrentBehavioralVerb()
+//    }
+//    
+//    func setNextBehavioralVerb(){
+//        languageEngine.setNextBehavioralVerb()
+//    }
+//    
+//    func setPreviousBehavioralVerb(){
+//        languageEngine.setPreviousBehavioralVerb()
+//    }
+//    
+//    func setBehaviorType(bt: BehaviorType){
+//        languageEngine.setBehaviorType(bt: bt)
+//    }
+//    
+//    func getBehaviorType()->BehaviorType{
+//        languageEngine.behaviorType
+//    }
+//    
     func isAuxiliary(verb: Verb)->(Bool, Tense){
         languageEngine.isAuxiliary(verb: verb)
     }

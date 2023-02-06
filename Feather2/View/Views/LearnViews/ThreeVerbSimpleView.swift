@@ -12,6 +12,7 @@ struct ThreeVerbSimpleView: View {
     
     @ObservedObject var languageViewModel: LanguageViewModel
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var router: Router
     
     @State private var currentLanguage = LanguageType.Agnostic
     @State private var verb1List = [Verb]()
@@ -41,9 +42,11 @@ struct ThreeVerbSimpleView: View {
     @State var verb2Changed = false
     @State var verb3Changed = false
     
+    @State var showingAlert = false
+    
     var body: some View {
         ZStack{
-            
+            ExitButtonView()
             VStack{
                 Button(action: {
                     currentTense = languageViewModel.getNextTense()
@@ -66,12 +69,15 @@ struct ThreeVerbSimpleView: View {
                         getNextVerb1()
                     } label: {
                         HStack{
-                            Text("\(verb1.getWordAtLanguage(language: currentLanguage))")
-                                .frame(width: columnWidth, height: 30, alignment: .leading)
-                                .padding(.horizontal, 3)
-                            Spacer()
-                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-                        }
+                            if (verb1List.count > 0 ) {
+                                Text("\(verb1.getWordAtLanguage(language: currentLanguage))")
+                                Spacer()
+                                Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                            } else {
+                                Text("No AR Verbs")
+                            }
+                        }.frame(width: columnWidth, height: 30, alignment: .leading)
+                            .padding(.horizontal, 3)
                     }
                     .padding(2)
                     .border(.red)
@@ -79,23 +85,31 @@ struct ThreeVerbSimpleView: View {
                         getNextVerb2()
                     } label: {
                         HStack{
-                            Text("\(verb2.getWordAtLanguage(language: currentLanguage))")
-                                .frame(width: columnWidth, height: 30, alignment: .leading)
-                                .padding(.horizontal, 3)
-                            Spacer()
-                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-                        }
+                            if (verb2List.count > 0 ) {
+                                Text("\(verb2.getWordAtLanguage(language: currentLanguage))")
+                                Spacer()
+                                Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                            } else {
+                                Text("No ER Verbs")
+                            }
+                        }.frame(width: columnWidth, height: 30, alignment: .leading)
+                        .padding(.horizontal, 3)
                     }
                     .padding(2)
                     .border(.red)
                     Button{
                         getNextVerb3()
                     } label: {
-                        Text("\(verb3.getWordAtLanguage(language: currentLanguage))")
-                            .frame(width: columnWidth, height: 30, alignment: .leading)
+                        HStack{
+                            if (verb3List.count > 0 ) {
+                                Text("\(verb3.getWordAtLanguage(language: currentLanguage))")
+                                Spacer()
+                                Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                            } else {
+                                Text("No IR Verbs")
+                            }
+                        }.frame(width: columnWidth, height: 30, alignment: .leading)
                             .padding(.horizontal, 3)
-                        Spacer()
-                        Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
                     }.border(.red)
                 }
                 
@@ -107,20 +121,33 @@ struct ThreeVerbSimpleView: View {
                             Button{
                                 
                             } label: {
-                                Text(verb1String[index])
+                                if (verb1List.count > 0 ) {
+                                    Text(verb1String[index])
+                                } else {
+                                    Text("")
+                                }
+                                    
                             }.frame(width: columnWidth, height: 30, alignment: .center)
                                 .animation(.linear(duration: 1), value: verb1Changed)
                             
                             Button{
                                 
                             } label: {
-                                Text(verb2String[index])
+                                if (verb2List.count > 0 ) {
+                                    Text(verb2String[index])
+                                } else {
+                                    Text("")
+                                }
                             }.frame(width: columnWidth, height: 30, alignment: .center)
                                 .animation(.linear(duration: 1), value: verb2Changed)
                             Button{
                                 
                             } label: {
-                                Text(verb3String[index])
+                                if (verb3List.count > 0 ) {
+                                    Text(verb3String[index])
+                                } else {
+                                    Text("")
+                                }
                             }.frame(width: columnWidth, height: 30, alignment: .center)
                                 .animation(.linear(duration: 1), value: verb3Changed)
                             
@@ -128,6 +155,7 @@ struct ThreeVerbSimpleView: View {
                     }
                 }
             }
+            
             .onAppear(){
                 
                 currentLanguage = languageViewModel.getCurrentLanguage()
@@ -135,11 +163,8 @@ struct ThreeVerbSimpleView: View {
                 verb1List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), inputEnding: .AR,  language: languageViewModel.getCurrentLanguage())
                 verb2List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), inputEnding: .ER,  language: languageViewModel.getCurrentLanguage())
                 verb3List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), inputEnding: .IR,  language: languageViewModel.getCurrentLanguage())
-                if verb1List.count == 0 || verb2List.count == 0 || verb3List.count == 0
-                {
-                Alert(title: Text("AR, ER and IR verbs are all required to use this window"), message: nil, dismissButton: .default(Text("OK"), action: {
-                    dismiss()
-                }))
+                if verb1List.count == 0 || verb2List.count == 0 || verb3List.count == 0 {
+                    showingAlert.toggle()
                 }
                 if verb1List.count > 0 { verb1 = verb1List[0] }
                 if verb2List.count > 0 { verb2 = verb2List[0] }
@@ -161,6 +186,12 @@ struct ThreeVerbSimpleView: View {
             .onDisappear{
                 AppDelegate.orientationLock = UIInterfaceOrientationMask.all
             }
+            .alert("This exercise works best with at least one AR, ER and IR verb.", isPresented: $showingAlert) {
+                        Button("OK", role: .cancel) {
+//                            router.reset()
+//                            dismiss()
+                        }
+                    }
             
         }.foregroundColor(Color("BethanyGreenText"))
             .background(Color("BethanyNavalBackground"))
@@ -206,36 +237,42 @@ struct ThreeVerbSimpleView: View {
     
     func reloadAll(){
         fillPersons()
-        reloadVerb1()
-        reloadVerb2()
-        reloadVerb3()
+        if verb1List.count > 0 {reloadVerb1() }
+        if verb2List.count > 0 {reloadVerb2() }
+        if verb3List.count > 0 {reloadVerb3() }
     }
     
     func  reloadVerb1(){
-        languageViewModel.createAndConjugateAgnosticVerb(verb: verb1, tense: currentTense)
-        var msm = languageViewModel.getMorphStructManager()
-        for i in 0..<6 {
-            verb1String[i] = msm.getFinalVerbForm(person: Person.all[i])
+        if verb1List.count > 0 {
+            languageViewModel.createAndConjugateAgnosticVerb(verb: verb1, tense: currentTense)
+            var msm = languageViewModel.getMorphStructManager()
+            for i in 0..<6 {
+                verb1String[i] = msm.getFinalVerbForm(person: Person.all[i])
+            }
+            verb1Changed.toggle()
         }
-        verb1Changed.toggle()
     }
     
     func  reloadVerb2(){
-        languageViewModel.createAndConjugateAgnosticVerb(verb: verb2, tense: currentTense)
-        var msm = languageViewModel.getMorphStructManager()
-        for i in 0..<6 {
-            verb2String[i] = msm.getFinalVerbForm(person: Person.all[i])
+        if verb2List.count > 0 {
+            languageViewModel.createAndConjugateAgnosticVerb(verb: verb2, tense: currentTense)
+            var msm = languageViewModel.getMorphStructManager()
+            for i in 0..<6 {
+                verb2String[i] = msm.getFinalVerbForm(person: Person.all[i])
+            }
+            verb2Changed.toggle()
         }
-        verb2Changed.toggle()
     }
     
     func  reloadVerb3(){
-        languageViewModel.createAndConjugateAgnosticVerb(verb: verb3, tense: currentTense)
-        var msm = languageViewModel.getMorphStructManager()
-        for i in 0..<6 {
-            verb3String[i] = msm.getFinalVerbForm(person: Person.all[i])
+        if verb3List.count > 0 {
+            languageViewModel.createAndConjugateAgnosticVerb(verb: verb3, tense: currentTense)
+            var msm = languageViewModel.getMorphStructManager()
+            for i in 0..<6 {
+                verb3String[i] = msm.getFinalVerbForm(person: Person.all[i])
+            }
+            verb3Changed.toggle()
         }
-        verb3Changed.toggle()
     }
     
 }

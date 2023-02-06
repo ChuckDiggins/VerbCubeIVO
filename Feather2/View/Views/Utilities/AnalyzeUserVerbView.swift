@@ -39,6 +39,7 @@ struct AnalyzeUserVerbView: View {
     @State private var languageChanged = false
     @State private var modelID  = 0
     @State private var modelVerb = ""
+  
     
     fileprivate func changeLanguage() {
         languageViewModel.changeLanguage()

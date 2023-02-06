@@ -33,7 +33,8 @@ struct Feather2App: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
             NavigationStack{
-                TabBarClassicVC(languageViewModel: languageViewModel)
+//                TabBarClassicVC(languageViewModel: languageViewModel)
+                NavStackCarouselDispatcherView(languageViewModel: languageViewModel)
 //                NavigationStackView(languageViewModel: languageViewModel)
 //                CircleView(languageViewModel: languageViewModel)
 //                CircleButtonView(languageViewModel: languageViewModel, selectedNewVerbModelType: NewVerbModelType.Regular)

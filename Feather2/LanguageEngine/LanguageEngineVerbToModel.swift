@@ -300,10 +300,47 @@ extension LanguageEngine{
         let v2mGroupChuck2B1 = VerbToModelGroup(chapter: "Chuck 2B", lesson: "Unusual verbs 2",
                                          verbToModelList :
                                                 [ VerbToModelStruct("reñir"), VerbToModelStruct("raer"), VerbToModelStruct("podrir"), VerbToModelStruct("oler"), VerbToModelStruct("errar"), VerbToModelStruct("desosar")],
-                                            tenseList: [.present, .preterite, .imperative, .presentSubjunctive, .presentPerfect],
+                                                tenseList: [.present, .preterite, .imperfect, .future, .conditional, .imperative, .presentSubjunctive, .imperfectSubjunctiveRA, .presentPerfect, .presentProgressive, ],
                                            specialVerbType: .normal)
         fillAssociatedModelList(v2mGroupChuck2B1)
         v2MGroupManager.appendGroup(v2mGroupChuck2B1)
+        
+        let v2mGroupChuck2B2 = VerbToModelGroup(chapter: "Chuck 2B", lesson: "8 Random verbs 1",
+                                         verbToModelList :
+                                                [ VerbToModelStruct("animar"), VerbToModelStruct("elegir"),
+                                                  VerbToModelStruct("enraizar"),
+                                                  VerbToModelStruct("tener que"), VerbToModelStruct("decir"),
+                                                  VerbToModelStruct("venir"),
+                                                  VerbToModelStruct("satisfacer"),
+                                                  VerbToModelStruct("seguir"),
+                                                  VerbToModelStruct("poner")],
+                                                tenseList: [.present, .preterite, .imperfect, .future, .conditional, .imperative, .presentSubjunctive, .imperfectSubjunctiveRA, .presentPerfect, .presentProgressive, ],
+                                           specialVerbType: .normal)
+        fillAssociatedModelList(v2mGroupChuck2B2)
+        v2MGroupManager.appendGroup(v2mGroupChuck2B2)
+        
+        let v2mGroupChuck2B3 = VerbToModelGroup(chapter: Realidades1Chapters.chapter3A.rawValue, lesson: "More AR, ER, IR verbs",
+                                         verbToModelList :
+                                            [ VerbToModelStruct("acabar"),
+                                              VerbToModelStruct("acariciar"),
+                                              VerbToModelStruct("echar"),
+                                              VerbToModelStruct("dispersar"),
+                                              VerbToModelStruct("comprender"),
+                                              VerbToModelStruct("aprender"),
+                                              VerbToModelStruct("acometer"),
+                                                VerbToModelStruct("sufrir"),
+                                              VerbToModelStruct("sonreir"),
+                                              VerbToModelStruct("jaquir"),
+                                              VerbToModelStruct("empedernir"),
+                                              VerbToModelStruct("muquir"),
+                                              VerbToModelStruct("sonreir"),
+                                              VerbToModelStruct("saducir"),
+                                              VerbToModelStruct("percibir"), ],
+                                         tenseList: [.present],
+                                         specialVerbType: .normal)
+        fillAssociatedModelList(v2mGroupChuck2B3)
+        v2MGroupManager.appendGroup(v2mGroupChuck2B3)
+        
         
         let v2mGroupChuck3A1 = VerbToModelGroup(chapter: "Chuck 3A", lesson: "Stem-changing a-e",
                                          verbToModelList :
@@ -392,7 +429,7 @@ extension LanguageEngine{
                                              VerbToModelStruct("decir"), VerbToModelStruct("hacer"),
                                               VerbToModelStruct("ir"), VerbToModelStruct("oír"),
                                              ],
-                                            tenseList: [.present, .preterite, .presentSubjunctive, .imperfectSubjunctiveRA, .presentProgressive],
+                                                tenseList: [.present, .preterite, .imperfect, .future, .presentSubjunctive, .imperfectSubjunctiveRA, .presentProgressive],
                                            specialVerbType: .normal)
         fillAssociatedModelList(v2mGroupChuck3C1)
         v2MGroupManager.appendGroup(v2mGroupChuck3C1)
@@ -475,6 +512,7 @@ extension LanguageEngine{
                                          specialVerbType: .normal)
         fillAssociatedModelList(v2mGroup3A1)
         v2MGroupManager.appendGroup(v2mGroup3A1)
+        
         
         let v2mGroup3B = VerbToModelGroup(chapter: Realidades1Chapters.chapter3B.rawValue, lesson: "The verb Ser",
                                          verbToModelList :

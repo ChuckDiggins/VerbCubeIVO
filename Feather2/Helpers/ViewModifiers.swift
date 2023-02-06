@@ -46,7 +46,69 @@ struct HeaderModifier : ViewModifier {
     }
 }
 
+struct YellowButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(height: 35)
+            .frame(minWidth: 0, maxWidth: 300)
+            .foregroundColor(.black)
+            .padding(.horizontal, 30)
+            .font(.caption)
+            .background(Color.yellow)
+            .cornerRadius(10)
+    }
+}
 
+struct ClearButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(height: 35)
+            .frame(minWidth: 0, maxWidth: 300)
+            .padding(.horizontal, 30)
+            .font(.caption)
+            .cornerRadius(10)
+            .border(.red)
+    }
+}
+
+struct SquareBlueButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(width: 150, height: 150)
+            .font(.callout)
+            .background ( .blue )
+            .foregroundColor ( .white )
+            .cornerRadius(25)
+    }
+}
+
+
+
+struct ImageModifier : ViewModifier {
+    var text: String
+    var image: Image
+    
+    func body(content: Content) -> some View{
+        content
+        ZStack{
+            Text(text)
+            image
+        }
+        .frame(width: 300, height: 300)
+        .background ( .blue )
+        .foregroundColor ( .white )
+    }
+}
+
+struct OtherBlueButtonModifier : ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .frame(width: 300, height: 45)
+            .background ( .blue )
+            .foregroundColor ( .white )
+            .clipShape(Capsule())
+    }
+}
 
 struct BlueButtonModifier : ViewModifier {
     func body(content: Content) -> some View{

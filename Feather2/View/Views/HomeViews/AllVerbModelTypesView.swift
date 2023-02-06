@@ -183,7 +183,7 @@ struct AllVerbModelTypesView: View {
                 fillSpecialPatternTypeList()
             case .Irregular:
                 languageViewModel.setSelectedNewVerbModelType(selectedType: selectedNewVerbModelType)
-                selectedSpecialPatternType = .i_pret
+                selectedSpecialPatternType = .irreg
                 languageViewModel.setSelectedSpecialPatternType(selectedPattern: selectedSpecialPatternType)
                 selectedSpecialPatternType = languageViewModel.getSelectedSpecialPatternType()
                 fillSpecialPatternTypeList()

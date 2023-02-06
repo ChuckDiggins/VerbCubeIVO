@@ -7,96 +7,176 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "153ABBD2-2D37-43A2-9196-74D26C578F6A"
+            uuid = "6D2B1F39-C195-4671-ABF1-CB0F7D3B524D"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerbExtras.swift"
+            filePath = "Feather2/View/Views/LearnViews/ThreeVerbSimpleView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "readModelParseStuff(verb:)"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "49802CCE-3DE8-4001-B2BD-893F0BC6C342"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/LearnViews/ThreeVerbSimpleView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "49802CCE-3DE8-4001-B2BD-893F0BC6C342 - 35bd120235d99818"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(Verbs_of_a_Feather.ExitButtonView, &lt;&lt;opaque return type of SwiftUI.View.alert&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0)&gt; in Verbs_of_a_Feather.ThreeVerbSimpleView.body.getter : some"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/LearnViews/ThreeVerbSimpleView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "187"
+                  endingLineNumber = "187"
+                  offsetFromSymbolStart = "452">
+               </Location>
+               <Location
+                  uuid = "49802CCE-3DE8-4001-B2BD-893F0BC6C342 - 5134dbf26b1b24ca"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(Verbs_of_a_Feather.ExitButtonView, &lt;&lt;opaque return type of SwiftUI.View.alert&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0)&gt; in Verbs_of_a_Feather.ThreeVerbSimpleView.body.getter : some"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/LearnViews/ThreeVerbSimpleView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "188"
+                  endingLineNumber = "188"
+                  offsetFromSymbolStart = "308">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "81CB0000-FE71-4768-A9A1-E6377DF9B907"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/LearnViews/ThreeVerbSimpleView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
+            landmarkName = "reloadAll()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0D042CD4-F399-4628-AF63-D8F0826CD205"
+            uuid = "561560E6-8DD8-4611-835F-37840D2E8E78"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/BRomanceVerb.swift"
+            filePath = "Feather2/View/Views/LearnViews/ThreeVerbSimpleView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "hasReplaceEndingForm(tense:person:)"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "reloadVerb3()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3368E9E7-C6A0-46A1-80FD-655C183DD619"
+            uuid = "5B591D03-94F5-4A21-8D05-15CBE9FF5FE5"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/ActiveVerbConjugationSpanish.swift"
+            filePath = "Feather2/View/Views/EXPLORE/SimpleVerbConjugation.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "conjugateThisSimpleIndicativeNew(verb:tense:person:conjugateEntirePhrase:)"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "setCurrentVerb()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D1523C72-0AE3-40C5-B3A1-A9898AFD4D3C"
+            uuid = "418CA339-237B-4B9B-B07C-AE0A05FA91A5"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerb.swift"
+            filePath = "Feather2/View/Views/EXPLORE/VerbMorphView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
-            landmarkName = "computeP3PreteriteForm()"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
+            landmarkName = "setCurrentVerb()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD23AD2C-41E0-4939-9B2F-EDD09CFEC8AE"
+            uuid = "02FE4A6F-F5E1-461C-B67F-26AB3A149C49"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/ActiveVerbConjugationSpanish.swift"
+            filePath = "Feather2/View/Views/EXPLORE/VerbMorphView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
-            landmarkName = "conjugateThisSimpleIndicativeNew(verb:tense:person:conjugateEntirePhrase:)"
+            startingLineNumber = "358"
+            endingLineNumber = "358"
+            landmarkName = "setCurrentVerb()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B9B673FE-7B17-46E4-9A3D-8AE2616AE144"
+            uuid = "FF46E39A-1144-4A89-8263-276B8197F71D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/EXPLORE/VerbMorphView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "44B78FD3-80AC-4298-8F61-AC6FEBF4BC41"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/LookViews/DictionaryView.swift"
+            filePath = "Feather2/LanguageEngine/LanguageEngineQuizCube.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
-            landmarkName = "constructConjugateForm(person:)"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "fillQuizCubeVerbList()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

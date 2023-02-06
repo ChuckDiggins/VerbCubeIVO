@@ -11,6 +11,8 @@ import JumpLinguaHelpers
 struct AllModelsView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var router: Router
     @AppStorage("V2MChapter") var currentV2mChapter = ""
     @AppStorage("V2MLesson") var currentV2mLesson = ""
     
@@ -37,6 +39,7 @@ struct AllModelsView: View {
     
     var body: some View {
         VStack{
+            ExitButtonView()
             Button{
                 setNextVerbModel()
             } label: {
@@ -58,14 +61,14 @@ struct AllModelsView: View {
                 }
             }.modifier(ModelTensePersonButtonModifier())
             
-            VStack(spacing: 5) {
+            ScrollView() {
                 if patternTenseStringList.count > 0 {
                     Text("Pattern information:").bold()
                     ForEach( 0..<patternTenseStringList.count, id: \.self){i in
                         HStack{
-                            Text(patternTenseStringList[i])
+                            Text("\(patternTenseStringList[i]):")
                             Text(patternTypeStringList[i])
-                            Text(patternLabelStringList[i])
+//                            Text(patternLabelStringList[i])
                         }
                     }
                 } else {
@@ -82,9 +85,16 @@ struct AllModelsView: View {
             .background(.yellow)
             Button{
                 processVerbModel()
+                router.reset()
+                dismiss()
             } label: {
                 Text("Select this verb model")
-            }
+            }.frame(width: 300, height: 35, alignment: .center)
+                .background(.yellow)
+                .foregroundColor(.black)
+                .cornerRadius(10)
+                .padding(.bottom)
+            
             Divider().frame(height:2).background(.yellow)
             ForEach (0..<6){ i in
                 HStack {
@@ -164,11 +174,11 @@ struct AllModelsView: View {
     }
     
     func swipeRight(){
-        setNextVerbModel()
+        setPreviousVerbModel()
     }
     
     func swipeLeft(){
-        setPreviousVerbModel()
+        setNextVerbModel()
     }
     
     func setNextTense(){
@@ -220,6 +230,7 @@ struct AllModelsView: View {
         sp.preferredVerbList = languageViewModel.findVerbsOfSameModel(targetID: currentModel.id)
         currentV2mChapter = sp.chapter
         currentV2mLesson = sp.lesson
+        languageViewModel.fillVerbCubeAndQuizCubeLists()
         languageViewModel.setStudyPackage(sp: sp)
         languageViewModel.setVerbOrModelMode(mode: .modelMode)
     }
@@ -283,15 +294,15 @@ struct AllModelsView: View {
         
         print(patternList.count)
         for sps in patternList {
-            if sps.pattern.isOrthoChangingSpanish(){ patternLabelStringList.append("(Spell)") }
-            if sps.pattern.isIrregularPreteriteSpanish(){ patternLabelStringList.append("(Spell)") }
-            else if sps.pattern.isStemChangingPresentSpanish(){
-                patternLabelStringList.append("(Stem)")
-            }
-            else if sps.pattern.isStemChangingPreteriteSpanish(){ patternLabelStringList.append("(Stem)")}
-            else {
-                patternLabelStringList.append("None")
-            }
+//            if sps.pattern.isOrthoChangingSpanish(){ patternLabelStringList.append("(Spell)") }
+//            if sps.pattern.isIrregularPreteriteSpanish(){ patternLabelStringList.append("(Spell)") }
+//            else if sps.pattern.isStemChangingPresentSpanish(){
+//                patternLabelStringList.append("(Stem)")
+//            }
+//            else if sps.pattern.isStemChangingPreteriteSpanish(){ patternLabelStringList.append("(Stem)")}
+//            else {
+//                patternLabelStringList.append("None")
+//            }
             patternTenseStringList.append(sps.tense.rawValue)
             patternTypeStringList.append(sps.pattern.rawValue)
         }

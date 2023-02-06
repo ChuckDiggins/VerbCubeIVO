@@ -7,30 +7,6 @@
 
 import SwiftUI
 
-struct DisclosureGroupShowMeModelQuizzes: View {
-    @State var isExpanded = false
-    
-    var body: some View {
-        VStack{
-            DisclosureGroup("Show Me Model Quizzes", isExpanded: $isExpanded){
-                VStack{
-                    Text("The model quizzes in this group test your conjugation skills for various verb models.")
-                    Text("All of the quizzes in this group keep score.")
-                    Text("Scores are collected for persons, tenses and verbs.")
-                    HStack{
-                        Text("To see your scores click on the student")
-                        Text("👩🏻‍🎓").font(.title)
-                    }
-                    Text("Your scores are erased when you exit the application.")
-                }
-                .multilineTextAlignment(.leading)
-                .background(.yellow)
-            }
-            .modifier(DisclosureGroupModifier())
-        }
-    }
-}
-
 struct DisclosureGroupMultipleChoiceSubjectVerb: View {
     @State var isExpanded = false
     @State var isExpandedGeneral = false

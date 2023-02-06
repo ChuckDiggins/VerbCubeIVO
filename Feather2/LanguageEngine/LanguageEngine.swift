@@ -33,8 +33,20 @@ class LanguageEngine : ObservableObject, Equatable {
     
     var vmecdm = VerbModelEntityCoreDataManager()
     @Published private var currentLanguage = LanguageType.Agnostic
+    
+    var currentExercise = ExerciseData(id: 0, image: "image", studentLevel: "Beginner", title: "Title", details: "No details", active: true)
+    var currentExerciseMode = ExerciseMode.Select
+    var currentExerciseIndex = 1
+    
+    var verbList = [Verb]()
     @Published var filteredVerbList = [Verb]()
     var orderedVerbModelList = [RomanceVerbModel]()
+    @Published var verbCubeList = [Verb]()
+    var behaviorVerbList = [Verb]()
+    var verbCubeBlock = [Verb(), Verb(), Verb(), Verb(), Verb(), Verb()]
+    var quizCubeBlock = [Verb]()
+    @Published var quizCubeVerbList = [Verb]()
+    @Published var quizCubeVerb = Verb()
 
     var selectedNewVerbModelType = NewVerbModelType.Regular
     var selectedSpecialPatternType = SpecialPatternType.c2z
@@ -59,7 +71,7 @@ class LanguageEngine : ObservableObject, Equatable {
     
     var simpleTenseList = [Tense.present, .preterite, .imperfect, .conditional, .presentSubjunctive, .imperfectSubjunctiveSE, .imperative]
     @Published var  tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future]
-    var verbList = [Verb]()
+    
     
     var currentFilteredVerbIndex = 0
 
@@ -90,15 +102,10 @@ class LanguageEngine : ObservableObject, Equatable {
     var verbCubeVerbIndex = 0
     var behavioralVerbIndex = 0
     var behaviorType = BehaviorType.likeGustar
-    var behaviorVerbList = [Verb]()
-    
-    @Published var verbCubeList = [Verb]()
+   
     var verbBlockCount: Int = 6
     var verbCubeBlockIndex = 0
-    var verbCubeBlock = [Verb(), Verb(), Verb(), Verb(), Verb(), Verb()]
-    var quizCubeBlock = [Verb]()
-    @Published var quizCubeVerbList = [Verb]()
-    @Published var quizCubeVerb = Verb()
+    
     var quizCubeTense = Tense.present
     var quizCubePerson = Person.S1
     
@@ -162,15 +169,17 @@ class LanguageEngine : ObservableObject, Equatable {
         if vmecdm.vm.getVerbModelEntityCount() < getVerbModels().count {
             reloadModelVerbEntitiesWithModelVerbs()
         }
-        print("VerbCubeList 1:\(verbCubeList.count) verbs")
-        fillVerbCubeAndQuizCubeLists()
-        print("VerbCubeList 2:\(verbCubeList.count) verbs")
+        
 //        loadVerbModelManager()
 //        fillVerbModelLists()  //fills regular, critical, etc.  obsolete
         createOrderedModelList()
        
         restoreSelectedVerbs()
         restoreV2MPackage()
+        
+        print("VerbCubeList 1:\(verbCubeList.count) verbs")
+        fillVerbCubeAndQuizCubeLists()
+        print("VerbCubeList 2:\(verbCubeList.count) verbs")
         
         resetFeatherSentenceHandler()
         
@@ -230,14 +239,14 @@ class LanguageEngine : ObservableObject, Equatable {
         var msm = morphStructManager
         switch specialVerbType{
         case .normal:
-            return  msm.getFinalVerbForm(person: Person.all[personIndex]) + residualPhrase
+            return  msm.getFinalVerbForm(person: Person.all[personIndex]) +  residualPhrase
         case .verbsLikeGustar:
             let vu = VerbUtilities()
             let verbStartsWithVowel = vu.startsWithVowelSound(characterArray: verbString)
             var p = Person.S3
             if number == .plural { p = Person.P3}
             let verbString = msm.getFinalVerbForm(person: p)
-            return Person.all[personIndex].getIndirectObjectPronounString(language: currentLanguage, verbStartsWithVowel: verbStartsWithVowel) + " " + verbString + residualPhrase
+            return Person.all[personIndex].getIndirectObjectPronounString(language: currentLanguage, verbStartsWithVowel: verbStartsWithVowel) + " " + verbString + " " + residualPhrase
         case .weatherAndTime:
             if personIndex == 2 { return msm.getFinalVerbForm(person: Person.all[personIndex])}
             else {return ""}
@@ -267,7 +276,10 @@ class LanguageEngine : ObservableObject, Equatable {
         }
     }
  
-
+    func isAuxiliary(verb: Verb)->(Bool, Tense){
+        BehavioralVerbModel().isAuxiliary(language: currentLanguage, verb: verb)
+    }
+    
     func getPersonString(personIndex: Int, tense: Tense, specialVerbType: SpecialVerbType, verbString: String)->String{
         let vu = VerbUtilities()
         let verbStartsWithVowel = vu.startsWithVowelSound(characterArray: verbString)
@@ -453,12 +465,7 @@ class LanguageEngine : ObservableObject, Equatable {
     }
     
     
-    func fillVerbCubeAndQuizCubeLists(){
-        fillVerbCubeLists()   //verb cube list is a list of all the filtered verbs
-        setPreviousCubeBlockVerbs()  //verbCubeBlock is a block of verbBlockCount verbs
-        fillQuizCubeVerbList()
-        fillQuizCubeBlock()
-    }
+    
     
 //    func setStudentLessonLeve(level: StudentLessonLevelEnum){
 //        self.studentLessonLevel = level
@@ -600,6 +607,18 @@ class LanguageEngine : ObservableObject, Equatable {
         currentVerb = verbList[currentVerbIndex]
     }
     
+    func getCoreVerb(verb: Verb)->Verb{
+        switch currentLanguage {
+        case .Spanish:
+            let result = VerbUtilities().analyzeSpanishWordPhrase(testString: verb.spanish)
+            return Verb(spanish: result.verbWord, french: "", english: "")
+        case .French:
+            let result = VerbUtilities().analyzeFrenchWordPhrase(phraseString: verb.french)
+            return Verb(spanish: "", french: result.verbWord, english: "")
+        default:
+            return Verb(spanish: verb.spanish, french: verb.english, english: verb.english)
+        }
+    }
     func setSubjectPronounType(spt: SubjectPronounType){
         return subjectPronounType = spt
     }
@@ -713,6 +732,7 @@ class LanguageEngine : ObservableObject, Equatable {
         
         return finalForm
     }
+    
     
     
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense, person: Person)->String{

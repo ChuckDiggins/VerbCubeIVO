@@ -174,27 +174,6 @@ struct FindVerbsView: View {
     }
     
     @ViewBuilder
-    func processAndSaveView()->some View{
-        HStack {
-            if featherVerbList.count > 2 {
-                HStack{
-                    Button(action: {
-                        saveFeatherListToActiveList()
-                        saveAndExit()
-                    }, label: {
-                        Text("Save as active verbs")
-                            .padding(.horizontal)
-                            .background(Color("BethanyPurpleButtons"))
-                            .cornerRadius(5)
-                            .foregroundColor(.white)
-                    })
-                }
-            }
-        }
-        
-    }
-    
-    @ViewBuilder
     func showExampleView()->some View{
         Text("Type in any verb or verb phrase")
             .font(.callout)
@@ -392,14 +371,12 @@ struct FindVerbsView: View {
                 showFeatherInfo
             }
             Text(" ")
-            processAndSaveView()
             let gridFixSize = CGFloat(200.0)
             let gridItems = [GridItem(.fixed(gridFixSize)),
                              GridItem(.fixed(gridFixSize))]
             ScrollView{
                 LazyVGrid(columns: gridItems, spacing: 5){
                     ForEach(0..<featherVerbList.count, id: \.self){ index in
-//                        NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: selectedVerb, residualPhrase: "", teachMeMode: featherMode == .model ? .model : .pattern))
                         Button(featherVerbList[index].getWordAtLanguage(language: currentLanguage)){
                             selectedVerb = featherVerbList[index]
                         }

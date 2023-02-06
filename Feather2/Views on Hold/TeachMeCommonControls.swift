@@ -101,6 +101,54 @@ struct CurrentPersonButtonView : View {
         
 }
 
+struct ExitButtonViewWithSpeechIcon : View {
+    @EnvironmentObject var router: Router
+    @Environment(\.dismiss) private var dismiss
+    var setSpeechModeActive: () -> Void
+    @State var speechModeActive = false
+    var body: some View {
+        HStack{
+            Button(action: {
+                router.reset()
+                dismiss()
+            }, label: {
+                Image(systemName: "xmark")
+                    .foregroundColor(.red)
+                    .font(.title2)
+                    .padding(20)
+            })
+            Spacer()
+            Image(systemName: "speaker.wave.3.fill")
+                .foregroundColor(speechModeActive ? Color("BethanyGreenText") : .red)
+                .font(speechModeActive ? .title3 : .callout)
+                .onTapGesture{
+                    speechModeActive.toggle()
+                    setSpeechModeActive()
+                }
+        }
+    }
+}
+
+
+struct ExitButtonView : View {
+    @EnvironmentObject var router: Router
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        HStack{
+            Button(action: {
+                router.reset()
+                dismiss()
+            }, label: {
+                Image(systemName: "xmark")
+                    .foregroundColor(.red)
+                    .font(.title2)
+                    .padding(20)
+            })
+            Spacer()
+        }
+    }
+}
+
 struct CurrentVerbButtonView : View {
     @ObservedObject var languageViewModel: LanguageViewModel
     var function: () -> Void

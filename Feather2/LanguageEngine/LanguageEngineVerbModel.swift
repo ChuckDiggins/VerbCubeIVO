@@ -929,9 +929,9 @@ extension LanguageEngine{
         let infinitive = bVerb.m_verbWord
         let vu = VerbUtilities()
         var matchIndex = 0
-        var maxCharCount = infinitive.count
-        if finalForm.count > maxCharCount { maxCharCount = finalForm.count}
-        for i in 0..<maxCharCount {
+        
+        let minCharCount = min(infinitive.count, finalForm.count)
+        for i in 0..<minCharCount {
             let str1 = vu.getStringCharacterAt(input: infinitive, charIndex: i)
             let str2 = vu.getStringCharacterAt(input: finalForm, charIndex: i)
             if  str1 != str2 {

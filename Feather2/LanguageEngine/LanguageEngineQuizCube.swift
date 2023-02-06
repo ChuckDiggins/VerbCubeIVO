@@ -28,6 +28,9 @@ extension LanguageEngine{
     
     func fillQuizCubeVerbList(){
         quizCubeVerbList.removeAll()
+        if filteredVerbList.count == 0 {
+            filteredVerbList = verbList  
+        }
         for verb in filteredVerbList {
             let bVerb = verb.getBVerb()
             if !bVerb.isPhrasalVerb(){
