@@ -130,8 +130,38 @@ extension LanguageEngine{
         self.v2MGroup = v2MGroup
     }
     
+    func processVerbModel(currentModel: RomanceVerbModel){
+        computeSelectedVerbModels()
+        computeCompletedVerbModels()
+        
+//        showSheet.toggle()
+        vmecdm.setAllSelected(flag: false)
+        setCurrentVerbModel(model: currentModel)
+        vmecdm.setSelected(verbModelString: currentModel.modelVerb, flag: true)
+        //create a study package
+        var verbModelList = [RomanceVerbModel]()
+        verbModelList.append(currentModel)
+        var verbModelStringList = [String]()
+        verbModelStringList.append(currentModel.modelVerb)
+        var sp = StudyPackageClass(name: currentModel.modelVerb, verbModelStringList: verbModelStringList,
+                                   tenseList: [.present, .preterite, .imperfect, .conditional],
+                                   chapter: "Verb model", lesson: currentModel.modelVerb)
+        sp.preferredVerbList = findVerbsOfSameModel(targetID: currentModel.id)
+        currentV2mChapter = sp.chapter
+        currentV2mLesson = sp.lesson
+        fillVerbCubeAndQuizCubeLists()
+        self.studyPackage = sp
+        setTenses(tenseList: sp.tenseList)
+        setVerbOrModelMode(.modelMode)
+    }
+    
     func restoreModel(){
         var verbModelStringList = [String]()
+        if currentV2mLesson == "nada 3" {
+            processVerbModel(currentModel: findModelForThisVerbString(verbWord: "acabar"))
+            trimFilteredVerbList(16)
+            return
+        }
         verbModelStringList.append(currentV2mLesson)
         let sp = StudyPackageClass(name: currentV2mLesson, verbModelStringList: verbModelStringList,
                                    tenseList: [.present, .preterite, .imperfect, .conditional],
@@ -143,6 +173,17 @@ extension LanguageEngine{
         currentV2mLesson = sp.lesson
         studyPackage = sp
         setVerbOrModelMode(.modelMode)
+        trimFilteredVerbList(16)
+    }
+    
+    func trimFilteredVerbList(_ maxCount: Int){
+        var verbList = getFilteredVerbs()
+        if verbList.count > maxCount {
+            let extra = verbList.count - maxCount
+            verbList.shuffle()
+            verbList.removeLast(extra)
+        }
+        setFilteredVerbList(verbList: verbList)
     }
     
     func restoreV2MPackage(){
@@ -319,7 +360,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck2B2)
         v2MGroupManager.appendGroup(v2mGroupChuck2B2)
         
-        let v2mGroupChuck2B3 = VerbToModelGroup(chapter: Realidades1Chapters.chapter3A.rawValue, lesson: "More AR, ER, IR verbs",
+        let v2mGroupChuck2B3 = VerbToModelGroup(chapter: "Chuck 2B", lesson: "More AR, ER, IR verbs",
                                          verbToModelList :
                                             [ VerbToModelStruct("acabar"),
                                               VerbToModelStruct("acariciar"),
@@ -329,11 +370,9 @@ extension LanguageEngine{
                                               VerbToModelStruct("aprender"),
                                               VerbToModelStruct("acometer"),
                                                 VerbToModelStruct("sufrir"),
-                                              VerbToModelStruct("sonreir"),
-                                              VerbToModelStruct("jaquir"),
+                                              VerbToModelStruct("sonreír"),                                              VerbToModelStruct("jaquir"),
                                               VerbToModelStruct("empedernir"),
                                               VerbToModelStruct("muquir"),
-                                              VerbToModelStruct("sonreir"),
                                               VerbToModelStruct("saducir"),
                                               VerbToModelStruct("percibir"), ],
                                          tenseList: [.present],
@@ -677,7 +716,7 @@ extension LanguageEngine{
         let v2mGroup7B2 = VerbToModelGroup(chapter: "Chapter 7B", lesson: "Preterite tense - Regular AR Verbs",
                                          verbToModelList :
                                             [VerbToModelStruct("comprar")],
-                                         tenseList: [.preterite],
+                                         tenseList: [.preterite, .present,],
                                          specialVerbType: .normal)
         fillAssociatedModelList(v2mGroup7B2)
         v2MGroupManager.appendGroup(v2mGroup7B2)
@@ -690,6 +729,21 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroup7B3)
         v2MGroupManager.appendGroup(v2mGroup7B3)
         
+        let v2mGroup7B4 = VerbToModelGroup(chapter: "Chapter 7B", lesson: "Preterite tense - Regular AR, ER, IR verbs",
+                                         verbToModelList :
+                                            [ VerbToModelStruct("acabar"),
+                                              VerbToModelStruct("montar"),
+                                              VerbToModelStruct("trabajar"),
+                                              VerbToModelStruct("comprender"),
+                                              VerbToModelStruct("aprender"),
+                                              VerbToModelStruct("acometer"),
+                                                VerbToModelStruct("sufrir"),
+                                              VerbToModelStruct("empedernir"),
+                                              VerbToModelStruct("percibir"), ],
+                                                tenseList: [.preterite, .present, ],
+                                         specialVerbType: .normal)
+        fillAssociatedModelList(v2mGroup7B4)
+        v2MGroupManager.appendGroup(v2mGroup7B4)
         let v2mGroup8A = VerbToModelGroup(chapter: "Chapter 8A", lesson: "Vacation",
                                          verbToModelList :
                                             [VerbToModelStruct("aprender"), VerbToModelStruct("bucear"), VerbToModelStruct("comprar recuerdos"), VerbToModelStruct("descansar"), VerbToModelStruct("montar a caballo"), VerbToModelStruct("pasear en bote"), VerbToModelStruct("tomar el sol"), VerbToModelStruct("visitar") ],

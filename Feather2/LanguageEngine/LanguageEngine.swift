@@ -467,14 +467,7 @@ class LanguageEngine : ObservableObject, Equatable {
     
     
     
-//    func setStudentLessonLeve(level: StudentLessonLevelEnum){
-//        self.studentLessonLevel = level
-//    }
-//
-//    func getStudentLessonLevel()->StudentLessonLevelEnum{
-//        return studentLessonLevel
-//    }
-//
+
     func getWordCollections()->[dWordCollection] {
         return getWordCollectionList()
     }

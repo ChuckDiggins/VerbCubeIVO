@@ -38,6 +38,7 @@ struct VerbModelListView: View {
                     LazyVStack{
                         ForEach(orderedVerbModelList, id: \.self){ vm in
                             Button{
+//                                languageViewModel.processVerbModel(vm)
                                 processVerbModel(vm)
                             } label: {
                                 HStack{

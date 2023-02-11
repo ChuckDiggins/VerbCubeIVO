@@ -242,7 +242,7 @@ struct VerbCubeConjugatedStringHandlerStruct {
     mutating func fillCellData(){
         cellDataArray.removeAll()
         verbCubeCellInfoArray.removeAll()
-        setDiagnosticPrint(flag: true)
+        setDiagnosticPrint(flag: false)
         
         let tense = currentTense
         let verb = languageViewModel.getCurrentVerbCubeVerb()

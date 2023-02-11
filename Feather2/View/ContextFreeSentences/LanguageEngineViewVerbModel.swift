@@ -47,6 +47,10 @@ extension LanguageViewModel{
         languageEngine.selectNextV2MGroup()
     }
     
+    func setAllLessonsAndModelsEmpty(){
+        languageEngine.setAllLessonsAndModelsEmpty()
+    }
+    
 //    func computeCompletedVerbCountsForAllNewVerbModelTypes(){
 //        languageEngine.computeCompletedVerbCountsForAllNewVerbModelTypes()
 //    }

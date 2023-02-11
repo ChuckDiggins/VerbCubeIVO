@@ -253,6 +253,12 @@ extension LanguageEngine{
         fillVerbCubeAndQuizCubeLists()
     }
     
+    func setAllLessonsAndModelsEmpty(){
+        setAllVerbModelsIncomplete()
+        currentV2mChapter = "nada 2"
+        currentV2mLesson = "nada 3"
+    }
+    
     func getSelectedVerbModelList()->[RomanceVerbModel]{
         selectedVerbModelList
     }

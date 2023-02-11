@@ -7,23 +7,23 @@
 
 import SwiftUI
 
-struct ItemsToolbar: ToolbarContent{
-    @ObservedObject var languageViewModel: LanguageViewModel
-    
-    var body: some ToolbarContent {
-        
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
-            
-            NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
-            {
-            Label("Find", systemImage: "magnifyingglass")
-            }
-            NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
-            {
-            Label("Settings", systemImage: "gear")
-            }
-            
-        }
-    }
-}
+//struct ItemsToolbar: ToolbarContent{
+//    @ObservedObject var languageViewModel: LanguageViewModel
+//    
+//    var body: some ToolbarContent {
+//        
+//        ToolbarItemGroup(placement: .navigationBarTrailing) {
+//            
+//            NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
+//            {
+//            Label("Find", systemImage: "magnifyingglass")
+//            }
+//            NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
+//            {
+//            Label("Settings", systemImage: "gear")
+//            }
+//            
+//        }
+//    }
+//}
 

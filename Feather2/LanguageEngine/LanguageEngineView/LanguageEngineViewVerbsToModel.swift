@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import JumpLinguaHelpers
 
 extension LanguageViewModel{
     
@@ -24,4 +25,9 @@ extension LanguageViewModel{
     func convertV2MGroupToStudyPackage(v2MGroup: VerbToModelGroup)->StudyPackageClass{
         languageEngine.convertV2MGroupToStudyPackage(v2mGroup: v2MGroup)
     }
+    
+    func processVerbModel(vm: RomanceVerbModel){
+        languageEngine.processVerbModel(currentModel: vm)
+    }
+    
 }

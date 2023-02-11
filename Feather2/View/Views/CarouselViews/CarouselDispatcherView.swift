@@ -80,6 +80,10 @@ struct NavStackCarouselDispatcherView: View {
                         {
                         Label("Find", systemImage: "magnifyingglass")
                         }
+                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
+                        {
+                        Label("Settings", systemImage: "gear")
+                        }
                     }
                 }
                 

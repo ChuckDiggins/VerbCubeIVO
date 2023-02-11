@@ -85,6 +85,15 @@ struct PreferencesView: View {
                         } label: {
                             Text("Set all selected verb models to completed")
                         }.modifier(ModelTensePersonButtonModifier())
+                        
+                        Button{
+                            languageViewModel.setAllLessonsAndModelsEmpty()
+                            exit(0)
+                        } label: {
+                            Text("Set all lessons and models empty")
+                        }.modifier(ModelTensePersonButtonModifier())
+                        
+                        
                     }
                     .alert("", isPresented: $modelCompleted){
                         //no action

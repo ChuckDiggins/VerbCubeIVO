@@ -58,7 +58,7 @@ struct VerbCubeView: View {
                         }
                     }
                     Spacer()
-                    CubeTypeButtons(changeVerbCubeDimension: changeVerbCubeDimension)
+//                    CubeTypeButtons(changeVerbCubeDimension: changeVerbCubeDimension)
                 }
                 ShowCube(vccsh: vccsh)
                 HStack{
@@ -191,7 +191,7 @@ struct VerbCubeView: View {
                             break
                         }
                     }){
-                        Text(data[i]).foregroundColor(active[i] ? .yellow : .cyan)
+                        Text(data[i]).foregroundColor(active[i] ? .yellow : .cyan).font(.callout)
                     }
                 }
             }.background(.black).opacity(0.8)

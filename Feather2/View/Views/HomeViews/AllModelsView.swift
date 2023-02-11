@@ -61,28 +61,32 @@ struct AllModelsView: View {
                 }
             }.modifier(ModelTensePersonButtonModifier())
             
-            ScrollView() {
-                if patternTenseStringList.count > 0 {
-                    Text("Pattern information:").bold()
-                    ForEach( 0..<patternTenseStringList.count, id: \.self){i in
-                        HStack{
-                            Text("\(patternTenseStringList[i]):")
-                            Text(patternTypeStringList[i])
-//                            Text(patternLabelStringList[i])
+            VStack{
+                ScrollView() {
+                    if patternTenseStringList.count > 0 {
+                        Text("Pattern information:").bold()
+                        ForEach( 0..<patternTenseStringList.count, id: \.self){i in
+                            HStack{
+                                Text("\(patternTenseStringList[i]):")
+                                Text(patternTypeStringList[i])
+                                //                            Text(patternLabelStringList[i])
+                            }
                         }
+                    } else {
+                        Text("This is a regular verb.")
+                        Text("There are no associated patterns.")
                     }
-                } else {
-                    Text("This is a regular verb.")
-                    Text("There are no associated patterns.")
                 }
-                
+                Spacer()
+                Text("\(languageViewModel.findVerbsOfSameModel(targetID: currentModel.id).count) \(currentModel.modelVerb) verbs in dictionary: ").bold()
             }
             .font(.caption)
             .foregroundColor(.black)
             .padding(5)
-            .frame(width: 300, height: 150)
+            .frame(width: 300, height: 170)
             .border(.red)
             .background(.yellow)
+            
             Button{
                 processVerbModel()
                 router.reset()
@@ -211,6 +215,8 @@ struct AllModelsView: View {
         setCurrentVerb()
     }
    
+    
+    
     func processVerbModel(){
         languageViewModel.computeSelectedVerbModels()
         languageViewModel.computeCompletedVerbModels()

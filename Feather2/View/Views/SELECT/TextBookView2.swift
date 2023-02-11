@@ -34,25 +34,31 @@ struct TextBookView2: View {
             }
             
             if v2MGroupList.count > 0 {
+
                 VStack{
                     
                     VStack{
-                        ScrollView{
-                            ForEach(Realidades1Chapters.allCases, id:\.self){ chapter in
-                                Text(chapter.getChapterDescription()).bold().foregroundColor(Color("ChuckText1"))
-                                ForEach(languageViewModel.getV2MGroupManager().getV2MGroupListAtChapter(chapter: chapter.rawValue), id:\.self){ v2m in
-                                    Button{
-                                        processV2MGroup(v2mGroup: v2m)
-                                    } label: {
-                                        Text("\(v2m.lesson)")
-                                    }.frame(width: 300)
-                                        .padding(.horizontal, 5)
-                                        .foregroundColor(v2m == currentV2MGroup ? .black : Color("BethanyGreenText"))
-                                        .background(v2m == currentV2MGroup ? .yellow : Color("BethanyNavalBackground"))
+                        GeometryReader{ geo in
+                            ScrollView{
+                                ForEach(Realidades1Chapters.allCases, id:\.self){ chapter in
+                                    Text(chapter.getChapterDescription()).bold().foregroundColor(Color("ChuckText1"))
+                                    ForEach(languageViewModel.getV2MGroupManager().getV2MGroupListAtChapter(chapter: chapter.rawValue), id:\.self){ v2m in
+                                        Button{
+                                            processV2MGroup(v2mGroup: v2m)
+                                        } label: {
+                                            Text("\(v2m.lesson)")
+                                        }.frame(width: 300)
+                                            .padding(.horizontal, 5)
+                                            .foregroundColor(v2m == currentV2MGroup ? .black : Color("BethanyGreenText"))
+                                            .background(v2m == currentV2MGroup ? .yellow : Color("BethanyNavalBackground"))
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                Spacer()
+                VStack{
                     Button{
                         installLessonAsPackage()
                         router.reset()
@@ -64,11 +70,8 @@ struct TextBookView2: View {
                         .buttonBorderShape(.roundedRectangle(radius:5))
                         .controlSize(.regular)
                         .foregroundColor(.yellow)
-                    .padding()
-                    showVerbToModel(v2mGroup: currentV2MGroup, currentLanguage: currentLanguage)
-                    Spacer()
+                    VerbAndTenseListView(v2MGroup: currentV2MGroup, currentLanguage: currentLanguage)
                 }
-                
             }
         }
         .onAppear{
@@ -117,7 +120,43 @@ struct TextBookView2: View {
         }
         
     }
+    
+    
 }
+
+struct VerbAndTenseListView: View {
+    
+    var v2MGroup : VerbToModelGroup
+    var currentLanguage : LanguageType
+    
+    var body: some View {
+//        GeometryReader{ geo in
+            VStack{
+                HStack{
+                    VStack{
+                        Text("Tenses").font(.title3)
+                        LazyVStack{
+                            ForEach(v2MGroup.tenseList, id:\.self){ tense in
+                                Text(tense.rawValue)
+                            }}
+                        Spacer()
+                    }
+                   
+                    VStack{
+                        Text("Verbs").font(.title3)
+                        LazyVStack{
+                            ForEach(v2MGroup.getVerbList(), id:\.self){ verb in
+                                Text(verb.getWordAtLanguage(language: currentLanguage))
+                            }}
+                        Spacer()
+                    }
+                }
+            }.border(.red)
+//            .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.3)
+//        }//GeometryReader
+    }
+}
+
 //struct TextBookView2_Previews: PreviewProvider {
 //    static var previews: some View {
 //        TextBookView2()
