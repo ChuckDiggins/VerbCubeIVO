@@ -18,7 +18,7 @@ extension LanguageEngine{
     }
     
     func fillVerbCubeLists(){
-        print("VerbCubeList 3:\(verbCubeList.count) verbs")
+//        print("VerbCubeList 3:\(verbCubeList.count) verbs")
         if verbCubeList.count > 0 {
             verbCubeList.removeAll()
         }

@@ -30,4 +30,8 @@ extension LanguageViewModel{
         languageEngine.processVerbModel(currentModel: vm)
     }
     
+    func trimFilteredVerbList(_ maxCount : Int = 16){
+        languageEngine.trimFilteredVerbList(maxCount)
+    }
+    
 }

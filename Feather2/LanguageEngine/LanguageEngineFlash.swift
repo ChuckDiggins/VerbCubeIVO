@@ -239,10 +239,10 @@ extension LanguageEngine{
                                     correctAnswer: ps.correctAnswer, question: ps.question)
                 
                 flashCardMgr.addFlashCard( fcp: fcp)
-                if i<5 {
-                    print("\nFlashCard dump - random person")
-                    dumpFlashCard(fcp)
-                }
+//                if i<5 {
+//                    print("\nFlashCard dump - random person")
+//                    dumpFlashCard(fcp)
+//                }
                 
             case .Tense:
                 tenseCount += 1
@@ -255,11 +255,10 @@ extension LanguageEngine{
                                          answer5: ps.getAnswer(index:4), answer6: ps.getAnswer(index:5),
                                          correctAnswer: ps.correctAnswer, question: ps.question)
                 flashCardMgr.addFlashCard( fcp: fcp)
-                if i<5 {
-                    print("\nFlashCard dump - random tense")
-                    dumpFlashCard(fcp)
-
-                }
+//                if i<5 {
+//                    print("\nFlashCard dump - random tense")
+//                    dumpFlashCard(fcp)
+//                }
             }
         }
     }

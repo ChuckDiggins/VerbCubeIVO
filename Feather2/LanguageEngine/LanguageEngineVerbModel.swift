@@ -132,7 +132,7 @@ extension LanguageEngine{
    
     func restoreSelectedVerbs(){
         selectedNewVerbModelType = restoreSelectedVerbType()
-        print("restoreSelectedVerbs: selectedType = \(selectedNewVerbModelType.getTypeName())")
+//        print("restoreSelectedVerbs: selectedType = \(selectedNewVerbModelType.getTypeName())")
         if selectedNewVerbModelType != .undefined {
             fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(10, inputStudyPackage: StudyPackageClass())
         }
@@ -158,10 +158,10 @@ extension LanguageEngine{
         computeSelectedVerbModels()
         computeCompletedVerbModels()
         selectedVerbModelList = getSelectedVerbModelList()
-        print("fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList")
-        for v in selectedVerbModelList {
-            print("selectedVerbModelList: model \(v.modelVerb)")
-        }
+//        print("fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList")
+//        for v in selectedVerbModelList {
+//            print("selectedVerbModelList: model \(v.modelVerb)")
+//        }
         
         //allow for multiple models of the same type?
         if inputStudyPackage.preferredVerbList.isEmpty {

@@ -153,7 +153,7 @@ class LanguageEngine : ObservableObject, Equatable {
         
         
         loadWordDictionariesFromJSON()
-        m_wsp.getWordCounts()
+//        m_wsp.getWordCounts()
         
        
         
@@ -177,9 +177,9 @@ class LanguageEngine : ObservableObject, Equatable {
         restoreSelectedVerbs()
         restoreV2MPackage()
         
-        print("VerbCubeList 1:\(verbCubeList.count) verbs")
+//        print("VerbCubeList 1:\(verbCubeList.count) verbs")
         fillVerbCubeAndQuizCubeLists()
-        print("VerbCubeList 2:\(verbCubeList.count) verbs")
+//        print("VerbCubeList 2:\(verbCubeList.count) verbs")
         
         resetFeatherSentenceHandler()
         
@@ -1017,7 +1017,7 @@ extension LanguageEngine{
                 if verb.isOrthoPresent(tense: tense, person: person){ return false }  //tener - tengo
                 let stemFrom = verb.m_stemFrom
                 let stemTo = verb.m_stemTo
-                print("\(verb.spanish) is stem changing for tense \(tense.rawValue), person \(person.rawValue)\n stemFrom - \(stemFrom), stemTo - \(stemTo)")
+//                print("\(verb.spanish) is stem changing for tense \(tense.rawValue), person \(person.rawValue)\n stemFrom - \(stemFrom), stemTo - \(stemTo)")
                 return true
             }
         }

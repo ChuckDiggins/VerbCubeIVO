@@ -45,11 +45,11 @@ struct VerbCubeCellView: View {
     
     var body: some View {
         Text(cellString)
-            .frame(width: columnWidth, height: 30, alignment: .center)
+            .frame(width: columnWidth, height: 26, alignment: .center)
             .background(cellColor.opacity(0.9))
             .foregroundColor(Color.black)
             .border(Color.black)
-            .font(.footnote)
+            .font(.caption)
     }
 }
 

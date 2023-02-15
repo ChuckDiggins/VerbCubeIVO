@@ -191,10 +191,10 @@ extension LanguageEngine{
 //        dumpV2MGroupManager()
         var v2mFound = false
         if currentV2mChapter == "Verb model" {
-            print("restoreV2MPackage: \(currentV2mLesson)")
+//            print("restoreV2MPackage: \(currentV2mLesson)")
             restoreModel()
         } else {
-            print("restoreV2MPackage: \(currentV2mChapter), \(currentV2mLesson)")
+//            print("restoreV2MPackage: \(currentV2mChapter), \(currentV2mLesson)")
             for v2m in v2MGroupManager.getV2MGroupList() {
                 if v2m.chapter == currentV2mChapter && v2m.lesson == currentV2mLesson {
                     v2MGroup = v2m
@@ -203,13 +203,13 @@ extension LanguageEngine{
                 }
             }
             if v2mFound {
-                print("currentV2M was found")
+//                print("currentV2M was found")
                 studyPackage = convertV2MGroupToStudyPackage(v2mGroup: v2MGroup)
                 specialVerbType = studyPackage.specialVerbType
                 installStudyPackage(sp: studyPackage)
             }
             else {
-                print("currentV2M was not found")
+//                print("currentV2M was not found")
                 restoreModel()
             }
             

@@ -37,7 +37,7 @@ struct ExerciseDataManager{
         exerciseMode = em
         specialVerbType = svt
         loadData(svt: specialVerbType)
-        print("Initializing ExerciseDataManager - \(exerciseMode.rawValue) mode, special verb type \(specialVerbType.rawValue)")
+//        print("Initializing ExerciseDataManager - \(exerciseMode.rawValue) mode, special verb type \(specialVerbType.rawValue)")
     }
     
     var dataArray = [ExerciseData]()

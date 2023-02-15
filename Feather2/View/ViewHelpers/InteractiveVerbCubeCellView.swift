@@ -46,13 +46,13 @@ struct InteractiveVerbCubeCellView: View {
 //                alertView()
             }){
                 Text(cellData.cellString)
-                    .frame(width: columnWidth, height: 30, alignment: .center)
+                    .frame(width: columnWidth, height: 26, alignment: .center)
                     .background(cellData.cellColor)
                     .foregroundColor(foregroundColor)
                     .border(Color.black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
-                    .font(.footnote)
+                    .font(.caption)
 
             }.onAppear{didAppear()}
             .onDisappear { didDisappear() }

@@ -20,9 +20,9 @@ struct VerbCubeView: View {
     @State var showVerbTypeColor = Color.red
     
     var body: some View {
-//        NavigationView{
-            VStack(spacing: 0){
-//                Text("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)").font(.largeTitle)
+        //        NavigationView{
+        GeometryReader { geometry in
+            VStack{
                 HStack{
                     Text("Highlight:")
                     Text(showVerbType.rawValue)
@@ -58,11 +58,12 @@ struct VerbCubeView: View {
                         }
                     }
                     Spacer()
+                    CubeTypeButtonsSegmentedPicker(changeVerbCubeDimension: changeVerbCubeDimension)
 //                    CubeTypeButtons(changeVerbCubeDimension: changeVerbCubeDimension)
                 }
                 ShowCube(vccsh: vccsh)
                 HStack{
-                //swipeButtons ... to do
+                    //swipeButtons ... to do
                     
                     Spacer()
                     Button(action: { swipeUp()}){
@@ -87,45 +88,46 @@ struct VerbCubeView: View {
                     Spacer()
                     
                 }.background(Color.yellow)
-                    .padding(10)
                 Spacer()
-            }
-            .onAppear{
-                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscapeLeft
-                UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-//                        UINavigationController.attemptRotationToDeviceOrientation()
-            }
-//            .onDisappear{
-//                AppDelegate.orientationLock = UIInterfaceOrientationMask.all
-//            }
-            .navigationTitle(Text("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)"))
+            }.frame(width: geometry.size.width, height: geometry.size.height)
+        }
         
-//        }
+        .onAppear{
+            AppDelegate.orientationLock = UIInterfaceOrientationMask.landscapeLeft
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+            //                        UINavigationController.attemptRotationToDeviceOrientation()
+        }
+        //            .onDisappear{
+        //                AppDelegate.orientationLock = UIInterfaceOrientationMask.all
+        //            }
+        .navigationTitle(Text("Verb Cube - \(vccsh.vcDimension1.rawValue) v \(vccsh.vcDimension2.rawValue)"))
+        
+        //        }
         .gesture(DragGesture()
-        .onChanged { gesture in
-            if self.isSwiping {
-                self.startPos = gesture.location
+            .onChanged { gesture in
+                if self.isSwiping {
+                    self.startPos = gesture.location
+                    self.isSwiping.toggle()
+                }
+            }
+            .onEnded { gesture in
+                let xDist =  abs(gesture.location.x - self.startPos.x)
+                let yDist =  abs(gesture.location.y - self.startPos.y)
+                if self.startPos.y <  gesture.location.y && yDist > xDist {
+                    swipeDown()
+                }
+                else if self.startPos.y >  gesture.location.y && yDist > xDist {
+                    swipeUp()
+                }
+                
+                else if self.startPos.x > gesture.location.x && yDist < xDist {
+                    swipeLeft()
+                }
+                else if self.startPos.x < gesture.location.x && yDist < xDist {
+                    swipeRight()
+                }
                 self.isSwiping.toggle()
             }
-        }
-                    .onEnded { gesture in
-            let xDist =  abs(gesture.location.x - self.startPos.x)
-            let yDist =  abs(gesture.location.y - self.startPos.y)
-            if self.startPos.y <  gesture.location.y && yDist > xDist {
-                swipeDown()
-            }
-            else if self.startPos.y >  gesture.location.y && yDist > xDist {
-                swipeUp()
-            }
-            
-            else if self.startPos.x > gesture.location.x && yDist < xDist {
-                swipeLeft()
-            }
-            else if self.startPos.x < gesture.location.x && yDist < xDist {
-                swipeRight()
-            }
-            self.isSwiping.toggle()
-        }
         )
     }
     
@@ -162,7 +164,37 @@ struct VerbCubeView: View {
             }
         }
     }
-
+    
+    //    replace this with segmented picker
+    
+    struct CubeTypeButtonsSegmentedPicker: View {
+        var changeVerbCubeDimension: (_ d1: VerbCubeDimension, _ d2: VerbCubeDimension) -> Void
+        
+        @State private var cubeType = 0
+        var data = ["PV", "VP", "PT", "TP", "TV", "VT"]
+        var body: some View{
+            Picker("Cube type", selection: $cubeType){
+                ForEach(0 ..< 6 ){ index in
+                    Text(data[index]).tag(index)
+                }
+            }
+            .frame(width: 200)
+            .pickerStyle(SegmentedPickerStyle())
+                .onChange(of: cubeType){ i in
+                    switch i {
+                    case 0: changeVerbCubeDimension(.Person, .Verb)
+                    case 1: changeVerbCubeDimension(.Verb, .Person)
+                    case 2: changeVerbCubeDimension(.Person, .Tense)
+                    case 3: changeVerbCubeDimension(.Tense, .Person)
+                    case 4: changeVerbCubeDimension(.Tense, .Verb)
+                    case 5: changeVerbCubeDimension(.Verb, .Tense)
+                    default:
+                        break
+                    }
+                }
+        }
+    }
+    
     struct CubeTypeButtons: View {
         var changeVerbCubeDimension: (_ d1: VerbCubeDimension, _ d2: VerbCubeDimension) -> Void
         
@@ -195,7 +227,6 @@ struct VerbCubeView: View {
                     }
                 }
             }.background(.black).opacity(0.8)
-                .padding()
         }
         
         func setAllInactive(){
@@ -204,7 +235,7 @@ struct VerbCubeView: View {
             }
         }
         
-
+        
     }
     
     struct ShowCube: View {
@@ -250,7 +281,7 @@ struct VerbCubeView: View {
                             InteractiveVerbCubeCellView(vcci: vccsh.getVerbCubeCellInfo(i: index, j: jndex),
                                                         columnWidth: vccsh.getColumnWidth(),
                                                         cellData: vccsh.getCellData(i: index, j: jndex))
-                                                       
+                            
                         }
                         Spacer()
                     }
@@ -258,7 +289,7 @@ struct VerbCubeView: View {
             }
         }
     }
-
+    
     
     
 }
@@ -272,7 +303,7 @@ extension VerbCubeView {
         vccsh = VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1: d1, d2: d2)
         vccsh.setShowVerbType(currentVerbType: currentVerbType)
     }
-
+    
 }
 extension VerbCubeView {
     func dontShowVerbTypes(){
@@ -361,14 +392,14 @@ extension VerbCubeView {
         vccsh.setCurrentPerson(person: languageViewModel.getNextPerson())
         vccsh.fillCellData()
     }
-
+    
     
     func fillVerbCubeConjugatedStrings(){
         vccsh.setTenses(tenses: languageViewModel.getTenseList())
         languageViewModel.setPreviousCubeBlockVerbs()
         languageViewModel.getCurrentVerbCubeVerb()
         vccsh.fillCellData()
-//        vccsh?.dumpConjugateStringArray()
+        //        vccsh?.dumpConjugateStringArray()
     }
     
 }

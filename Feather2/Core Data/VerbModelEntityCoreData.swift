@@ -19,7 +19,7 @@ class VerbModelEntityCoreData: ObservableObject{
                 print("Error loading core data: \(error)")
                 return
             } else {
-                print("CoreData View Model Container was created correctly.")
+//                print("CoreData View Model Container was created correctly.")
             }
         }
         self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump

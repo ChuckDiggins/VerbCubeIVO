@@ -66,7 +66,7 @@ struct ExploreCarouselView : View {
 //        }
         .onChange(of: show){_ in
             languageViewModel.setCurrentExerciseMode(mode: exerciseManager.getExerciseMode())
-            print("ExploreCarouselView: onChange: currentExercise: \(exerciseManager.get(index)) at index \(index)")
+//            print("ExploreCarouselView: onChange: currentExercise: \(exerciseManager.get(index)) at index \(index)")
             languageViewModel.setCurrentExercise(exercise: exerciseManager.get(index))
             selected.toggle()
         }

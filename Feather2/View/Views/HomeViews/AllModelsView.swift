@@ -36,86 +36,105 @@ struct AllModelsView: View {
     @State private var patternTenseStringList = [String]()
     @State private var patternTypeStringList = [String]()
     @State private var modelVerbString = ""
+    @State private var userString = ""
     
     var body: some View {
         VStack{
             ExitButtonView()
-            Button{
-                setNextVerbModel()
-            } label: {
-                HStack{
-                    Text("Current model = \(currentModel.id): \(modelVerbString)")
-                    Spacer()
-                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-                }
+//            HStack{
+//                TextField("🔍", text: $userString,
+//                          onEditingChanged: { changed in
+////                    findClosestModel(userString)
+//                }){
+//                }
+//                .disableAutocorrection(true)
+//
+//                .modifier(NeumorphicTextfieldModifier())
+//                .onChange(of: userString){ (value) in
+//                    findClosestModel(userString)
+//                }
+//                .onSubmit(){
+//                    findClosestModel(userString)
+//                    userString = ""
+//                }
+//            }
+            ScrollView{
+                Button{
+                    setNextVerbModel()
+                } label: {
+                    HStack{
+                        Text("Current model = \(currentModel.id): \(modelVerbString)")
+                        Spacer()
+                        Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                    }
+                    
+                }.modifier(ModelTensePersonButtonModifier())
                 
-            }.modifier(ModelTensePersonButtonModifier())
-            
-            Button{
-                setNextTense()
-            } label: {
-                HStack{
-                    Text("Tense: \(currentTense.rawValue)")
-                    Spacer()
-                    Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-                }
-            }.modifier(ModelTensePersonButtonModifier())
-            
-            VStack{
-                ScrollView() {
-                    if patternTenseStringList.count > 0 {
-                        Text("Pattern information:").bold()
-                        ForEach( 0..<patternTenseStringList.count, id: \.self){i in
-                            HStack{
-                                Text("\(patternTenseStringList[i]):")
-                                Text(patternTypeStringList[i])
-                                //                            Text(patternLabelStringList[i])
+                Button{
+                    setNextTense()
+                } label: {
+                    HStack{
+                        Text("Tense: \(currentTense.rawValue)")
+                        Spacer()
+                        Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+                    }
+                }.modifier(ModelTensePersonButtonModifier())
+                
+                VStack{
+                    ScrollView() {
+                        if patternTenseStringList.count > 0 {
+                            Text("Pattern information:").bold()
+                            ForEach( 0..<patternTenseStringList.count, id: \.self){i in
+                                HStack{
+                                    Text("\(patternTenseStringList[i]):")
+                                    Text(patternTypeStringList[i])
+                                    //                            Text(patternLabelStringList[i])
+                                }
                             }
+                        } else {
+                            Text("This is a regular verb.")
+                            Text("There are no associated patterns.")
                         }
-                    } else {
-                        Text("This is a regular verb.")
-                        Text("There are no associated patterns.")
                     }
-                }
-                Spacer()
-                Text("\(languageViewModel.findVerbsOfSameModel(targetID: currentModel.id).count) \(currentModel.modelVerb) verbs in dictionary: ").bold()
-            }
-            .font(.caption)
-            .foregroundColor(.black)
-            .padding(5)
-            .frame(width: 300, height: 170)
-            .border(.red)
-            .background(.yellow)
-            
-            Button{
-                processVerbModel()
-                router.reset()
-                dismiss()
-            } label: {
-                Text("Select this verb model")
-            }.frame(width: 300, height: 35, alignment: .center)
-                .background(.yellow)
-                .foregroundColor(.black)
-                .cornerRadius(10)
-                .padding(.bottom)
-            
-            Divider().frame(height:2).background(.yellow)
-            ForEach (0..<6){ i in
-                HStack {
-                    Text(person[i])
-                        .foregroundColor(Color("ChuckText1"))
-                    Text(vvm[i])
-                        .foregroundColor(Color("BethanyGreenText"))
                     Spacer()
-                    Button{
-                        textToSpeech(text : "\(person[i]) \(vvm[i])", language: currentLanguage)
-                    } label: {
-                        Image(systemName:"speaker.wave.3.fill").foregroundColor(Color("BethanyGreenText"))
-                    }
-                }.frame(width: 350, height:30)
-                    .background(Color("BethanyNavalBackground"))
-                    .padding(.horizontal)
+                    Text("\(languageViewModel.findVerbsOfSameModel(targetID: currentModel.id).count) \(currentModel.modelVerb) verbs in dictionary: ").bold()
+                }
+                .font(.caption)
+                .foregroundColor(.black)
+                .padding(5)
+                .frame(width: 300, height: 170)
+                .border(.red)
+                .background(.yellow)
                 
+                Button{
+                    processVerbModel()
+                    router.reset()
+                    dismiss()
+                } label: {
+                    Text("Select this verb model")
+                }.frame(width: 300, height: 35, alignment: .center)
+                    .background(.yellow)
+                    .foregroundColor(.black)
+                    .cornerRadius(10)
+                    .padding(.bottom)
+                
+                Divider().frame(height:2).background(.yellow)
+                ForEach (0..<6){ i in
+                    HStack {
+                        Text(person[i])
+                            .foregroundColor(Color("ChuckText1"))
+                        Text(vvm[i])
+                            .foregroundColor(Color("BethanyGreenText"))
+                        Spacer()
+                        Button{
+                            textToSpeech(text : "\(person[i]) \(vvm[i])", language: currentLanguage)
+                        } label: {
+                            Image(systemName:"speaker.wave.3.fill").foregroundColor(Color("BethanyGreenText"))
+                        }
+                    }.frame(width: 350, height:30)
+                        .background(Color("BethanyNavalBackground"))
+                        .padding(.horizontal)
+                }
             }.onAppear{
                 tempTenseList = languageViewModel.getTenseList()
                 languageViewModel.setTenses(tenseList: tenseList)
@@ -158,6 +177,24 @@ struct AllModelsView: View {
         )
         Spacer()
 
+    }
+    
+    func findClosestModel(_ userString: String){
+        var modelIndex = 0
+        var string1 = ""
+        var string2 = ""
+        for index in 0 ..< verbModelList.count-1 {
+            modelIndex = index
+            string1 = verbModelList[index].modelVerb
+            string2 = verbModelList[index+1].modelVerb
+            if userString > string1 && userString < string2 {
+                currentModel = verbModelList[index+1]
+                break
+            }
+        }
+        loadModelVerbString()
+        setCurrentVerb()
+        analyzeModel()
     }
     
     func loadModelVerbString(){
@@ -239,6 +276,7 @@ struct AllModelsView: View {
         languageViewModel.fillVerbCubeAndQuizCubeLists()
         languageViewModel.setStudyPackage(sp: sp)
         languageViewModel.setVerbOrModelMode(mode: .modelMode)
+        languageViewModel.trimFilteredVerbList(16)
     }
     
     

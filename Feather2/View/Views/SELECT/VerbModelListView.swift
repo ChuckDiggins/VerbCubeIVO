@@ -74,6 +74,11 @@ struct VerbModelListView: View {
     }
     
     func processVerbModel(_ vm: RomanceVerbModel){
+        var vcount = 0
+        for verb in languageViewModel.findVerbsOfSameModel(targetID: vm.id){
+            vcount += 1
+            print("processVerbModel - verb: \(vcount). \(verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage() ))")
+        }
         languageViewModel.computeSelectedVerbModels()
         languageViewModel.computeCompletedVerbModels()
         
@@ -88,7 +93,7 @@ struct VerbModelListView: View {
         verbModelList.append(selectedModel)
         var verbModelStringList = [String]()
         verbModelStringList.append(selectedModel.modelVerb)
-        var sp = StudyPackageClass(name: modelName, verbModelStringList: verbModelStringList,
+        let sp = StudyPackageClass(name: modelName, verbModelStringList: verbModelStringList,
                                    tenseList: [.present, .preterite, .imperfect, .conditional],
                                    chapter: "Verb model", lesson: selectedModel.modelVerb)
         sp.preferredVerbList = languageViewModel.findVerbsOfSameModel(targetID: selectedModel.id)
@@ -98,6 +103,7 @@ struct VerbModelListView: View {
         languageViewModel.setVerbOrModelMode(mode: .modelMode)
         languageViewModel.resetFeatherSentenceHandler()
         languageViewModel.fillVerbCubeAndQuizCubeLists()
+        languageViewModel.trimFilteredVerbList(16)
     }
     
     func getModelName(){

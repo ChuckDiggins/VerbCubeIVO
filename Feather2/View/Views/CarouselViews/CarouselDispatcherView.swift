@@ -133,7 +133,7 @@ struct NavStackCarouselDispatcherView: View {
             }
             .onAppear{
                 selectedCount = languageViewModel.getSelectedVerbModelList().count
-                print("NavStackCarouselDispatcherView:  selectedCount = \(selectedCount)")
+//                print("NavStackCarouselDispatcherView:  selectedCount = \(selectedCount)")
                 if languageViewModel.getSelectedNewVerbModelType() != .undefined && languageViewModel.getSelectedVerbModelList().count > 0 {
                     selectedModelString = languageViewModel.getSelectedVerbModelList()[0].modelVerb
                 } else {
