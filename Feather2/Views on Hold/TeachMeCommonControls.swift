@@ -149,6 +149,17 @@ struct ExitButtonView : View {
     }
 }
 
+struct JustExit  {
+    @EnvironmentObject var router: Router
+    @Environment(\.dismiss) private var dismiss
+    
+    func exit(){
+        router.reset()
+        dismiss()
+    }
+}
+
+
 struct CurrentVerbButtonView : View {
     @ObservedObject var languageViewModel: LanguageViewModel
     var function: () -> Void

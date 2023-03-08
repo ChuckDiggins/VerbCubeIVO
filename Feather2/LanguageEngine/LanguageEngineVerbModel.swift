@@ -16,8 +16,53 @@ struct SimilarModelsTo {
 
 extension LanguageEngine{
     
+    func setTemporaryVerbModel(verbModel: RomanceVerbModel){
+        tempVerbModel = verbModel
+    }
+    
+    func getTemporaryVerbModel()->RomanceVerbModel{
+        tempVerbModel
+    }
+    
     func getOrderedVerbModelList()->[RomanceVerbModel]{
         return orderedVerbModelList
+    }
+    
+    func setStudyPackage(sp: StudyPackageClass){
+        studyPackage =  sp
+        setTenses(tenseList: sp.tenseList)
+    }
+    
+    func selectThisVerbModel(verbModel: RomanceVerbModel){
+        computeSelectedVerbModels()
+        computeCompletedVerbModels()
+        
+        vmecdm.setAllSelected(flag: false)
+        currentVerbModel = verbModel
+        currentVerbModelString = currentVerbModel.modelVerb
+        vmecdm.setSelected(verbModelString: verbModel.modelVerb, flag: true)
+        setToVerbModelMode()
+        fillVerbCubeAndQuizCubeLists()
+        trimFilteredVerbList(16)
+    }
+    
+    func getModelName()->String{
+        var modelName = ""
+        var vmCount = 0
+        
+        let list = getSelectedVerbModelList()
+        let selectedCount = list.count
+        for vm in list {
+            if vm.modelVerb == "regularAR" ||  vm.modelVerb == "regularER" || vm.modelVerb == "regularIR" {
+                vmCount = vmCount + 1
+            }
+        }
+        if vmCount == 3 { modelName = "Regular Verbs"}
+        else {
+            modelName = list[0].modelVerb
+        }
+//        modelName = studyPackage.name
+        return modelName
     }
     
     func getVerbModels()->[RomanceVerbModel]{
@@ -32,9 +77,7 @@ extension LanguageEngine{
         v2MGroup = v2MGroupManager.getNextV2MGroup(currentGroup: v2MGroup)
         if v2MGroup.chapter.isEmpty {return false}
         let studyPackage = convertV2MGroupToStudyPackage(v2mGroup: v2MGroup)
-        installStudyPackage(sp: studyPackage)
-        currentV2mChapter = v2MGroup.chapter
-        currentV2mLesson = v2MGroup.lesson
+        setStudyPackageTo(studyPackage.chapter, studyPackage.lesson)
         return true
     }
     
@@ -44,10 +87,13 @@ extension LanguageEngine{
         //loop through ordered model list to find next uncompleted verb model
         
         for model in orderedVerbModelList{
-            if vmecdm.isCompleted(verbModelString: model.modelVerb){ continue }
+            if vmecdm.isCompleted(verbModelString: model.modelVerb){
+                continue
+            }
             currentVerbModel = model
             vmecdm.setSelected(verbModelString: currentVerbModel.modelVerb, flag: true)
-            fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(10, inputStudyPackage: StudyPackageClass())
+            print("selectNextOrderedVerbModel: filteredVerbList count = \(filteredVerbList.count)")
+            fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(10)
             allModelsCompleted = false
             break
         }
@@ -65,7 +111,7 @@ extension LanguageEngine{
             if vmecdm.isCompleted(verbModelString: model.modelVerb){ continue }
             currentVerbModel = model
             vmecdm.setSelected(verbModelString: currentVerbModel.modelVerb, flag: true)
-            fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(10, inputStudyPackage: StudyPackageClass())
+            fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList()
             break
         }
         return nextVerbModel
@@ -134,7 +180,7 @@ extension LanguageEngine{
         selectedNewVerbModelType = restoreSelectedVerbType()
 //        print("restoreSelectedVerbs: selectedType = \(selectedNewVerbModelType.getTypeName())")
         if selectedNewVerbModelType != .undefined {
-            fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(10, inputStudyPackage: StudyPackageClass())
+            fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList()
         }
     }
     
@@ -154,64 +200,73 @@ extension LanguageEngine{
         currentVerbModel = findModelForThisVerbString(verbWord: modelVerb.getWordAtLanguage(language: getCurrentLanguage()))
     }
     
-    func fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(_ maxVerbCountPerModel: Int = 10, inputStudyPackage: StudyPackageClass){
-        computeSelectedVerbModels()
-        computeCompletedVerbModels()
-        selectedVerbModelList = getSelectedVerbModelList()
-//        print("fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList")
-//        for v in selectedVerbModelList {
-//            print("selectedVerbModelList: model \(v.modelVerb)")
-//        }
-        
-        //allow for multiple models of the same type?
-        if inputStudyPackage.preferredVerbList.isEmpty {
-            for model in selectedVerbModelList{
-                let modelVerb = findVerbFromString(verbString: model.modelVerb, language: getCurrentLanguage())
-                if ( model.modelVerb.count > 0 ){
-                    print("model verb model - \(modelVerb.getWordAtLanguage(language: getCurrentLanguage())) for model - \(model.modelVerb)")
-                    if inputStudyPackage.preferredVerbList.isEmpty {
-                        inputStudyPackage.preferredVerbList.append(modelVerb)
-                    }
-                    else {
-                        for verb in inputStudyPackage.preferredVerbList {
-                            if modelVerb == verb { continue }
-                            inputStudyPackage.preferredVerbList.append(modelVerb)
-                        }
-                    }
-                }
-            }
+    func dumpCompletedVerbModelList(_ msg: String){
+        print("\(msg) --  LanguageEngine:  completed verb model list:")
+        for vm in completedVerbModelList {
+            print (vm.modelVerb)
         }
+    }
+    
+    func dumpSelectedVerbModelList(_ msg: String){
+        print("\(msg) --  LanguageEngine:  selected verb model list:")
+        for vm in selectedVerbModelList {
+            print (vm.modelVerb)
+        }
+    }
+    
+    func fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbListA(inputStudyPackage: StudyPackageClass){
+        
+//        //allow for multiple models of the same type?
+//        if inputStudyPackage.preferredVerbList.isEmpty {
+//            for model in selectedVerbModelList{
+//                let modelVerb = findVerbFromString(verbString: model.modelVerb, language: getCurrentLanguage())
+//                if ( model.modelVerb.count > 0 ){
+//                    print("model verb model - \(modelVerb.getWordAtLanguage(language: getCurrentLanguage())) for model - \(model.modelVerb)")
+//                    if inputStudyPackage.preferredVerbList.isEmpty {
+//                        inputStudyPackage.preferredVerbList.append(modelVerb)
+//                    }
+//                    else {
+//                        for verb in inputStudyPackage.preferredVerbList {
+//                            if modelVerb == verb { continue }
+//                            inputStudyPackage.preferredVerbList.append(modelVerb)
+//                        }
+//                    }
+//                }
+//            }
+//        }
         
         if inputStudyPackage.preferredVerbList.count > 0 {
             setFilteredVerbList(verbList: inputStudyPackage.preferredVerbList)
             fillVerbCubeAndQuizCubeLists()
             _ = computeVerbsExistForAll3Endings()
             studyPackage = inputStudyPackage
-        } else {
-            var newVerbList = [Verb]()
-            if selectedVerbModelList.count > 0 {
-                for model in selectedVerbModelList{
-                    var verbCount = 0
-                    var tempVerbList = findSingletonVerbsOfSameModel(targetID: model.id)
-                    tempVerbList.shuffle()
-                    for verb in tempVerbList{
-                        verbCount += 1
-                        newVerbList.append(verb)
-                        if verbCount > maxVerbCountPerModel {
-                            break
-                        }
-                    }
-                }
-                setFilteredVerbList(verbList: newVerbList)
-                fillVerbCubeAndQuizCubeLists()
-                _ = computeVerbsExistForAll3Endings()
-                studyPackage = StudyPackageClass(name: selectedVerbModelList[0].modelVerb, verbModelStringList : [selectedVerbModelList[0].modelVerb], tenseList: [.present, .preterite, .imperfect, .conditional, .future], chapter: "", lesson: "")
-            } else {
-                filteredVerbList = verbList
-                fillVerbCubeAndQuizCubeLists()
-                studyPackage = StudyPackageClass(name: "No study package", verbModelStringList : [""], tenseList: [.present, .preterite, .imperfect, .conditional, .future], chapter: "", lesson: "")
-            }
         }
+//        else {
+//            var newVerbList = [Verb]()
+//            if selectedVerbModelList.count > 0 {
+//                for model in selectedVerbModelList{
+//                    var verbCount = 0
+//                    var tempVerbList = findSingletonVerbsOfSameModel(targetID: model.id)
+//                    tempVerbList.shuffle()
+//                    for verb in tempVerbList{
+//                        verbCount += 1
+//                        newVerbList.append(verb)
+//                        if verbCount > maxVerbCountPerModel {
+//                            break
+//                        }
+//                    }
+//                }
+//                setFilteredVerbList(verbList: newVerbList)
+//                fillVerbCubeAndQuizCubeLists()
+//                _ = computeVerbsExistForAll3Endings()
+//                studyPackage = StudyPackageClass(name: selectedVerbModelList[0].modelVerb, verbModelStringList : [selectedVerbModelList[0].modelVerb], tenseList: [.present, .preterite, .imperfect, .conditional, .future], chapter: "", lesson: "")
+//            } else {
+//                filteredVerbList = verbList
+//                fillVerbCubeAndQuizCubeLists()
+//                studyPackage = StudyPackageClass(name: "No study package", verbModelStringList : [""], tenseList: [.present, .preterite, .imperfect, .conditional, .future], chapter: "", lesson: "")
+//            }
+//        }
+
 //        var vl = getFilteredVerbs()
 //        for v in vl {
 //            print("vl: verb \(v.getWordAtLanguage(language: getCurrentLanguage()))")
@@ -219,17 +274,6 @@ extension LanguageEngine{
         
     }
     
-    func installStudyPackage(sp: StudyPackageClass){
-        vmecdm.setAllSelected(flag: false)
-        for verbModelStr in sp.verbModelStringList {
-            vmecdm.setSelected(verbModelString: verbModelStr, flag: true)
-        }
-        fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(sp.getVerbCount(), inputStudyPackage: sp)
-        tenseList = sp.tenseList
-        studyPackage = sp
-        setVerbOrModelMode(.verbMode)
-        specialVerbType = studyPackage.specialVerbType
-    }
     
     func setAllVerbModelsIncomplete(){
         vmecdm.setAllCompleted(flag: false)
@@ -240,9 +284,7 @@ extension LanguageEngine{
         vmecdm.setSelected(verbModelString: "regularAR", flag: true)
         vmecdm.setSelected(verbModelString: "regularER", flag: true)
         vmecdm.setSelected(verbModelString: "regularIR", flag: true)
-        studyPackage = StudyPackageClass(name: "Regular verbs", verbModelStringList: ["regularAR", "regularER", "regularIR"], tenseList: [.present, .preterite, .imperfect, .conditional, .future], chapter: "Verb model", lesson: "Regular Verbs")
         tenseList = studyPackage.tenseList
-        fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(10, inputStudyPackage: StudyPackageClass())
     }
     
     func setSelectedVerbModelsComplete(){
@@ -257,6 +299,7 @@ extension LanguageEngine{
         setAllVerbModelsIncomplete()
         currentV2mChapter = "nada 2"
         currentV2mLesson = "nada 3"
+        currentVerbModelString = "nada 4"
     }
     
     func getSelectedVerbModelList()->[RomanceVerbModel]{
@@ -850,7 +893,7 @@ extension LanguageEngine{
     }
     
     func findSingletonVerbsOfSameModel(targetID: Int)->[Verb]{
-        var vu = VerbUtilities()
+        let vu = VerbUtilities()
         var vList = [Verb]()
         var newVerb = false
         for v in verbList {
@@ -871,7 +914,7 @@ extension LanguageEngine{
     }
     
     func findAllVerbsOfThisModel(targetID: Int)->[Verb]{
-        var vu = VerbUtilities()
+//        var vu = VerbUtilities()
         var vList = [Verb]()
         var newVerb = false
         for v in verbList {

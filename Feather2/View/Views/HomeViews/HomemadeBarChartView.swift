@@ -132,7 +132,7 @@ struct HomemadeBarChartView: View {
                 } .padding(.horizontal, 5)
             }
             .fullScreenCover(isPresented: $showSheet, content: {
-                ListVerbsForModelView(languageViewModel: languageViewModel, model: selectedModel)
+                ListVerbsForModelView(languageViewModel: languageViewModel, vmecdm: vmecdm, verbModel: selectedModel)
             })
             .background(Color("BethanyNavalBackground"))
             .foregroundColor(Color("BethanyGreenText"))

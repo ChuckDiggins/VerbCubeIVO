@@ -19,8 +19,10 @@ struct TextBookView2: View {
     @State var chapterSelection = Realidades1Chapters.chapter1A
     @State var lessonSelection = 0
     let numOfChapters = Realidades1Chapters.allCases.count
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
     @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
     @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
     
     var body: some View {
         VStack{
@@ -59,6 +61,7 @@ struct TextBookView2: View {
                 }
                 Spacer()
                 VStack{
+                    VerbAndTenseListView(v2MGroup: currentV2MGroup, currentLanguage: currentLanguage)
                     Button{
                         installLessonAsPackage()
                         router.reset()
@@ -70,7 +73,7 @@ struct TextBookView2: View {
                         .buttonBorderShape(.roundedRectangle(radius:5))
                         .controlSize(.regular)
                         .foregroundColor(.yellow)
-                    VerbAndTenseListView(v2MGroup: currentV2MGroup, currentLanguage: currentLanguage)
+                    Spacer()
                 }
             }
         }
@@ -90,10 +93,7 @@ struct TextBookView2: View {
     func installLessonAsPackage(){
         languageViewModel.setV2MGroup(v2MGroup: currentV2MGroup)
         let studyPackage = languageViewModel.convertV2MGroupToStudyPackage(v2MGroup: currentV2MGroup)
-        languageViewModel.installStudyPackage(sp: studyPackage)
-        currentV2mChapter = currentV2MGroup.chapter
-        currentV2mLesson = currentV2MGroup.lesson
-        languageViewModel.resetFeatherSentenceHandler()
+        languageViewModel.setStudyPackageTo(currentV2MGroup.chapter, currentV2MGroup.lesson)
     }
     
     func fillV2MGroupManager(_ chapter: String){

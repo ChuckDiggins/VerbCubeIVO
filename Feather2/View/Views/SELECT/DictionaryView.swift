@@ -54,8 +54,8 @@ struct DictionaryView: View {
     @State var orthoString = ""
     @State var userString = ""
     
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
     
     //@State var bAddNewVerb = false
     
@@ -184,7 +184,7 @@ struct DictionaryView: View {
                     Label("", systemImage: modelLocked ? "lock" : "lock.open")
                     if modelLocked {
                         Button{
-                            selectCurrentModel()
+                            languageViewModel.processVerbModel(vm: currentVerbModel)
                             dismiss()
                         } label: {
                             Text("💚")
@@ -264,31 +264,34 @@ struct DictionaryView: View {
         //        }
     }
     
-    func selectCurrentModel(){
-        languageViewModel.computeSelectedVerbModels()
-        languageViewModel.computeCompletedVerbModels()
-        
-        vmecdm.setAllSelected(flag: false)
-        languageViewModel.setCurrentVerbModel(model: currentVerbModel)
-        vmecdm.setSelected(verbModelString: currentVerbModel.modelVerb, flag: true)
-        //create an study package
-        var verbModelList = [RomanceVerbModel]()
-        verbModelList.append(currentVerbModel)
-        var verbModelStringList = [String]()
-        verbModelStringList.append(currentVerbModel.modelVerb)
-        let sp = StudyPackageClass(name: currentVerbModel.modelVerb, verbModelStringList: verbModelStringList,
-                                   tenseList: [.present, .preterite, .imperfect, .conditional, .presentSubjunctive, .imperative],
-                                   chapter: "Verb model", lesson: currentVerbModel.modelVerb)
-        sp.preferredVerbList = languageViewModel.findVerbsOfSameModel(targetID: currentVerbModel.id)
-//        languageViewModel.installStudyPackage(sp: sp)
-        languageViewModel.setStudyPackage(sp: sp)
-        print("DictionaryView: specialVerbType: \(sp.specialVerbType)")
-        currentV2mChapter = sp.chapter
-        currentV2mLesson = sp.lesson
-        languageViewModel.fillVerbCubeAndQuizCubeLists()
-        languageViewModel.setVerbOrModelMode(mode: .modelMode)
-        languageViewModel.resetFeatherSentenceHandler()
-    }
+//    func selectCurrentModel(){
+//        languageViewModel.computeSelectedVerbModels()
+//        languageViewModel.computeCompletedVerbModels()
+//        
+//        vmecdm.setAllSelected(flag: false)
+//        languageViewModel.setCurrentVerbModel(model: currentVerbModel)
+//        vmecdm.setSelected(verbModelString: currentVerbModel.modelVerb, flag: true)
+//        //create an study package
+//        var verbModelList = [RomanceVerbModel]()
+//        verbModelList.append(currentVerbModel)
+//        var verbModelStringList = [String]()
+//        verbModelStringList.append(currentVerbModel.modelVerb)
+//        let sp = StudyPackageClass(name: currentVerbModel.modelVerb, verbModelStringList: verbModelStringList,
+//                                   tenseList: [.present, .preterite, .imperfect, .conditional, .presentSubjunctive, .imperative],
+//                                   chapter: "Verb model", lesson: currentVerbModel.modelVerb)
+//        sp.preferredVerbList = languageViewModel.findVerbsOfSameModel(targetID: currentVerbModel.id)
+////        languageViewModel.installStudyPackage(sp: sp)
+//        languageViewModel.setStudyPackage(sp: sp)
+//        print("DictionaryView: specialVerbType: \(sp.specialVerbType)")
+//       
+//        languageViewModel.fillVerbCubeAndQuizCubeLists()
+//        
+//        languageViewModel.resetFeatherSentenceHandler()
+//        
+//        //set the AppStorage stuff
+//        languageViewModel.setToVerbModelMode()
+//        
+//    }
     
     func setPatternStuff(){
         let patternList = languageViewModel.getPatternsForThisModel(verbModel: currentVerbModel)

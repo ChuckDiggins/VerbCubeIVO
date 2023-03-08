@@ -67,7 +67,7 @@ struct FeatherVerbQuizMorphView: View {
     @State var maxVerbCount = 12
     @State var finalMessage = ""
     @State var simpleAlert = false
-    @State var currentVerbModelString = ""
+    @State var verbModelString = ""
     @State var textFieldText = ""
     @State var infinitiveString = ""
     
@@ -268,7 +268,7 @@ struct FeatherVerbQuizMorphView: View {
     
     
     func propogateChangeToOtherVerbs(){
-        let vux = VerbUtilitiesExtra()
+//        let vux = VerbUtilitiesExtra()
         
         for i in 0..<fivePartVerbStructList.count{
             fivePartVerbStructList[i].setInfinitive(infinitive: morphInfoList[i].infinitive)
@@ -342,8 +342,8 @@ struct FeatherVerbQuizMorphView: View {
     
     func initializeStuff(){
         print("initializeStuff:")
-        currentVerbModelString = languageViewModel.getCurrentVerbModel().modelVerb
-        print("currentVerbModelString \(currentVerbModelString)")
+        verbModelString = languageViewModel.getCurrentVerbModel().modelVerb
+        print("currentVerbModelString \(verbModelString)")
         loadVerbList()
         verbCount = verbList.count
         if verbCount > maxVerbCount {

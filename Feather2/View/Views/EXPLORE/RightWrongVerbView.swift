@@ -13,6 +13,11 @@ struct RightWrongVerbView: View {
     @State var currentLanguage = LanguageType.Agnostic
     @EnvironmentObject var router: Router
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"  
+    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
+    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    
     @State var residualPhrase: String = ""
     @State var newVerb : Bool = false
     
@@ -73,9 +78,15 @@ struct RightWrongVerbView: View {
                 
                 setVerbAndTenseView()
                 HStack{
-                    Text("Model verb: \(currentVerbModel.modelVerb)")
-                    if stemString.count > 0 { Text("(\(stemString))") }
-                    if orthoString.count > 0 { Text("(\(orthoString))")  }
+                    if languageViewModel.isModelMode() {
+                        Text("Model: \(currentVerbModelString)").font(.caption)
+                    }
+                    else {
+                        VStack{
+                            Text("Chapter: \(currentV2mChapter)")
+                            Text("Lesson: \(currentV2mLesson)")
+                        }.font(.caption)
+                    }
                 }.modifier(ClearButtonModifier())
                 if ( bValidVerb ){
                     
@@ -290,13 +301,16 @@ struct RightWrongVerbView: View {
         var pp = ""
         
         if languageViewModel.getCurrentTense().isProgressive(){
-            pp = thisVerb.createDefaultGerund()
+//            pp = thisVerb.createDefaultGerund()
+            pp = thisVerb.getPresentParticiple()
         } else if languageViewModel.getCurrentTense().isPerfectIndicative(){
-            pp = thisVerb.createDefaultPastParticiple()
+            pp = thisVerb.getPastParticiple()
+//            pp = languageViewModel.getRomanceVerb(verb: thisVerb).m_pastParticiple
+            
         }
         var currentTense = languageViewModel.getCurrentTense()
         for i in 0..<6 {
-            rightPhrase[i] = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
+            rightPhrase[i] = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + pp
             rightPhrase[i] = removeAllExtraBlanks(rightPhrase[i])
             if i == 0 && currentTense == .imperative { rightPhrase[i] = ""}
             vvm.append(rightPhrase[i])

@@ -12,7 +12,7 @@ enum ExerciseMode : String, Hashable, CaseIterable, Identifiable{
     case Explore
     case Learn
     case Test
-    
+    case SelectModel
     var id: String{
         self.rawValue
     }
@@ -33,11 +33,14 @@ struct ExerciseData : Identifiable {
 struct ExerciseDataManager{
     let exerciseMode : ExerciseMode
     let specialVerbType : SpecialVerbType
-    init(_ em : ExerciseMode, _ svt: SpecialVerbType){
+    let verbOrModelMode : VerbOrModelMode
+    init(_ vomMode: VerbOrModelMode, _ em : ExerciseMode, _ svt: SpecialVerbType){
+        verbOrModelMode = vomMode
         exerciseMode = em
         specialVerbType = svt
+        
         loadData(svt: specialVerbType)
-//        print("Initializing ExerciseDataManager - \(exerciseMode.rawValue) mode, special verb type \(specialVerbType.rawValue)")
+        //        print("Initializing ExerciseDataManager - \(exerciseMode.rawValue) mode, special verb type \(specialVerbType.rawValue)")
     }
     
     var dataArray = [ExerciseData]()
@@ -94,27 +97,38 @@ struct ExerciseDataManager{
     
     mutating func loadData(svt: SpecialVerbType){
         switch exerciseMode{
-        case .Select: loadSelectImages()
+        case .Select: loadSelectImages(verbOrModelMode: verbOrModelMode)
         case .Explore: loadExploreImages(svt: svt)
         case .Learn: loadLearnImages()
         case .Test:  loadTestImages()
+        case .SelectModel: loadSelectImages(verbOrModelMode: verbOrModelMode)
         }
     }
     
-    mutating func loadSelectImages(){
-        let data = [
-            ExerciseData(id: 0, image: "SELECTRealidades", studentLevel: "Beginner", title: "Realidades 1", details: "Realidades 1 is a common text book used for first level Spanish.  Each exercise combines the verbs and tenses associated with a chapter section in Realidades.", active: true),
-            
-            ExerciseData(id: 1, image: "SELECTVerbModelList", studentLevel: "Intermediate", title: "Verb Model List", details: "Verb Models are a powerful way to learn how to conjugate ANY Spanish verb in any tense.", active: true),
-            
-            ExerciseData(id: 2, image: "SELECTVerbModels", studentLevel: "All levels", title: "Verb Models", details: "Verb Models are a powerful way to learn how to conjugate ANY Spanish verb in any tense.  This shows you one verb model at a time with each of its associated verbs.", active: true),
-            
-            ExerciseData(id: 3, image: "SELECTVerbDictionary", studentLevel: "All levels", title: "Verb Dictionary", details: "This shows you all of the verbs loaded into the current dictionary.", active: true),
-            
-            ExerciseData(id: 4, image: "SELECTShowCurrentVerbs", studentLevel: "All levels", title: "Show Current Verbs", details: "Current verbs are the verbs that are active for learning.", active: true)
-
-        ]
-        setArray(data)
+    mutating func loadSelectImages(verbOrModelMode: VerbOrModelMode){
+        
+        switch verbOrModelMode {
+        case .verbMode:
+            let data = [
+                ExerciseData(id: 0, image: "SELECTRealidades", studentLevel: "Beginner", title: "Realidades 1", details: "Realidades 1 is a common text book used for first level Spanish.  Each exercise combines the verbs and tenses associated with a chapter section in Realidades.", active: true),
+                
+                ExerciseData(id: 1, image: "SELECTChuck", studentLevel: "Beginner", title: "Challenging Lessons", details: "Advanced lessons are a collection of verb/tenses to help you master verb conjugation", active: true),
+                
+                ExerciseData(id: 2, image: "SELECTShowCurrentVerbs", studentLevel: "All levels", title: "Show Current Verbs", details: "Current verbs are the verbs that are active for learning.", active: true)
+            ]
+            setArray(data)
+        case .modelMode:
+            let data = [
+                ExerciseData(id: 0, image: "SELECTVerbModelList", studentLevel: "Intermediate", title: "Verb Model List", details: "Verb Models are a powerful way to learn how to conjugate ANY Spanish verb in any tense.", active: true),
+                
+                ExerciseData(id: 1, image: "SELECTVerbModels", studentLevel: "All levels", title: "Verb Models", details: "Verb Models are a powerful way to learn how to conjugate ANY Spanish verb in any tense.  This shows you one verb model at a time with each of its associated verbs.", active: true),
+                
+                ExerciseData(id: 2, image: "SELECTVerbDictionary", studentLevel: "All levels", title: "Verb Dictionary", details: "This shows you all of the verbs loaded into the current dictionary.", active: true),
+                
+                ExerciseData(id: 3, image: "SELECTShowCurrentVerbs", studentLevel: "All levels", title: "Show Current Verbs", details: "Current verbs are the verbs that are active for learning.", active: true)
+            ]
+            setArray(data)
+        }
     }
     
     mutating func loadExploreImages(svt: SpecialVerbType){
@@ -123,13 +137,13 @@ struct ExerciseDataManager{
             
             ExerciseData(id: 1, image: "EXPLOREVerbCube", studentLevel: "Intermediate", title: "Verb Cube", details: "The Verb Cube allows you to look at your active verb list in 3-dimensions: Verb, Tense, and Person.", active: true),
             
-           
+            
             ExerciseData(id: 2, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
             
             ExerciseData(id: 3, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
             
             ExerciseData(id: 4, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
-            ]
+        ]
         
         switch svt{
         case .verbsLikeGustar: data.append(
@@ -156,7 +170,7 @@ struct ExerciseDataManager{
             ExerciseData(id: 3, image: "LEARNSubjectTense", studentLevel: "All levels", title: "Subject vs Tense", details: "You are presented with a subject, such as 'ellos'.  To the right are words or phrases showing all the conjugated forms for 'ellos' in all of the simple tenses.", active: true),
             
             ExerciseData(id: 4, image: "LEARNFlashCards", studentLevel: "Beginner", title: "Flash Cards", details: "Timed exercise.  Your current verbs and tenses are presented to you randomly one phrase at a time.  If you know the answer, push the card to the right.  To see the answer, click on the card.  If you don't know the answer, push the card to the left.", active: true)
-
+            
         ]
         setArray(data)
     }

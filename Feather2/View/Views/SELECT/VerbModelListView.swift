@@ -17,8 +17,8 @@ struct VerbModelListView: View {
     @State var modelName = "No name"
     @State var showSheet = false
     @State var selectedModel = RomanceVerbModel()
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 2"
     @State private var inProgress = false
     @State private var orderedVerbModelList = [RomanceVerbModel]()
     
@@ -28,7 +28,7 @@ struct VerbModelListView: View {
                 .ignoresSafeArea()
             VStack{
                 ExitButtonView()
-                Text("Current model: \(modelName)")
+                Text("Current model: \(currentVerbModelString)")
 //                Button{
 //                    ShowDictionaryVerbCounts()
 //                } label: {
@@ -38,8 +38,9 @@ struct VerbModelListView: View {
                     LazyVStack{
                         ForEach(orderedVerbModelList, id: \.self){ vm in
                             Button{
-//                                languageViewModel.processVerbModel(vm)
-                                processVerbModel(vm)
+                                selectedModel = vm
+                                languageViewModel.setTemporaryVerbModel(verbModel: vm)
+                                showSheet.toggle()
                             } label: {
                                 HStack{
                                     Text("\(vm.id)")
@@ -55,16 +56,17 @@ struct VerbModelListView: View {
                         ProgressView()
                     }
                 }.fullScreenCover(isPresented: $showSheet, content: {
-                    ListVerbsForModelView(languageViewModel: languageViewModel, model: selectedModel)
+                    ListVerbsForModelView(languageViewModel: languageViewModel, vmecdm: vmecdm, verbModel: selectedModel, showSelectButton: true)
                 })
             }
             
         }.onAppear{
             inProgress.toggle()
             ShowDictionaryVerbCounts()
-//            sortModelList()
-            getModelName()
+//            getModelName()
+            vmecdm.setSelected(verbModelString: languageViewModel.getCurrentVerbModel().modelVerb, flag: true)
             inProgress.toggle()
+            print("VerbModelListView: currentVerbModelString = \(currentVerbModelString)")
         } .foregroundColor(Color("BethanyGreenText"))
             .background(Color("BethanyNavalBackground"))
     }
@@ -73,42 +75,10 @@ struct VerbModelListView: View {
         orderedVerbModelList = languageViewModel.getOrderedVerbModelList()
     }
     
-    func processVerbModel(_ vm: RomanceVerbModel){
-        var vcount = 0
-        for verb in languageViewModel.findVerbsOfSameModel(targetID: vm.id){
-            vcount += 1
-            print("processVerbModel - verb: \(vcount). \(verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage() ))")
-        }
-        languageViewModel.computeSelectedVerbModels()
-        languageViewModel.computeCompletedVerbModels()
-        
-        selectedModel = vm
-        showSheet.toggle()
-        vmecdm.setAllSelected(flag: false)
-        languageViewModel.setCurrentVerbModel(model: vm)
-        vmecdm.setSelected(verbModelString: vm.modelVerb, flag: true)
-        getModelName()
-        //create an study package
-        var verbModelList = [RomanceVerbModel]()
-        verbModelList.append(selectedModel)
-        var verbModelStringList = [String]()
-        verbModelStringList.append(selectedModel.modelVerb)
-        let sp = StudyPackageClass(name: modelName, verbModelStringList: verbModelStringList,
-                                   tenseList: [.present, .preterite, .imperfect, .conditional],
-                                   chapter: "Verb model", lesson: selectedModel.modelVerb)
-        sp.preferredVerbList = languageViewModel.findVerbsOfSameModel(targetID: selectedModel.id)
-        currentV2mChapter = sp.chapter
-        currentV2mLesson = sp.lesson
-        languageViewModel.setStudyPackage(sp: sp)
-        languageViewModel.setVerbOrModelMode(mode: .modelMode)
-        languageViewModel.resetFeatherSentenceHandler()
-        languageViewModel.fillVerbCubeAndQuizCubeLists()
-        languageViewModel.trimFilteredVerbList(16)
-    }
     
     func getModelName(){
         var vmCount = 0
-        
+
         let list = languageViewModel.getSelectedVerbModelList()
         selectedCount = list.count
         for vm in list {
@@ -116,13 +86,14 @@ struct VerbModelListView: View {
                 vmCount = vmCount + 1
             }
         }
-        if vmCount == 3 { modelName = "Regular Verbs"}
-        else {
-            modelName = list[0].modelVerb
+        if vmCount == 3 {
+            modelName = "Regular Verbs"
         }
-        modelName = languageViewModel.getStudyPackage().name
+        else {
+            modelName = languageViewModel.getCurrentVerbModel().modelVerb
+        }
     }
-    
+//
     func getIdNum(id: Int)->Int{
         var idNum = 0
         idNum = id

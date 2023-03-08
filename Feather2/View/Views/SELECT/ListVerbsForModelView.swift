@@ -10,12 +10,23 @@ import JumpLinguaHelpers
 
 struct ListVerbsForModelView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
-    @State var model: RomanceVerbModel
+    @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
+    @State var verbModel = RomanceVerbModel()
+    @State var showSelectButton = false
+    @EnvironmentObject var router: Router
+    @Environment(\.dismiss) private var dismiss
     @State var verbList = [Verb]()
     @State var show10Verbs = false
     @State var maxVerbCount = 16
     @State var showEnglish = false
     @State var currentLanguage = LanguageType.Spanish
+    @State var selectedCount = 0
+    @State var modelName = "No name"
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
+    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
+    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    
     
     var fontSize = Font.title3
     @State private var patternList = [SpecialPatternStruct]()
@@ -29,72 +40,105 @@ struct ListVerbsForModelView: View {
         ZStack(alignment: .topLeading){
             Color("BethanyNavalBackground")
             //                .edgesIgnoringSafeArea(.all)
-            VStack{
-                ExitButtonView()
-                VStack(spacing: 20){
-                    let gridFixSize = CGFloat(200.0)
-                    let gridItems = [GridItem(.fixed(gridFixSize)),
-                                     //                                 GridItem(.fixed(gridFixSize)),
-                                     GridItem(.fixed(gridFixSize))]
-                    
-                    Text(languageViewModel.isModelMode() ? "Model: \(languageViewModel.getStudyPackage().lesson)" : "Lesson: \(languageViewModel.getStudyPackage().lesson)").font(.title)
-                    
-                    Divider().frame(height:2).background(.yellow)
-                    
-                    HStack{
-                        Button{
-                            showEnglish.toggle()
-                            currentLanguage = showEnglish ? .English : .Spanish
-                        } label: {
-                            Text(showEnglish ? "Show Spanish" : "Show English")
-                        }
-                        .frame(width: 200, height: 30)
-                        .font(.callout)
-                        .padding(2)
-                        .background(.linearGradient(colors: [.mint, .white], startPoint: .bottomLeading, endPoint: .topTrailing))
-                        .foregroundColor(.black)
-                        .cornerRadius(4)
+                VStack{
+                    ExitButtonView()
+                    VStack(spacing: 20){
+                        let gridFixSize = CGFloat(200.0)
+                        let gridItems = [GridItem(.fixed(gridFixSize)),
+                                         //                                 GridItem(.fixed(gridFixSize)),
+                                         GridItem(.fixed(gridFixSize))]
                         
-                    }
-                    Text("Current verb list").font(.title2)
-                    LazyVGrid(columns: gridItems) {
-                        ForEach(verbList, id: \.self){ verb in
-                            Button{
-                                currentVerb = verb
-                                selected.toggle()
-                            } label: {
-                                Text(verb.getWordAtLanguage(language: currentLanguage))
+                        if languageViewModel.isModelMode() {
+                            Text("Model: \(currentVerbModelString)").font(.title2)
+                        }
+                        else {
+                            VStack{
+                                Text("Chapter: \(currentV2mChapter)")
+                                Text("Lesson: \(currentV2mLesson)")
+                            }.font(.title2)
+                        }
+
+                        Divider().frame(height:2).background(.yellow)
+                    
+                        if showSelectButton {
+                            HStack{
+                                Button{
+//                                    languageViewModel.selectThisVerbModel(verbModel: verbModel)
+                                    languageViewModel.setVerbModelTo(verbModel)
+                                    router.reset()
+                                    dismiss()
+                                } label: {
+                                    Text("¿Install: \(verbModel.modelVerb)?")
+//                                    if verbModel.id > 0 {
+//                                        Text("¿Install: \(verbModel.modelVerb)?")
+//                                    }else{
+//                                        Text("¿Install: \(languageViewModel.getTemporaryVerbModel().modelVerb)?")
+//                                    }
+                                }.tint(.purple)
+                                .buttonStyle(.borderedProminent)
+                                .buttonBorderShape(.roundedRectangle(radius:5))
+                                .controlSize(.regular)
+                                .foregroundColor(.yellow)
+                            }
+                            HStack{
+                                Text("Verb list for")
+                                if verbModel.id > 0 {
+                                    Text("\(verbModel.modelVerb)")
+                                }else{
+                                    Text("\(languageViewModel.getTemporaryVerbModel().modelVerb)")
+                                }
+                            }.font(.title)
+                        } else {
+                                Text("Verb List")
+                        }
+                        
+                        
+                                                    
+                        LazyVGrid(columns: gridItems) {
+                            ForEach(verbList, id: \.self){ verb in
+                                Button{
+                                    currentVerb = verb
+                                    selected.toggle()
+                                } label: {
+                                    Text(verb.getWordAtLanguage(language: currentLanguage))
+                                }
                             }
                         }
-                    }
-                    .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
-                    .padding(20)
-                    .background(Color("BethanyNavalBackground"))
-                    .foregroundColor(Color("BethanyGreenText"))
-                    .font(fontSize)
-                    Spacer()
-//                        .fullScreenCover(isPresented: $selected, content: {
-//                            SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: "", multipleVerbFlag: false)
-//                        })
+                        .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+                        .padding(20)
+                        .background(Color("BethanyNavalBackground"))
+                        .foregroundColor(Color("BethanyGreenText"))
+                        .font(fontSize)
+                        Spacer()
+                        //                        .fullScreenCover(isPresented: $selected, content: {
+                        //                            SimpleVerbConjugation(languageViewModel: languageViewModel, verb: currentVerb, residualPhrase: "", multipleVerbFlag: false)
+                        //                        })
                     
                 }
                 .onAppear{
-                    //                    model = languageViewModel.getCurrentVerbModel()
-                    loadVerbList()
-                    analyzeModel()
+                    if languageViewModel.isModelMode() {
+                        if showSelectButton{
+                            verbModel = languageViewModel.getTemporaryVerbModel()
+                            verbList = languageViewModel.findVerbsOfSameModel(targetID: verbModel.id)
+                            truncateAndShuffleVerbList()
+                        } else {
+                            verbModel = languageViewModel.getCurrentVerbModel()
+                            verbList = languageViewModel.getFilteredVerbs()
+                        }
+                    } else {
+                        verbList = languageViewModel.getStudyPackage().preferredVerbList
+                    }
+                    
+//                    analyzeModel()
                 }
-
+                
             }
             Spacer()
         }
     }
     
-    func analyzeThisVerb(verb: Verb){
-        //
-    }
-    
     func analyzeModel(){
-        patternList = languageViewModel.getPatternsForThisModel(verbModel: model)
+        patternList = languageViewModel.getPatternsForThisModel(verbModel: verbModel)
         patternTenseStringList.removeAll()
         patternLabelStringList.removeAll()
         patternTypeStringList.removeAll()
@@ -127,7 +171,14 @@ struct ListVerbsForModelView: View {
     }
     
     func loadVerbList(){
-        verbList = languageViewModel.getFilteredVerbs()
+        if languageViewModel.isModelMode() {
+            verbList = languageViewModel.findVerbsOfSameModel(targetID: verbModel.id)
+            verbList = languageViewModel.getFilteredVerbs()
+        } else {
+            var sp = languageViewModel.getStudyPackage()
+            verbList = sp.preferredVerbList
+        }
+        
         truncateAndShuffleVerbList()
         print("loadVerbList: verbList count = \(verbList.count)")
         for verb in verbList{
@@ -138,5 +189,7 @@ struct ListVerbsForModelView: View {
     func getVerbStringAtIndex(_ index: Int)->String{
         verbList[index].getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
     }
+    
+    
     
 }

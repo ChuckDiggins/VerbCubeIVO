@@ -15,8 +15,7 @@ class LanguageViewModel : ObservableObject, Equatable {
     static func == (lhs: LanguageViewModel, rhs: LanguageViewModel) -> Bool {
         return lhs.languageEngine == rhs.languageEngine
     }
-    
-    
+
     var insertQueQuiBeforeSubjunctive = true
     //var useFeminineSubjectPronouns = true
     var useUstedForS3 = false
@@ -42,18 +41,33 @@ class LanguageViewModel : ObservableObject, Equatable {
         
     }
     
+    func verbOrModelModeInitialized()->Bool{
+        languageEngine.verbOrModelModeInitialized
+    }
+    
+    func setVerbOrModelModeInitialized(){
+        languageEngine.verbOrModelModeInitialized = true
+    }
+    
     func changeLanguage(){
         languageEngine.changeLanguage()
         currentLanguage = languageEngine.getCurrentLanguage()
     }
     
-    func setVerbOrModelMode(mode: VerbOrModelMode){
-        languageEngine.setVerbOrModelMode(mode)
+    func isModelMode()->Bool{
+        languageEngine.isModelMode()
     }
     
-    func isModelMode()->Bool{
-        if languageEngine.verbOrModelMode == .modelMode { return true }
-        return false
+    func setTemporaryVerbModel(verbModel: RomanceVerbModel){
+        languageEngine.setTemporaryVerbModel(verbModel: verbModel)
+    }
+    
+    func getTemporaryVerbModel()->RomanceVerbModel{
+        languageEngine.getTemporaryVerbModel()
+    }
+    
+    func selectThisVerbModel(verbModel: RomanceVerbModel){
+        languageEngine.selectThisVerbModel(verbModel: verbModel)
     }
     
     func getRandomSentenceObject()->FeatherSentenceHandler{
@@ -64,6 +78,9 @@ class LanguageViewModel : ObservableObject, Equatable {
         languageEngine.getVerbOrModelMode()
     }
     
+    func dumpCompletedVerbModelList(_ msg: String){
+        languageEngine.dumpCompletedVerbModelList(msg)
+    }
 //    func getModelPatternStructList(ending: VerbEnding)->[ModelPatternStruct]{
 //        languageEngine.getModelPatternStructList(ending: ending)
 //    }
@@ -307,6 +324,10 @@ class LanguageViewModel : ObservableObject, Equatable {
         languageEngine.isVerbType(verb : verb, tense : tense, person : person, verbType: verbType)
     }
     
+    func getVerbModelLessonList()->[VerbModelLesson]{
+        languageEngine.getVerbModelLessonList()
+    }
+    
 //    func checkForStemChanging(verb: BRomanceVerb, tense: Tense, person: Person)->Bool{
 //        languageEngine!.checkForStemChanging(verb: verb, tense: tense, person: person)
 //    }
@@ -331,13 +352,13 @@ class LanguageViewModel : ObservableObject, Equatable {
         languageEngine.countVerbsOfSelectedType(showVerbType: showVerbType)
     }
     
-    func getWordCollections()->[dWordCollection] {
-        languageEngine.getWordCollections()
-    }
+//    func getWordCollections()->[dWordCollection] {
+//        languageEngine.getWordCollections()
+//    }
     
-    func createWordCollection(verbList: [Verb], collectionName: String){
-        languageEngine.createWordCollection(verbList: verbList, collectionName: collectionName)
-    }
+//    func createWordCollection(verbList: [Verb], collectionName: String){
+//        languageEngine.createWordCollection(verbList: verbList, collectionName: collectionName)
+//    }
     
     func unConjugate(verbForm : String)->[VTP]{
         return languageEngine.unConjugate(verbForm: verbForm)

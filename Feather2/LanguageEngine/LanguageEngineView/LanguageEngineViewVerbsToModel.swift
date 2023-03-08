@@ -9,6 +9,31 @@ import Foundation
 import JumpLinguaHelpers
 
 extension LanguageViewModel{
+    func setToVerbModelMode(){
+        languageEngine.setToVerbModelMode()
+        
+    }
+    
+    func setVerbOrModelMode(_ verbOrModelModeString: String){
+        languageEngine.setVerbOrModelMode(verbOrModelModeString)
+    }
+    
+    func setToVerbMode(){
+        languageEngine.setToVerbMode()
+    }
+    
+    func setToVerbMode(_ chapterString: String, _ lessonString: String){
+        languageEngine.setToVerbMode(chapterString, lessonString)
+    }
+    
+    func setStudyPackageTo(_ chapterString: String, _ lessonString: String){
+        languageEngine.setStudyPackageTo(chapterString, lessonString)
+    }
+    
+    func setVerbModelTo(_ verbModel: RomanceVerbModel){
+        languageEngine.setVerbModelTo(verbModel)
+    }
+    
     
     func getV2MGroupManager()->VerbToModelGroupManager{
         languageEngine.v2MGroupManager

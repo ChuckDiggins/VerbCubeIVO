@@ -1,25 +1,32 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "RealmDatabase",
-        "repositoryURL": "https://github.com/realm/realm-core",
-        "state": {
-          "branch": null,
-          "revision": "b86d2107fec4246b55af24a3b11e00275575f808",
-          "version": "12.9.0"
-        }
-      },
-      {
-        "package": "Realm",
-        "repositoryURL": "https://github.com/realm/realm-swift.git",
-        "state": {
-          "branch": "master",
-          "revision": "f98f517b081d4c2bbfe98dfb8be974125d6eec03",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "jumplinguahelpers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChuckDiggins/JumpLinguaHelpers.git",
+      "state" : {
+        "revision" : "7c23e00f143c2473a246e2e5ee4ff036411bda23",
+        "version" : "0.11.1"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "37cc58865648f343f7d6e538d45980e7f2351211",
+        "version" : "13.5.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "8524c4e25b506a0d54505efb9cdb40a328ab0792"
+      }
+    }
+  ],
+  "version" : 2
 }

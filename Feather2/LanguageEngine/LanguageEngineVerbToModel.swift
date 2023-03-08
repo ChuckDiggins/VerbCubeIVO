@@ -9,13 +9,13 @@ import Foundation
 import JumpLinguaHelpers
 
 enum Chuck1Chapters: String, CaseIterable{
-    case chuck1A = "Chuck 1A"
-    case chuck1B = "Chuck 1B"
-    case chuck2A = "Chuck 2A"
-    case chuck2B = "Chuck 2B"
-    case chuck3A = "Chuck 3A"
-    case chuck3B = "Chuck 3B"
-    case chuck3C = "Chuck 3C"
+    case chuck1A = "Extra 1A"
+    case chuck1B = "Extra 1B"
+    case chuck2A = "Extra 2A"
+    case chuck2B = "Extra 2B"
+    case chuck3A = "Extra 3A"
+    case chuck3B = "Extra 3B"
+    case chuck3C = "Extra 3C"
     
     public func getInteger()->String {
         switch self{
@@ -130,97 +130,13 @@ extension LanguageEngine{
         self.v2MGroup = v2MGroup
     }
     
-    func processVerbModel(currentModel: RomanceVerbModel){
-        computeSelectedVerbModels()
-        computeCompletedVerbModels()
         
-//        showSheet.toggle()
-        vmecdm.setAllSelected(flag: false)
-        setCurrentVerbModel(model: currentModel)
-        vmecdm.setSelected(verbModelString: currentModel.modelVerb, flag: true)
-        //create a study package
-        var verbModelList = [RomanceVerbModel]()
-        verbModelList.append(currentModel)
-        var verbModelStringList = [String]()
-        verbModelStringList.append(currentModel.modelVerb)
-        var sp = StudyPackageClass(name: currentModel.modelVerb, verbModelStringList: verbModelStringList,
-                                   tenseList: [.present, .preterite, .imperfect, .conditional],
-                                   chapter: "Verb model", lesson: currentModel.modelVerb)
-        sp.preferredVerbList = findVerbsOfSameModel(targetID: currentModel.id)
-        currentV2mChapter = sp.chapter
-        currentV2mLesson = sp.lesson
-        fillVerbCubeAndQuizCubeLists()
-        self.studyPackage = sp
-        setTenses(tenseList: sp.tenseList)
-        setVerbOrModelMode(.modelMode)
-    }
-    
-    func restoreModel(){
-        var verbModelStringList = [String]()
-        if currentV2mLesson == "nada 3" {
-            processVerbModel(currentModel: findModelForThisVerbString(verbWord: "acabar"))
-            trimFilteredVerbList(16)
-            return
-        }
-        verbModelStringList.append(currentV2mLesson)
-        let sp = StudyPackageClass(name: currentV2mLesson, verbModelStringList: verbModelStringList,
-                                   tenseList: [.present, .preterite, .imperfect, .conditional],
-                                   chapter: "Verb model", lesson: currentV2mLesson)
-        let verbModel = findModelForThisVerbString(verbWord: currentV2mLesson)
-        sp.preferredVerbList = findVerbsOfSameModel(targetID: verbModel.id)
-        setFilteredVerbList(verbList: sp.preferredVerbList)
-        currentV2mChapter = sp.chapter
-        currentV2mLesson = sp.lesson
-        studyPackage = sp
-        setVerbOrModelMode(.modelMode)
-        trimFilteredVerbList(16)
-    }
-    
-    func trimFilteredVerbList(_ maxCount: Int){
-        var verbList = getFilteredVerbs()
-        if verbList.count > maxCount {
-            let extra = verbList.count - maxCount
-            verbList.shuffle()
-            verbList.removeLast(extra)
-        }
-        setFilteredVerbList(verbList: verbList)
-    }
-    
-    func restoreV2MPackage(){
-        loadAllV2Ms()
-//        dumpV2MGroupManager()
-        var v2mFound = false
-        if currentV2mChapter == "Verb model" {
-//            print("restoreV2MPackage: \(currentV2mLesson)")
-            restoreModel()
-        } else {
-//            print("restoreV2MPackage: \(currentV2mChapter), \(currentV2mLesson)")
-            for v2m in v2MGroupManager.getV2MGroupList() {
-                if v2m.chapter == currentV2mChapter && v2m.lesson == currentV2mLesson {
-                    v2MGroup = v2m
-                    v2mFound = true
-                    break
-                }
-            }
-            if v2mFound {
-//                print("currentV2M was found")
-                studyPackage = convertV2MGroupToStudyPackage(v2mGroup: v2MGroup)
-                specialVerbType = studyPackage.specialVerbType
-                installStudyPackage(sp: studyPackage)
-            }
-            else {
-//                print("currentV2M was not found")
-                restoreModel()
-            }
-            
-        }
-    }
     
     func loadAllV2Ms(){
         fillV2MGroupManager(textBook: "Realidades I")
 //        fillV2MGroupManager(textBook: "Realidades II" )
 //        fillV2MGroupManager(textBook: "Realidades III" )
-        fillV2MGroupManager(textBook: "Chuck 1" )
+        fillV2MGroupManager(textBook: "Extra 1" )
 //        fillV2MGroupManager(textBook: "Michelle 1" )
     }
     
@@ -232,7 +148,7 @@ extension LanguageEngine{
             loadRealidadesII()
         case "Realidades III":
             loadRealidadesIII()
-        case "Chuck 1":
+        case "Extra 1":
             loadChuck1()
         default:
             loadChuck1()
@@ -253,7 +169,7 @@ extension LanguageEngine{
         return sp
     }
     func loadChuck1(){
-        let v2mGroupChuck1A = VerbToModelGroup(chapter: "Chuck 1A", lesson: "Auxiliary - infinitive",
+        let v2mGroupChuck1A = VerbToModelGroup(chapter: "Extra 1A", lesson: "Auxiliary - infinitive",
                                          verbToModelList :
                                             [VerbToModelStruct("tener que"), VerbToModelStruct("volver a"), VerbToModelStruct("acabar de"), VerbToModelStruct("quedar sin"), VerbToModelStruct("venir a")],
                                            tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
@@ -261,7 +177,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck1A)
         v2MGroupManager.appendGroup(v2mGroupChuck1A)
         
-        let v2mGroupChuck1A2 = VerbToModelGroup(chapter: "Chuck 1A", lesson: "Auxiliary - gerund",
+        let v2mGroupChuck1A2 = VerbToModelGroup(chapter: "Extra 1A", lesson: "Auxiliary - gerund",
                                          verbToModelList :
                                             [VerbToModelStruct("andar"), VerbToModelStruct("seguir"), VerbToModelStruct("venir"), VerbToModelStruct("verse"), VerbToModelStruct("ir")],
                                            tenseList: [.present, .preterite, .presentSubjunctive, .presentPerfect],
@@ -269,7 +185,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck1A2)
         v2MGroupManager.appendGroup(v2mGroupChuck1A2)
         
-        let v2mGroupChuck1B = VerbToModelGroup(chapter: "Chuck 1B", lesson: "Irregular reflexive verbs",
+        let v2mGroupChuck1B = VerbToModelGroup(chapter: "Extra 1B", lesson: "Irregular reflexive verbs",
                                          verbToModelList :
                                             [VerbToModelStruct("irse"), VerbToModelStruct("ir"),
                                              VerbToModelStruct("verse"), VerbToModelStruct("ver"),
@@ -279,17 +195,17 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck1B)
         v2MGroupManager.appendGroup(v2mGroupChuck1B)
         
-        let v2mGroupChuck1B2 = VerbToModelGroup(chapter: "Chuck 1B", lesson: "Regular reflexive verbs",
+        let v2mGroupChuck1B2 = VerbToModelGroup(chapter: "Extra 1B", lesson: "Regular reflexive verbs",
                                          verbToModelList :
-                                            [ VerbToModelStruct("encontrarse"),VerbToModelStruct("casarse"),
-                                             VerbToModelStruct("preocuparse"), VerbToModelStruct("levantarse"),
-                                             VerbToModelStruct("acordarse"), ],
+                                            [ VerbToModelStruct("encontrarse"),VerbToModelStruct("ponerse"),
+                                             VerbToModelStruct("sentirse"), VerbToModelStruct("levantarse"),
+                                             VerbToModelStruct("atreverse"), VerbToModelStruct("referirse")],
                                            tenseList: [.present, .preterite, .imperative, .presentSubjunctive, .presentPerfect],
                                            specialVerbType: .normal)
         fillAssociatedModelList(v2mGroupChuck1B2)
         v2MGroupManager.appendGroup(v2mGroupChuck1B2)
         
-        let v2mGroupChuck1B3 = VerbToModelGroup(chapter: "Chuck 1B", lesson: "Imperative",
+        let v2mGroupChuck1B3 = VerbToModelGroup(chapter: "Extra 1B", lesson: "Imperative",
                                          verbToModelList :
                                             [VerbToModelStruct("hablar"), VerbToModelStruct("deber"), VerbToModelStruct("vivir"),
                                              VerbToModelStruct("ser"),
@@ -306,7 +222,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck1B3)
         v2MGroupManager.appendGroup(v2mGroupChuck1B3)
         
-        let v2mGroupChuck2A1 = VerbToModelGroup(chapter: "Chuck 2A", lesson: "Verbs with irregular past participles",
+        let v2mGroupChuck2A1 = VerbToModelGroup(chapter: "Extra 2A", lesson: "Verbs with irregular past participles",
                                          verbToModelList :
                                             [VerbToModelStruct("escribir"), VerbToModelStruct("abrir"), VerbToModelStruct("descubrir"),VerbToModelStruct("romper"), VerbToModelStruct("morir"), VerbToModelStruct("poner"),
                                              VerbToModelStruct("reponer"), VerbToModelStruct("romper"), VerbToModelStruct("reromper"),
@@ -320,7 +236,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck2A1)
         v2MGroupManager.appendGroup(v2mGroupChuck2A1)
         
-        let v2mGroupChuck2A2 = VerbToModelGroup(chapter: "Chuck 2A", lesson: "Verbs with irregular gerunds",
+        let v2mGroupChuck2A2 = VerbToModelGroup(chapter: "Extra 2A", lesson: "Verbs with irregular gerunds",
                                          verbToModelList :
                                                 [VerbToModelStruct("decir"), VerbToModelStruct("dormir"), VerbToModelStruct("morir"), VerbToModelStruct("pedir"), VerbToModelStruct("sentir"), VerbToModelStruct("vestir"), VerbToModelStruct("mentir"), VerbToModelStruct("oír"), VerbToModelStruct("reír"), VerbToModelStruct("traer"), VerbToModelStruct("caer"), ],
                                            tenseList: [.presentProgressive],
@@ -328,7 +244,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck2A2)
         v2MGroupManager.appendGroup(v2mGroupChuck2A2)
         
-        let v2mGroupChuck2B = VerbToModelGroup(chapter: "Chuck 2B", lesson: "Unusual verbs 1",
+        let v2mGroupChuck2B = VerbToModelGroup(chapter: "Extra 2B", lesson: "Unusual verbs 1",
                                          verbToModelList :
                                                 [
                                                     VerbToModelStruct("traer"),
@@ -338,7 +254,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck2B)
         v2MGroupManager.appendGroup(v2mGroupChuck2B)
         
-        let v2mGroupChuck2B1 = VerbToModelGroup(chapter: "Chuck 2B", lesson: "Unusual verbs 2",
+        let v2mGroupChuck2B1 = VerbToModelGroup(chapter: "Extra 2B", lesson: "Unusual verbs 2",
                                          verbToModelList :
                                                 [ VerbToModelStruct("reñir"), VerbToModelStruct("raer"), VerbToModelStruct("podrir"), VerbToModelStruct("oler"), VerbToModelStruct("errar"), VerbToModelStruct("desosar")],
                                                 tenseList: [.present, .preterite, .imperfect, .future, .conditional, .imperative, .presentSubjunctive, .imperfectSubjunctiveRA, .presentPerfect, .presentProgressive, ],
@@ -346,7 +262,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck2B1)
         v2MGroupManager.appendGroup(v2mGroupChuck2B1)
         
-        let v2mGroupChuck2B2 = VerbToModelGroup(chapter: "Chuck 2B", lesson: "8 Random verbs 1",
+        let v2mGroupChuck2B2 = VerbToModelGroup(chapter: "Extra 2B", lesson: "9 Random verbs 1",
                                          verbToModelList :
                                                 [ VerbToModelStruct("animar"), VerbToModelStruct("elegir"),
                                                   VerbToModelStruct("enraizar"),
@@ -360,7 +276,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck2B2)
         v2MGroupManager.appendGroup(v2mGroupChuck2B2)
         
-        let v2mGroupChuck2B3 = VerbToModelGroup(chapter: "Chuck 2B", lesson: "More AR, ER, IR verbs",
+        let v2mGroupChuck2B3 = VerbToModelGroup(chapter: "Extra 2B", lesson: "More AR, ER, IR verbs",
                                          verbToModelList :
                                             [ VerbToModelStruct("acabar"),
                                               VerbToModelStruct("acariciar"),
@@ -381,7 +297,7 @@ extension LanguageEngine{
         v2MGroupManager.appendGroup(v2mGroupChuck2B3)
         
         
-        let v2mGroupChuck3A1 = VerbToModelGroup(chapter: "Chuck 3A", lesson: "Stem-changing a-e",
+        let v2mGroupChuck3A1 = VerbToModelGroup(chapter: "Extra 3A", lesson: "Stem-changing a-e",
                                          verbToModelList :
                                             [VerbToModelStruct("avergonzar"), VerbToModelStruct("adquirir"), VerbToModelStruct("aullar"),VerbToModelStruct("cocer"), VerbToModelStruct("colgar"), VerbToModelStruct("decir"),
                                              VerbToModelStruct("defender"), VerbToModelStruct("desosar"), VerbToModelStruct("descernir"),
@@ -393,7 +309,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3A1)
         v2MGroupManager.appendGroup(v2mGroupChuck3A1)
         
-        let v2mGroupChuck3A2 = VerbToModelGroup(chapter: "Chuck 3A", lesson: "Stem-changing f-p",
+        let v2mGroupChuck3A2 = VerbToModelGroup(chapter: "Extra 3A", lesson: "Stem-changing f-p",
                                          verbToModelList :
                                             [VerbToModelStruct("forzar"), VerbToModelStruct("guiar"), VerbToModelStruct("influir"),VerbToModelStruct("jugar"), VerbToModelStruct("mover"), VerbToModelStruct("oler"),
                                              VerbToModelStruct("pedir"), VerbToModelStruct("pensar"), VerbToModelStruct("poder"),
@@ -404,7 +320,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3A2)
         v2MGroupManager.appendGroup(v2mGroupChuck3A2)
         
-        let v2mGroupChuck3A3 = VerbToModelGroup(chapter: "Chuck 3A", lesson: "Stem-changing q-z",
+        let v2mGroupChuck3A3 = VerbToModelGroup(chapter: "Extra 3A", lesson: "Stem-changing q-z",
                                          verbToModelList :
                                             [VerbToModelStruct("querer"), VerbToModelStruct("regar"),
                                              VerbToModelStruct("reír"), VerbToModelStruct("reñir"), VerbToModelStruct("reunir"), VerbToModelStruct("seguir"), VerbToModelStruct("sentir"),VerbToModelStruct("soler"),VerbToModelStruct("reunir"),VerbToModelStruct("trocar"),VerbToModelStruct("venir"),VerbToModelStruct("volver")],
@@ -413,7 +329,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3A3)
         v2MGroupManager.appendGroup(v2mGroupChuck3A3)
         
-        let v2mGroupChuck3B1 = VerbToModelGroup(chapter: "Chuck 3B", lesson: "Spell-changing a-d",
+        let v2mGroupChuck3B1 = VerbToModelGroup(chapter: "Extra 3B", lesson: "Spell-changing a-d",
                                          verbToModelList :
                                             [VerbToModelStruct("asir"), VerbToModelStruct("avergonzar"), VerbToModelStruct("averiguar"),VerbToModelStruct("caber"), VerbToModelStruct("caer"), VerbToModelStruct("cocer"),
                                              VerbToModelStruct("coger"), VerbToModelStruct("colgar"), VerbToModelStruct("conocer"),
@@ -426,7 +342,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3B1)
         v2MGroupManager.appendGroup(v2mGroupChuck3B1)
         
-        let v2mGroupChuck3B2 = VerbToModelGroup(chapter: "Chuck 3B", lesson: "Spell-changing e-p",
+        let v2mGroupChuck3B2 = VerbToModelGroup(chapter: "Extra 3B", lesson: "Spell-changing e-p",
                                          verbToModelList :
                                             [VerbToModelStruct("elegir"), VerbToModelStruct("guiar"), VerbToModelStruct("hacer"),VerbToModelStruct("lucir"), VerbToModelStruct("mecer"), VerbToModelStruct("oír"),
                                              VerbToModelStruct("parecer"), VerbToModelStruct("placer"),
@@ -436,7 +352,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3B2)
         v2MGroupManager.appendGroup(v2mGroupChuck3B2)
         
-        let v2mGroupChuck3B3 = VerbToModelGroup(chapter: "Chuck 3B", lesson: "Spell-changing p-z",
+        let v2mGroupChuck3B3 = VerbToModelGroup(chapter: "Extra 3B", lesson: "Spell-changing p-z",
                                          verbToModelList :
                                             [ VerbToModelStruct("predecir"),
                                              VerbToModelStruct("producir"),
@@ -448,7 +364,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3B3)
         v2MGroupManager.appendGroup(v2mGroupChuck3B3)
         
-        let v2mGroupChuck3B4 = VerbToModelGroup(chapter: "Chuck 3B", lesson: "Spell-changing preterite a-d",
+        let v2mGroupChuck3B4 = VerbToModelGroup(chapter: "Extra 3B", lesson: "Spell-changing preterite a-d",
                                          verbToModelList :
                                             [ VerbToModelStruct("ahincar"),
                                              VerbToModelStruct("andar"),
@@ -460,7 +376,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3B4)
         v2MGroupManager.appendGroup(v2mGroupChuck3B4)
         
-        let v2mGroupChuck3C1 = VerbToModelGroup(chapter: "Chuck 3C", lesson: "Irregular verbs 1",
+        let v2mGroupChuck3C1 = VerbToModelGroup(chapter: "Extra 3C", lesson: "Irregular verbs 1",
                                          verbToModelList :
                                             [ VerbToModelStruct("ser"),
                                              VerbToModelStruct("estar"),
@@ -473,7 +389,7 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck3C1)
         v2MGroupManager.appendGroup(v2mGroupChuck3C1)
         
-        let v2mGroupChuck3C2 = VerbToModelGroup(chapter: "Chuck 3C", lesson: "Irregular verbs 2",
+        let v2mGroupChuck3C2 = VerbToModelGroup(chapter: "Extra 3C", lesson: "Irregular verbs 2",
                                          verbToModelList :
                                             [ VerbToModelStruct("poder"), VerbToModelStruct("poner"),
                                               VerbToModelStruct("predecir"), VerbToModelStruct("producir"),

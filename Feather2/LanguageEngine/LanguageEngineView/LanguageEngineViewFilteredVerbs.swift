@@ -43,19 +43,19 @@ extension LanguageViewModel{
         languageEngine.addVerbToFilteredList(verb: verb)
     }
     
-    func copyWordCollectionToFilteredList(wordCollection: dWordCollection){
-        languageEngine.copyWordCollectionToFilteredList(wordCollection: wordCollection)
-    }
-    
-    func getWordCollectionCount(wc: dWordCollection, wordType: WordType)->Int{
-        languageEngine.getWordCollectionCount(wc: wc, wordType: wordType)
-    }
-    
-    func getWordCollection(index: Int)->dWordCollection{
-        languageEngine.getWordCollection(index: index)
-    }
-    
-    func getWordCollectionList()->[dWordCollection]{
-        languageEngine.getWordCollectionList()
-    }
+//    func copyWordCollectionToFilteredList(wordCollection: dWordCollection){
+//        languageEngine.copyWordCollectionToFilteredList(wordCollection: wordCollection)
+//    }
+//    
+//    func getWordCollectionCount(wc: dWordCollection, wordType: WordType)->Int{
+//        languageEngine.getWordCollectionCount(wc: wc, wordType: wordType)
+//    }
+//    
+//    func getWordCollection(index: Int)->dWordCollection{
+//        languageEngine.getWordCollection(index: index)
+//    }
+//    
+//    func getWordCollectionList()->[dWordCollection]{
+//        languageEngine.getWordCollectionList()
+//    }
 }

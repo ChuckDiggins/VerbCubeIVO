@@ -13,8 +13,8 @@ struct AllModelsView: View {
     @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var router: Router
-    @AppStorage("V2MChapter") var currentV2mChapter = ""
-    @AppStorage("V2MLesson") var currentV2mLesson = ""
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
     
     @State var isSwiping = true
     @State var startPos : CGPoint = .zero
@@ -37,6 +37,7 @@ struct AllModelsView: View {
     @State private var patternTypeStringList = [String]()
     @State private var modelVerbString = ""
     @State private var userString = ""
+    @State private var currentModelCompleted = false
     
     var body: some View {
         VStack{
@@ -107,16 +108,39 @@ struct AllModelsView: View {
                 .background(.yellow)
                 
                 Button{
-                    processVerbModel()
+                    languageViewModel.setVerbModelTo(currentModel)
                     router.reset()
                     dismiss()
                 } label: {
                     Text("Select this verb model")
-                }.frame(width: 300, height: 35, alignment: .center)
-                    .background(.yellow)
-                    .foregroundColor(.black)
-                    .cornerRadius(10)
-                    .padding(.bottom)
+                }
+                .disabled(currentModelCompleted)
+                .frame(width: 300, height: 35, alignment: .center)
+                .background(.yellow)
+                .foregroundColor(.black)
+                .cornerRadius(10)
+                .padding(.bottom)
+                    
+                
+                if currentModelCompleted {
+                    Button{
+//                        currentModelCompleted.toggle()
+                    } label: {
+                        Text("Completed -- ✅")
+                    }.frame(width: 300, height: 35, alignment: .center)
+                        .background(.white)
+                        .foregroundColor(.black)
+                        .cornerRadius(10)
+                        .padding(.bottom)
+                }
+//                else {
+//                    Text("You can now Select above")
+//                        .frame(width: 300, height: 35, alignment: .center)
+//                            .background(.white)
+//                            .foregroundColor(.black)
+//                            .cornerRadius(10)
+//                            .padding(.bottom)
+//                }
                 
                 Divider().frame(height:2).background(.yellow)
                 ForEach (0..<6){ i in
@@ -180,11 +204,11 @@ struct AllModelsView: View {
     }
     
     func findClosestModel(_ userString: String){
-        var modelIndex = 0
+//        var modelIndex = 0
         var string1 = ""
         var string2 = ""
         for index in 0 ..< verbModelList.count-1 {
-            modelIndex = index
+//            modelIndex = index
             string1 = verbModelList[index].modelVerb
             string2 = verbModelList[index+1].modelVerb
             if userString > string1 && userString < string2 {
@@ -251,38 +275,12 @@ struct AllModelsView: View {
         currentModel = verbModelList[verbModelIndex]
         setCurrentVerb()
     }
-   
-    
-    
-    func processVerbModel(){
-        languageViewModel.computeSelectedVerbModels()
-        languageViewModel.computeCompletedVerbModels()
-        
-//        showSheet.toggle()
-        vmecdm.setAllSelected(flag: false)
-        languageViewModel.setCurrentVerbModel(model: currentModel)
-        vmecdm.setSelected(verbModelString: currentModel.modelVerb, flag: true)
-        //create a study package
-        var verbModelList = [RomanceVerbModel]()
-        verbModelList.append(currentModel)
-        var verbModelStringList = [String]()
-        verbModelStringList.append(currentModel.modelVerb)
-        var sp = StudyPackageClass(name: currentModel.modelVerb, verbModelStringList: verbModelStringList,
-                                   tenseList: [.present, .preterite, .imperfect, .conditional],
-                                   chapter: "Verb model", lesson: currentModel.modelVerb)
-        sp.preferredVerbList = languageViewModel.findVerbsOfSameModel(targetID: currentModel.id)
-        currentV2mChapter = sp.chapter
-        currentV2mLesson = sp.lesson
-        languageViewModel.fillVerbCubeAndQuizCubeLists()
-        languageViewModel.setStudyPackage(sp: sp)
-        languageViewModel.setVerbOrModelMode(mode: .modelMode)
-        languageViewModel.trimFilteredVerbList(16)
-    }
-    
-    
+
     func setCurrentVerb(){
         loadModelVerbString()
         analyzeModel()
+        currentModelCompleted = false
+        if languageViewModel.isCompleted(verbModel: currentModel){ currentModelCompleted = true}
         currentTense = languageViewModel.getCurrentTense()
         setSubjunctiveStuff()
         let verbList = languageViewModel.findVerbsOfSameModel(targetID: currentModel.id)
@@ -322,6 +320,7 @@ struct AllModelsView: View {
                                                                          verbStartsWithVowel: vu.startsWithVowelSound(characterArray: vvm[i]))
         }
     }
+    
     func setSubjunctiveStuff(){
         subjunctiveWord = ""
         if languageViewModel.getCurrentTense().isSubjunctive() {

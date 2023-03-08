@@ -27,28 +27,39 @@ struct Feather2App: SwiftUI.App {
     @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
     @StateObject var vmecdm = VerbModelEntityCoreDataManager()
     @StateObject var router = Router()
-   
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
+    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
+    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("currentPage") var currentPage = 1
+    @AppStorage("Explanation Page") var explanationPage = 7
+    
 //    @StateObject private var dataController = DataController()
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack{
-//                TabBarClassicVC(languageViewModel: languageViewModel)
-                NavStackCarouselDispatcherView(languageViewModel: languageViewModel)
-//                NavigationStackView(languageViewModel: languageViewModel)
-//                CircleView(languageViewModel: languageViewModel)
-//                CircleButtonView(languageViewModel: languageViewModel, selectedNewVerbModelType: NewVerbModelType.Regular)
-                    .onAppear{
-                        languageViewModel.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
-                    }
-                Spacer()
-            }.environmentObject(languageViewModel)
-                .environmentObject(vmecdm)
-                .environmentObject(router)
+            if currentPage < totalPages{
+                WalkthroughScreen()
+            } else if explanationPage < totalExplanationPages{
+                ExplanationScreen()
+            }
+            else {
+                NavigationStack{
+                    //                TabBarClassicVC(languageViewModel: languageViewModel)
+                    NavStackCarouselDispatcherView(languageViewModel: languageViewModel)
+                    //                NavigationStackView(languageViewModel: languageViewModel)
+                    //                CircleView(languageViewModel: languageViewModel)
+                    //                CircleButtonView(languageViewModel: languageViewModel, selectedNewVerbModelType: NewVerbModelType.Regular)
+                    
+                    Spacer()
+                }.environmentObject(languageViewModel)
+                    .environmentObject(vmecdm)
+                    .environmentObject(router)
+            }
         }
     }
-  
 }
+
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     static var orientationLock = UIInterfaceOrientationMask.all //by default, all views rotate freely

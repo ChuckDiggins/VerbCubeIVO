@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "chuckdiggins_cartoon_bird_glasses_jumping_up_a_staircase_of_3_d_328e278a-9bed-4542-89c0-9c9a63226c0f.jpeg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

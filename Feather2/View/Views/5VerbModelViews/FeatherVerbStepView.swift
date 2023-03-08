@@ -38,7 +38,7 @@ struct FeatherVerbStepView: View {
     @State var maxVerbCount = 8
     @State var finalMessage = ""
     @State var simpleAlert = false
-    @State var currentVerbModelString = ""
+    @State var verbModelString = ""
     @State var textFieldText = ""
     @State var infinitiveString = ""
     @State var morphStructList = [MorphStruct]()
@@ -374,7 +374,7 @@ struct FeatherVerbStepView: View {
     }
     
     func initializeStuff(){
-        currentVerbModelString = languageViewModel.getCurrentVerbModel().modelVerb
+        verbModelString = languageViewModel.getCurrentVerbModel().modelVerb
         loadVerbList()
         verbCount = verbList.count
         if verbCount > maxVerbCount {

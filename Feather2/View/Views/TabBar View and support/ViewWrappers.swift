@@ -74,7 +74,7 @@ struct ModelSelectionWrapper: View {
                 }.modifier(OtherBlueButtonModifier())
                 
                 if languageViewModel.getSelectedVerbModelList().count > 0 {
-                    NavigationLink(destination: ListVerbsForModelView(languageViewModel: languageViewModel, model:  languageViewModel.getSelectedVerbModelList()[0]))
+                    NavigationLink(destination: ListVerbsForModelView(languageViewModel: languageViewModel, vmecdm: vmecdm, verbModel:  languageViewModel.getSelectedVerbModelList()[0]))
                     {
                     Text("List Current Verbs")
                     }.modifier(OtherBlueButtonModifier())
@@ -179,7 +179,7 @@ struct VerbSeeWrapper: View {
                     
                 }.onAppear{
                     verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
-                    var svt = languageViewModel.getStudyPackage().specialVerbType
+                    let svt = languageViewModel.getStudyPackage().specialVerbType
                     print(svt.rawValue)
                 }
                 .foregroundColor(Color("BethanyGreenText"))

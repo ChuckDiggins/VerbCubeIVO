@@ -15,6 +15,12 @@ struct PreferencesView: View {
     @State var speechModeActiveString = "Speech mode is ACTIVE"
     @State var tenseList = [Tense]()
     @State var modelCompleted = false
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
+    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
+    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("currentPage") var currentPage = 1
+    @AppStorage("Explanation Page") var explanationPage = 7
     
     var body: some View {
         
@@ -29,7 +35,6 @@ struct PreferencesView: View {
                         .font(.title)
                     Image(systemName: "globe")
                         .font(.largeTitle)
-                    
                 }
                 ScrollView {
                     DisclosureGroupPreferences()
@@ -42,28 +47,39 @@ struct PreferencesView: View {
                     } .modifier(ModelTensePersonButtonModifier())
 
                     Button{
-                        languageViewModel.toggleSpeechMode()
-                        setSpeechModeActiveString()
-                        textToSpeech(text: speechModeActiveString, language: .English)
+                        currentPage = 1
                     } label: {
-                        HStack{
-                            Text(speechModeActiveString)
-                            Spacer()
-                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-                        }
+                        Text("Reset welcome series")
                     }
                     .modifier(ModelTensePersonButtonModifier())
                     
-                    ListVerbModelsView(languageViewModel: languageViewModel)
+//                    Button{
+//                        explanationPage = 1
+//                    } label: {
+//                        Text("Show program overview series")
+//                    }
+//                    .modifier(ModelTensePersonButtonModifier())
+                    
+//                    Button{
+//                        languageViewModel.toggleSpeechMode()
+//                        setSpeechModeActiveString()
+//                        textToSpeech(text: speechModeActiveString, language: .English)
+//                    } label: {
+//                        HStack{
+//                            Text(speechModeActiveString)
+//                            Spacer()
+//                            Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
+//                        }
+//                    }
+//                    .modifier(ModelTensePersonButtonModifier())
+                    
+//                    ListVerbModelsView(languageViewModel: languageViewModel)
                     PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
-                    ChangeLanguageView(languageViewModel: languageViewModel)
+//                    ChangeLanguageView(languageViewModel: languageViewModel)
                     
                     
                     Button{
-                        languageViewModel.restoreSelectedVerbs()
-                        for vm in languageViewModel.getSelectedVerbModelList(){
-                            print("On exit: modelVerb \(vm.modelVerb)")
-                        }
+//                        languageViewModel.restoreSelectedVerbs()
                        exit(0)
                     } label: {
                         Text("Exit Application")

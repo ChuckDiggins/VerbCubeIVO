@@ -51,7 +51,7 @@ struct MultiVerbMorphView: View {
     @State var finalMessage = ""
     @State var verbsFromSameFeather = false
     @State var simpleAlert = false
-    @State var currentVerbModelString = ""
+    @State var verbModelString = ""
     @State var subjunctiveWord = "que "
     @State var currentEnding = VerbEnding.none
     @State var verbsExistForAll3Endings = false
@@ -214,7 +214,7 @@ struct MultiVerbMorphView: View {
     func initializeStuff(){
         verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
         if verbsExistForAll3Endings { currentEnding = .AR }
-        currentVerbModelString = languageViewModel.getCurrentVerbModel().modelVerb
+        verbModelString = languageViewModel.getCurrentVerbModel().modelVerb
         loadVerbList()
         verbCount = verbList.count
         if verbCount > maxVerbCount {

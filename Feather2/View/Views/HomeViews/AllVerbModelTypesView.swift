@@ -157,7 +157,7 @@ struct AllVerbModelTypesView: View {
                     Divider().frame(height:2).background(.yellow)
                 }
                 if homemadeBarChartMgr.getBarCount() > 0 {
-                    GeneralVerbBarChartView(languageViewModel: languageViewModel, homemadeBarChartMgr: homemadeBarChartMgr, selectedNewVerbType: $selectedNewVerbModelType, selectedVerbEnding: $selectedVerbEnding)
+                    GeneralVerbBarChartView(languageViewModel: languageViewModel, vmecdm: vmecdm, homemadeBarChartMgr: homemadeBarChartMgr, selectedNewVerbType: $selectedNewVerbModelType, selectedVerbEnding: $selectedVerbEnding)
                 }
             }
         }.onAppear{
@@ -243,7 +243,7 @@ struct AllVerbModelTypesView: View {
     }
     
     func createBarListForPatternType(){
-        var spt = SpecialPatternType.none
+//        var spt = SpecialPatternType.none
         let mpsList = getModelPatternStructListAtSelectedTypeAndEnding()
         homemadeBarChartMgr.createBarList(mpsList: mpsList, maxCount: 100)
         patternRelatedBarList.removeAll()
@@ -252,7 +252,7 @@ struct AllVerbModelTypesView: View {
         
         if selectedNewVerbModelType != .Critical {
             for bar in homemadeBarChartMgr.getBars(){
-                var sptList = languageViewModel.getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: bar.model, verbType: languageViewModel.getSelectedNewVerbModelType())
+                let sptList = languageViewModel.getPatternsForGivenVerbModelTypeForThisVerbModel(verbModel: bar.model, verbType: languageViewModel.getSelectedNewVerbModelType())
                 for spt in sptList {
                     if spt == currentSelectedSpecialPatternType{
                         patternRelatedBarList.append(bar)
@@ -274,7 +274,7 @@ struct AllVerbModelTypesView: View {
             vmecdm.setSelected(verbModelString: "regularAR", flag: true)
             vmecdm.setSelected(verbModelString: "regularER", flag: true)
             vmecdm.setSelected(verbModelString: "regularIR", flag: true)
-            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:5, inputStudyPackage: StudyPackageClass())
+            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(maxVerbCountPerModel: 10)
         case .Critical:
             vmecdm.setSelected(verbModelString: "estar", flag: true)
             vmecdm.setSelected(verbModelString: "ser", flag: true)
@@ -285,11 +285,11 @@ struct AllVerbModelTypesView: View {
             vmecdm.setSelected(verbModelString: "ver", flag: true)
             vmecdm.setSelected(verbModelString: "saber", flag: true)
             vmecdm.setSelected(verbModelString: "reír", flag: true)
-            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:10, inputStudyPackage: StudyPackageClass())
+            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(maxVerbCountPerModel: 10)
         case .StemChanging, .Irregular, .SpellChanging:
             let currentVerbModel = languageViewModel.getCurrentVerbModel()
             vmecdm.setSelected(verbModelString: currentVerbModel.modelVerb, flag: true)
-            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel:10, inputStudyPackage: StudyPackageClass())
+            languageViewModel.fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(maxVerbCountPerModel: 10)
         default:
             break
         }
@@ -325,7 +325,9 @@ struct AllVerbModelTypesView: View {
 
 struct GeneralVerbBarChartView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
+    @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
     @ObservedObject var homemadeBarChartMgr : HomemadeBarChartManager
+    
     
     @Binding var selectedNewVerbType : NewVerbModelType
     @Binding var selectedVerbEnding : VerbEnding
@@ -348,12 +350,12 @@ struct GeneralVerbBarChartView: View {
         GeometryReader{ geometry in
             ScrollView{
                 VStack(alignment: .leading, spacing: 0){
-                    ShowVerbModelListSection(languageViewModel: languageViewModel, homemadeBarChartMgr: homemadeBarChartMgr, selectedNewVerbType: $selectedNewVerbType, selectedSpecialPatternType: languageViewModel.getSelectedSpecialPatternType())
+                    ShowVerbModelListSection(languageViewModel: languageViewModel, vmecdm: vmecdm, homemadeBarChartMgr: homemadeBarChartMgr, selectedNewVerbType: $selectedNewVerbType, selectedSpecialPatternType: languageViewModel.getSelectedSpecialPatternType())
                     Spacer()
                 } .padding(.horizontal, 5)
             }
             .fullScreenCover(isPresented: $showSheet, content: {
-                ListVerbsForModelView(languageViewModel: languageViewModel, model: selectedModel)
+                ListVerbsForModelView(languageViewModel: languageViewModel, vmecdm: vmecdm, verbModel: selectedModel)
             })
             .background(Color("BethanyNavalBackground"))
             .foregroundColor(Color("BethanyGreenText"))
@@ -384,6 +386,7 @@ struct GeneralVerbBarChartView: View {
 
 struct ShowVerbModelListSection: View {
     @ObservedObject var languageViewModel: LanguageViewModel
+    @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
     @ObservedObject var homemadeBarChartMgr : HomemadeBarChartManager
     @Binding var selectedNewVerbType : NewVerbModelType
     @State var selectedSpecialPatternType : SpecialPatternType
@@ -432,7 +435,7 @@ struct ShowVerbModelListSection: View {
             
         }
         .fullScreenCover(isPresented: $showSheet, content: {
-            ListVerbsForModelView(languageViewModel: languageViewModel, model: selectedModel)
+            ListVerbsForModelView(languageViewModel: languageViewModel, vmecdm: vmecdm, verbModel: selectedModel)
         })
     }
     

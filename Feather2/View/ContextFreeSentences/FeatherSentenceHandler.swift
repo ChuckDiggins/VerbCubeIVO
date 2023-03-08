@@ -46,7 +46,7 @@ struct FeatherSentenceHandler {
         let NP1 = dNounPhrase()
         NP1.appendCluster(cluster: m_randomWord.getAgnosticRandomWordAsSingle(wordType: .PersPro, isSubject:true))
         let VP = dVerbPhrase()
-        var single = m_randomWord.getAgnosticRandomWordAsSingle(wordType: .V, isSubject:false)
+        let single = m_randomWord.getAgnosticRandomWordAsSingle(wordType: .V, isSubject:false)
         VP.appendCluster(cluster: single)
         clause.clearClusterList()
         clause.appendCluster(cluster: NP1)

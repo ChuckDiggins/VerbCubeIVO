@@ -72,7 +72,10 @@ enum FlashMode {
 
 struct CombinedAlert: View {
     @ObservedObject var languageViewModel : LanguageViewModel
-
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"
+    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
+    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
     var flashMode : FlashMode
     @State var currentLanguage = LanguageType.Agnostic
     
@@ -85,6 +88,9 @@ struct CombinedAlert: View {
     @State var answerComplete = false
     @State var previousCorrectAnswer = ""
     @State var previousWrongAnswer = ""
+    @State var percentCorrect = 0.0
+    @State var minimumPercentCorrect = 0.8
+    @State var completedModelsToPass = 5
     
     enum FocusField: Hashable {
         case field
@@ -101,7 +107,7 @@ struct CombinedAlert: View {
     @State var isMale = true
     @State var modelCompleted = false
     @State var newModel = false
-    @State var completedModelsToPass = 3
+   
     @State var frameWidth : CGFloat = 0.0
     @State var frameHeight : CGFloat = 0.0
     @State var speechModeActive = false
@@ -134,6 +140,7 @@ struct CombinedAlert: View {
                 currentLanguage = languageViewModel.getCurrentLanguage()
                 wrong = languageViewModel.getWrongScore()
                 correct = languageViewModel.getCorrectScore()
+                languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
                 getNextStudentProblem()
             }
             
@@ -180,20 +187,22 @@ struct CombinedAlert: View {
                             fillMessageFooter(isCorrect: isCorrect)
                             answerComplete = true
                             
-                            if correct > completedModelsToPass {
+                            if thisProblemComplete() {
                                 modelCompleted.toggle()
                                 languageViewModel.setCoreAndModelSelectedToComplete()
                             }
+                            
                         } label: {
-                            HStack(spacing: 2){
+                            HStack(spacing: 5 ){
                                 Text(personString).foregroundColor(.red)
                                 Text(fcp.getAnswer(i: i))
                                 
-                            }.frame(width:300, height:30)
+                            }.frame(width:300, height:30, alignment: .leading)
+                                .padding(3)
                                 .font(.callout)
                                 .background(.yellow)
                                 .foregroundColor(.black)
-                                .cornerRadius(3)
+                                .cornerRadius(5)
                         }
                         
                     }
@@ -212,6 +221,19 @@ struct CombinedAlert: View {
         .foregroundColor(Color("BethanyGreenText"))
         //        .frame(width: UIScreen.main.bounds.width - 25, height: 500)
         .cornerRadius(20)
+    }
+    
+    func thisProblemComplete()->Bool{
+        var modelComplete = false
+        var percentCorrect = 0.0
+        var total = correct + wrong
+        if total > completedModelsToPass {
+            percentCorrect = Double(correct) / Double(total)
+            if percentCorrect > minimumPercentCorrect {
+                modelComplete = true
+            }
+        }
+        return modelComplete
     }
     
     fileprivate func TextFieldView() -> some View {
@@ -348,15 +370,22 @@ struct CombinedAlert: View {
         return  VStack{
             VStack(spacing:3){
                 ExitButtonViewWithSpeechIcon(setSpeechModeActive: setSpeechModeActive)
-                HStack{      
-                    Text(languageViewModel.isModelMode() ? "Verb model \(languageViewModel.getCurrentVerbModel().modelVerb)"
-                         : "Lesson: \(languageViewModel.getStudyPackage().lesson) ")
-                    .font(.callout)
+                HStack{
+                    if languageViewModel.isModelMode() {
+                        Text("Model: \(currentVerbModelString)").font(.title2)
+                    }
+                    else {
+                        VStack{
+                            Text("Chapter: \(currentV2mChapter)")
+                            Text("Lesson: \(currentV2mLesson)")
+                        }.font(.title2)
+                    }
+                    
+                    Spacer()
+                }.font(.callout)
                     .bold()
                     .frame(width: 300)
                     .padding(4)
-                    Spacer()
-                }
                 HStack{
                     Text("Wrong: \(wrong)")
                     Spacer()
@@ -381,6 +410,7 @@ struct CombinedAlert: View {
                 Button(languageViewModel.isModelMode() ? "Load next verb model"  : "Load next lesson", role: .destructive){
                     if languageViewModel.isModelMode() {
                         _ = languageViewModel.selectNextOrderedVerbModel()
+                        languageViewModel.selectThisVerbModel(verbModel: languageViewModel.getCurrentVerbModel())
                     } else {
                         _ = languageViewModel.selectNextV2MGroup()
                     }
@@ -392,7 +422,16 @@ struct CombinedAlert: View {
                     newModel.toggle()
                 }
             } message: {
-                //                Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
+                if languageViewModel.isModelMode(){
+                    Text("Current model: \(currentVerbModelString)")
+                } else {
+                    VStack{
+//                        Text("Current chapter: \(currentV2mChapter)")
+                        Text("Current lesson: \(currentV2mLesson)")
+                    }
+                    
+                }
+                
                 Text("Current package: \(languageViewModel.getStudyPackage().name)")
             }
             .padding(.horizontal, 5)

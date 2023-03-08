@@ -14,7 +14,6 @@ extension LanguageEngine{
         currentFilteredVerbIndex = 0
     }
     
-    
     func resetFilteredVerbs(){
         filteredVerbList = verbList
         currentFilteredVerbIndex = 0
@@ -26,6 +25,16 @@ extension LanguageEngine{
         }
     }
     
+    func setVerbModelFilteredVerbList(verbList: [Verb]){
+        verbModelFilteredVerbList = verbList
+        currentFilteredVerbIndex = 0
+    }
+
+//    func setStudyPackageFilteredVerbList(verbList: [Verb]){
+//        studyPackageFilteredVerbList = verbList
+//        currentFilteredVerbIndex = 0
+//    }
+//
     func setFilteredVerbList(verbList: [Verb]){
         filteredVerbList = verbList
         currentFilteredVerbIndex = 0
@@ -81,36 +90,36 @@ extension LanguageEngine{
         }
     }
     
-    func copyWordCollectionToFilteredList(wordCollection: dWordCollection){
-        let words = wordCollection.getWords(wordType: .verb)
-        if words.count > 4 {
-            clearFilteredVerbList()
-            for word in words{
-                let verb = Verb(spanish: word.spanish, french: word.french, english: word.english)
-                addVerbToFilteredList(verb: verb)
-            }
-        }
-    }
-    
-    func getWordCollectionCount(wc: dWordCollection, wordType: WordType)->Int{
-        return wc.getWords(wordType: .verb).count
-    }
-    
-    func getWordCollection(index: Int)->dWordCollection{
-        return lessonBundlePhraseCollectionManager.wordCollectionManager.getCollection(index: index)
-    }
-    
-    func getWordCollectionList()->[dWordCollection]{
-        let wcManager = lessonBundlePhraseCollectionManager.wordCollectionManager
-        let wcList = wcManager.getCollectionList()
-        return wcList
-    }
-    
-    func createWordCollection(verbList: [Verb], collectionName: String){
-        var wcManager = lessonBundlePhraseCollectionManager.wordCollectionManager
-        wcManager.append(collection: dWordCollection(collectionName: collectionName, wordList: verbList))
-        print("word collection: <\(collectionName)> created with word count: \(verbList.count)")
-    }
+//    func copyWordCollectionToFilteredList(wordCollection: dWordCollection){
+//        let words = wordCollection.getWords(wordType: .verb)
+//        if words.count > 4 {
+//            clearFilteredVerbList()
+//            for word in words{
+//                let verb = Verb(spanish: word.spanish, french: word.french, english: word.english)
+//                addVerbToFilteredList(verb: verb)
+//            }
+//        }
+//    }
+//    
+//    func getWordCollectionCount(wc: dWordCollection, wordType: WordType)->Int{
+//        return wc.getWords(wordType: .verb).count
+//    }
+//    
+//    func getWordCollection(index: Int)->dWordCollection{
+//        return lessonBundlePhraseCollectionManager.wordCollectionManager.getCollection(index: index)
+//    }
+//    
+//    func getWordCollectionList()->[dWordCollection]{
+//        let wcManager = lessonBundlePhraseCollectionManager.wordCollectionManager
+//        let wcList = wcManager.getCollectionList()
+//        return wcList
+//    }
+//    
+//    func createWordCollection(verbList: [Verb], collectionName: String){
+//        var wcManager = lessonBundlePhraseCollectionManager.wordCollectionManager
+//        wcManager.append(collection: dWordCollection(collectionName: collectionName, wordList: verbList))
+//        print("word collection: <\(collectionName)> created with word count: \(verbList.count)")
+//    }
     
     
 }

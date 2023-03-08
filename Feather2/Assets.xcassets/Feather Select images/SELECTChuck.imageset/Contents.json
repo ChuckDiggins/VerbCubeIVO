@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "chuckdiggins_cartoon_bird_glasses_trying_to_choose_from_a_bunch_69edd3d0-ca45-4529-8b85-ffa85c79640f.jpeg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

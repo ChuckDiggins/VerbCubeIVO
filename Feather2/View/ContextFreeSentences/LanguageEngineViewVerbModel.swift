@@ -15,7 +15,7 @@ extension LanguageViewModel{
     }
     
     func setStudyPackage(sp: StudyPackageClass){
-        languageEngine.studyPackage = sp
+        languageEngine.setStudyPackage(sp: sp)
         setTenses(tenseList: sp.tenseList)
     }
     
@@ -127,8 +127,8 @@ extension LanguageViewModel{
         languageEngine.getCurrentVerbModel()
     }
     
-    func fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList(maxVerbCountPerModel: Int, inputStudyPackage: StudyPackageClass){
-        languageEngine.fillSelectedVerbModelListAndPutAssociatedVerbsinFilteredVerbList( maxVerbCountPerModel, inputStudyPackage: inputStudyPackage)
+    func fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(maxVerbCountPerModel: Int){
+        languageEngine.fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList( maxVerbCountPerModel)
     }
     
     func setCurrentVerbModel(model: RomanceVerbModel){

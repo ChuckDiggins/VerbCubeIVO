@@ -135,8 +135,8 @@ struct DragDropVerbSubjectView: View {
             let coreVerb = languageViewModel.getCoreVerb(verb: currentVerb)
             verbWordList.append(languageViewModel.createAndConjugateAgnosticVerb(verb: coreVerb, tense: currentTense, person: person))
         }
-        var tempChallenge = fillNewDragDropWords(subjectList: subjectList, verbWordList: verbWordList)
-        var newChallenge = tempChallenge.shuffled()
+        let tempChallenge = fillNewDragDropWords(subjectList: subjectList, verbWordList: verbWordList)
+        let newChallenge = tempChallenge.shuffled()
         verbWordsFrom = newChallenge
         subjectWordsTo = newChallenge
         verbWordsFrom = verbWordsFrom.shuffled()
