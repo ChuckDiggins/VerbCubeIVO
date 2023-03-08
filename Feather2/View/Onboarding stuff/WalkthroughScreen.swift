@@ -20,7 +20,7 @@ struct WalkthroughScreen: View {
             // Changing Between Views....
             
             if currentPage == 1{
-                ScreenView(image: "Feather welcome bird", title: "Learn Verb Conjugation", detail: "Two modes: Verb Lessons and Verb Models", bgColor: Color("color1"))
+                ScreenView(image: "Feather welcome bird", title: "Learn Verb Conjugation", detail: "Welcome to Verbs of a Feather.  You can switch between two modes: Verb Lessons and Verb Models.", bgColor: Color("color1"))
                     .transition(.scale)
             }
             

@@ -24,33 +24,33 @@ struct StudyPackageData {
     var lesson = ""
 }
 
-struct PastParticipleStruct{
+struct ParticipleStruct{
     var verbString : String
-    var pastParticiple1 : String
-    var pastParticiple2 : String
+    var participle1 : String
+    var participle2 : String
     
     init(){
         verbString = ""
-        pastParticiple1 = ""
-        pastParticiple2 = ""
+        participle1 = ""
+        participle2 = ""
     }
     
-    init(verbString: String, pastParticiple1 : String, pastParticiple2 : String = ""){
+    init(verbString: String, participle1 : String, participle2 : String = ""){
         self.verbString = verbString
-        self.pastParticiple1 = pastParticiple1
-        self.pastParticiple2 = pastParticiple2
+        self.participle1 = participle1
+        self.participle2 = participle2
     }
 }
 
-class PastParticipleManager{
-    var ppStructList = [PastParticipleStruct]()
-    func append(_ pp : PastParticipleStruct){
+class ParticipleManager{
+    var ppStructList = [ParticipleStruct]()
+    func append(_ pp : ParticipleStruct){
         ppStructList.append(pp)
     }
     
-    func findPastParticipleForVerbString(_ verbString: String)->String{
+    func findParticipleForVerbString(_ verbString: String)->String{
         for pp in ppStructList {
-            if pp.verbString == verbString { return pp.pastParticiple1 }
+            if pp.verbString == verbString { return pp.participle1 }
         }
         return ""
     }
@@ -78,7 +78,8 @@ class LanguageEngine : ObservableObject, Equatable {
     var currentFilteredVerbIndex = 0
     var currentVerbPattern = SpecialPatternStruct(tense: .present, spt: .none )
     var currentRandomVerb = Verb()
-    var pastParticipleManager = PastParticipleManager()
+    var pastParticipleManager = ParticipleManager()
+    var gerundManager = ParticipleManager()
     var vmecdm = VerbModelEntityCoreDataManager()
     @Published private var currentLanguage = LanguageType.Agnostic
     var verbModelManager = VerbModelManager()
@@ -200,7 +201,7 @@ class LanguageEngine : ObservableObject, Equatable {
         loadWordDictionariesFromJSON()
 //        m_wsp.getWordCounts()
         
-       
+        loadPastParticiplesFromJsonVerbs()
         
         createVerbList()
         
@@ -228,7 +229,23 @@ class LanguageEngine : ObservableObject, Equatable {
         resetFeatherSentenceHandler()
     }
     
-//    func loadPastParticiplesFromJsonVerbs{
+    func loadPastParticiplesFromJsonVerbs(){
+        var jm = jsonDictionaryManager
+        var jvManager = jm.jsonVerbManager
+        
+        var jvCount = jvManager.getVerbCount()
+        for index in 0 ..< jvCount {
+            let jv = jvManager.getVerbAt(index: index)
+            let pp = jv.getSpanishPastParticiple1()
+            if pp.count > 0 {
+//                print ("past participle: \(pp)")
+                pastParticipleManager.append(ParticipleStruct(verbString: jv.spanish, participle1: jv.getSpanishPastParticiple1()))
+            }
+        }
+//        print("PPs found = \(pastParticipleManager.ppStructList.count)")
+    }
+
+//    func loadGerundsFromJsonVerbs(){
 //        var jm = jsonDictionaryManager
 //        var jvManager = jm.jsonVerbManager
 //        
@@ -236,10 +253,14 @@ class LanguageEngine : ObservableObject, Equatable {
 //        for index in 0 ..< jvCount {
 //            let jv = jvManager.getVerbAt(index: index)
 //            let pp = jv.getSpanishPastParticiple1()
-//                print
+//            if pp.count > 0 {
+////                print ("past participle: \(pp)")
+//                gerundManager.append(ParticipleStruct(verbString: jv.spanish, participle1: jv.getSpanishGerund()))
 //            }
 //        }
+//        print("PPs found = \(pastParticipleManager.ppStructList.count)")
 //    }
+
 
     func dumpAppStorage(){
         print("AppStorage")

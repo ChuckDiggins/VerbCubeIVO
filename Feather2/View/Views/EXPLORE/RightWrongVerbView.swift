@@ -299,18 +299,19 @@ struct RightWrongVerbView: View {
         vvm.removeAll()
         vvr.removeAll()
         var pp = ""
-        
+        var rightPP = ""
         if languageViewModel.getCurrentTense().isProgressive(){
-//            pp = thisVerb.createDefaultGerund()
-            pp = thisVerb.getPresentParticiple()
+            rightPP = thisVerb.createGerund()
+            pp = thisVerb.createDefaultGerund()
         } else if languageViewModel.getCurrentTense().isPerfectIndicative(){
-            pp = thisVerb.getPastParticiple()
-//            pp = languageViewModel.getRomanceVerb(verb: thisVerb).m_pastParticiple
-            
+            var verbString = thisVerb.m_verbWord
+            rightPP = languageViewModel.getPastParticiple(verbString)
+            pp = thisVerb.createDefaultPastParticiple()
+            if rightPP.count == 0 { rightPP = pp}
         }
         var currentTense = languageViewModel.getCurrentTense()
         for i in 0..<6 {
-            rightPhrase[i] = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + pp
+            rightPhrase[i] = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + rightPP
             rightPhrase[i] = removeAllExtraBlanks(rightPhrase[i])
             if i == 0 && currentTense == .imperative { rightPhrase[i] = ""}
             vvm.append(rightPhrase[i])

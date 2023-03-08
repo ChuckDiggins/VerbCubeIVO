@@ -41,6 +41,12 @@ class LanguageViewModel : ObservableObject, Equatable {
         
     }
     
+    func getPastParticiple(_ verbString: String)->String{
+        var ppString = ""
+        ppString = languageEngine.pastParticipleManager.findParticipleForVerbString(verbString)
+        return ppString
+    }
+    
     func verbOrModelModeInitialized()->Bool{
         languageEngine.verbOrModelModeInitialized
     }

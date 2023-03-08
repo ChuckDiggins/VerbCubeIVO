@@ -238,7 +238,13 @@ extension LanguageEngine{
         
         let v2mGroupChuck2A2 = VerbToModelGroup(chapter: "Extra 2A", lesson: "Verbs with irregular gerunds",
                                          verbToModelList :
-                                                [VerbToModelStruct("decir"), VerbToModelStruct("dormir"), VerbToModelStruct("morir"), VerbToModelStruct("pedir"), VerbToModelStruct("sentir"), VerbToModelStruct("vestir"), VerbToModelStruct("mentir"), VerbToModelStruct("oír"), VerbToModelStruct("reír"), VerbToModelStruct("traer"), VerbToModelStruct("caer"), ],
+                                                [
+                                                    VerbToModelStruct("huir"), VerbToModelStruct("reír"),
+                                                    VerbToModelStruct("freír"), VerbToModelStruct("oír"),
+                                                    VerbToModelStruct("decir"), VerbToModelStruct("dormir"),
+                                                    VerbToModelStruct("leer"), VerbToModelStruct("creer"),
+                                                    VerbToModelStruct("morir"), VerbToModelStruct("pedir"), VerbToModelStruct("sentir"), VerbToModelStruct("vestir"), VerbToModelStruct("mentir"), VerbToModelStruct("traer"), VerbToModelStruct("freir"), VerbToModelStruct("caer"), VerbToModelStruct("preferir"), VerbToModelStruct("poder"),
+                                                ],
                                            tenseList: [.presentProgressive],
                                            specialVerbType: .normal)
         fillAssociatedModelList(v2mGroupChuck2A2)
