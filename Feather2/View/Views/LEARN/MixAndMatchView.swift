@@ -93,6 +93,7 @@ struct MixAndMatchView: View {
     @State private var dependentVerb = Verb()
     @State var specialVerbType = SpecialVerbType.normal
     @State var speechModeActive = false
+    @State var rightParticiple = ""
     
     var body: some View {
         ZStack{
@@ -122,6 +123,7 @@ struct MixAndMatchView: View {
                     currentVerb = languageViewModel.getCurrentRandomVerb()
                     currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
                     currentTenseString = currentTense.rawValue
+                    getParticipleForThisTense()
                     specialVerbType = languageViewModel.getStudyPackage().specialVerbType
                     dependentVerb = languageViewModel.findVerbFromString(verbString: "bailar", language: currentLanguage)
                     setCurrentVerb()
@@ -256,10 +258,24 @@ struct MixAndMatchView: View {
         }
     }
     
+    func getParticipleForThisTense() {
+        var thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
+        if languageViewModel.getCurrentTense().isProgressive(){
+            rightParticiple = thisVerb.createGerund()
+        } else if languageViewModel.getCurrentTense().isPerfectIndicative(){
+            rightParticiple = languageViewModel.getPastParticiple(thisVerb.m_verbWord)
+            let pp = thisVerb.createDefaultPastParticiple()
+            if rightParticiple.count == 0 { rightParticiple = pp }
+        }
+    }
+    
     func fillMixMatchList(){
+        getParticipleForThisTense()
+
         mixMatchList.removeAll()
         for pms in personMixString {
             var verbString = languageViewModel.getVerbString(personIndex: pms.person.getIndex(), number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
+//            + rightParticiple
             mixMatchList.append(MixMatchStruct(matchID: pms.person.getIndex(), person: pms.person, subjectString: pms.personString,
                                                verbString: verbString))
         }

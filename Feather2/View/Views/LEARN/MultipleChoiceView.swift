@@ -50,6 +50,8 @@ struct MultipleChoiceView: View {
     @State var verbList = [Verb]()
     @State var randomPersonList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
     @State var randomTenseList = [Tense.present, .imperfect, .preterite, .future, .conditional, .presentSubjunctive]
+    @State var randomPerfectList = [Tense.presentPerfect, .conditionalPerfect, .pastPerfect, .preteritePerfect, .futurePerfect, .presentPerfectSubjunctive]
+    @State var randomProgressiveList = [Tense.presentProgressive, .conditionalProgressive, .imperfectProgressive, .futureProgressive, .imperfectProgressive]
     @State var romanceModelList = [RomanceVerbModel]()
     @State var verbPatternList = [SpecialPatternType]()
     @State var currentVerbString = ""
@@ -76,6 +78,7 @@ struct MultipleChoiceView: View {
     @State var rightHandRotate = [false, false, false, false, false, false]
     @State var rightHandShake = [false, false, false, false, false, false]
     @State var speechModeActive = false
+    @State var rightParticiple = ""
     
     var body: some View {
         ZStack{
@@ -206,7 +209,7 @@ struct MultipleChoiceView: View {
         currentLanguage = languageViewModel.getCurrentLanguage()
         setVerbList()
         tenseList = languageViewModel.getTenseList()
-        
+        currentTense = tenseList[0]
         fillPersonMixStruct()
         setProblemMode()
         createNextProblem()
@@ -214,6 +217,18 @@ struct MultipleChoiceView: View {
         currentTenseString = currentTense.rawValue
         isNew = false
         setBescherelleModelInfo()
+    }
+    
+    func fillParticipleForThisTense(_ tense: Tense) {
+        var thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
+        if tense.isProgressive(){
+            rightParticiple = thisVerb.createGerund()
+        } else if tense.isPerfectIndicative(){
+            rightParticiple = languageViewModel.getPastParticiple(thisVerb.m_verbWord)
+            let pp = thisVerb.createDefaultPastParticiple()
+            if rightParticiple.count == 0 { rightParticiple = pp }
+        }
+        rightParticiple = " " + rightParticiple
     }
     
     func fillHeaderText(){
@@ -224,12 +239,12 @@ struct MultipleChoiceView: View {
         case .oneVerbToFiveModels: headerText = "Verb versus Model"
         }
     }
+    
     func setCurrentVerb(){
         currentVerbIndex += 1
         if currentVerbIndex >= verbList.count {currentVerbIndex = 0}
         currentVerb = verbList[currentVerbIndex]
         currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
-        //createNextProblem()
     }
     
     func showCurrentStudentScores(){
@@ -296,29 +311,14 @@ struct MultipleChoiceView: View {
         case .medium:
             setNewTense()
             setNewPerson()
-            
         case .hard:
             setNewTense()
             setNewPerson()
             setNewVerb()
         }
-        loadRightHandVerbsForThisLeftHandSubject(verb: currentVerb, tense: currentTense, person: currentPerson)
+        loadRightHandVerbsForThisLeftHandSubject(inputVerb: currentVerb, tense: currentTense, person: currentPerson)
     }
     
-//    func setNextQuiz(){
-//        switch secondaryProblemMode {
-//        case .verbMode:
-//            setNewVerb()
-//        case .tenseMode:
-//            setNewTense()
-//        case .personMode:
-//            setNewPerson()
-//        }
-//        setNewPerson()
-//        loadRightHandVerbsForThisLeftHandSubject(verb: currentVerb, tense: currentTense, person: currentPerson)
-//    }
-//
-//
     func createNextProblem(){
         switch multipleChoiceType {
         case .oneSubjectToFiveVerbs:
@@ -340,7 +340,7 @@ struct MultipleChoiceView: View {
             }
             setNewPerson()
             resetScores()
-            loadRightHandVerbsForThisLeftHandSubject(verb: currentVerb, tense: currentTense, person: currentPerson)
+            loadRightHandVerbsForThisLeftHandSubject(inputVerb: currentVerb, tense: currentTense, person: currentPerson)
         case .oneSubjectToFiveTenses:
             switch primaryProblemMode {
             case .verbMode:
@@ -360,7 +360,7 @@ struct MultipleChoiceView: View {
             }
             setNewPerson()
             resetScores()
-            loadRightHandVerbsForThisLeftHandSubject(verb: currentVerb, tense: currentTense, person: currentPerson)
+            loadRightHandVerbsForThisLeftHandSubject(inputVerb: currentVerb, tense: currentTense, person: currentPerson)
         case .oneVerbToFiveSubjects:
             rightHandStringList = loadSubjectsForThisVerb(verb: currentVerb, tense: currentTense, person: currentPerson)
         case .oneVerbToFiveModels:
@@ -376,7 +376,18 @@ struct MultipleChoiceView: View {
 //        studentScoreModel.resetAllScores()
     }
     
-    func loadRightHandVerbsForThisLeftHandSubject(verb: Verb, tense: Tense, person: Person){
+    func loadRightHandVerbsForThisLeftHandSubject(inputVerb: Verb, tense: Tense, person: Person){
+        var verb = inputVerb
+        fillParticipleForThisTense(tense)
+        if multipleChoiceType == .oneSubjectToFiveTenses {
+            if tense.isProgressive(){
+                verb = Verb(spanish: "estar", french: "avoir", english: "be")
+            }
+            else if tense.isPerfectIndicative(){
+                verb = Verb(spanish: "haber", french: "avoir", english: "have")
+            }
+        }
+        
         rightHandStringList.removeAll()
         currentTense = tense
         setSubjunctiveParticiple()
@@ -396,9 +407,9 @@ struct MultipleChoiceView: View {
             randomTenseList.shuffle()
             for tense in randomTenseList {
                 var str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
-                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
+                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + rightParticiple
                 rightHandStringList.append( str )
-                if tense == currentTense {
+                if tense == currentTense.getSimpleTenseFromCompoundTense() {
                     correctRightHandString = str
                 }
             }
@@ -409,6 +420,7 @@ struct MultipleChoiceView: View {
         }
         currentTenseString = currentTense.rawValue.lowercased()
     }
+    
     
     func loadSubjectsForThisVerb(verb: Verb, tense: Tense, person: Person)->[String]{
         let stringList = [String]()

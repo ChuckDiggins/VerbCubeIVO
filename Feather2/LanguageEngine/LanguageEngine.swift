@@ -244,23 +244,25 @@ class LanguageEngine : ObservableObject, Equatable {
         }
 //        print("PPs found = \(pastParticipleManager.ppStructList.count)")
     }
+    
+    func getPastParticiple(_ verbString: String)->String{
+        //if this is a known irregular past participle, then return it
+        let ppForVerbString = pastParticipleManager.findParticipleForVerbString(verbString)
+        if ppForVerbString.count > 0 {return ppForVerbString}
+        
+        //next, check if verbString has a verb model with an irregular past participle
 
-//    func loadGerundsFromJsonVerbs(){
-//        var jm = jsonDictionaryManager
-//        var jvManager = jm.jsonVerbManager
-//        
-//        var jvCount = jvManager.getVerbCount()
-//        for index in 0 ..< jvCount {
-//            let jv = jvManager.getVerbAt(index: index)
-//            let pp = jv.getSpanishPastParticiple1()
-//            if pp.count > 0 {
-////                print ("past participle: \(pp)")
-//                gerundManager.append(ParticipleStruct(verbString: jv.spanish, participle1: jv.getSpanishGerund()))
-//            }
-//        }
-//        print("PPs found = \(pastParticipleManager.ppStructList.count)")
-//    }
-
+        let vm = findModelForThisVerbString(verbWord: verbString)
+        let ppForModel = pastParticipleManager.findParticipleForVerbString(vm.modelVerb)
+        if ppForModel.count > 0 {
+            var workingString = verbString.dropLast(vm.modelVerb.count)
+            workingString += ppForModel
+            let compositePP = String(workingString)
+            print("getPastParticiple: verb \(verbString) - past participle \(compositePP)")
+            return compositePP
+        }
+        return ""
+    }
 
     func dumpAppStorage(){
         print("AppStorage")
@@ -629,6 +631,7 @@ class LanguageEngine : ObservableObject, Equatable {
         criticalVerbForms.appendCriticalForm(person: .S3, tense: .preterite, comment: "Third person singular, preterite tense")
         criticalVerbForms.appendCriticalForm(person: .P3, tense: .preterite, comment: "Third person plural, preterite tense")
         criticalVerbForms.appendCriticalForm(person: .P3, tense: .imperfectSubjunctiveRA, comment: "Third person plural,imperfect subjunctive tense")
+        criticalVerbForms.appendCriticalForm(person: .P3, tense: .pastParticiple, comment: "Past participle")
     }
                      
     func testLogic(tense: Tense){
@@ -741,7 +744,11 @@ class LanguageEngine : ObservableObject, Equatable {
     func setTenses(tenseList: [Tense]){ self.tenseList = tenseList }
 
     func getCurrentVerb()->Verb{return currentVerb}
-    func getCurrentTense()->Tense{return tenseList[currentTenseIndex]}
+    func getCurrentTense()->Tense{
+        if currentTenseIndex > tenseList.count-1 {
+            currentTenseIndex = 0
+        }
+        return tenseList[currentTenseIndex]}
     func setCurrentVerb(verb: Verb){
         currentVerb = verb
     }

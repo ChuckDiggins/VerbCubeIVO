@@ -157,7 +157,8 @@ struct ThreeVerbSimpleView: View {
             }
             
             .onAppear(){
-                
+                currentTense = languageViewModel.getCurrentTense()
+                currentTenseString = currentTense.rawValue
                 currentLanguage = languageViewModel.getCurrentLanguage()
                 let vamslu =  VerbAndModelSublistUtilities()
                 verb1List = vamslu.getVerbSublistAtVerbEnding(inputVerbList: languageViewModel.getFilteredVerbs(), inputEnding: .AR,  language: languageViewModel.getCurrentLanguage())
@@ -169,9 +170,7 @@ struct ThreeVerbSimpleView: View {
                 if verb1List.count > 0 { verb1 = verb1List[0] }
                 if verb2List.count > 0 { verb2 = verb2List[0] }
                 if verb3List.count > 0 { verb3 = verb3List[0] }
-                
-                currentTenseString = languageViewModel.getCurrentTense().rawValue
-                
+    
                 reloadAll()
                 isLoaded = true
                 

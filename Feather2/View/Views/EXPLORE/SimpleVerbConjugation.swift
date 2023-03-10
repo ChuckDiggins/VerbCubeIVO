@@ -244,6 +244,7 @@ struct SimpleVerbConjugation: View {
     @State var currentVerbModel = RomanceVerbModel()
     @State var stemString = ""
     @State var orthoString = ""
+    @State var rightParticiple = ""
     
     var body: some View {
         ZStack{
@@ -299,6 +300,7 @@ struct SimpleVerbConjugation: View {
                     .padding(10)
                     
                     .onAppear {
+                        currentTense = languageViewModel.getLanguageEngine().getNextTense()
                         //                        dependentVerb = languageViewModel.getRandomVerb()  //for use with auxiliary verbs
                         //                        specialVerbType = languageViewModel.getStudyPackage().specialVerbType
                         //                        print("SimpleVerbConjugation: specialVerbType = \(specialVerbType.rawValue)")
@@ -392,10 +394,22 @@ struct SimpleVerbConjugation: View {
         }
     }
     
+    func getParticipleForThisTense() {
+        var thisVerb = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb())
+        if languageViewModel.getCurrentTense().isProgressive(){
+            rightParticiple = thisVerb.createGerund()
+        } else if languageViewModel.getCurrentTense().isPerfectIndicative(){
+            rightParticiple = languageViewModel.getPastParticiple(thisVerb.m_verbWord)
+            let pp = thisVerb.createDefaultPastParticiple()
+            if rightParticiple.count == 0 { rightParticiple = pp }
+        }
+    }
+    
     func setCurrentVerb(){
         //        currentVerbPhrase = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
         //        setSubjunctiveStuff()
         currentTenseString = languageViewModel.getCurrentTense().rawValue
+        getParticipleForThisTense()
         setSubjunctiveStuff()
         languageViewModel.createAndConjugateCurrentFilteredVerb()
         currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())

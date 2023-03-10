@@ -311,7 +311,7 @@ struct RightWrongVerbView: View {
         }
         var currentTense = languageViewModel.getCurrentTense()
         for i in 0..<6 {
-            rightPhrase[i] = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + rightPP
+            rightPhrase[i] = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
             rightPhrase[i] = removeAllExtraBlanks(rightPhrase[i])
             if i == 0 && currentTense == .imperative { rightPhrase[i] = ""}
             vvm.append(rightPhrase[i])

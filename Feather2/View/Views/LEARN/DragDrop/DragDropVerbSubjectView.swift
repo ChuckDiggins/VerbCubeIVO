@@ -117,6 +117,12 @@ struct DragDropVerbSubjectView: View {
             if tenseIndex < 6 {
                 tenseList.append(tense)
             }
+            else if tenseIndex >= Tense.presentPerfect.getIndex() && tenseIndex <= Tense.conditionalPerfect.getIndex() {
+                tenseList.append(tense)
+            }
+            else if tenseIndex >= Tense.presentProgressive.getIndex() && tenseIndex <= Tense.conditionalProgressive.getIndex() {
+                tenseList.append(tense)
+            }
             //or simple subjunctive
             else if tenseIndex >= Tense.presentSubjunctive.getIndex() && tenseIndex <= Tense.imperfectSubjunctiveSE.getIndex() {
                 tenseList.append(tense)

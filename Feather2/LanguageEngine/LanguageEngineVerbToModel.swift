@@ -224,13 +224,19 @@ extension LanguageEngine{
         
         let v2mGroupChuck2A1 = VerbToModelGroup(chapter: "Extra 2A", lesson: "Verbs with irregular past participles",
                                          verbToModelList :
-                                            [VerbToModelStruct("escribir"), VerbToModelStruct("abrir"), VerbToModelStruct("descubrir"),VerbToModelStruct("romper"), VerbToModelStruct("morir"), VerbToModelStruct("poner"),
+                                            [
+                                                VerbToModelStruct("decir"), VerbToModelStruct("contradecir"),
+                                                VerbToModelStruct("bendecir"), VerbToModelStruct("maldecir"),
+                                                VerbToModelStruct("leer"), VerbToModelStruct("releer"),
+                                                
+                                                VerbToModelStruct("escribir"), VerbToModelStruct("abrir"), VerbToModelStruct("descubrir"),VerbToModelStruct("romper"), VerbToModelStruct("morir"), VerbToModelStruct("poner"),
                                              VerbToModelStruct("reponer"), VerbToModelStruct("romper"), VerbToModelStruct("reromper"),
                                              VerbToModelStruct("absolver"),
                                              VerbToModelStruct("deshacer"), VerbToModelStruct("hacer"),
-                                             VerbToModelStruct("decir"),
-                                             VerbToModelStruct("condecir"), VerbToModelStruct("reír"), VerbToModelStruct("sonreír"),
-                                             VerbToModelStruct("releer"), VerbToModelStruct("descreer"), ],
+                                             
+                                              VerbToModelStruct("reír"), VerbToModelStruct("sonreír"),
+                                             VerbToModelStruct("descreer"),
+                                            ],
                                            tenseList: [.presentPerfect],
                                            specialVerbType: .normal)
         fillAssociatedModelList(v2mGroupChuck2A1)
@@ -243,12 +249,21 @@ extension LanguageEngine{
                                                     VerbToModelStruct("freír"), VerbToModelStruct("oír"),
                                                     VerbToModelStruct("decir"), VerbToModelStruct("dormir"),
                                                     VerbToModelStruct("leer"), VerbToModelStruct("creer"),
-                                                    VerbToModelStruct("morir"), VerbToModelStruct("pedir"), VerbToModelStruct("sentir"), VerbToModelStruct("vestir"), VerbToModelStruct("mentir"), VerbToModelStruct("traer"), VerbToModelStruct("freir"), VerbToModelStruct("caer"), VerbToModelStruct("preferir"), VerbToModelStruct("poder"),
+                                                    VerbToModelStruct("morir"), VerbToModelStruct("pedir"), VerbToModelStruct("sentir"), VerbToModelStruct("vestir"), VerbToModelStruct("mentir"), VerbToModelStruct("traer"), VerbToModelStruct("caer"), VerbToModelStruct("preferir"), VerbToModelStruct("poder"),
                                                 ],
                                            tenseList: [.presentProgressive],
                                            specialVerbType: .normal)
         fillAssociatedModelList(v2mGroupChuck2A2)
         v2MGroupManager.appendGroup(v2mGroupChuck2A2)
+        
+        let v2mGroupChuck2A3 = VerbToModelGroup(chapter: "Extra 2A", lesson: "Compound tenses", verbToModelList :
+                                                [
+                                                    VerbToModelStruct("andar"), VerbToModelStruct("seguir"), VerbToModelStruct("venir"), VerbToModelStruct("verse"), VerbToModelStruct("ir")
+                                                ],
+                                                tenseList: [.presentProgressive, .presentPerfect],
+                                           specialVerbType: .normal)
+        fillAssociatedModelList(v2mGroupChuck2A3)
+        v2MGroupManager.appendGroup(v2mGroupChuck2A3)
         
         let v2mGroupChuck2B = VerbToModelGroup(chapter: "Extra 2B", lesson: "Unusual verbs 1",
                                          verbToModelList :
