@@ -56,20 +56,23 @@ struct NavStackCarouselDispatcherView: View {
     @EnvironmentObject var vmecdm: VerbModelEntityCoreDataManager
     @Environment(\.dismiss) private var dismiss
     
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("Explanation Page") var explanationPage = 7
+    @AppStorage("currentPage") var currentPage = 1
     
     @State var currentVerbOrModelMode = VerbOrModelMode.modelMode
     @State var verbOrModelModeList = [VerbOrModelMode.verbMode, .modelMode]
     @State var selectedCount = 0
     @State var verbsExistForAll3Endings = true
     @State var selected  = false
-    @State private var exerciseMgr = ExerciseDataManager(.verbMode, .Select, .normal)
+    @State private var exerciseMgr = ExerciseDataManager(.verbMode, .Select, .normal, true)
     @State private var imageLength = CGFloat(125)
     @State private var multipleChoiceShown = true
     @State private var textEditorShown = true
+    @State private var isLoading = false
     @State private var exerciseStructList = [
 //        ExerciseStruct(.SelectModel, Image("SELECTModels")),
         ExerciseStruct(.Select, Image("SELECT")),
@@ -104,10 +107,11 @@ struct NavStackCarouselDispatcherView: View {
                         }
                     }
                 }
+                
                 .navigationTitle( currentVerbOrModelMode == .modelMode ? "Verb Model: \(currentVerbModelString)" : "\(currentV2mChapter), \(currentV2mLesson)")
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationDestination(for: ExerciseStruct.self){ exercise in
-                    ExploreCarouselView(languageViewModel: languageViewModel, exerciseManager: ExerciseDataManager(languageViewModel.getVerbOrModelMode(), exercise.mode, .normal), selected: $selected)
+                    ExploreCarouselView(languageViewModel: languageViewModel, exerciseManager: ExerciseDataManager(languageViewModel.getVerbOrModelMode(), exercise.mode, .normal, languageViewModel.hasSimpleTenses()), selected: $selected )
                 }
                 
                 .toolbar {
@@ -116,9 +120,18 @@ struct NavStackCarouselDispatcherView: View {
                         {
                         Label("Find", systemImage: "magnifyingglass")
                         }
-                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
+//                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
+//                        {
+//                        Label("Settings", systemImage: "gear")
+//                        }
+                        Button{
+                            explanationPage = 1
+                        } label: {
+                            Label("Settings", systemImage: "questionmark.folder")
+                        }
+                        NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
                         {
-                        Label("Settings", systemImage: "gear")
+                        Label("Settings", systemImage: "t.circle")
                         }
                     }
                 }
@@ -170,22 +183,30 @@ struct NavStackCarouselDispatcherView: View {
                 .cornerRadius(6)
                 
             }
-            .onAppear{
-                languageViewModel.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
-                if !languageViewModel.verbOrModelModeInitialized() {
-                    let savedMode = verbOrModelMode
-                    languageViewModel.setStudyPackageTo(currentV2mChapter, currentV2mLesson)
-                    languageViewModel.setVerbModelTo(languageViewModel.findModelForThisVerbString(verbWord: currentVerbModelString))
-                    languageViewModel.setVerbOrModelMode(savedMode)
-                    languageViewModel.setVerbOrModelModeInitialized()
-                }
-                selectedCount = languageViewModel.getSelectedVerbModelList().count
-                currentVerbOrModelMode = languageViewModel.getVerbOrModelMode()
-                verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
-                
-                AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
-                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+            
+        }
+        .onAppear{
+            languageViewModel.setVerbModelEntityCoreDataManager(vmecdm: vmecdm)
+            
+            if !languageViewModel.verbCountsExistInCoreData() {
+                loadFromCoreData()
+            } else {
+                languageViewModel.getAllVerbCountsFromCoreData()
             }
+            
+            if !languageViewModel.verbOrModelModeInitialized() {
+                let savedMode = verbOrModelMode
+                languageViewModel.setStudyPackageTo(currentV2mChapter, currentV2mLesson)
+                languageViewModel.setVerbModelTo(languageViewModel.findModelForThisVerbString(verbWord: currentVerbModelString))
+                languageViewModel.setVerbOrModelMode(savedMode)
+                languageViewModel.setVerbOrModelModeInitialized()
+            }
+            selectedCount = languageViewModel.getSelectedVerbModelList().count
+            currentVerbOrModelMode = languageViewModel.getVerbOrModelMode()
+            verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
+            
+            AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         }
         .foregroundColor(Color("BethanyGreenText"))
         .font(.headline)
@@ -193,7 +214,27 @@ struct NavStackCarouselDispatcherView: View {
         
         
     }
+    
+    func loadFromCoreData(){
+        isLoading = true
+        print("is loading")
+        languageViewModel.setAllVerbCountsInCoreData()
+        print("finished loading")
+        isLoading = false
+    }
+    
 }
 
+struct LoadingView : View {
+    var body: some View{
+        ZStack{
+            Color(.systemBackground)
+                .ignoresSafeArea()
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                .scaleEffect(3)
+        }
+    }
+}
 
 

@@ -355,12 +355,14 @@ extension VerbCubeView {
     }
     
     func setPreviousTense() {
-        vccsh.setCurrentTense(tense: languageViewModel.getPreviousTense())
+//        vccsh.setCurrentTense(tense: languageViewModel.getPreviousTense())
+        vccsh.setCurrentTense(tense: languageViewModel.getPreviousSimpleTense())
         vccsh.fillCellData()
     }
     
     func setNextTense() {
-        vccsh.setCurrentTense(tense: languageViewModel.getNextTense())
+//        vccsh.setCurrentTense(tense: languageViewModel.getNextTense())
+        vccsh.setCurrentTense(tense: languageViewModel.getNextSimpleTense())
         vccsh.fillCellData()
     }
     

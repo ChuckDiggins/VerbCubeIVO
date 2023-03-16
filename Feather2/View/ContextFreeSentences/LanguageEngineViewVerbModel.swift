@@ -58,6 +58,7 @@ extension LanguageViewModel{
     func setAllVerbModelsIncomplete(){
         languageEngine.setAllVerbModelsIncomplete()
     }
+    
     func computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: NewVerbModelType)->(Int, Int) {
         languageEngine.computeVerbCountStatisticsByNewVerbModelType(newVerbModelType: newVerbModelType)
     }

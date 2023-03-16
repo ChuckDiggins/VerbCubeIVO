@@ -31,6 +31,7 @@ class VerbModelEntityCoreData: ObservableObject{
         emptyModelEntity.modelName = "null"
         emptyModelEntity.isActive = false
         emptyModelEntity.hasBeenCompleted = false
+        emptyModelEntity.verbCount = 11
         clearEmptyVerbModelEntities()  //for some reason, creating the emptyModel gets saved
         return emptyModelEntity
     }
@@ -74,6 +75,7 @@ class VerbModelEntityCoreData: ObservableObject{
         newModel.isActive = isActive
         newModel.isSelected = false
         newModel.hasBeenCompleted = false
+        newModel.verbCount = 11
         saveData()
     }
 //
@@ -138,9 +140,21 @@ class VerbModelEntityCoreData: ObservableObject{
         }
         saveData()
     }
-    
-    
 
+    func setVerbCount(_ verbModelString: String, _ count: Int){
+        fetchVerbModelEntities()
+        var vme = getVerbModelEntityAtVerbModelString(verbModelString: verbModelString)
+        vme.verbCount = Int16(count)
+        print("setVerbCount - verb \(verbModelString), count \(count)")
+        saveData()
+    }
+    
+    func getVerbCount(_ verbModelString: String)->Int{
+        fetchVerbModelEntities()
+        var vme = getVerbModelEntityAtVerbModelString(verbModelString: verbModelString)
+        return Int(vme.verbCount)
+    }
+    
     func hasVerbModelEntityBeenCompleted(verbModelString: String)->Bool{
         fetchVerbModelEntities()
         return getVerbModelEntityAtVerbModelString(verbModelString: verbModelString).hasBeenCompleted

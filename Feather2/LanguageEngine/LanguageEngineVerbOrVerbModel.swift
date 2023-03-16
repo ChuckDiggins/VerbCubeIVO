@@ -154,14 +154,13 @@ extension LanguageEngine{
     }
     
     func restoreModelFromCurrentVerbModelString(){
-        if currentVerbModelString == "nada 4" {
-            processVerbModel(currentModel: findModelForThisVerbString(verbWord: "acabar"))
+        if currentVerbModelString == "" {
+            processVerbModel(currentModel: findModelForThisVerbString(verbWord: "ser"))
             trimFilteredVerbList(16)
             return
         }
         currentVerbModel = findModelForThisVerbString(verbWord: currentVerbModelString)
         print("restoreModel: currentVerbModelString = \(currentVerbModelString)")
-        
         setToVerbModelMode()
         trimFilteredVerbList(16)
     }

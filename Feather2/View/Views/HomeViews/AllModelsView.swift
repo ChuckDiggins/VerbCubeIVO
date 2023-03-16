@@ -13,8 +13,8 @@ struct AllModelsView: View {
     @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var router: Router
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     
     @State var isSwiping = true
     @State var startPos : CGPoint = .zero
@@ -98,7 +98,7 @@ struct AllModelsView: View {
                         }
                     }
                     Spacer()
-                    Text("\(languageViewModel.findVerbsOfSameModel(targetID: currentModel.id).count) \(currentModel.modelVerb) verbs in dictionary: ").bold()
+                    Text("\(languageViewModel.findVerbsOfSameModel(targetID: currentModel.id).count) \(currentModel.modelVerb) verbs in dictionary ").bold()
                 }
                 .font(.caption)
                 .foregroundColor(.black)

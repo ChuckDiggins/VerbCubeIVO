@@ -13,10 +13,10 @@ struct RightWrongVerbView: View {
     @State var currentLanguage = LanguageType.Agnostic
     @EnvironmentObject var router: Router
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"  
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"  
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     
     @State var residualPhrase: String = ""
     @State var newVerb : Bool = false

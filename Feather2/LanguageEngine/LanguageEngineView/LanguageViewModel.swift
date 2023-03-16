@@ -41,7 +41,25 @@ class LanguageViewModel : ObservableObject, Equatable {
         
     }
     
+    func verbCountsExistInCoreData()->Bool{
+        languageEngine.verbCountsExistInCoreData()
+    }
     
+    func getModelVerbCountAt(_ id: Int)->Int{
+        languageEngine.getModelVerbCountAt(id)
+    }
+    
+    func clearAllVerbCountsInCoreData(){
+        languageEngine.clearAllVerbCountsInCoreData()
+    }
+    
+    func setAllVerbCountsInCoreData(){
+        languageEngine.setAllVerbCountsInCoreData()
+    }
+    
+    func getAllVerbCountsFromCoreData(){
+        languageEngine.getAllVerbCountsFromCoreData()
+    }
     
     func getPastParticiple(_ verbString: String)->String{
         languageEngine.getPastParticiple(verbString)
@@ -70,6 +88,23 @@ class LanguageViewModel : ObservableObject, Equatable {
     
     func getTemporaryVerbModel()->RomanceVerbModel{
         languageEngine.getTemporaryVerbModel()
+    }
+    
+    func getSimpleTensesFromList(_ tenseList: [Tense])->[Tense]{
+        languageEngine.getSimpleTensesFromList(tenseList)
+    }
+    
+    func getPreviousSimpleTense()->Tense{
+        languageEngine.getPreviousSimpleTense()
+    }
+    
+    func getNextSimpleTense()->Tense{
+        languageEngine.getNextSimpleTense()
+    }
+    
+    
+    func hasSimpleTenses()->Bool{
+        languageEngine.getSimpleTensesFromList(getTenseList()).count > 0
     }
     
     func selectThisVerbModel(verbModel: RomanceVerbModel){

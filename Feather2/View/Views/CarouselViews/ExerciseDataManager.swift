@@ -34,10 +34,14 @@ struct ExerciseDataManager{
     let exerciseMode : ExerciseMode
     let specialVerbType : SpecialVerbType
     let verbOrModelMode : VerbOrModelMode
-    init(_ vomMode: VerbOrModelMode, _ em : ExerciseMode, _ svt: SpecialVerbType){
+    let hasSimpleTenses : Bool
+    var idNum = 0
+    
+    init(_ vomMode: VerbOrModelMode, _ em : ExerciseMode, _ svt: SpecialVerbType, _ hasSimpleTenses: Bool){
         verbOrModelMode = vomMode
         exerciseMode = em
         specialVerbType = svt
+        self.hasSimpleTenses = hasSimpleTenses
         
         loadData(svt: specialVerbType)
         //        print("Initializing ExerciseDataManager - \(exerciseMode.rawValue) mode, special verb type \(specialVerbType.rawValue)")
@@ -106,7 +110,6 @@ struct ExerciseDataManager{
     }
     
     mutating func loadSelectImages(verbOrModelMode: VerbOrModelMode){
-        
         switch verbOrModelMode {
         case .verbMode:
             let data = [
@@ -131,57 +134,86 @@ struct ExerciseDataManager{
         }
     }
     
+    
     mutating func loadExploreImages(svt: SpecialVerbType){
-        var data = [
-            ExerciseData(id: 0, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
-            
-            ExerciseData(id: 1, image: "EXPLOREVerbCube", studentLevel: "Intermediate", title: "Verb Cube", details: "The Verb Cube allows you to look at your active verb list in 3-dimensions: Verb, Tense, and Person.", active: true),
-            
-            
-            ExerciseData(id: 2, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
-            
-            ExerciseData(id: 3, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
-            
-            ExerciseData(id: 4, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
-        ]
+        var idNum = 0
+        var data = [ExerciseData]()
         
+        if hasSimpleTenses{
+            data = [
+                ExerciseData(id: 0, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
+                
+                ExerciseData(id: 1, image: "EXPLOREVerbCube", studentLevel: "Intermediate", title: "Verb Cube", details: "The Verb Cube allows you to look at your active verb list in 3-dimensions: Verb, Tense, and Person.", active: true),
+                
+                ExerciseData(id: 2, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
+                
+                ExerciseData(id: 3, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
+                
+                ExerciseData(id: 4, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
+            ]
+            idNum = 5
+        } else {
+            data = [
+                ExerciseData(id: 0, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
+                
+                ExerciseData(id: 1, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
+                
+                ExerciseData(id: 2, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
+                
+                ExerciseData(id: 3, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
+            ]
+            idNum = 4
+        }
         switch svt{
         case .verbsLikeGustar: data.append(
-            ExerciseData(id: 5, image: "EXPLOREGustar", studentLevel: "Beginner", title: "Explore Verbs Like Gustar", details: "Verbs like gustar conjugate in the indirect sense.  Instead of 'I like ice cream', verbs like gustar conjugate more like 'ice cream is pleasing to me'", active: true)
+            ExerciseData(id: idNum, image: "EXPLOREGustar", studentLevel: "Beginner", title: "Explore Verbs Like Gustar", details: "Verbs like gustar conjugate in the indirect sense.  Instead of 'I like ice cream', verbs like gustar conjugate more like 'ice cream is pleasing to me'", active: true)
         )
         case .auxiliaryVerbsInfinitives: data.append(
-            ExerciseData(id: 5, image: "EXPLOREAuxiliary", studentLevel: "Beginner", title: "Explore Auxiliary Verbs", details: "Auxiliary verbs are used to create progressive and perfect tenses.  They are also combined with infinitives to create verb phrases, such as 'querer venir con'", active: true)
+            ExerciseData(id: idNum, image: "EXPLOREAuxiliary", studentLevel: "Beginner", title: "Explore Auxiliary Verbs", details: "Auxiliary verbs are used to create progressive and perfect tenses.  They are also combined with infinitives to create verb phrases, such as 'querer venir con'", active: true)
         )
         default: data.append(
-            ExerciseData(id: 5, image: "EXPLORENormal", studentLevel: "All levels", title: "Explore Normal Verbs", details: "Almost all Spanish verbs are 'normal'.  This means they follow the simple pattern of Subject-Verb.  This includes reflexive verbs and verb phrases.  Thus, 'darse con' is a normal verb.", active: true)
+            ExerciseData(id: idNum, image: "EXPLORENormal", studentLevel: "All levels", title: "Explore Normal Verbs", details: "Almost all Spanish verbs are 'normal'.  This means they follow the simple pattern of Subject-Verb.  This includes reflexive verbs and verb phrases.  Thus, 'darse con' is a normal verb.", active: true)
         )
         } //end of switch
         setArray(data)
     }
     
     mutating func loadLearnImages(){
-        let data = [
-            ExerciseData(id: 0, image: "LEARNMixAndMatch", studentLevel: "Beginner", title: "Mix and Match", details: "Mix and Match is an exercise for interactively combining a random set of subjects with the correct verb forms for a given tense.", active: true),
-            
-            ExerciseData(id: 1, image: "LEARNDragAndDrop", studentLevel: "Intermediate", title: "Drag and Drop", details: "In Drag and Drop you drag the correct conjugated verb form from the box below onto the correct subject in the box above.", active: true),
-            
-            ExerciseData(id: 2, image: "LEARNSubjectVerb", studentLevel: "All levels", title: "Subject vs Verb", details: "You are presented with a subject, such as 'nosotros'.  To the right are words or phrases showing all the conjugated forms for the current tense.", active: true),
-            
-            ExerciseData(id: 3, image: "LEARNSubjectTense", studentLevel: "All levels", title: "Subject vs Tense", details: "You are presented with a subject, such as 'ellos'.  To the right are words or phrases showing all the conjugated forms for 'ellos' in all of the simple tenses.", active: true),
-            
-            ExerciseData(id: 4, image: "LEARNFlashCards", studentLevel: "Beginner", title: "Flash Cards", details: "Timed exercise.  Your current verbs and tenses are presented to you randomly one phrase at a time.  If you know the answer, push the card to the right.  To see the answer, click on the card.  If you don't know the answer, push the card to the left.", active: true)
-            
-        ]
-        setArray(data)
-    }
+        var data = [ExerciseData]()
+        if hasSimpleTenses{
+            data = [
+                ExerciseData(id: 0, image: "LEARNMixAndMatch", studentLevel: "Beginner", title: "Mix and Match", details: "Mix and Match is an exercise for interactively combining a random set of subjects with the correct verb forms for a given tense.", active: true),
+                
+                ExerciseData(id: 1, image: "LEARNDragAndDrop", studentLevel: "Intermediate", title: "Drag and Drop", details: "In Drag and Drop you drag the correct conjugated verb form from the box below onto the correct subject in the box above.", active: true),
+                
+                ExerciseData(id: 2, image: "LEARNSubjectVerb", studentLevel: "All levels", title: "Subject vs Verb", details: "You are presented with a subject, such as 'nosotros'.  To the right are words or phrases showing all the conjugated forms for the current tense.", active: true),
+                
+                ExerciseData(id: 3, image: "LEARNSubjectTense", studentLevel: "All levels", title: "Subject vs Tense", details: "You are presented with a subject, such as 'ellos'.  To the right are words or phrases showing all the conjugated forms for 'ellos' in all of the simple tenses.", active: true),
+                
+                ExerciseData(id: 4, image: "LEARNFlashCards", studentLevel: "Beginner", title: "Flash Cards", details: "Timed exercise.  Your current verbs and tenses are presented to you randomly one phrase at a time.  If you know the answer, push the card to the right.  To see the answer, click on the card.  If you don't know the answer, push the card to the left.", active: true)
+            ]
+        } else {
+            data = [
+                ExerciseData(id: 0, image: "LEARNMixAndMatch", studentLevel: "Beginner", title: "Mix and Match", details: "Mix and Match is an exercise for interactively combining a random set of subjects with the correct verb forms for a given tense.", active: true),
+                
+                ExerciseData(id: 1, image: "LEARNSubjectVerb", studentLevel: "All levels", title: "Subject vs Verb", details: "You are presented with a subject, such as 'nosotros'.  To the right are words or phrases showing all the conjugated forms for the current tense.", active: true),
+                
+                ExerciseData(id: 2, image: "LEARNSubjectTense", studentLevel: "All levels", title: "Subject vs Tense", details: "You are presented with a subject, such as 'ellos'.  To the right are words or phrases showing all the conjugated forms for 'ellos' in all of the simple tenses.", active: true),
+                
+                ExerciseData(id: 3, image: "LEARNFlashCards", studentLevel: "Beginner", title: "Flash Cards", details: "Timed exercise.  Your current verbs and tenses are presented to you randomly one phrase at a time.  If you know the answer, push the card to the right.  To see the answer, click on the card.  If you don't know the answer, push the card to the left.", active: true)
+            ]
+        }
     
-    mutating func loadTestImages(){
-        let data = [
-            ExerciseData(id: 1, image: "TESTMultiple", studentLevel: "Beginner", title: "Multiple Choice Test", details: "You must push a button with the correct answer for each.  Answer 8 out of 10 correctly to pass.", active: true),
-            
-            ExerciseData(id: 2, image: "TESTFillInBlanks", studentLevel: "Intermediate", title: "Fill-in Blanks Test", details: "You must type in the correct answer for each problem.  Answer 8 out of 10 correctly to pass.", active: true),
-        ]
-        setArray(data)
-    }
+    setArray(data)
+}
+
+mutating func loadTestImages(){
+    let data = [
+        ExerciseData(id: 1, image: "TESTMultiple", studentLevel: "Beginner", title: "Multiple Choice Test", details: "You must push a button with the correct answer for each.  Answer 8 out of 10 correctly to pass.", active: true),
+        
+        ExerciseData(id: 2, image: "TESTFillInBlanks", studentLevel: "Intermediate", title: "Fill-in Blanks Test", details: "You must type in the correct answer for each problem.  Answer 8 out of 10 correctly to pass.", active: true),
+    ]
+    setArray(data)
+}
 }
 

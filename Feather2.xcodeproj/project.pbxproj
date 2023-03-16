@@ -415,6 +415,7 @@
 		6E59888B298830150061E02B /* CarouselViews */ = {
 			isa = PBXGroup;
 			children = (
+				6ECCD48427DBDF200049B9CA /* PreferencesView.swift */,
 				6EDE6D8A292944D900060C03 /* NavStackRouter.swift */,
 				6E5988C3298C55DA0061E02B /* CarouselDispatcherView.swift */,
 				6E5988C1298C55300061E02B /* ExploreCarouselView.swift */,
@@ -523,7 +524,6 @@
 				6EA80F3427BDC65800D6061F /* VerbCubeCellView.swift */,
 				6EA80F3727BDC77400D6061F /* InteractiveVerbCubeCellView.swift */,
 				6E6CA06C27C4599400CCD8BE /* QuizCubeCellView.swift */,
-				6ECCD48427DBDF200049B9CA /* PreferencesView.swift */,
 				6EE480B528106E270091F1D5 /* View Extensions.swift */,
 				6EF60AE2283BFF05007E61F3 /* CustomAlertView.swift */,
 				6E447C9E28A6F64D00528DD9 /* ButtonAnimationView.swift */,
@@ -1123,7 +1123,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1161,7 +1161,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

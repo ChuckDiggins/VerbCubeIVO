@@ -274,6 +274,42 @@ extension LanguageEngine{
         
     }
     
+    func clearAllVerbCountsInCoreData(){
+        for vm in getVerbModels(){
+            vmecdm.setVerbCount(vm.modelVerb, 0)
+        }
+    }
+    
+    func setAllVerbCountsInCoreData(){
+        for vm in getVerbModels(){
+            let verbCount = findVerbsOfSameModel(targetID: vm.id).count
+            vmecdm.setVerbCount(vm.modelVerb, verbCount)
+        }
+        getAllVerbCountsFromCoreData()
+    }
+    
+    func verbCountsExistInCoreData()->Bool{
+        let vm = getVerbModels()[10]
+        let vc = vmecdm.getVerbCount(vm.modelVerb)
+        return vc > 0
+    }
+    
+    func getAllVerbCountsFromCoreData(){
+        modelVerbCountManager.reset()
+        
+//        print("getAllVerbCountsFromCoreData")
+        for vm in getVerbModels(){
+            let count = vmecdm.getVerbCount(vm.modelVerb)
+            modelVerbCountManager.append(ModelVerbCountStruct(id: vm.id, verbCount: count))
+        }
+//        for mvc in modelVerbCountManager.mvcList {
+//            print("id: \(mvc.id) - count = \(mvc.verbCount)")
+//        }
+    }
+    
+    func getModelVerbCountAt(_ id: Int)->Int{
+        modelVerbCountManager.getModelVerbCountAt(id)
+    }
     
     func setAllVerbModelsIncomplete(){
         vmecdm.setAllCompleted(flag: false)
@@ -297,9 +333,9 @@ extension LanguageEngine{
     
     func setAllLessonsAndModelsEmpty(){
         setAllVerbModelsIncomplete()
-        currentV2mChapter = "nada 2"
-        currentV2mLesson = "nada 3"
-        currentVerbModelString = "nada 4"
+        currentV2mChapter = "Chapter 1A"
+        currentV2mLesson = "Useful verbs"
+        currentVerbModelString = "ser"
     }
     
     func getSelectedVerbModelList()->[RomanceVerbModel]{

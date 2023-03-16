@@ -17,8 +17,8 @@ struct VerbModelListView: View {
     @State var modelName = "No name"
     @State var showSheet = false
     @State var selectedModel = RomanceVerbModel()
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 2"
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     @State private var inProgress = false
     @State private var orderedVerbModelList = [RomanceVerbModel]()
     
@@ -44,7 +44,8 @@ struct VerbModelListView: View {
                             } label: {
                                 HStack{
                                     Text("\(vm.id)")
-                                    Text("\(vm.modelVerb) \(languageViewModel.findVerbsOfSameModel(targetID: vm.id).count)")
+//                                    Text("\(vm.modelVerb) \(languageViewModel.findVerbsOfSameModel(targetID: vm.id).count)")
+                                    Text("\(vm.modelVerb) \(languageViewModel.getModelVerbCountAt(vm.id))")
                                     Spacer()
                                     if languageViewModel.isCompleted(verbModel: vm) { Text("✅")}
                                 }.foregroundColor(vmecdm.isSelected(verbModelString:vm.modelVerb) ? Color("ChuckText1") : Color("BethanyGreenText"))

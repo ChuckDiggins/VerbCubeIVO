@@ -8,9 +8,21 @@
 import SwiftUI
 import JumpLinguaHelpers
 
+
+
 struct TenseSelectionView: View {
+    enum TenseMode: String {
+        case Indicative, Subjunctive
+    }
+    
+    struct TenseThing{
+        var tense: Tense
+        var id = UUID()
+        var isSelected: Bool = false
+    }
+    
     @ObservedObject var languageViewModel: LanguageViewModel
-    @Binding var tenseList: [Tense]
+//    @Binding var tenseList: [Tense]
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @Environment(\.dismiss) private var dismiss
     
@@ -23,10 +35,12 @@ struct TenseSelectionView: View {
     ]
     
     @State var subjunctiveTenses: [TenseThing] = [
+        TenseThing(tense : .imperative),
         TenseThing(tense: .presentSubjunctive),
         TenseThing(tense: .imperfectSubjunctiveRA),
         TenseThing(tense: .imperfectSubjunctiveSE)
     ]
+//    @State var imperative = TenseThing(tense : .imperative)
     
     @State var indicativePerfectTenses: [TenseThing] = [
         TenseThing(tense: .presentPerfect),
@@ -35,6 +49,12 @@ struct TenseSelectionView: View {
         TenseThing(tense: .conditionalPerfect),
         TenseThing(tense: .futurePerfect)
     ]
+    @State var indicativeProgressiveTenses: [TenseThing] = [
+        TenseThing(tense: .presentProgressive),
+        TenseThing(tense: .imperfectProgressive),
+        TenseThing(tense: .conditionalProgressive),
+        TenseThing(tense: .futureProgressive)
+    ]
     
     @State var subjunctivePerfectTenses: [TenseThing] = [
         TenseThing(tense: .presentPerfectSubjunctive),
@@ -42,201 +62,95 @@ struct TenseSelectionView: View {
         TenseThing(tense: .pastPerfectSubjunctiveSE)
     ]
     
-    @State var imperative = TenseThing(tense : .imperative)
+    
     @State private var enabled = false
-    @State private var allSimpleTenses = false
-    @State private var allPerfectTenses = false
-    @State private var allSubjunctiveTenses = false
-    @State private var allPerfectSubjunctiveTenses = false
     @State private var fontSize = Font.caption
+    @State private var indicativeOrSubjunctive = TenseMode.Indicative
+    @State private var modeList = [TenseMode.Indicative, .Subjunctive]
+    
     var body: some View{
         
         VStack{
-            
-            Section (header: Text("Indicative tenses")){
-                HStack{
-                    List{
-                        Section(
-                            header:
-                                Button(action: {
-                                    toggleAllIndicativeTenses()
-                                    allSimpleTenses.toggle()
-                                }){
-                                    Text("Toggle simple tenses")
-                                        .font(fontSize)
-                                        .foregroundColor(.white)
-                                        .background(allSimpleTenses ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
-                                        .padding(.horizontal, 10)
-                                }
-                            
-                        ){
-                            ForEach(0..<indicativeTenses.count, id: \.self){ index in
-                                HStack {
-                                    Button(action: {
-                                        indicativeTenses[index].isSelected = indicativeTenses[index].isSelected ? false : true
-                                    }) {
-                                        HStack{
-                                            if indicativeTenses[index].isSelected {
-                                                Image(systemName: "checkmark.square.fill")
-                                                    .foregroundColor(.green)
-                                                    .animation(.default, value: enabled)
-                                            } else {
-                                                Image(systemName: "square")
-                                                    .foregroundColor(.primary)
-                                                    .animation(.default, value: enabled)
-                                            }
-                                            Text(indicativeTenses[index].tense.rawValue)
-                                        }
-                                    }.buttonStyle(BorderlessButtonStyle())
-                                }
-                            }
-                        }
-                    }
-                    List{
-                        Section(
-                            header:
-                                Button(action: {
-                                    toggleAllIndicativePerfectTenses()
-                                    allPerfectTenses.toggle()
-                                }){
-                                    Text("Toggle perfect tenses")
-                                        .font(fontSize)
-                                        .foregroundColor(.white)
-                                        .background(allPerfectTenses ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
-                                        .padding(.horizontal, 10)
-                                }
-                            
-                        ){
-                            ForEach(0..<indicativePerfectTenses.count, id: \.self){ index in
-                                HStack {
-                                    Button(action: {
-                                        indicativePerfectTenses[index].isSelected = indicativePerfectTenses[index].isSelected ? false : true
-                                    }) {
-                                        HStack{
-                                            if indicativePerfectTenses[index].isSelected {
-                                                Image(systemName: "checkmark.square.fill")
-                                                    .foregroundColor(.green)
-                                                    .animation(.default, value: enabled)
-                                            } else {
-                                                Image(systemName: "square")
-                                                    .foregroundColor(.primary)
-                                                    .animation(.default, value: enabled)
-                                            }
-                                            Text(indicativePerfectTenses[index].tense.rawValue)
-                                        }
-                                    }.buttonStyle(BorderlessButtonStyle())
-                                }
-                            }
-                        }
-                    }
-                    
-                }//HStack
-                .font(.caption)
-            } //Section Indicative
-            
-            HStack {
-                Button(action: {
-                    imperative.isSelected = imperative.isSelected ? false : true
-                }) {
+            Picker("Mode", selection: $indicativeOrSubjunctive){
+                ForEach(modeList , id:\.self){ Text($0.rawValue)}
+            }.pickerStyle(SegmentedPickerStyle())
+                .padding()
+
+            switch indicativeOrSubjunctive {
+            case .Indicative:
+                VStack{
                     HStack{
-                        if imperative.isSelected {
-                            Image(systemName: "checkmark.square.fill")
-                                .foregroundColor(.green)
-                                .animation(.default, value: enabled)
-                        } else {
-                            Image(systemName: "square")
-                                .foregroundColor(.primary)
-                                .animation(.default, value: enabled)
+                        List{
+                            ForEach(0..<indicativeTenses.count, id: \.self){ index in
+                                
+                                Button{
+                                    indicativeTenses[index].isSelected.toggle()
+                                } label: {
+                                    Text(indicativeTenses[index].tense.rawValue)
+                                        .foregroundColor(indicativeTenses[index].isSelected ? .yellow : Color("BethanyGreenText"))
+                                        .background(indicativeTenses[index].isSelected ? .black : Color("BethanyNavalBackground"))
+                                }
+                            }
                         }
-                        Text(imperative.tense.rawValue)
+                        List{
+                            ForEach(0..<indicativePerfectTenses.count, id: \.self){ index in
+                                Button{
+                                    indicativePerfectTenses[index].isSelected.toggle()
+                                } label: {
+                                    Text(indicativePerfectTenses[index].tense.rawValue)
+                                        .foregroundColor(indicativePerfectTenses[index].isSelected ? .yellow : Color("BethanyGreenText"))
+                                        .background(indicativePerfectTenses[index].isSelected ? .black : Color("BethanyNavalBackground"))
+                                }
+                            }
+                        }
                     }
-                }.background(Color.yellow)
-                    .foregroundColor(.black)
-                    .frame(width: 200, height: 50)
-            }
-            Spacer()
-            
-            Section (header: Text("Subjunctive tenses")){
+                    List{
+                        ForEach(0..<indicativeProgressiveTenses.count, id: \.self){ index in
+                            Button{
+                                indicativeProgressiveTenses[index].isSelected.toggle()
+                            } label: {
+                                Text(indicativeProgressiveTenses[index].tense.rawValue)
+                                    .foregroundColor(indicativeProgressiveTenses[index].isSelected ? .yellow : Color("BethanyGreenText"))
+                                    .background(indicativeProgressiveTenses[index].isSelected ? .black : Color("BethanyNavalBackground"))
+                            }
+                        }
+                    }
+                }
+            case .Subjunctive:
+//                Button{
+//                    imperative.isSelected.toggle()
+//                } label: {
+//                    Text(imperative.tense.rawValue).font(.caption)
+//                        .foregroundColor(imperative.isSelected ? .yellow : Color("BethanyGreenText"))
+//                        .background(imperative.isSelected ? .black : Color("BethanyNavalBackground"))
+//                }
+//                
                 HStack{
                     List{
-                        Section(
-                            header:
-                                Button(action: {
-                                    toggleAllSubjunctiveTenses()
-                                    allSubjunctiveTenses.toggle()
-                                }){
-                                    Text("Toggle Simple tenses")
-                                        .font(fontSize)
-                                        .foregroundColor(.white)
-                                        .background(allSubjunctiveTenses ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
-                                        .padding(.horizontal, 10)
-                                }
-                            
-                        ){
-                            ForEach(0..<subjunctiveTenses.count, id: \.self){ index in
-                                HStack {
-                                    Button(action: {
-                                        subjunctiveTenses[index].isSelected = subjunctiveTenses[index].isSelected ? false : true
-                                    }) {
-                                        HStack{
-                                            if subjunctiveTenses[index].isSelected {
-                                                Image(systemName: "checkmark.square.fill")
-                                                    .foregroundColor(.green)
-                                                    .animation(.default, value: enabled)
-                                            } else {
-                                                Image(systemName: "square")
-                                                    .foregroundColor(.primary)
-                                                    .animation(.default, value: enabled)
-                                            }
-                                            Text(subjunctiveTenses[index].tense.rawValue)
-                                        }
-                                    }.buttonStyle(BorderlessButtonStyle())
-                                }
+                        ForEach(0..<subjunctiveTenses.count, id: \.self){ index in
+                            Button{
+                                subjunctiveTenses[index].isSelected.toggle()
+                            } label: {
+                                Text(subjunctiveTenses[index].tense.rawValue)
+                                    .foregroundColor(subjunctiveTenses[index].isSelected ? .yellow : Color("BethanyGreenText"))
+                                    .background(subjunctiveTenses[index].isSelected ? .black : Color("BethanyNavalBackground"))
                             }
                         }
                     }
                     List{
-                        Section(
-                            header:
-                                Button(action: {
-                                    toggleAllSubjunctivePerfectTenses()
-                                    allPerfectSubjunctiveTenses.toggle()
-                                }){
-                                    Text("Toggle Simple tenses")
-                                        .font(fontSize)
-                                        .foregroundColor(.white)
-                                        .background(allPerfectSubjunctiveTenses ? .linearGradient(colors: [.red, .yellow], startPoint: .bottomLeading, endPoint: .topTrailing) : .linearGradient(colors: [.blue, .red], startPoint: .bottomLeading, endPoint: .topTrailing))
-                                        .padding(.horizontal, 10)
-                                }
-                            
-                        ){
-                            ForEach(0..<subjunctivePerfectTenses.count, id: \.self){ index in
-                                HStack {
-                                    Button(action: {
-                                        subjunctivePerfectTenses[index].isSelected = subjunctivePerfectTenses[index].isSelected ? false : true
-                                    }) {
-                                        HStack{
-                                            if subjunctivePerfectTenses[index].isSelected {
-                                                Image(systemName: "checkmark.square.fill")
-                                                    .foregroundColor(.green)
-                                                    .animation(.default, value: enabled)
-                                            } else {
-                                                Image(systemName: "square")
-                                                    .foregroundColor(.primary)
-                                                    .animation(.default, value: enabled)
-                                            }
-                                            Text(subjunctivePerfectTenses[index].tense.rawValue)
-                                        }
-                                    }.buttonStyle(BorderlessButtonStyle())
-                                }
+                        ForEach(0..<subjunctivePerfectTenses.count, id: \.self){ index in
+                            Button{
+                                subjunctivePerfectTenses[index].isSelected.toggle()
+                            } label: {
+                                Text(subjunctivePerfectTenses[index].tense.rawValue)
+                                    .foregroundColor(subjunctivePerfectTenses[index].isSelected ? .yellow : Color("BethanyGreenText"))
+                                    .background(subjunctivePerfectTenses[index].isSelected ? .black : Color("BethanyNavalBackground"))
                             }
                         }
                     }
-                    
-                }//HStack
-                //Spacer()
-                .font(.caption)
-            } //Section Subjunctive
+                }
+                
+            }
             
             HStack{
                 Button(action: {
@@ -254,7 +168,9 @@ struct TenseSelectionView: View {
                 }.modifier(RedButtonModifier())
             }
             
-        }
+        }.font(.caption)
+        .background(Color("BethanyNavalBackground"))
+        .foregroundColor(Color("BethanyGreenText"))
         .onAppear{
             fillTenses()
         }.environment(\.defaultMinListRowHeight, 10)
@@ -270,56 +186,11 @@ struct TenseSelectionView: View {
         
     }
     
-    func toggleAllIndicativeTenses(){
-        var item = TenseThing(tense : .present)
-        for index in 0..<indicativeTenses.count {
-            item = indicativeTenses[index]
-            //print("Before toggle \(item) is selected \(item.isSelected)" )
-            item.isSelected.toggle()
-            //print("After toggle \(item) is selected \(item.isSelected)" )
-            indicativeTenses[index] = item
-        }
-    }
-    
-    func toggleAllIndicativePerfectTenses(){
-        var item = TenseThing(tense : .present)
-        for index in 0..<indicativePerfectTenses.count {
-            item = indicativePerfectTenses[index]
-            //print("Before toggle \(item) is selected \(item.isSelected)" )
-            item.isSelected.toggle()
-            //print("After toggle \(item) is selected \(item.isSelected)" )
-            indicativePerfectTenses[index] = item
-        }
-    }
-    
-    
-    func toggleAllSubjunctiveTenses(){
-        var item = TenseThing(tense : .present)
-        for index in 0..<subjunctiveTenses.count {
-            item = subjunctiveTenses[index]
-            //print("Before toggle \(item) is selected \(item.isSelected)" )
-            item.isSelected.toggle()
-            //print("After toggle \(item) is selected \(item.isSelected)" )
-            subjunctiveTenses[index] = item
-        }
-    }
-    
-    func toggleAllSubjunctivePerfectTenses(){
-        var item = TenseThing(tense : .present)
-        for index in 0..<subjunctivePerfectTenses.count {
-            item = subjunctivePerfectTenses[index]
-            //print("Before toggle \(item) is selected \(item.isSelected)" )
-            item.isSelected.toggle()
-            //print("After toggle \(item) is selected \(item.isSelected)" )
-            subjunctivePerfectTenses[index] = item
-        }
-    }
-    
     func fillTenses(){
         let tenseList = languageViewModel.getTenseList()
         
-        var tenseFound = false
         for tense in tenseList {
+            var tenseFound = false
             for index in 0..<indicativeTenses.count {
                 if ( indicativeTenses[index].tense == tense ){
                     indicativeTenses[index].isSelected = true
@@ -332,6 +203,16 @@ struct TenseSelectionView: View {
                 for index in 0..<subjunctiveTenses.count {
                     if ( subjunctiveTenses[index].tense == tense ){
                         subjunctiveTenses[index].isSelected = true
+                        tenseFound = true
+                        break
+                    }
+                }
+            }
+            
+            if ( !tenseFound ){
+                for index in 0..<indicativeProgressiveTenses.count {
+                    if ( indicativeProgressiveTenses[index].tense == tense ){
+                        indicativeProgressiveTenses[index].isSelected = true
                         tenseFound = true
                         break
                     }
@@ -357,12 +238,13 @@ struct TenseSelectionView: View {
                     }
                 }
             }
-            if ( !tenseFound ){
-                if ( imperative.tense == tense ){
-                    imperative.isSelected = true
-                    tenseFound = true
-                }
-            }
+            
+//            if ( !tenseFound ){
+//                if ( imperative.tense == tense ){
+//                    imperative.isSelected = true
+//                    tenseFound = true
+//                }
+//            }
             //print("\(tense) was found \(tenseFound) ")
         }
     }
@@ -371,8 +253,6 @@ struct TenseSelectionView: View {
         //var tenseManager = TenseManager()
         
         var tempTenseList = [Tense]()
-        
-        
         for index in 0..<indicativeTenses.count {
             if ( indicativeTenses[index].isSelected ){tempTenseList.append(indicativeTenses[index].tense)}
         }
@@ -382,22 +262,19 @@ struct TenseSelectionView: View {
         for index in 0..<indicativePerfectTenses.count {
             if ( indicativePerfectTenses[index].isSelected ){tempTenseList.append(indicativePerfectTenses[index].tense)}
         }
+        for index in 0..<indicativeProgressiveTenses.count {
+            if ( indicativeProgressiveTenses[index].isSelected ){tempTenseList.append(indicativeProgressiveTenses[index].tense)}
+        }
         for index in 0..<subjunctivePerfectTenses.count {
             if ( subjunctivePerfectTenses[index].isSelected ){tempTenseList.append(subjunctivePerfectTenses[index].tense)}
         }
-        if ( imperative.isSelected ){tempTenseList.append(imperative.tense)}
+//        if ( imperative.isSelected ){tempTenseList.append(imperative.tense)}
         
         if ( tempTenseList.count > 0 ){
             languageViewModel.setTenses(tenseList : tempTenseList )
         }
-        tenseList = tempTenseList
+//        tenseList = tempTenseList
     }
-}
-
-struct TenseThing{
-    var tense: Tense
-    var id = UUID()
-    var isSelected: Bool = false
 }
 
 

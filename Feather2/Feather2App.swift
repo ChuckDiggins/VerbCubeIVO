@@ -27,10 +27,10 @@ struct Feather2App: SwiftUI.App {
     @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
     @StateObject var vmecdm = VerbModelEntityCoreDataManager()
     @StateObject var router = Router()
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7
     
@@ -41,7 +41,7 @@ struct Feather2App: SwiftUI.App {
             if currentPage < totalPages{
                 WalkthroughScreen()
             } else if explanationPage < totalExplanationPages{
-                ExplanationScreen()
+                ExplanationScreen1()
             }
             else {
                 NavigationStack{

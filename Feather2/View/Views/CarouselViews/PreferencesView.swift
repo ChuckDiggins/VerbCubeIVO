@@ -15,10 +15,10 @@ struct PreferencesView: View {
     @State var speechModeActiveString = "Speech mode is ACTIVE"
     @State var tenseList = [Tense]()
     @State var modelCompleted = false
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7
     
@@ -38,13 +38,13 @@ struct PreferencesView: View {
                 }
                 ScrollView {
                     DisclosureGroupPreferences()
-                    NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel, tenseList: $tenseList)){
-                        HStack{
-                            Text("Set tenses")
-                            Spacer()
-                            Image(systemName: "chevron.right").foregroundColor(.yellow)
-                        }
-                    } .modifier(ModelTensePersonButtonModifier())
+//                    NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel, tenseList: $tenseList)){
+//                        HStack{
+//                            Text("Set tenses")
+//                            Spacer()
+//                            Image(systemName: "chevron.right").foregroundColor(.yellow)
+//                        }
+//                    } .modifier(ModelTensePersonButtonModifier())
 
                     Button{
                         currentPage = 1
@@ -53,12 +53,12 @@ struct PreferencesView: View {
                     }
                     .modifier(ModelTensePersonButtonModifier())
                     
-//                    Button{
-//                        explanationPage = 1
-//                    } label: {
-//                        Text("Show program overview series")
-//                    }
-//                    .modifier(ModelTensePersonButtonModifier())
+                    Button{
+                        explanationPage = 1
+                    } label: {
+                        Text("Show program overview series")
+                    }
+                    .modifier(ModelTensePersonButtonModifier())
                     
 //                    Button{
 //                        languageViewModel.toggleSpeechMode()
@@ -87,6 +87,25 @@ struct PreferencesView: View {
                        
                     VStack{
                         Text("Testing buttons")
+                        
+                        Button{
+                            languageViewModel.clearAllVerbCountsInCoreData()
+                            print(languageViewModel.getModelVerbCountAt(9))
+                        } label: {
+                            Text("Clear all CoreData verb counts")
+                        }.modifier(ModelTensePersonButtonModifier())
+                        
+                        Button{
+                            languageViewModel.setAllVerbCountsInCoreData()
+                        } label: {
+                            Text("Set all CoreData verb counts")
+                        }.modifier(ModelTensePersonButtonModifier())
+                        
+                        Button{
+                            languageViewModel.getAllVerbCountsFromCoreData()
+                        } label: {
+                            Text("Get all CoreData verb counts")
+                        }.modifier(ModelTensePersonButtonModifier())
                         
                         Button{
                             languageViewModel.setAllVerbModelsIncomplete()

@@ -54,8 +54,8 @@ struct DictionaryView: View {
     @State var orthoString = ""
     @State var userString = ""
     
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     
     //@State var bAddNewVerb = false
     

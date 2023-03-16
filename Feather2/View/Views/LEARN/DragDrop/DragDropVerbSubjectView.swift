@@ -132,6 +132,7 @@ struct DragDropVerbSubjectView: View {
     func loadNewProblem(){
         currentVerb = languageViewModel.getRandomVerb()
         currentVerbString = currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
+        tenseList = languageViewModel.getSimpleTensesFromList(languageViewModel.getTenseList())
         let tempTenseList = tenseList.shuffled()
         currentTense = tempTenseList[0]
         currentTenseString = currentTense.rawValue

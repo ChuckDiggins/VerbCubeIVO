@@ -53,7 +53,15 @@ class VerbModelEntityCoreDataManager: ObservableObject{
         savedModels = vm.savedVerbModelEnties
     }
     
-
+    func setVerbCount(_ verbModelString: String, _ count: Int){
+        vm.setVerbCount(verbModelString, count)
+        savedModels = vm.savedVerbModelEnties
+    }
+    
+    func getVerbCount(_ verbModelString: String)->Int{
+        vm.getVerbCount(verbModelString)
+    }
+    
     func isCompleted(verbModelString: String)->Bool{
         return vm.hasVerbModelEntityBeenCompleted(verbModelString: verbModelString)
     }

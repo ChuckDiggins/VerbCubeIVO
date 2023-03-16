@@ -56,14 +56,49 @@ class ParticipleManager{
     }
 }
 
+struct ModelVerbCountStruct {
+    var id : Int
+    var verbCount : Int
+}
+
+struct ModelVerbCountManager {
+    var mvcList = [ModelVerbCountStruct]()
+    
+    init(){
+        print("ModelVerbCountManager initialized")
+    }
+    
+    func getCount() ->Int{
+        mvcList.count
+    }
+    
+    mutating func reset(){
+        mvcList.removeAll()
+    }
+    
+    mutating func append(_ mvc: ModelVerbCountStruct){
+        mvcList.append(mvc)
+    }
+    
+    func getModelVerbCountAt(_ id: Int)->Int{
+        if mvcList.count == 0 {
+            print("getModelVerbCountAt : mvcList.count = \(mvcList.count)")
+        }
+        for mvc in mvcList {
+            if mvc.id == id { return mvc.verbCount }
+        }
+        return -1
+    }
+}
+
 class LanguageEngine : ObservableObject, Equatable {
     static func == (lhs: LanguageEngine, rhs: LanguageEngine) -> Bool {
         return lhs.currentLanguage.rawValue == rhs.currentLanguage.rawValue
     }
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "NA"
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     
     @Published var filteredVerbList = [Verb]()
     var verbModelFilteredVerbList = [Verb]()
@@ -74,6 +109,7 @@ class LanguageEngine : ObservableObject, Equatable {
     private var currentPerson = Person.S1
     private var currentVerbIndex = 0
     private var currentTenseIndex = 0
+    var currentSimpleTenseIndex = 0
     private var currentPersonIndex = 0
     var currentFilteredVerbIndex = 0
     var currentVerbPattern = SpecialPatternStruct(tense: .present, spt: .none )
@@ -93,6 +129,8 @@ class LanguageEngine : ObservableObject, Equatable {
     var verbList = [Verb]()
     
     var orderedVerbModelList = [RomanceVerbModel]()
+    var modelVerbCountManager = ModelVerbCountManager()
+    
     @Published var verbCubeList = [Verb]()
     var behaviorVerbList = [Verb]()
     var verbCubeBlock = [Verb(), Verb(), Verb(), Verb(), Verb(), Verb()]
@@ -199,7 +237,6 @@ class LanguageEngine : ObservableObject, Equatable {
         
         
         loadWordDictionariesFromJSON()
-//        m_wsp.getWordCounts()
         
         loadPastParticiplesFromJsonVerbs()
         
@@ -230,10 +267,10 @@ class LanguageEngine : ObservableObject, Equatable {
     }
     
     func loadPastParticiplesFromJsonVerbs(){
-        var jm = jsonDictionaryManager
-        var jvManager = jm.jsonVerbManager
+        let jm = jsonDictionaryManager
+        let jvManager = jm.jsonVerbManager
         
-        var jvCount = jvManager.getVerbCount()
+        let jvCount = jvManager.getVerbCount()
         for index in 0 ..< jvCount {
             let jv = jvManager.getVerbAt(index: index)
             let pp = jv.getSpanishPastParticiple1()
@@ -335,6 +372,32 @@ class LanguageEngine : ObservableObject, Equatable {
         }
     }
     
+    func getPreviousSimpleTense()->Tense{
+        let simpleTenseList = getSimpleTensesFromList(tenseList)
+        if simpleTenseList.count > 0 {
+            if currentSimpleTenseIndex > 0 {
+                currentSimpleTenseIndex -= 1
+            } else {
+                currentSimpleTenseIndex = simpleTenseList.count - 1
+            }
+            return simpleTenseList[currentSimpleTenseIndex]
+        }
+        return Tense.present
+    }
+    
+    func getNextSimpleTense()->Tense{
+        let simpleTenseList = getSimpleTensesFromList(tenseList)
+        if simpleTenseList.count > 0 {
+            if currentSimpleTenseIndex < simpleTenseList.count - 1 {
+                currentSimpleTenseIndex += 1
+            } else {
+                currentSimpleTenseIndex = 0
+            }
+            return simpleTenseList[currentSimpleTenseIndex]
+        }
+        return Tense.present
+    }
+    
     func getRandomTense()->Tense{
         tenseManager.getRandomTense()
     }
@@ -398,6 +461,14 @@ class LanguageEngine : ObservableObject, Equatable {
  
     func isAuxiliary(verb: Verb)->(Bool, Tense){
         BehavioralVerbModel().isAuxiliary(language: currentLanguage, verb: verb)
+    }
+    
+    func getSimpleTensesFromList(_ tenseList: [Tense])->[Tense]{
+        var simpleTenseList = [Tense]()
+        for tense in tenseList{
+            if tense.isSimpleTense() { simpleTenseList.append(tense)}
+        }
+        return simpleTenseList
     }
     
     func getPersonString(personIndex: Int, tense: Tense, specialVerbType: SpecialVerbType, verbString: String)->String{
@@ -741,7 +812,9 @@ class LanguageEngine : ObservableObject, Equatable {
     }
     
     func getTenseList()->[Tense]{return tenseList}
-    func setTenses(tenseList: [Tense]){ self.tenseList = tenseList }
+    func setTenses(tenseList: [Tense]){
+        self.tenseList = tenseList
+    }
 
     func getCurrentVerb()->Verb{return currentVerb}
     func getCurrentTense()->Tense{

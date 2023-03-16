@@ -22,10 +22,10 @@ struct ListVerbsForModelView: View {
     @State var currentLanguage = LanguageType.Spanish
     @State var selectedCount = 0
     @State var modelName = "No name"
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "NA"
-    @AppStorage("V2MChapter") var currentV2mChapter = "nada 2"
-    @AppStorage("V2MLesson") var currentV2mLesson = "nada 3"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "nada 4"
+    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     
     
     var fontSize = Font.title3
