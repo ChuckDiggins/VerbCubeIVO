@@ -24,10 +24,13 @@ struct ExerciseStruct: Identifiable, Hashable {
 struct ShowSegmentedVerbOrModelModePicker: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel
     @Binding var currentVerbOrModelMode: VerbOrModelMode
+    @Binding var selectImageString : String
     var verbOrModelModeList : [ VerbOrModelMode ]
 
-    init(_ currentVerbOrModelMode: Binding<VerbOrModelMode>, verbOrModelModeList: [ VerbOrModelMode ]){
+    init(_ currentVerbOrModelMode: Binding<VerbOrModelMode>, _ selectImageString : Binding<String>,
+         verbOrModelModeList: [ VerbOrModelMode ]){
         self.verbOrModelModeList = verbOrModelModeList
+        self._selectImageString = selectImageString
         self._currentVerbOrModelMode = currentVerbOrModelMode
         UISegmentedControl.appearance().selectedSegmentTintColor = .green
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
@@ -43,8 +46,10 @@ struct ShowSegmentedVerbOrModelModePicker: View {
             switch currentVerbOrModelMode {
             case .verbMode:
                 languageViewModel.setToVerbMode()
+                selectImageString = "SELECT Verb Lesson"
             case .modelMode:
                 languageViewModel.setToVerbModelMode()
+                selectImageString = "SELECT Verb Model"
             }
             print("changing verb or model mode to: \(currentVerbOrModelMode.rawValue)")
         }
@@ -72,6 +77,7 @@ struct NavStackCarouselDispatcherView: View {
     @State private var imageLength = CGFloat(125)
     @State private var multipleChoiceShown = true
     @State private var textEditorShown = true
+    @State private var selectImageString = "SELECT verb lesson"
     @State private var isLoading = false
     @State private var exerciseStructList = [
 //        ExerciseStruct(.SelectModel, Image("SELECTModels")),
@@ -92,12 +98,12 @@ struct NavStackCarouselDispatcherView: View {
                 .ignoresSafeArea(.all)
                 .opacity(0.4)
             NavigationStack(path: $router.path){
-                ShowSegmentedVerbOrModelModePicker($currentVerbOrModelMode, verbOrModelModeList: verbOrModelModeList)
+                ShowSegmentedVerbOrModelModePicker($currentVerbOrModelMode, $selectImageString, verbOrModelModeList: verbOrModelModeList)
                 List{
                     ForEach(exerciseStructList){ exercise in
                         NavigationLink(value: exercise){
                             HStack{
-                                exercise.image
+                                getCurrentSelectImage(exercise)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: imageLength, height: imageLength)
@@ -150,7 +156,7 @@ struct NavStackCarouselDispatcherView: View {
                     case "Show Current Verbs": ListVerbsForModelView(languageViewModel: languageViewModel, vmecdm: vmecdm)
                         //Explore
                     case "3 Verbs View": ThreeVerbSimpleView(languageViewModel: languageViewModel)
-                    case "Verb Cube": VerbCubeDirectorView(languageViewModel: languageViewModel)
+                    case "Verb Cube": VerbCubeView(languageViewModel: languageViewModel, vccsh: VerbCubeConjugatedStringHandlerStruct(languageViewModel: languageViewModel, d1:  .Person, d2: .Verb))
                     case "Verb Conjugation": SimpleVerbConjugation(languageViewModel: languageViewModel, verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", multipleVerbFlag: true)
                     case "Verb Morphing":
                         if languageViewModel.isModelMode() && languageViewModel.getFilteredVerbs().count > 1{
@@ -213,6 +219,14 @@ struct NavStackCarouselDispatcherView: View {
         .padding()
         
         
+    }
+    
+    func getCurrentSelectImage(_ exercise: ExerciseStruct)->Image{
+        var currentImage = exercise.image
+        if ( exercise.mode == .Select ){
+            currentImage = Image(selectImageString)
+        }
+        return currentImage
     }
     
     func loadFromCoreData(){

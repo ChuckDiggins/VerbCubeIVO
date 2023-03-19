@@ -72,7 +72,7 @@ struct RightWrongVerbView: View {
                             .padding(20)
                     })
                     Spacer()
-                    Text("Right & Wrong").font(.title2).bold().foregroundColor(.white)
+                    Text("Right & Wrong").font(.title2).bold().foregroundColor(Color("BethanyGreenText"))
                     Spacer()
                 }
                 
@@ -324,7 +324,7 @@ struct RightWrongVerbView: View {
             wrongPhrase[i] = removeAllExtraBlanks(wrongPhrase[i])
             if i == 0 && currentTense == .imperative { wrongPhrase[i] = ""}
             vvr.append(wrongPhrase[i])
-            print("i: \(i).  rightPhrase \(rightPhrase[i]), wrongPhrase \(wrongPhrase[i])")
+//            print("i: \(i).  rightPhrase \(rightPhrase[i]), wrongPhrase \(wrongPhrase[i])")
         }
         isAnalyzed.toggle()
     }

@@ -72,29 +72,36 @@ extension LanguageEngine{
         return probStruct
     }
     
+    
+    //not happy with shuffle
+    
     func createProblemForThisPerson(verb: Verb, person: Person)->ProblemStruct{
         let probStruct = ProblemStruct()
-        var localTenseList = tenseList
-        localTenseList.shuffle()
-        let correctTense = tenseList[0]
-        localTenseList.shuffle()
+        
+        if tenseList.count == 0 {
+            tenseList.append(.present)
+        }
+        
+        let correctTense = tenseList.randomElement()
+        
         //        let dependentVerb = findVerbFromString(verbString: "comprar", language: getCurrentLanguage())
         let dependentVerb = Verb()
         let number = Number.singular
         
 //        probStruct.question = "Verb: \(verb.getWordAtLanguage(language: getCurrentLanguage())), tense: \(correctTense.rawValue), person: \(person.getMaleString())"
         
-        let personString = getPersonString(personIndex: person.getIndex(), tense: correctTense, specialVerbType: specialVerbType, verbString: verb.getWordString())
+        let personString = getPersonString(personIndex: person.getIndex(), tense: correctTense ?? .present, specialVerbType: specialVerbType, verbString: verb.getWordString())
         probStruct.personString = personString
-        probStruct.question = "Verb: \(verb.getWordAtLanguage(language: getCurrentLanguage())), tense: \(correctTense.rawValue), person: \(personString))"
+        probStruct.question = "Verb: \(verb.getWordAtLanguage(language: getCurrentLanguage())), tense: \(correctTense?.rawValue ?? Tense.present.rawValue), person: \(personString))"
         
+        var localTenseList = tenseList.shuffled()
         
         for tense in localTenseList {
             createAndConjugateAgnosticVerb(verb: verb, tense: tense)
             let verbString = getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: verb.getWordString(), dependentVerb: dependentVerb, residualPhrase: "")
 //            let verbString = createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
             probStruct.appendAnswer(answer: verbString)
-            probStruct.tense = correctTense
+            probStruct.tense = correctTense ?? Tense.present
             if tense == correctTense {
                 probStruct.correctAnswer = verbString
             }
@@ -110,7 +117,7 @@ extension LanguageEngine{
         var filezillaCardList = [FilezillaCard]()
         var tenseList = getTenseList()
         var verbList = getFilteredVerbs()
-        verbList.shuffle()
+//        verbList.shuffle()
         tenseList.shuffle()
         var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
         personList.shuffle()

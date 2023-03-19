@@ -115,7 +115,7 @@ struct ExerciseDataManager{
             let data = [
                 ExerciseData(id: 0, image: "SELECTRealidades", studentLevel: "Beginner", title: "Realidades 1", details: "Realidades 1 is a common text book used for first level Spanish.  Each exercise combines the verbs and tenses associated with a chapter section in Realidades.", active: true),
                 
-                ExerciseData(id: 1, image: "SELECTChuck", studentLevel: "Beginner", title: "Challenging Lessons", details: "Advanced lessons are a collection of verb/tenses to help you master verb conjugation", active: true),
+                ExerciseData(id: 1, image: "SELECTChallengingLessons", studentLevel: "Beginner", title: "Challenging Lessons", details: "Advanced lessons are a collection of verb/tenses to help you master verb conjugation", active: true),
                 
                 ExerciseData(id: 2, image: "SELECTShowCurrentVerbs", studentLevel: "All levels", title: "Show Current Verbs", details: "Current verbs are the verbs that are active for learning.", active: true)
             ]

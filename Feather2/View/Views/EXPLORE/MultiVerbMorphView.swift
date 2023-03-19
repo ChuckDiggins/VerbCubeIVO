@@ -118,6 +118,7 @@ struct MultiVerbMorphView: View {
                         HStack(spacing: 0){
                             ForEach( 0..<3 ) { index in
                                 Text(tms.getString(index: index))
+                                    .foregroundColor(Color("BethanyGreenText"))
                                     .background(tms.getColor(index: index))
                             }
                         }
@@ -346,6 +347,7 @@ struct MultiVerbMorphView: View {
             let newTms = createMorphCompositeString(morphStep: morphStep)
             tms.setTextMorphStruct(inputTms:newTms )
             tmsList[verbIndex] = tms
+            print("setCurrentMorphStep: tms = \(tms)")
         }
     }
     
@@ -372,6 +374,8 @@ struct MultiVerbMorphView: View {
             print("\(i), \(tms.getString(index: i)), Color =\(tms.getColor(index:i)), Bold = \(tms.getBold(index:i))")
         }
     }
+    
+    //setting foreground to background color
     func createMorphCompositeString(morphStep : MorphStep)->(TextMorphStruct)
     {
     var tms = TextMorphStruct()
@@ -387,6 +391,8 @@ struct MultiVerbMorphView: View {
     return tms
     }
     
+//        .foregroundColor(Color("BethanyGreenText"))
+//        .background(Color("BethanyNavalBackground"))
     func setCurrentMorphStepForAllVerbs(){
         for verbIndex in 0 ..< verbCount {
             setCurrentMorphStep(verbIndex: verbIndex)
