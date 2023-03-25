@@ -238,7 +238,7 @@ struct SimpleVerbConjugation: View {
     @State private var isNameValid = false
     @State private var isAnalyzed = false
     @FocusState private var textFieldFocus : Bool
-    @State var specialVerbType = SpecialVerbType.normal
+//    @State var specialVerbType = SpecialVerbType.normal
     @State private var number = Number.singular
     @State private var dependentVerb = Verb()
     @State var currentVerbModel = RomanceVerbModel()
@@ -301,9 +301,7 @@ struct SimpleVerbConjugation: View {
                     
                     .onAppear {
                         currentTense = languageViewModel.getLanguageEngine().getNextTense()
-                        //                        dependentVerb = languageViewModel.getRandomVerb()  //for use with auxiliary verbs
-                        //                        specialVerbType = languageViewModel.getStudyPackage().specialVerbType
-                        //                        print("SimpleVerbConjugation: specialVerbType = \(specialVerbType.rawValue)")
+                        //
                         currentVerbPhrase = verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
                         //                        print("onAppear1: currentVerbPhrase: \(currentVerbPhrase)")
                         currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
@@ -314,13 +312,10 @@ struct SimpleVerbConjugation: View {
                         }
                         verbModelString = languageViewModel.getStudyPackage().name
                         multipleVerbFlag = false
-                        if languageViewModel.getFilteredVerbs().count > 1 {
-                            //                            for v in languageViewModel.getFilteredVerbs(){
-                            //                                print("SimpleVerbConjugation: \(v.getWordAtLanguage(language: .Spanish))")
-                            //                            }
+                        if languageViewModel.getFilteredVerbs().count > 1 { 
                             multipleVerbFlag = true
                         }
-                        setSubjunctiveStuff()
+//                        setSubjunctiveStuff()
                         
                     }
                     //                    processTextField()
@@ -410,7 +405,7 @@ struct SimpleVerbConjugation: View {
         //        setSubjunctiveStuff()
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         getParticipleForThisTense()
-        setSubjunctiveStuff()
+//        setSubjunctiveStuff()
         languageViewModel.createAndConjugateCurrentFilteredVerb()
         currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
         //extracts the core verb in presence of reflexives and/or verb phrases
@@ -420,12 +415,13 @@ struct SimpleVerbConjugation: View {
         //        var msm = languageViewModel.getMorphStructManager()
         vvm.removeAll()
         for i in 0..<6 {
-            var vs = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbPhrase, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+            var vs = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbPhrase, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
             if languageViewModel.getCurrentTense() == .imperative && i == 0 {
                 vs = ""
             }
             vvm.append(vs)
-            person[i] = subjunctiveWord + languageViewModel.getPersonString(personIndex: i, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: vvm[i])
+//            person[i] = subjunctiveWord + languageViewModel.getPersonString(personIndex: i, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: vvm[i])
+            person[i] = languageViewModel.getPersonString(personIndex: i, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: vvm[i])
         }
         isAnalyzed.toggle()
     }

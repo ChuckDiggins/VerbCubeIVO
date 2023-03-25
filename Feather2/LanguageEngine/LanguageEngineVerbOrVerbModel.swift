@@ -37,6 +37,7 @@ extension LanguageEngine{
         fillVerbCubeAndQuizCubeLists()
         setTenses(tenseList: studyPackage.tenseList)
         specialVerbType = studyPackage.specialVerbType
+//        print("setToVerbMode: specialVerbType = \(specialVerbType.rawValue)")
         verbOrModelModeString = "Verbs"
     }
     
@@ -45,6 +46,7 @@ extension LanguageEngine{
         filteredVerbList = verbModelFilteredVerbList
         fillVerbCubeAndQuizCubeLists()
         specialVerbType = SpecialVerbType.normal
+//        print("setToVerbModelMode: specialVerbType = \(specialVerbType.rawValue)")
         setTenses(tenseList: [.present, .imperfect, .preterite, .conditional, .future])
     }
     
@@ -54,6 +56,7 @@ extension LanguageEngine{
         installCurrentStudyPackage()
         filteredVerbList = studyPackageFilteredVerbList
         fillVerbCubeAndQuizCubeLists()
+//        print("setStudyPackageTo: specialVerbType = \(specialVerbType.rawValue)")
     }
     
     func setVerbModelTo(_ verbModel: RomanceVerbModel){
@@ -65,6 +68,7 @@ extension LanguageEngine{
         filteredVerbList = verbModelFilteredVerbList
         fillVerbCubeAndQuizCubeLists()
         specialVerbType = SpecialVerbType.normal
+//        print("setVerbModelTo: specialVerbType = \(specialVerbType.rawValue)")
     }
     
     func fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(_ maxVerbCountPerModel: Int = 16){
@@ -134,6 +138,7 @@ extension LanguageEngine{
             filteredVerbList = studyPackageFilteredVerbList
             specialVerbType = studyPackage.specialVerbType
             setTenses(tenseList: studyPackage.tenseList)
+//            print("installCurrentStudyPackage: specialVerbType = \(specialVerbType.rawValue)")
         }
         else {
             print("installCurrentStudyPackage: StudyPackage \(currentV2mChapter), \(currentV2mLesson) not found")
@@ -159,6 +164,7 @@ extension LanguageEngine{
             trimFilteredVerbList(16)
             return
         }
+        
         currentVerbModel = findModelForThisVerbString(verbWord: currentVerbModelString)
         print("restoreModel: currentVerbModelString = \(currentVerbModelString)")
         setToVerbModelMode()

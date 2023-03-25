@@ -23,8 +23,8 @@ struct ListVerbsForModelView: View {
     @State var selectedCount = 0
     @State var modelName = "No name"
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
-    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     
     

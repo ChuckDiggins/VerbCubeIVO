@@ -133,10 +133,15 @@ struct ExitButtonViewWithSpeechIcon : View {
 struct ExitButtonView : View {
     @EnvironmentObject var router: Router
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("modelWalkThrough") var modelWalkThroughPage = 3
+
     var body: some View {
         HStack{
             Button(action: {
                 router.reset()
+                if modelWalkThroughPage < 5 {
+                    modelWalkThroughPage += 1
+                }
                 dismiss()
             }, label: {
                 Image(systemName: "xmark")

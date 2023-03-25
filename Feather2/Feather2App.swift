@@ -17,7 +17,7 @@ class AppState: ObservableObject{
     }
 }
 
-//let app: RealmSwift.App? = nil
+//let app: RealmSwift.App? = nil  
 
 @main
 struct Feather2App: SwiftUI.App {
@@ -28,9 +28,9 @@ struct Feather2App: SwiftUI.App {
     @StateObject var vmecdm = VerbModelEntityCoreDataManager()
     @StateObject var router = Router()
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
-    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7
     

@@ -73,9 +73,9 @@ enum FlashMode {
 struct CombinedAlert: View {
     @ObservedObject var languageViewModel : LanguageViewModel
     @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
-    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     var flashMode : FlashMode
     @State var currentLanguage = LanguageType.Agnostic
     

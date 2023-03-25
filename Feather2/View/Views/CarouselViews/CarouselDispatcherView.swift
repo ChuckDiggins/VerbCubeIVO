@@ -62,9 +62,9 @@ struct NavStackCarouselDispatcherView: View {
     @Environment(\.dismiss) private var dismiss
     
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
-    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @AppStorage("Explanation Page") var explanationPage = 7
     @AppStorage("currentPage") var currentPage = 1
     
@@ -114,10 +114,10 @@ struct NavStackCarouselDispatcherView: View {
                     }
                 }
                 
-                .navigationTitle( currentVerbOrModelMode == .modelMode ? "Verb Model: \(currentVerbModelString)" : "\(currentV2mChapter), \(currentV2mLesson)")
+                .navigationTitle( currentVerbOrModelMode == .modelMode ? "Verb Model: \(currentVerbModelString)" : "\(currentV2mLesson)")
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationDestination(for: ExerciseStruct.self){ exercise in
-                    ExploreCarouselView(languageViewModel: languageViewModel, exerciseManager: ExerciseDataManager(languageViewModel.getVerbOrModelMode(), exercise.mode, .normal, languageViewModel.hasSimpleTenses()), selected: $selected )
+                    ExploreCarouselView(languageViewModel: languageViewModel, exerciseManager: ExerciseDataManager(languageViewModel.getVerbOrModelMode(), exercise.mode, languageViewModel.getSpecialVerbType(), languageViewModel.hasSimpleTenses()), selected: $selected )
                 }
                 
                 .toolbar {
@@ -130,11 +130,15 @@ struct NavStackCarouselDispatcherView: View {
 //                        {
 //                        Label("Settings", systemImage: "gear")
 //                        }
-                        Button{
-                            explanationPage = 1
-                        } label: {
-                            Label("Settings", systemImage: "questionmark.folder")
+                        NavigationLink(destination: OnboardingViews())
+                        {
+                        Label("Onboarding views", systemImage: "gear")
                         }
+//                        Button{
+//                            explanationPage = 1
+//                        } label: {
+//                            Label("Settings", systemImage: "questionmark.folder")
+//                        }
                         NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
                         {
                         Label("Settings", systemImage: "t.circle")

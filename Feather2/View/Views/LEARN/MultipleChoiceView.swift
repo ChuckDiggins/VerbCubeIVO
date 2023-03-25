@@ -74,7 +74,7 @@ struct MultipleChoiceView: View {
     @State private var headerText = "Multiple Choice"
     @State private var number = Number.singular
     @State private var dependentVerb = Verb()
-    @State var specialVerbType = SpecialVerbType.normal
+//    @State var specialVerbType = SpecialVerbType.normal
     @State var rightHandRotate = [false, false, false, false, false, false]
     @State var rightHandShake = [false, false, false, false, false, false]
     @State var speechModeActive = false
@@ -178,7 +178,6 @@ struct MultipleChoiceView: View {
             .foregroundColor(Color("BethanyGreenText"))
             .background(Color("BethanyNavalBackground"))
             .onAppear{
-                specialVerbType = languageViewModel.getStudyPackage().specialVerbType
                 dependentVerb = languageViewModel.findVerbFromString(verbString: "bailar", language: currentLanguage)
                 if isNew {
                     initialize()
@@ -396,7 +395,7 @@ struct MultipleChoiceView: View {
             randomPersonList.shuffle()
             for person in randomPersonList {
                 var str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: currentTense, person: person)
-                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
+                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
                 rightHandStringList.append( str )
                 if person == currentPerson {
                     correctRightHandString = str
@@ -407,7 +406,7 @@ struct MultipleChoiceView: View {
             randomTenseList.shuffle()
             for tense in randomTenseList {
                 var str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
-                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + rightParticiple
+                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + rightParticiple
                 rightHandStringList.append( str )
                 if tense == currentTense.getSimpleTenseFromCompoundTense() {
                     correctRightHandString = str
@@ -460,13 +459,13 @@ struct MultipleChoiceView: View {
     func getSubjectStringAtPersonIndex(index : Int)->String{
         let person = Person.all[index]
 //        let personString = person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
-        let personString = languageViewModel.getPersonString(personIndex: index, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString)
+        let personString = languageViewModel.getPersonString(personIndex: index, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbString)
         return personString
     }
     
     func getSubjectStringAtPerson(person : Person)->String{
 //        let personString = person.getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType())
-        let personString = languageViewModel.getPersonString(personIndex: person.getIndex(), tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString)
+        let personString = languageViewModel.getPersonString(personIndex: person.getIndex(), tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbString)
         return personString
     }
     
@@ -524,12 +523,12 @@ struct MultipleChoiceView: View {
 //        personMixString.append(PersonMixStruct(person: .P2, personString: getSubjectStringAtPerson(person : .P2)))
 //        personMixString.append(PersonMixStruct(person: .P3, personString: getSubjectStringAtPerson(person : .P3)))
 //
-        personMixString.append(PersonMixStruct(person: .S1, personString: languageViewModel.getPersonString(personIndex: 0, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .S2, personString: languageViewModel.getPersonString(personIndex: 1, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .S3, personString: languageViewModel.getPersonString(personIndex: 2, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .P1, personString: languageViewModel.getPersonString(personIndex: 3, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .P2, personString: languageViewModel.getPersonString(personIndex: 4, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .P3, personString: languageViewModel.getPersonString(personIndex: 5, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .S1, personString: languageViewModel.getPersonString(personIndex: 0, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .S2, personString: languageViewModel.getPersonString(personIndex: 1, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .S3, personString: languageViewModel.getPersonString(personIndex: 2, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P1, personString: languageViewModel.getPersonString(personIndex: 3, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P2, personString: languageViewModel.getPersonString(personIndex: 4, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
+        personMixString.append(PersonMixStruct(person: .P3, personString: languageViewModel.getPersonString(personIndex: 5, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
     }
 }
 

@@ -144,7 +144,7 @@ extension LanguageEngine{
                 ps = createProblemForThisPerson(verb: verb!, person: targetPerson)
                 personString = ps.personString
                 tenseString = ps.tense.rawValue
-                if ps.tense == .presentSubjunctive { personString = "que " + personString}
+//                if ps.tense == .presentSubjunctive { personString = "que " + personString}
             case .Tense:
                 
                 tenseCount += 1
@@ -152,7 +152,7 @@ extension LanguageEngine{
                 createAndConjugateAgnosticVerb(verb: verb!, tense: targetTense)
                 ps = createProblemForThisTense(verb: verb!, tense: targetTense)
                 personString = ps.personString
-                if targetTense == .presentSubjunctive { personString = "que " + personString}
+//                if targetTense == .presentSubjunctive { personString = "que " + personString}
                 tenseString = targetTense.rawValue
             }
             filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb!.getWordAtLanguage(language: getCurrentLanguage())) \n\(tenseString) tense  \n\(personString) ____________ ", answer: ps.correctAnswer))

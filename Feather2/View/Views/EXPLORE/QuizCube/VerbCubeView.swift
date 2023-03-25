@@ -23,6 +23,7 @@ struct VerbCubeView: View {
         //        NavigationView{
         GeometryReader { geometry in
             VStack{
+                ExitButtonView()
                 HStack{
                     Text("Highlight:")
                     Text(showVerbType.rawValue)

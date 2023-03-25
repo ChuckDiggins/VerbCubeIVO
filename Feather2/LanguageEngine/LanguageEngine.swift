@@ -96,9 +96,9 @@ class LanguageEngine : ObservableObject, Equatable {
         return lhs.currentLanguage.rawValue == rhs.currentLanguage.rawValue
     }
     @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
-    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 1A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "Useful verbs"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     @Published var filteredVerbList = [Verb]()
     var verbModelFilteredVerbList = [Verb]()
@@ -475,7 +475,7 @@ class LanguageEngine : ObservableObject, Equatable {
         let vu = VerbUtilities()
         let verbStartsWithVowel = vu.startsWithVowelSound(characterArray: verbString)
         var subjunctiveWord = ""
-        if currentTense.isSubjunctive() {
+        if tense.isSubjunctive() {
             if currentLanguage == .French { subjunctiveWord = "qui "}
             else {subjunctiveWord = "Ojalá que "}
         }

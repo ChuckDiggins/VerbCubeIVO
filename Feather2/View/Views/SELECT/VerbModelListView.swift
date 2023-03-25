@@ -11,14 +11,15 @@ import JumpLinguaHelpers
 struct VerbModelListView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
-
+    @AppStorage("modelWalkThrough") var modelWalkThroughPage = 1
+    
 //    @State  private var modelDictionary: [String: Int] = [:]
     @State var selectedCount = 0
     @State var modelName = "No name"
     @State var showSheet = false
     @State var selectedModel = RomanceVerbModel()
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @State private var inProgress = false
     @State private var orderedVerbModelList = [RomanceVerbModel]()
     

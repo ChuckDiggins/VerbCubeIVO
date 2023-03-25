@@ -216,8 +216,8 @@ struct NormalPhraseView: View {
         currentVerb = languageViewModel.getCurrentFilteredVerb()
         print("currentVerb: \(currentVerb.getWordStringAtLanguage(language: currentLanguage))")
         languageViewModel.createAndConjugateCurrentFilteredVerb()
-        currentVerbString = languageViewModel.getVerbString(personIndex: currentPersonIndex, number: currentNumber, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerb.getWordString(), dependentVerb: dependentVerb, residualPhrase: residualPhrase)
-        subjectString = subjunctiveWord + languageViewModel.getPersonString(personIndex: currentPersonIndex, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerbString)
+        currentVerbString = languageViewModel.getVerbString(personIndex: currentPersonIndex, number: currentNumber, tense: languageViewModel.getCurrentTense(), specialVerbType: .normal, verbString: currentVerb.getWordString(), dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+        subjectString = subjunctiveWord + languageViewModel.getPersonString(personIndex: currentPersonIndex, tense: languageViewModel.getCurrentTense(), specialVerbType: .normal, verbString: currentVerbString)
         
         currentPhrase = subjectString + currentVerbString
         if ( languageViewModel.getCurrentTense() == .imperative && currentPersonIndex == 0 )

@@ -9,8 +9,11 @@ import SwiftUI
 
 struct FindMyVerbDispatcher: View {
     @ObservedObject var languageViewModel: LanguageViewModel
+    @EnvironmentObject var vmecdm: VerbModelEntityCoreDataManager
     var frameWidth = CGFloat(150)
     var frameHeight = CGFloat(250)
+    @State var selected  = false
+    
     var body: some View {
         ZStack{
             Color("BethanyNavalBackground")
@@ -19,6 +22,12 @@ struct FindMyVerbDispatcher: View {
             ScrollView{
 //                DisclosureGroupFindMyVerb()
                 VStack{
+                    NavigationLink(destination: DictionaryView(languageViewModel: languageViewModel, vmecdm: vmecdm, selected: $selected ))
+                    {
+                    Text("Verb Dictionary")
+                    }.modifier(NavLinkModifier())
+                    
+                    
                     NavigationLink(destination: FindVerbsView(languageViewModel: languageViewModel,  featherMode: .model))
                     {
                     Text("Find Verb Model")

@@ -14,7 +14,7 @@ struct AllModelsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var router: Router
     @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     @State var isSwiping = true
     @State var startPos : CGPoint = .zero

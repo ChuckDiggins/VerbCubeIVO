@@ -55,7 +55,7 @@ struct DictionaryView: View {
     @State var userString = ""
     
     @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
-    @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
+    @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     //@State var bAddNewVerb = false
     

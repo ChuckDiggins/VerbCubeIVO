@@ -131,6 +131,10 @@ class LanguageViewModel : ObservableObject, Equatable {
         currentLanguage = languageEngine.getCurrentLanguage()
     }
     
+    func getSpecialVerbType()->SpecialVerbType{
+        languageEngine.specialVerbType
+    }
+    
     func getPersonString(personIndex: Int, tense: Tense, specialVerbType: SpecialVerbType, verbString: String)->String{
         languageEngine.getPersonString(personIndex: personIndex, tense: tense, specialVerbType: specialVerbType, verbString: verbString)
     }
