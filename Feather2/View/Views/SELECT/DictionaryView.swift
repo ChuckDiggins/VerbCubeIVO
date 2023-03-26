@@ -89,11 +89,13 @@ struct DictionaryView: View {
 
                 .modifier(NeumorphicTextfieldModifier())
                 .onChange(of: userString){ (value) in
-                    let verbIndex = findClosestVerbIndex(userString)
-                    if verbIndex > 0 {
-                        currentIndex = verbIndex
-                        currentVerb = verbList[currentIndex]
-                        showCurrentWordInfo()
+                    if userString.count > 0 {
+                        let verbIndex = findClosestVerbIndex(userString)
+                        if verbIndex > 0 {
+                            currentIndex = verbIndex
+                            currentVerb = verbList[currentIndex]
+                            showCurrentWordInfo()
+                        }
                     }
                 }
                 .onSubmit(){
@@ -429,6 +431,7 @@ struct DictionaryView: View {
     func  showCurrentWordInfo(){
         let thisVerb = currentVerb
         spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
+//        print("showCurrentWordInfo: spanishPhrase = \(spanishPhrase)")
         let vu = VerbUtilities()
         let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
         currentVerbModel = languageViewModel.findModelForThisVerbString(verbWord: result.0)
