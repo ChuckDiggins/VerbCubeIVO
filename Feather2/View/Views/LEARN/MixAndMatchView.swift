@@ -119,7 +119,8 @@ struct MixAndMatchView: View {
                 .onAppear{
                     currentLanguage = languageViewModel.getCurrentLanguage()
                     currentTense = languageViewModel.getCurrentTense()
-                    currentVerb = languageViewModel.getCurrentRandomVerb()
+                    languageViewModel.createAndConjugateCurrentFilteredVerb()
+                    currentVerb = languageViewModel.getRandomVerb()
                     currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
                     currentTenseString = currentTense.rawValue
                     getParticipleForThisTense()
@@ -438,7 +439,7 @@ struct MixAndMatchView: View {
     }
         
     func setCurrentVerb(){
-        currentVerb = languageViewModel.getCurrentRandomVerb()
+        currentVerb = languageViewModel.getRandomVerb()
         currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
         currentTense = languageViewModel.getCurrentTense()
         languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: currentTense)

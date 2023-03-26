@@ -13,10 +13,10 @@ struct TextModifier : ViewModifier {
         content
             .frame(minWidth: 0, maxWidth: 350)
             .frame(height: 30)
-            .foregroundColor(.white)
+            .foregroundColor(Color("BethanyGreenText"))
             .padding(.horizontal)
             .font(.headline)
-            .background(.blue)
+            .background(Color("BethanyNavalBackground"))
             .cornerRadius(10)
     }
 }
