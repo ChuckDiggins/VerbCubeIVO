@@ -214,7 +214,7 @@ struct NormalPhraseView: View {
     func setCurrentVerb(){
         setSubjunctiveStuff()
         currentVerb = languageViewModel.getCurrentFilteredVerb()
-        print("currentVerb: \(currentVerb.getWordStringAtLanguage(language: currentLanguage))")
+//        print("currentVerb: \(currentVerb.getWordStringAtLanguage(language: currentLanguage))")
         languageViewModel.createAndConjugateCurrentFilteredVerb()
         currentVerbString = languageViewModel.getVerbString(personIndex: currentPersonIndex, number: currentNumber, tense: languageViewModel.getCurrentTense(), specialVerbType: .normal, verbString: currentVerb.getWordString(), dependentVerb: dependentVerb, residualPhrase: residualPhrase)
         subjectString = subjunctiveWord + languageViewModel.getPersonString(personIndex: currentPersonIndex, tense: languageViewModel.getCurrentTense(), specialVerbType: .normal, verbString: currentVerbString)

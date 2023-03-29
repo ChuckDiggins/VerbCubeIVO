@@ -880,7 +880,7 @@ class LanguageEngine : ObservableObject, Equatable {
         return morphStructManager.getFinalVerbForm(person: person)
     }
     
-    func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{
+    func createRomanceVerb(_ verb: Verb)->BRomanceVerb{
         var vmm = VerbModelManager()
         var bRomanceVerb = BRomanceVerb()
         switch currentLanguage {
@@ -893,6 +893,20 @@ class LanguageEngine : ObservableObject, Equatable {
         }
         return bRomanceVerb
     }
+    
+//    func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{
+//        var vmm = VerbModelManager()
+//        var bRomanceVerb = BRomanceVerb()
+//        switch currentLanguage {
+//        case .Spanish:
+//            bRomanceVerb = vmm.createSpanishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+//        case .French:
+//            bRomanceVerb = vmm.createFrenchBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+//        default:
+//            break
+//        }
+//        return bRomanceVerb
+//    }
     
     func createAndConjugateAgnosticVerb(language: LanguageType, verb: Verb, tense: Tense, person: Person, isReflexive: Bool)->String{
         var vmm = VerbModelManager()
@@ -1317,8 +1331,31 @@ extension LanguageEngine{
         var vtpList = [VTP]()
         var conjugateForm = ""
         let tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future, .presentSubjunctive, .imperfectSubjunctiveRA, .imperfectSubjunctiveSE, .imperative]
+        
         var count = 0
+        let vu = VerbUtilities()
         for v in verbList {
+            
+            //look for infinitives
+            let result = vu.analyzeSpanishWordPhrase(testString: verbForm)
+            if result.verbEnding != .none {
+                vtpList.append(VTP(verb: Verb(spanish: result.verbWord, french: "", english: ""), tense: .infinitive, person: .S1))
+                return vtpList
+            }
+                
+            //look for past participles and gerunds
+            if verbForm == getPastParticiple(v) {
+                vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1))
+                print("unConjugate: pastParticiple = \(verbForm)")
+            }
+            
+            let bRomanceVerb = createRomanceVerb(v)
+            //look for past participles and gerunds
+            if verbForm == bRomanceVerb.getGerund() {
+                vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1))
+                print("unConjugate: pastParticiple = \(verbForm)")
+            }
+            
             for tense in tenseList {
                 for person in Person.all {
                     let ms = createConjugatedMorphStruct(verb: v, tense: tense, person: person)
@@ -1332,6 +1369,30 @@ extension LanguageEngine{
                 }
             }
         }
+        if count > 0 {
+            return vtpList
+        }
+        
+        //check for unaccented words
+        
+        for v in verbList {
+            for tense in tenseList {
+                for person in Person.all {
+                    let ms = createConjugatedMorphStruct(verb: v, tense: tense, person: person)
+                    conjugateForm = ms.finalVerbForm()
+                    let unaccentedConjugateForm = vu.removeAccentedLetters(conjugateForm)
+                    if unaccentedConjugateForm == verbForm {
+                        vtpList.append(VTP(verb: v, tense: tense, person: person))
+                        print("target form: \(conjugateForm): as \(unaccentedConjugateForm)")
+                    }
+                    count += 1
+                }
+            }
+        }
+        if count > 0 {
+            return vtpList
+        }
+        
         return vtpList
     }
 }

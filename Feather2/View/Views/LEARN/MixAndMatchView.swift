@@ -131,11 +131,7 @@ struct MixAndMatchView: View {
                 }.background( isThisVerbAMatch[matchIndex] && isThisSubjectAMatch[mixIndex] ? .green : .yellow)
                     .foregroundColor(.black)
                     .font(.body)
-                
-                
-//
-                
-                
+         
                 HStack{
                     
                     VStack{
