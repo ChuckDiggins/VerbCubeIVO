@@ -144,11 +144,11 @@ struct FindVerbsView: View {
                                 Spacer()
                                 Image(systemName: "chevron.right").foregroundColor(.yellow)
                             }
-                                .frame(width: 325, height: 50)
-                                .padding(.leading, 10)
-                                .background(Color("BethanyPurpleButtons"))
-                                .cornerRadius(10)
-                                .foregroundColor(.white)
+                            .frame(width: 325, height: 50)
+                            .padding(.leading, 10)
+                            .background(Color("BethanyPurpleButtons"))
+                            .cornerRadius(10)
+                            .foregroundColor(.white)
                         }
                     }
                 }
@@ -204,6 +204,7 @@ struct FindVerbsView: View {
                         if isValidVerb(language: languageViewModel.getCurrentLanguage(), verbString: newVerbString) {
                             analyzeAndFind()
                         }
+                        hideKeyboard()
                     }
                 Button(action: {
                     newVerbString = ""
@@ -259,8 +260,8 @@ struct FindVerbsView: View {
         //process model information
         
         let vm = languageViewModel.findModelForThisVerbString(verbWord: currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage()))
-        let verbList = languageViewModel.findVerbsOfSameModel(targetID: vm.id)
-        languageViewModel.setFilteredVerbList(verbList: verbList)
+//        let verbList = languageViewModel.findVerbsOfSameModel(targetID: vm.id)
+//        languageViewModel.setFilteredVerbList(verbList: verbList)
         if ( vm.id > 0 ){
             let vu = VerbUtilities()
             let result1 = vu.analyzeSpanishWordPhrase(testString: newVerbString)
@@ -270,8 +271,8 @@ struct FindVerbsView: View {
             let verb = Verb(spanish: reconstructedVerbString, french: "", english: "")
 //            newVerbString = verb.getWordAtLanguage(language: currentLanguage)
 //            languageViewModel.setVerbsForCurrentVerbModel(modelID: vm.id)
-            languageViewModel.addVerbToFilteredList(verb: verb)
-            featherVerbList = languageViewModel.getFilteredVerbs()
+//            languageViewModel.addVerbToFilteredList(verb: verb)
+//            featherVerbList = languageViewModel.getFilteredVerbs()
         }
         
         patternList = languageViewModel.getPatternsForThisModel(verbModel: vm)
@@ -318,7 +319,12 @@ struct FindVerbsView: View {
     func findVerbsLike(verb: Verb)->[Verb]{
         var vList = [Verb]()
         switch featherMode {
-        case .model: vList = languageViewModel.findVerbsFromSameModel(verb: verb)
+        case .model:
+            vList = languageViewModel.findVerbsFromSameModel(verb: verb)
+            vList.shuffle()
+            if vList.count > 12 {
+                vList.removeLast(vList.count - 12)
+            }
         case .pattern:
             patternList = languageViewModel.getPatternsForVerb(verb: verb, tense: .present)
             

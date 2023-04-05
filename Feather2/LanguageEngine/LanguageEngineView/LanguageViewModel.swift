@@ -12,6 +12,8 @@ import JumpLinguaHelpers
 //émouvoir
 //déchoir
 class LanguageViewModel : ObservableObject, Equatable {
+    @AppStorage("Language") var languageString = "Spanish"
+    
     static func == (lhs: LanguageViewModel, rhs: LanguageViewModel) -> Bool {
         return lhs.languageEngine == rhs.languageEngine
     }
@@ -28,17 +30,30 @@ class LanguageViewModel : ObservableObject, Equatable {
     
     @Published var languageEngine = LanguageEngine()
     
+    var currentLanguage = LanguageType.Spanish
     
-   var currentLanguage = LanguageType.Spanish
+    
+//    init(){
+//        languageEngine = LanguageEngine()
+//    }
+    
+//    init(language: LanguageType){
+//        languageEngine = LanguageEngine(language: language)
+//    }
     
     init(){
-        languageEngine = LanguageEngine()
+        switch languageString {
+        case "French":
+            currentLanguage = LanguageType.French
+            languageEngine = LanguageEngine(language: .French)
+        default:
+            currentLanguage = LanguageType.Spanish
+            languageEngine = LanguageEngine(language: .Spanish)
+        }
     }
     
-    init(language: LanguageType){
-
-        languageEngine = LanguageEngine(language: language)
-        
+    func setNextLanguage(){
+        languageEngine.setNextLanguage()
     }
     
     func verbCountsExistInCoreData()->Bool{
@@ -113,6 +128,11 @@ class LanguageViewModel : ObservableObject, Equatable {
     
     func getRandomSentenceObject()->FeatherSentenceHandler{
         languageEngine.getRandomSentenceObject()
+    }
+    
+    func restoreV2MPackage(){
+        languageEngine.restoreV2MPackage()
+        
     }
     
     func getVerbOrModelMode()->VerbOrModelMode{

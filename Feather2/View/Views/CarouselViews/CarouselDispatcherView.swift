@@ -26,6 +26,7 @@ struct ShowSegmentedVerbOrModelModePicker: View {
     @Binding var currentVerbOrModelMode: VerbOrModelMode
     @Binding var selectImageString : String
     var verbOrModelModeList : [ VerbOrModelMode ]
+    @State var currentLanguageString = "Agnostic"
 
     init(_ currentVerbOrModelMode: Binding<VerbOrModelMode>, _ selectImageString : Binding<String>,
          verbOrModelModeList: [ VerbOrModelMode ]){
@@ -38,10 +39,17 @@ struct ShowSegmentedVerbOrModelModePicker: View {
 
     var body: some View{
         VStack{
+//            Button{
+//                languageViewModel.setNextLanguage()
+//                currentLanguageString = languageViewModel.getCurrentLanguage().rawValue
+//            } label: {
+//                Text(currentLanguageString)
+//            }
+            Text(currentLanguageString)
             Picker("Select Verb or Model Mode", selection: $currentVerbOrModelMode){
                 ForEach(verbOrModelModeList , id:\.self){ Text($0.rawValue)}
             }.pickerStyle(SegmentedPickerStyle())
-                .padding()
+//                .padding()
         }.onChange(of: currentVerbOrModelMode){ _ in
             switch currentVerbOrModelMode {
             case .verbMode:
@@ -53,6 +61,9 @@ struct ShowSegmentedVerbOrModelModePicker: View {
             }
             print("changing verb or model mode to: \(currentVerbOrModelMode.rawValue)")
         }
+        .onAppear{
+            currentLanguageString = languageViewModel.getCurrentLanguage().rawValue
+        }
     }
 }
 struct NavStackCarouselDispatcherView: View {
@@ -61,6 +72,7 @@ struct NavStackCarouselDispatcherView: View {
     @EnvironmentObject var vmecdm: VerbModelEntityCoreDataManager
     @Environment(\.dismiss) private var dismiss
     
+    @AppStorage("Language") var languageString = "Spanish"
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
@@ -126,14 +138,14 @@ struct NavStackCarouselDispatcherView: View {
                         {
                         Label("Find", systemImage: "magnifyingglass")
                         }
-//                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
-//                        {
-//                        Label("Settings", systemImage: "gear")
-//                        }
-                        NavigationLink(destination: OnboardingViews())
+                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
                         {
-                        Label("Onboarding views", systemImage: "gear")
+                        Label("Settings", systemImage: "gear")
                         }
+//                        NavigationLink(destination: OnboardingViews())
+//                        {
+//                        Label("Onboarding views", systemImage: "gear")
+//                        }
 //                        Button{
 //                            explanationPage = 1
 //                        } label: {
@@ -141,7 +153,7 @@ struct NavStackCarouselDispatcherView: View {
 //                        }
                         NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
                         {
-                        Label("Settings", systemImage: "t.circle")
+                        Label("Tenses", systemImage: "t.circle")
                         }
                     }
                 }

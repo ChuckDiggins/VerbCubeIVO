@@ -159,7 +159,7 @@ struct ListModelsView: View {
 }
 struct ListModelsView_Previews: PreviewProvider {
     static var previews: some View {
-        ListModelsView(languageViewModel: LanguageViewModel(language: .Spanish))
+        ListModelsView(languageViewModel: LanguageViewModel())
     }
 }
 

@@ -25,37 +25,7 @@ struct ListVerbModelsView : View {
     }
 }
 
-struct ChangeLanguageView : View {
-    @ObservedObject var languageViewModel: LanguageViewModel
-    @State var currentLanguageStr = ""
-    var body: some View {
-        Button{
-            switch languageViewModel.getCurrentLanguage() {
-            case .Spanish:
-                languageViewModel.setLanguage(language: .French)
-                currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-            case .French:
-                languageViewModel.setLanguage(language: .English)
-                currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-            case .English:
-                languageViewModel.setLanguage(language: .Spanish)
-                currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-            default:
-                languageViewModel.setLanguage(language: .Spanish)
-                currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-            }
-        } label: {
-            HStack{
-                Text("Active language: \(currentLanguageStr)")
-                Spacer()
-                Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
-            } .modifier(ModelTensePersonButtonModifier())
-        }
-        .onAppear{
-            currentLanguageStr = languageViewModel.getCurrentLanguage().rawValue
-        }
-    }
-}
+
 struct TenseButtonView : View {
     @ObservedObject var languageViewModel: LanguageViewModel
     var function: () -> Void
@@ -216,11 +186,17 @@ struct PersonTypeButtonView : View {
         VStack{
             Button{
                 switch languageViewModel.getSubjectPronounType() {
-                case .maleInformal:
-                    languageViewModel.setSubjectPronounType(spt: .femaleInformal)
-                    currentSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
                 case .femaleInformal:
                     languageViewModel.setSubjectPronounType(spt: .maleInformal)
+                    currentSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
+                case .maleInformal:
+                    languageViewModel.setSubjectPronounType(spt: .maleFormal)
+                    currentSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
+                case .maleFormal:
+                    languageViewModel.setSubjectPronounType(spt: .femaleFormal)
+                    currentSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
+                case .femaleFormal:
+                    languageViewModel.setSubjectPronounType(spt: .femaleInformal)
                     currentSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
                 default:
                     languageViewModel.setSubjectPronounType(spt: .maleInformal)

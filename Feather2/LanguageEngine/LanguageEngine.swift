@@ -96,9 +96,19 @@ class LanguageEngine : ObservableObject, Equatable {
         return lhs.currentLanguage.rawValue == rhs.currentLanguage.rawValue
     }
     @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("Language") var languageString = "Spanish"
+    
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
+    
+    @AppStorage("SpanishV2MChapter") var currentSpanishV2mChapter = "Chapter 3A"
+    @AppStorage("SpanishV2MLesson") var currentSpanishV2mLesson = "AR, ER IR verbs"
+    @AppStorage("SpanishCurrentVerbModel") var currentSpanishVerbModelString = "encontrar"
+    
+    @AppStorage("FrenchV2MChapter") var currentFrenchV2mChapter = "French 1B"
+    @AppStorage("FrenchV2MLesson") var currentFrenchV2mLesson = "1B: Harder verbs, more tenses"
+    @AppStorage("FrenchCurrentVerbModel") var currentFrenchVerbModelString = "manger"
     
     @Published var filteredVerbList = [Verb]()
     var verbModelFilteredVerbList = [Verb]()
@@ -137,7 +147,7 @@ class LanguageEngine : ObservableObject, Equatable {
     var quizCubeBlock = [Verb]()
     @Published var quizCubeVerbList = [Verb]()
     @Published var quizCubeVerb = Verb()
-
+    
     var selectedNewVerbModelType = NewVerbModelType.Regular
     var selectedSpecialPatternType = SpecialPatternType.c2z
     var studyPackage = StudyPackageClass()
@@ -157,20 +167,20 @@ class LanguageEngine : ObservableObject, Equatable {
     
     var simpleTenseList = [Tense.present, .preterite, .imperfect, .conditional, .presentSubjunctive, .imperfectSubjunctiveSE, .imperative]
     @Published var  tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future]
-
+    
     var behavioralVerbModel = BehavioralVerbModel()
     var criticalVerbForms = CriticalVerbForms()
     private var verbModelConjugation : VerbModelConjugation!
     var spanishVerbModelConjugation = RomanceVerbModelConjugation(language: .Spanish)
     var frenchVerbModelConjugation = RomanceVerbModelConjugation(language: .French)
     var englishVerbModelConjugation = EnglishVerbModelConjugation()
-
-//    var lessonBundlePhraseCollectionManager : LessonBundlePhraseCollectionManager!
-//    var m_randomSentence : RandomSentence!
+    
+    //    var lessonBundlePhraseCollectionManager : LessonBundlePhraseCollectionManager!
+    //    var m_randomSentence : RandomSentence!
     var m_randomSentence : FeatherSentenceHandler!
     private var m_randomWordLists : RandomFeatherWordLists!
     
-//    var m_jsonDictionaryManager = JSONDictionaryManager()
+    //    var m_jsonDictionaryManager = JSONDictionaryManager()
     private var jsonDictionaryManager = JSONVerbPronounDictionaryManager()
     
     var m_jsonVerbModelManagerAR = JsonVerbModelManager()
@@ -186,7 +196,7 @@ class LanguageEngine : ObservableObject, Equatable {
     var verbCubeVerbIndex = 0
     var behavioralVerbIndex = 0
     var behaviorType = BehaviorType.likeGustar
-   
+    
     var verbBlockCount: Int = 6
     var verbCubeBlockIndex = 0
     
@@ -196,7 +206,7 @@ class LanguageEngine : ObservableObject, Equatable {
     var quizTenseList = [Tense.present, .preterite, .imperfect, .future, .conditional]
     var quizCubeConfiguration = ActiveVerbCubeConfiguration.PersonVerb
     var quizCubeDifficulty = QuizCubeDifficulty.easy
-
+    
     var studentScoreModel = StudentScoreModel()
     var flashCardMgr = FlashCardManager()
     
@@ -204,8 +214,8 @@ class LanguageEngine : ObservableObject, Equatable {
     
     var verbModelGroupManager = VerbModelGroupManager()
     
-//    var generalVerbModelFlag = false
-//    var criticalVerbModelFlag = false
+    //    var generalVerbModelFlag = false
+    //    var criticalVerbModelFlag = false
     
     var selectedVerbModelList = [RomanceVerbModel]()
     var completedVerbModelList = [RomanceVerbModel]()
@@ -213,26 +223,26 @@ class LanguageEngine : ObservableObject, Equatable {
     var selectedSpecialPatternTypeList = [SpecialPatternType]()
     
     var verbsExistForAll3Endings = true  //initially all verbs are live
-
-//    let regularStringList = ["regularAR", "regularER", "regularIR"]
-//    let criticalStringList = ["estar", "haber", "hacer", "ir", "oír", "reír", "saber", "ser", "ver" ]
-
+    
+    //    let regularStringList = ["regularAR", "regularER", "regularIR"]
+    //    let criticalStringList = ["estar", "haber", "hacer", "ir", "oír", "reír", "saber", "ser", "ver" ]
+    
     init(){  //default init
     }
- 
+    
     init(language: LanguageType) {   //real init
         
         dumpAppStorage()
         
         currentLanguage = language
         
-//        realm = try! Realm()
+        //        realm = try! Realm()
         
         verbModelConjugation = VerbModelConjugation(currentLanguage: currentLanguage)
         m_wsp = WordStringParser(language: currentLanguage,
-                                      span: spanishVerbModelConjugation,
-                                      french: frenchVerbModelConjugation,
-                                      english: englishVerbModelConjugation)
+                                 span: spanishVerbModelConjugation,
+                                 french: frenchVerbModelConjugation,
+                                 english: englishVerbModelConjugation)
         
         
         
@@ -245,7 +255,7 @@ class LanguageEngine : ObservableObject, Equatable {
         initializeCriticalForms()
         
         filteredVerbList = verbList
-  
+        
         //set for initial verb model learning
         
         loadInitialVerbModel()
@@ -255,15 +265,43 @@ class LanguageEngine : ObservableObject, Equatable {
         
         createOrderedModelList()
         fillVerbModelLessonList()
-
+        
         verbOrModelMode = .modelMode
         if verbOrModelModeString == "Verbs" {
             verbOrModelMode = .verbMode
         }
         
         restoreV2MPackage()
-        fillVerbCubeAndQuizCubeLists()
         resetFeatherSentenceHandler()
+    }
+    
+    func getCurrentLanguage()->LanguageType{
+        currentLanguage
+    }
+    
+    func setCurrentLanguage(_ language: LanguageType){
+        currentLanguage = language
+    }
+    
+    func setNextLanguage(){
+        var nextLanguage = LanguageType.Agnostic
+        switch currentLanguage {
+        case .Spanish:  //changing to French
+            nextLanguage = .French
+            currentV2mChapter = currentFrenchV2mChapter
+            currentV2mLesson = currentFrenchV2mLesson
+            currentVerbModelString = currentFrenchVerbModelString
+        case .French: //changing to Spanish
+            nextLanguage = .Spanish
+            currentV2mChapter = currentSpanishV2mChapter
+            currentV2mLesson = currentSpanishV2mLesson
+            currentVerbModelString = currentSpanishVerbModelString
+        default:
+            nextLanguage = .Agnostic
+        }
+        setLanguage(language: nextLanguage)
+        languageString = currentLanguage.rawValue
+        restoreV2MPackage()
     }
     
     func loadPastParticiplesFromJsonVerbs(){
@@ -275,11 +313,11 @@ class LanguageEngine : ObservableObject, Equatable {
             let jv = jvManager.getVerbAt(index: index)
             let pp = jv.getSpanishPastParticiple1()
             if pp.count > 0 {
-//                print ("past participle: \(pp)")
+                //                print ("past participle: \(pp)")
                 pastParticipleManager.append(ParticipleStruct(verbString: jv.spanish, participle1: jv.getSpanishPastParticiple1()))
             }
         }
-//        print("PPs found = \(pastParticipleManager.ppStructList.count)")
+        //        print("PPs found = \(pastParticipleManager.ppStructList.count)")
     }
     
     func getPastParticiple(_ verbString: String)->String{
@@ -288,19 +326,19 @@ class LanguageEngine : ObservableObject, Equatable {
         if ppForVerbString.count > 0 {return ppForVerbString}
         
         //next, check if verbString has a verb model with an irregular past participle
-
+        
         let vm = findModelForThisVerbString(verbWord: verbString)
         let ppForModel = pastParticipleManager.findParticipleForVerbString(vm.modelVerb)
         if ppForModel.count > 0 {
             var workingString = verbString.dropLast(vm.modelVerb.count)
             workingString += ppForModel
             let compositePP = String(workingString)
-            print("getPastParticiple: verb \(verbString) - past participle \(compositePP)")
+            //            print("getPastParticiple: verb \(verbString) - past participle \(compositePP)")
             return compositePP
         }
         return ""
     }
-
+    
     func dumpAppStorage(){
         print("AppStorage")
         print( verbOrModelModeString )
@@ -353,7 +391,7 @@ class LanguageEngine : ObservableObject, Equatable {
         verbModelLessonList.append(vmLesson)
         
         strList = ["averiguar", "actuar", "seguir", "delinquir", "erguir", "distinguir", "influir", "raer", "roer", "caer", "oír", "réir",
-          "guiar", "traer"]
+                   "guiar", "traer"]
         vmLesson = VerbModelLesson("3-vowel verb models", convertStringListToVerbModelList(strList))
         verbModelLessonList.append(vmLesson)
         
@@ -458,7 +496,7 @@ class LanguageEngine : ObservableObject, Equatable {
             return ""
         }
     }
- 
+    
     func isAuxiliary(verb: Verb)->(Bool, Tense){
         BehavioralVerbModel().isAuxiliary(language: currentLanguage, verb: verb)
     }
@@ -481,7 +519,7 @@ class LanguageEngine : ObservableObject, Equatable {
         }
         
         switch specialVerbType{
-        case .normal:  return Person.all[personIndex].getSubjectString(language: currentLanguage,subjectPronounType: getSubjectPronounType())
+        case .normal:  return Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: getSubjectPronounType())
         case .verbsLikeGustar:
             return subjunctiveWord + " a " + Person.all[personIndex].getPrepositionalPronounString(language: currentLanguage, gender: .masculine, verbStartsWithVowel: verbStartsWithVowel)
         case .weatherAndTime:
@@ -492,10 +530,10 @@ class LanguageEngine : ObservableObject, Equatable {
                 return subjunctiveWord + Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: getSubjectPronounType(), verbStartsWithVowel: verbStartsWithVowel)
             }
             return ""
-                
+            
         case .auxiliaryVerbsInfinitives, .auxiliaryVerbsGerunds:
             return subjunctiveWord + Person.all[personIndex].getSubjectString(language: currentLanguage,subjectPronounType: getSubjectPronounType(), verbStartsWithVowel: verbStartsWithVowel)
-                
+            
         case .defective:
             if personIndex == 2 || personIndex == 5 {
                 return subjunctiveWord + Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: getSubjectPronounType(), verbStartsWithVowel: verbStartsWithVowel)
@@ -510,12 +548,12 @@ class LanguageEngine : ObservableObject, Equatable {
         return studyPackageManagerList
     }
     
-
+    
     func reloadModelVerbEntitiesWithModelVerbs(){
         vmecdm.clearModelEntities()
         let vm =  vmecdm.vm
         var vmList = [RomanceVerbModel]()
-
+        
         if vm.savedVerbModelEnties.isEmpty {
             switch currentLanguage{
             case .Spanish:
@@ -525,17 +563,17 @@ class LanguageEngine : ObservableObject, Equatable {
             default:
                 break
             }
-
+            
             for verbModelEntity in vmList {
                 vm.addVerbModelEntity(name: verbModelEntity.modelVerb, isActive: true)
             }
         }
     }
-
+    
     func createOrderedModelList(){
         var modelDictionary: [String: Int] = [:]
         for vm in getVerbModels() {
-           
+            
             modelDictionary.updateValue(vm.id, forKey: vm.modelVerb)
         }
         let sortInfo = modelDictionary.sorted(by: { $0.value < $1.value } )
@@ -549,16 +587,16 @@ class LanguageEngine : ObservableObject, Equatable {
             }
         }
     }
-
+    
     
     func loadInitialVerbModel(){
         switch currentLanguage {
         case .Spanish:
             setCurrentVerbModel(model: findModelForThisVerbString(verbWord: "hablar"))
-//            setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: getCurrentVerbModel().id))  //encontrar
+            //            setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: getCurrentVerbModel().id))  //encontrar
         case .French:
             setCurrentVerbModel(model: findModelForThisVerbString(verbWord: "manger"))
-//            setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: getCurrentVerbModel().id))  //manger
+            //            setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: getCurrentVerbModel().id))  //manger
         case .English:
             setFilteredVerbList(verbList: getRandomEnglishVerbs(maxCount : 30))
         default:
@@ -573,8 +611,8 @@ class LanguageEngine : ObservableObject, Equatable {
             let vl = getVerbsOfPattern(verbList: verbList, thisPattern: sps)
             setFilteredVerbList(verbList: vl)
         case .French:
-//            let sps = SpecialPatternStruct(tense: .present, spt: .o2ue)
-//            let vl = getVerbsOfPattern(verbList: verbList, thisPattern: sps)
+            //            let sps = SpecialPatternStruct(tense: .present, spt: .o2ue)
+            //            let vl = getVerbsOfPattern(verbList: verbList, thisPattern: sps)
             setFilteredVerbList(verbList: findVerbsOfSameModel(targetID: 67))  //manger
         case .English:
             setFilteredVerbList(verbList: getRandomEnglishVerbs(maxCount : 30))
@@ -596,7 +634,7 @@ class LanguageEngine : ObservableObject, Equatable {
         let verbStr = conjugateAsRegularVerb(verb: verb, tense: .present, person: .S1, isReflexive: true, residPhrase: "cuenta de")
         print("seguir as regular verb: \(verbStr)")
         let patternVerbList = getVerbsForPatternGroup(patternType: .o2ue)
-//        var vl = getVerbsOfPatternGroups(patternType: .c2z)
+        //        var vl = getVerbsOfPatternGroups(patternType: .c2z)
         verb = patternVerbList[0]
         let id = getBescherelleID(verb: verb)
         let differentModelVerbList = findVerbsOfDifferentModel(modelID: id, inputVerbList: patternVerbList)
@@ -604,17 +642,17 @@ class LanguageEngine : ObservableObject, Equatable {
         let sameModelVerbList = findVerbsOfSameModel(modelID: id, inputVerbList: patternVerbList)
         print("patternVerbList count = \(patternVerbList.count), patternVerb = \(verb.spanish), find id \(id), sameModelVerbList count = \(sameModelVerbList.count)")
         
-//        let idList = getModelIdsOfPattern(verbList: verbList, thisPattern: SpecialPatternStruct(tense: .present, spt: .o2ue))
-//        print("idList count = \(idList.count)")
+        //        let idList = getModelIdsOfPattern(verbList: verbList, thisPattern: SpecialPatternStruct(tense: .present, spt: .o2ue))
+        //        print("idList count = \(idList.count)")
         
         var modelList = [RomanceVerbModel]()
-//        for spt in SpecialPatternType.stemChangingOSpanish{
-//            modelList = getModelsOfPattern(verbList: verbList, thisPattern: SpecialPatternStruct(tense: .present, spt: spt))
-//            print("\n\(modelList.count) models contain pattern \(spt.rawValue)")
-//            for model in modelList {
-//                print("model: \(model.id), verb:\(model.modelVerb)")
-//            }
-//        }
+        //        for spt in SpecialPatternType.stemChangingOSpanish{
+        //            modelList = getModelsOfPattern(verbList: verbList, thisPattern: SpecialPatternStruct(tense: .present, spt: spt))
+        //            print("\n\(modelList.count) models contain pattern \(spt.rawValue)")
+        //            for model in modelList {
+        //                print("model: \(model.id), verb:\(model.modelVerb)")
+        //            }
+        //        }
         
         for spt in SpecialPatternType.stemChangingESpanish{
             modelList = getModelsOfPattern(verbList: verbList, thisPattern: SpecialPatternStruct(tense: .present, spt: spt))
@@ -652,11 +690,11 @@ class LanguageEngine : ObservableObject, Equatable {
     
     
     
-
-//    func getWordCollections()->[dWordCollection] {
-//        return getWordCollectionList()
-//    }
-//    
+    
+    //    func getWordCollections()->[dWordCollection] {
+    //        return getWordCollectionList()
+    //    }
+    //
     
     func toggleSpeechMode(){
         useSpeechMode.toggle()
@@ -673,8 +711,8 @@ class LanguageEngine : ObservableObject, Equatable {
     
     func changeLanguage(){
         switch currentLanguage {
-//        case .English:
-//            setLanguage(language: .Spanish)
+            //        case .English:
+            //            setLanguage(language: .Spanish)
         case .Spanish:
             setLanguage(language: .French)
         case .French:
@@ -690,7 +728,7 @@ class LanguageEngine : ObservableObject, Equatable {
         let verbList = getFilteredVerbs()
         studentScoreModel.createStudentScoreModels(verbList: verbList, tenseList: tenseList, personList: personList)
     }
-
+    
     func initializeCriticalForms(){
         criticalVerbForms.clearAll()
         
@@ -704,7 +742,7 @@ class LanguageEngine : ObservableObject, Equatable {
         criticalVerbForms.appendCriticalForm(person: .P3, tense: .imperfectSubjunctiveRA, comment: "Third person plural,imperfect subjunctive tense")
         criticalVerbForms.appendCriticalForm(person: .P3, tense: .pastParticiple, comment: "Past participle")
     }
-                     
+    
     func testLogic(tense: Tense){
         print("testLogic: \(getCurrentConjugatedVerbString())")
         
@@ -798,6 +836,7 @@ class LanguageEngine : ObservableObject, Equatable {
             return Verb(spanish: verb.spanish, french: verb.english, english: verb.english)
         }
     }
+    
     func setSubjectPronounType(spt: SubjectPronounType){
         return subjectPronounType = spt
     }
@@ -815,18 +854,20 @@ class LanguageEngine : ObservableObject, Equatable {
     func setTenses(tenseList: [Tense]){
         self.tenseList = tenseList
     }
-
+    
     func getCurrentVerb()->Verb{return currentVerb}
     func getCurrentTense()->Tense{
         if currentTenseIndex > tenseList.count-1 {
             currentTenseIndex = 0
         }
-        return tenseList[currentTenseIndex]}
+        return tenseList[currentTenseIndex]
+    }
+    
     func setCurrentVerb(verb: Verb){
         currentVerb = verb
     }
     
-    func getCurrentLanguage()->LanguageType{return currentLanguage}
+    
     
     func getCurrentConjugatedVerbString()->String{
         createAndConjugateAgnosticVerb(verb: currentVerb, tense: currentTense)
@@ -894,19 +935,19 @@ class LanguageEngine : ObservableObject, Equatable {
         return bRomanceVerb
     }
     
-//    func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{
-//        var vmm = VerbModelManager()
-//        var bRomanceVerb = BRomanceVerb()
-//        switch currentLanguage {
-//        case .Spanish:
-//            bRomanceVerb = vmm.createSpanishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
-//        case .French:
-//            bRomanceVerb = vmm.createFrenchBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
-//        default:
-//            break
-//        }
-//        return bRomanceVerb
-//    }
+    func createAndConjugateAgnosticVerb(verb: Verb)->BRomanceVerb{
+        var vmm = VerbModelManager()
+        var bRomanceVerb = BRomanceVerb()
+        switch currentLanguage {
+        case .Spanish:
+            bRomanceVerb = vmm.createSpanishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        case .French:
+            bRomanceVerb = vmm.createFrenchBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        default:
+            break
+        }
+        return bRomanceVerb
+    }
     
     func createAndConjugateAgnosticVerb(language: LanguageType, verb: Verb, tense: Tense, person: Person, isReflexive: Bool)->String{
         var vmm = VerbModelManager()
@@ -1326,50 +1367,99 @@ extension LanguageEngine{
 //        return verbs
 //    }
     
+    func unConjugatePastParticiple(_ verbForm : String)->[VTP]{
+        var vtpList = [VTP]()
+        let vu = VerbUtilities()
+        for v in verbList {
+            //look for past participle
+            let result = vu.analyzeSpanishWordPhrase(testString: v.getWordAtLanguage(language: currentLanguage))
+            let brv = BSpanishVerb(verbPhrase : v.getWordAtLanguage(language: currentLanguage))
+            var verbWord = result.verbWord
+            if verbWord.count > 2 {
+                verbWord.removeLast(2)
+                brv.m_verbStem = verbWord
+                
+                //if verbForm is the created past participle, check if there is an irregular form first
+                
+                if verbForm == brv.createPastParticiple() {
+                    let irregularPastParticiple = getPastParticiple(v.getWordAtLanguage(language: currentLanguage))
+                    if irregularPastParticiple.count > 0 {
+                        vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1, conjugatedVerbForm : irregularPastParticiple))
+                        //                    print("unConjugate: created pastParticiple = \(verbForm)")
+                        return vtpList
+                    }
+                    vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1, conjugatedVerbForm : ""))
+                }
+            }
+        }
+        return vtpList
+    }
         
     func unConjugate(verbForm : String)->[VTP]{
         var vtpList = [VTP]()
         var conjugateForm = ""
-        let tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future, .presentSubjunctive, .imperfectSubjunctiveRA, .imperfectSubjunctiveSE, .imperative]
+        let tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future, .presentSubjunctive, .imperfectSubjunctiveRA, .imperfectSubjunctiveSE, .imperative, .presentPerfect]
+        
+        vtpList = unConjugatePastParticiple(verbForm)
+        if vtpList.count > 0 { return vtpList }
         
         var count = 0
         let vu = VerbUtilities()
         for v in verbList {
             
             //look for infinitives
-            let result = vu.analyzeSpanishWordPhrase(testString: verbForm)
+            var result = vu.analyzeSpanishWordPhrase(testString: verbForm)
             if result.verbEnding != .none {
-                vtpList.append(VTP(verb: Verb(spanish: result.verbWord, french: "", english: ""), tense: .infinitive, person: .S1))
+                vtpList.append(VTP(verb: Verb(spanish: result.verbWord, french: "", english: ""), tense: .infinitive, person: .S1,
+                                   conjugatedVerbForm : ""))
                 return vtpList
             }
                 
-            //look for past participles and gerunds
-            if verbForm == getPastParticiple(v) {
-                vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1))
-                print("unConjugate: pastParticiple = \(verbForm)")
+            //look for past participle
+            if verbForm == getPastParticiple(v.getWordAtLanguage(language: currentLanguage)) {
+                vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1, conjugatedVerbForm : ""))
+//                print("unConjugate: irregular pastParticiple = \(verbForm)")
+                return vtpList
             }
             
-            let bRomanceVerb = createRomanceVerb(v)
-            //look for past participles and gerunds
-            if verbForm == bRomanceVerb.getGerund() {
-                vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1))
-                print("unConjugate: pastParticiple = \(verbForm)")
+            //build a BSpanishVerb from v
+            result = vu.analyzeSpanishWordPhrase(testString: v.getWordAtLanguage(language: currentLanguage))
+            let brv = BSpanishVerb(verbPhrase : v.getWordAtLanguage(language: currentLanguage))
+            var verbWord = result.verbWord
+            if verbWord.count > 2 {
+                verbWord.removeLast(2)
+                brv.m_verbStem = verbWord
+                
+//                print("unConjugate : verb \(v.getWordAtLanguage(language: currentLanguage))= \(brv.m_verbStem)")
+                
+                if verbForm == brv.createPastParticiple() {
+                    vtpList.append(VTP(verb: v, tense: .pastParticiple, person: .S1, conjugatedVerbForm : ""))
+//                    print("unConjugate: created pastParticiple = \(verbForm)")
+                    return vtpList
+                }
+                //look for gerund
+                let brvGerund = brv.createGerund()
+                
+                if verbForm == brv.createGerund() {
+                    vtpList.append(VTP(verb: v, tense: .gerund, person: .S1, conjugatedVerbForm : ""))
+//                    print("unConjugate: created gerund = \(verbForm)")
+                    return vtpList
+                }
             }
-            
             for tense in tenseList {
                 for person in Person.all {
                     let ms = createConjugatedMorphStruct(verb: v, tense: tense, person: person)
                     conjugateForm = ms.finalVerbForm()
                     if conjugateForm == verbForm {
-                        vtpList.append(VTP(verb: v, tense: tense, person: person))
-                        print("\(count) verb forms were searched")
-                        print("target form: \(verbForm): found: \(v.getWordAtLanguage(language: currentLanguage)), tense: \(tense.rawValue), person:\(person.rawValue)")
+                        vtpList.append(VTP(verb: v, tense: tense, person: person, conjugatedVerbForm : ""))
+//                        print("\(count) verb forms were searched")
+//                        print("target form: \(verbForm): found: \(v.getWordAtLanguage(language: currentLanguage)), tense: \(tense.rawValue), person:\(person.rawValue)")
                     }
                     count += 1
                 }
             }
         }
-        if count > 0 {
+        if vtpList.count > 0 {
             return vtpList
         }
         
@@ -1381,18 +1471,15 @@ extension LanguageEngine{
                     let ms = createConjugatedMorphStruct(verb: v, tense: tense, person: person)
                     conjugateForm = ms.finalVerbForm()
                     let unaccentedConjugateForm = vu.removeAccentedLetters(conjugateForm)
+                    
                     if unaccentedConjugateForm == verbForm {
-                        vtpList.append(VTP(verb: v, tense: tense, person: person))
-                        print("target form: \(conjugateForm): as \(unaccentedConjugateForm)")
+                        print("verbForm: \(verbForm), target form: \(conjugateForm): as \(unaccentedConjugateForm)")
+                        vtpList.append(VTP(verb: v, tense: tense, person: person, conjugatedVerbForm: conjugateForm))
                     }
-                    count += 1
+                    
                 }
             }
         }
-        if count > 0 {
-            return vtpList
-        }
-        
         return vtpList
     }
 }

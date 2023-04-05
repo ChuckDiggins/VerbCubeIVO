@@ -289,9 +289,12 @@ extension LanguageEngine{
     }
     
     func verbCountsExistInCoreData()->Bool{
-        let vm = getVerbModels()[10]
-        let vc = vmecdm.getVerbCount(vm.modelVerb)
-        return vc > 0
+        let vm = getVerbModels()
+        if vm.count > 0 {
+            let vc = vmecdm.getVerbCount(vm[0].modelVerb)
+            return vc > 0
+        }
+        return false
     }
     
     func getAllVerbCountsFromCoreData(){

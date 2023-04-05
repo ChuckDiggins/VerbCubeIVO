@@ -49,6 +49,7 @@ struct VerbModelListView: View {
                                     Text("\(vm.modelVerb) \(languageViewModel.getModelVerbCountAt(vm.id))")
                                     Spacer()
                                     if languageViewModel.isCompleted(verbModel: vm) { Text("✅")}
+                                    if vmecdm.isSelected(verbModelString:vm.modelVerb) { Text("☑️")}
                                 }.foregroundColor(vmecdm.isSelected(verbModelString:vm.modelVerb) ? Color("ChuckText1") : Color("BethanyGreenText"))
                             }
                             

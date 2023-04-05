@@ -113,18 +113,22 @@ extension LanguageEngine{
     }
     
     func restoreV2MPackage(){
+        //loads the lessons for the current language
         loadAllV2Ms()
+        
         if verbOrModelMode == .modelMode {
             restoreModelFromCurrentVerbModelString()
         } else {
             installCurrentStudyPackage()
         }
+        fillVerbCubeAndQuizCubeLists()
     }
     
     func installCurrentStudyPackage() {
         var v2mFound = false
         
         for v2m in v2MGroupManager.getV2MGroupList() {
+            print("installCurrentStudyPackage: \(v2m.chapter), \(v2m.lesson)")
             if v2m.chapter == currentV2mChapter && v2m.lesson == currentV2mLesson {
                 v2MGroup = v2m
                 v2mFound = true
@@ -140,9 +144,9 @@ extension LanguageEngine{
             setTenses(tenseList: studyPackage.tenseList)
 //            print("installCurrentStudyPackage: specialVerbType = \(specialVerbType.rawValue)")
         }
-        else {
-            print("installCurrentStudyPackage: StudyPackage \(currentV2mChapter), \(currentV2mLesson) not found")
-        }
+//        else {
+            print("installCurrentStudyPackage: StudyPackage \(currentV2mChapter), \(currentV2mLesson) found \(v2mFound)")
+//        }
         
     }
     

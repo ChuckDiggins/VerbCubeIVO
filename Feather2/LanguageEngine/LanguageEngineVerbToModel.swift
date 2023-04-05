@@ -8,6 +8,19 @@
 import Foundation
 import JumpLinguaHelpers
 
+enum FrenchVerbLessons: String, CaseIterable{
+    case chapter1A = "French 1A"
+    case chapter1B = "French 1B"
+    
+    public func getChapterDescription()->String{
+        switch self{
+        case .chapter1A: return "1A: Easy verb, present tense"
+        case .chapter1B: return "1B: Harder verbs, more tenses"
+        }
+    }
+}
+
+
 enum Chuck1Chapters: String, CaseIterable{
     case chuck1A = "Extra 1A"
     case chuck1B = "Extra 1B"
@@ -41,7 +54,6 @@ enum Chuck1Chapters: String, CaseIterable{
         }
     }
 }
-
 
 
 
@@ -133,10 +145,18 @@ extension LanguageEngine{
         
     
     func loadAllV2Ms(){
-        fillV2MGroupManager(textBook: "Realidades I")
-//        fillV2MGroupManager(textBook: "Realidades II" )
-//        fillV2MGroupManager(textBook: "Realidades III" )
-        fillV2MGroupManager(textBook: "Extra 1" )
+        switch getCurrentLanguage(){
+        case .Spanish:
+            fillV2MGroupManager(textBook: "Realidades I")
+    //        fillV2MGroupManager(textBook: "Realidades II" )
+    //        fillV2MGroupManager(textBook: "Realidades III" )
+            fillV2MGroupManager(textBook: "Extra 1" )
+        case .French:
+            fillV2MGroupManager(textBook: "French 1")
+        default:
+            break
+        }
+        
 //        fillV2MGroupManager(textBook: "Michelle 1" )
     }
     
@@ -150,6 +170,8 @@ extension LanguageEngine{
             loadRealidadesIII()
         case "Extra 1":
             loadChuck1()
+        case "French 1":
+            loadFrench1()
         default:
             loadChuck1()
         }
@@ -168,6 +190,25 @@ extension LanguageEngine{
         sp.specialVerbType = v2mGroup.specialVerbType
         return sp
     }
+    
+    func loadFrench1(){
+        let v2mGroupFrench1A = VerbToModelGroup(chapter: "French 1A", lesson: "1A: Easy verb, present tense",
+                                                verbToModelList :
+                                                   [VerbToModelStruct("dire")],
+                                                  tenseList: [.present],
+                                                  specialVerbType: .normal)
+               fillAssociatedModelList(v2mGroupFrench1A)
+               v2MGroupManager.appendGroup(v2mGroupFrench1A)
+        
+        let v2mGroupFrench1B = VerbToModelGroup(chapter: "French 1B", lesson: "1B: Harder verbs, more tenses",
+                                                verbToModelList :
+                                                   [VerbToModelStruct("rendre"), VerbToModelStruct("tenir"), VerbToModelStruct("penser"), ],
+                                                tenseList: [.present, .preterite, .imperfect, .future],
+                                                  specialVerbType: .normal)
+               fillAssociatedModelList(v2mGroupFrench1B)
+               v2MGroupManager.appendGroup(v2mGroupFrench1B)
+    }
+    
     func loadChuck1(){
         let v2mGroupChuck1A = VerbToModelGroup(chapter: "Extra 1A", lesson: "Auxiliary - infinitive",
                                          verbToModelList :

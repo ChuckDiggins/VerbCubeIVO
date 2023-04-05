@@ -38,27 +38,12 @@ struct PreferencesView: View {
                 }
                 ScrollView {
                     DisclosureGroupPreferences()
-//                    NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel, tenseList: $tenseList)){
-//                        HStack{
-//                            Text("Set tenses")
-//                            Spacer()
-//                            Image(systemName: "chevron.right").foregroundColor(.yellow)
-//                        }
-//                    } .modifier(ModelTensePersonButtonModifier())
-
-                    Button{
-                        currentPage = 1
-                    } label: {
-                        Text("Reset welcome series")
-                    }
-                    .modifier(ModelTensePersonButtonModifier())
+                    NavigationLink(destination: OnboardingViews())
+                    {
+                    Label("More info views", systemImage: "gear")
+                    }.modifier(ModelTensePersonButtonModifier())
                     
-                    Button{
-                        explanationPage = 1
-                    } label: {
-                        Text("Show program overview series")
-                    }
-                    .modifier(ModelTensePersonButtonModifier())
+                    PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
                     
 //                    Button{
 //                        languageViewModel.toggleSpeechMode()
@@ -74,8 +59,8 @@ struct PreferencesView: View {
 //                    .modifier(ModelTensePersonButtonModifier())
                     
 //                    ListVerbModelsView(languageViewModel: languageViewModel)
-                    PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
-//                    ChangeLanguageView(languageViewModel: languageViewModel)
+                    
+                    ChangeLanguageView(languageViewModel: languageViewModel)
                     
                     
                     Button{
@@ -88,46 +73,46 @@ struct PreferencesView: View {
                     VStack{
                         Text("Testing buttons")
                         
-                        Button{
-                            languageViewModel.clearAllVerbCountsInCoreData()
-                            print(languageViewModel.getModelVerbCountAt(9))
-                        } label: {
-                            Text("Clear all CoreData verb counts")
-                        }.modifier(ModelTensePersonButtonModifier())
-                        
-                        Button{
-                            languageViewModel.setAllVerbCountsInCoreData()
-                        } label: {
-                            Text("Set all CoreData verb counts")
-                        }.modifier(ModelTensePersonButtonModifier())
-                        
-                        Button{
-                            languageViewModel.getAllVerbCountsFromCoreData()
-                        } label: {
-                            Text("Get all CoreData verb counts")
-                        }.modifier(ModelTensePersonButtonModifier())
-                        
+//                        Button{
+//                            languageViewModel.clearAllVerbCountsInCoreData()
+//                            print(languageViewModel.getModelVerbCountAt(9))
+//                        } label: {
+//                            Text("Clear all CoreData verb counts")
+//                        }.modifier(ModelTensePersonButtonModifier())
+//
+//                        Button{
+//                            languageViewModel.setAllVerbCountsInCoreData()
+//                        } label: {
+//                            Text("Set all CoreData verb counts")
+//                        }.modifier(ModelTensePersonButtonModifier())
+//
+//                        Button{
+//                            languageViewModel.getAllVerbCountsFromCoreData()
+//                        } label: {
+//                            Text("Get all CoreData verb counts")
+//                        }.modifier(ModelTensePersonButtonModifier())
+//
                         Button{
                             languageViewModel.setAllVerbModelsIncomplete()
                         } label: {
                             Text("Set all verb models incomplete")
                         }.modifier(ModelTensePersonButtonModifier())
                         
-                        Button{
-                            languageViewModel.setSelectedVerbModelsComplete()
-                            languageViewModel.selectNextOrderedVerbModel()
-                            modelCompleted.toggle()
-                        } label: {
-                            Text("Set all selected verb models to completed")
-                        }.modifier(ModelTensePersonButtonModifier())
-                        
-                        Button{
-                            languageViewModel.setAllLessonsAndModelsEmpty()
-                            exit(0)
-                        } label: {
-                            Text("Set all lessons and models empty")
-                        }.modifier(ModelTensePersonButtonModifier())
-                        
+//                        Button{
+//                            languageViewModel.setSelectedVerbModelsComplete()
+//                            languageViewModel.selectNextOrderedVerbModel()
+//                            modelCompleted.toggle()
+//                        } label: {
+//                            Text("Set all selected verb models to completed")
+//                        }.modifier(ModelTensePersonButtonModifier())
+//
+//                        Button{
+//                            languageViewModel.setAllLessonsAndModelsEmpty()
+//                            exit(0)
+//                        } label: {
+//                            Text("Set all lessons and models empty")
+//                        }.modifier(ModelTensePersonButtonModifier())
+//
                         
                     }
                     .alert("", isPresented: $modelCompleted){

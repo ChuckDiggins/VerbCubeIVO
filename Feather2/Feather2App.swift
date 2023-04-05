@@ -24,9 +24,11 @@ struct Feather2App: SwiftUI.App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     @ObservedObject var appState = AppState(hasOnboarded: false)
-    @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
+//    @StateObject var languageViewModel = LanguageViewModel(language: .Spanish)
+    @StateObject var languageViewModel = LanguageViewModel()
     @StateObject var vmecdm = VerbModelEntityCoreDataManager()
     @StateObject var router = Router()
+    @AppStorage("Language") var languageString = "Spanish"
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"

@@ -214,8 +214,3 @@ struct AudibleStyleView: View {
     }
 }
 
-struct AudibleStyleView_Previews: PreviewProvider {
-    static var previews: some View {
-        AudibleStyleView(languageViewModel: LanguageViewModel(language: .Spanish))
-    }
-}

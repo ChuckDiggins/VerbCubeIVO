@@ -74,6 +74,7 @@
 		6E6CA06D27C4599400CCD8BE /* QuizCubeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CA06C27C4599400CCD8BE /* QuizCubeCellView.swift */; };
 		6E6CA07127C5441800CCD8BE /* VerbCubeCellInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CA07027C5441800CCD8BE /* VerbCubeCellInfo.swift */; };
 		6E6CA07327C55E6200CCD8BE /* CellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CA07227C55E6200CCD8BE /* CellData.swift */; };
+		6E7B361E29DC710600885D19 /* ChangeLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B361D29DC710600885D19 /* ChangeLanguageView.swift */; };
 		6E7BC3372901B163004708AC /* VerbModelEntityCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BC3362901B163004708AC /* VerbModelEntityCoreDataManager.swift */; };
 		6E7BC33F2902F61F004708AC /* VerbModelGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BC33E2902F61F004708AC /* VerbModelGroupManager.swift */; };
 		6E7BC34129031508004708AC /* VerbAndModelSublistUtilties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BC34029031508004708AC /* VerbAndModelSublistUtilties.swift */; };
@@ -234,6 +235,7 @@
 		6E6CA07027C5441800CCD8BE /* VerbCubeCellInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbCubeCellInfo.swift; sourceTree = "<group>"; };
 		6E6CA07227C55E6200CCD8BE /* CellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellData.swift; sourceTree = "<group>"; };
 		6E7AB2FA299D66190058AE24 /* Feather2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Feather2.entitlements; sourceTree = "<group>"; };
+		6E7B361D29DC710600885D19 /* ChangeLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeLanguageView.swift; sourceTree = "<group>"; };
 		6E7BC3362901B163004708AC /* VerbModelEntityCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelEntityCoreDataManager.swift; sourceTree = "<group>"; };
 		6E7BC33E2902F61F004708AC /* VerbModelGroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelGroupManager.swift; sourceTree = "<group>"; };
 		6E7BC34029031508004708AC /* VerbAndModelSublistUtilties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbAndModelSublistUtilties.swift; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				6E5988C3298C55DA0061E02B /* CarouselDispatcherView.swift */,
 				6E5988C1298C55300061E02B /* ExploreCarouselView.swift */,
 				6E5988BB298B264D0061E02B /* ExerciseDataManager.swift */,
+				6E7B361D29DC710600885D19 /* ChangeLanguageView.swift */,
 			);
 			path = CarouselViews;
 			sourceTree = "<group>";
@@ -856,6 +859,7 @@
 				6ECCD47527D8295D0049B9CA /* LanguageEngineFiltered.swift in Sources */,
 				6EBAC2ED27F39A5C004DB5D1 /* MultiVerbMorphView.swift in Sources */,
 				6EDE6D8B292944D900060C03 /* NavStackRouter.swift in Sources */,
+				6E7B361E29DC710600885D19 /* ChangeLanguageView.swift in Sources */,
 				6EE9029E293F9BDA005D9704 /* VerbModelListView.swift in Sources */,
 				6E978AD8285925BA0085EA4D /* FeatherVerbStepView.swift in Sources */,
 				6E69297D27D2C6D1003BCD71 /* QuizCubeHandlerClass.swift in Sources */,

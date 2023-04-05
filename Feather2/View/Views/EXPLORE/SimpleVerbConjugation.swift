@@ -251,9 +251,12 @@ struct SimpleVerbConjugation: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             
-            ScrollView{
+            NavigationStack{
                 ExitButtonView()
-                
+                NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
+                {
+                Label("Set tenses", systemImage: "t.circle")
+                }
                 //                PreferencesButtonView(languageViewModel: languageViewModel).foregroundColor(Color("BethanyGreenText"))
                 Text("Simple Verb Conjugation").font(.title2).foregroundColor(Color("ChuckText1"))
                 //                HStack{
@@ -300,6 +303,7 @@ struct SimpleVerbConjugation: View {
                     .padding(10)
                     
                     .onAppear {
+                        fillPersonStrings()
                         currentTense = languageViewModel.getLanguageEngine().getNextTense()
                         //
                         currentVerbPhrase = verb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
@@ -346,6 +350,12 @@ struct SimpleVerbConjugation: View {
             )
             
         }//ZStack
+    }
+    
+    func fillPersonStrings(){
+        for personIndex in 0..<6 {
+            person[0] = Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: languageViewModel.getSubjectPronounType())
+        }
     }
     
     func isValidVerb(language: LanguageType, verbString: String)->Bool{
