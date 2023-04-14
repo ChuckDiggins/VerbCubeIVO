@@ -76,17 +76,44 @@ extension LanguageEngine{
         computeCompletedVerbModels()
         selectedVerbModelList = getSelectedVerbModelList()
         var newVerbList = [Verb]()
+        print("\nfillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList:")
         if selectedVerbModelList.count > 0 {
+            print("selectedVerbModelList: found \(selectedVerbModelList.count) verbs")
+            var verbCount = 0
             for model in selectedVerbModelList{
-                var verbCount = 0
+                print("model: id:\(model.id). modelVerb = \(model.modelVerb)")
                 var tempVerbList = findSingletonVerbsOfSameModel(targetID: model.id)
                 tempVerbList.shuffle()
                 for verb in tempVerbList{
+                    print("\(verbCount). \(verb.getWordStringAtLanguage(language: getCurrentLanguage()))")
                     verbCount += 1
                     newVerbList.append(verb)
                     if verbCount > maxVerbCountPerModel {
                         break
                     }
+                }
+            }
+            if verbCount > 0 {
+                verbModelFilteredVerbList = newVerbList
+                trimFilteredVerbList(maxVerbCountPerModel)
+                currentFilteredVerbIndex = 0
+                print("filteredVerbList count = \(filteredVerbList.count)")
+                fillVerbCubeAndQuizCubeLists()
+                _ = computeVerbsExistForAll3Endings()
+                setTenses(tenseList: [.present, .preterite, .imperfect, .future, .conditional])
+            }
+        }
+        
+        //if no current verb model list find verbs associated with currentVerbModelString  ... such as French for now
+        else {
+            var model = findModelForThisVerbString(verbWord: currentVerbModelString)
+            var tempVerbList = findSingletonVerbsOfSameModel(targetID: model.id)
+            var verbCount = 0
+            for verb in tempVerbList{
+                verbCount += 1
+                newVerbList.append(verb)
+                if verbCount > maxVerbCountPerModel {
+                    break
                 }
             }
             verbModelFilteredVerbList = newVerbList
@@ -114,19 +141,21 @@ extension LanguageEngine{
     
     func restoreV2MPackage(){
         //loads the lessons for the current language
+        print("restoreV2MPackage: \(getCurrentLanguage().rawValue)")
         loadAllV2Ms()
-        
+        fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList()
         if verbOrModelMode == .modelMode {
             restoreModelFromCurrentVerbModelString()
         } else {
             installCurrentStudyPackage()
         }
         fillVerbCubeAndQuizCubeLists()
+        verbOrModelModeInitialized = true
     }
     
     func installCurrentStudyPackage() {
         var v2mFound = false
-        
+        print("installCurrentStudyPackage: find \(currentV2mChapter), \(currentV2mLesson)")
         for v2m in v2MGroupManager.getV2MGroupList() {
             print("installCurrentStudyPackage: \(v2m.chapter), \(v2m.lesson)")
             if v2m.chapter == currentV2mChapter && v2m.lesson == currentV2mLesson {
@@ -171,7 +200,7 @@ extension LanguageEngine{
         
         currentVerbModel = findModelForThisVerbString(verbWord: currentVerbModelString)
         print("restoreModel: currentVerbModelString = \(currentVerbModelString)")
-        setToVerbModelMode()
+//        setToVerbModelMode()
         trimFilteredVerbList(16)
     }
     

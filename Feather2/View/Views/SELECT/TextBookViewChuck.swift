@@ -21,7 +21,7 @@ struct TextBookViewChuck: View {
     let numOfChapters = Chuck1Chapters.allCases.count
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     var body: some View {

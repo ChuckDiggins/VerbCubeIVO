@@ -24,7 +24,7 @@ struct ListVerbsForModelView: View {
     @State var modelName = "No name"
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
     
     
@@ -116,6 +116,7 @@ struct ListVerbsForModelView: View {
                     
                 }
                 .onAppear{
+                    currentLanguage = languageViewModel.getCurrentLanguage()
                     if languageViewModel.isModelMode() {
                         if showSelectButton{
                             verbModel = languageViewModel.getTemporaryVerbModel()

@@ -17,7 +17,7 @@ struct PreferencesView: View {
     @State var modelCompleted = false
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7

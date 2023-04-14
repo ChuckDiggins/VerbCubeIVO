@@ -7,498 +7,20 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F955DE37-5944-4A56-B3AC-7F001E9DC1F2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1412"
-            endingLineNumber = "1412"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "69B02084-346A-4B08-B8F7-875ABEB6E5E2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1435"
-            endingLineNumber = "1435"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7A596808-0744-4375-BFE5-DD836F587519"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
-            landmarkName = "getPastParticiple(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "45DA6EAB-5F89-4768-A3DD-FA3CC58447DA"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1443"
-            endingLineNumber = "1443"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "39C2BFAF-D221-48F1-98AD-4F8BB14779FE"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../Library/Developer/Xcode/DerivedData/Feather2-hfevctwhibatskhemahkghmwxuoa/SourcePackages/checkouts/JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerb.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
-            landmarkName = "createGerund()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4F8EEC2D-D5C9-4060-9E66-AAFC22146557"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../Library/Developer/Xcode/DerivedData/Feather2-hfevctwhibatskhemahkghmwxuoa/SourcePackages/checkouts/JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerb.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
-            landmarkName = "createDefaultGerund()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6155C003-7139-4838-B2F8-02487AF65A2F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../Library/Developer/Xcode/DerivedData/Feather2-hfevctwhibatskhemahkghmwxuoa/SourcePackages/checkouts/JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerb.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
-            landmarkName = "createGerund()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3F8F3E03-A52B-41D5-A4D9-7F8BC80BB75A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../Library/Developer/Xcode/DerivedData/Feather2-hfevctwhibatskhemahkghmwxuoa/SourcePackages/checkouts/JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerb.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "init(verbPhrase:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F5BEB2CD-6661-48BD-BAEF-E1218E7219AA"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../Library/Developer/Xcode/DerivedData/Feather2-hfevctwhibatskhemahkghmwxuoa/SourcePackages/checkouts/JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerb.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "setPatterns(verbModel:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8EF8E123-35B7-4A9C-833F-B9E1A3E7E286"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1433"
-            endingLineNumber = "1433"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F3356F67-2D7A-4BC0-ACCB-FE9FF894B3D2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../Library/Developer/Xcode/DerivedData/Feather2-hfevctwhibatskhemahkghmwxuoa/SourcePackages/checkouts/JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/Spanish/BSpanishVerb.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "setPatterns(verbModel:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "44CFAB49-F5FB-4383-BC79-EFAFA3E3B595"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/Utilities/UnconjugateView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
-            landmarkName = "isSpecialTense(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "48C40F0B-77BD-47CE-ABEF-FEE6E6929AEC"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1477"
-            endingLineNumber = "1477"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "03440166-8469-4E01-9A13-6FDDA92F3520"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1475"
-            endingLineNumber = "1475"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D667B9DD-83C3-4A6C-9AE2-AE4F9C5F328E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1462"
-            endingLineNumber = "1462"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8197404D-B051-4E9C-82FE-B0C42F87CE4E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1474"
-            endingLineNumber = "1474"
-            landmarkName = "unConjugate(verbForm:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CA1EF2B6-51E8-4593-A506-4CEFA6427D1A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/Utilities/UnconjugateView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "getSubjectString(vtp:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A14AB587-56DD-4C78-B401-D4E6EDBF2059"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1391"
-            endingLineNumber = "1391"
-            landmarkName = "unConjugatePastParticiple(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A14AB587-56DD-4C78-B401-D4E6EDBF2059 - cdc19f5749950da1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.unConjugatePastParticiple(Swift.String) -&gt; Swift.Array&lt;Verbs_of_a_Feather.VTP&gt;"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngine.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1391"
-                  endingLineNumber = "1391"
-                  offsetFromSymbolStart = "1560">
-               </Location>
-               <Location
-                  uuid = "A14AB587-56DD-4C78-B401-D4E6EDBF2059 - cdc19f5749950da1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.unConjugatePastParticiple(Swift.String) -&gt; Swift.Array&lt;Verbs_of_a_Feather.VTP&gt;"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngine.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1391"
-                  endingLineNumber = "1391"
-                  offsetFromSymbolStart = "1388">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B6EB4EBB-1D7D-4D7C-B5A4-0875BC4BC479"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/EXPLORE/SimpleVerbConjugation.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "381"
-            endingLineNumber = "381"
-            landmarkName = "setNextTense()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "69598A2C-6531-4BCA-824F-C14CC611496A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/EXPLORE/SimpleVerbConjugation.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "429"
-            endingLineNumber = "429"
-            landmarkName = "setCurrentVerb()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "65330B80-C93B-4908-A686-DB1AAEE566AD"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/CarouselViews/CarouselDispatcherView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "997BF701-3892-4C7D-9D96-E756A69C5D55"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/Views on Hold/TeachMeCommonControls.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "726DB7A9-3E47-4D0E-9F4A-B11377B2155B"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/Views on Hold/TeachMeCommonControls.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F8A1D33A-7457-4339-820D-8104823BFE7F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngineVerbToModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
-            landmarkName = "Chuck1Chapters"
-            landmarkType = "13">
-            <Locations>
-               <Location
-                  uuid = "F8A1D33A-7457-4339-820D-8104823BFE7F - 99ecb89546a07fd4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.Chuck1Chapters.init(rawValue: Swift.String) -&gt; Swift.Optional&lt;Verbs_of_a_Feather.Chuck1Chapters&gt;"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbToModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25"
-                  offsetFromSymbolStart = "76">
-               </Location>
-               <Location
-                  uuid = "F8A1D33A-7457-4339-820D-8104823BFE7F - 40e805d4202c0029"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.Chuck1Chapters.rawValue.getter : Swift.String"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbToModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25"
-                  offsetFromSymbolStart = "47">
-               </Location>
-               <Location
-                  uuid = "F8A1D33A-7457-4339-820D-8104823BFE7F - 99ecb89546a07fd4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.Chuck1Chapters.init(rawValue: Swift.String) -&gt; Swift.Optional&lt;Verbs_of_a_Feather.Chuck1Chapters&gt;"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbToModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25"
-                  offsetFromSymbolStart = "148">
-               </Location>
-               <Location
-                  uuid = "F8A1D33A-7457-4339-820D-8104823BFE7F - 40e805d4202c0029"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.Chuck1Chapters.rawValue.getter : Swift.String"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbToModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25"
-                  offsetFromSymbolStart = "84">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "04B4DA33-A2D2-4CAD-B95A-9B25CA2B9D32"
+            uuid = "366D3C5F-61FF-47AB-B2B5-3402CAEF0FEB"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
             landmarkName = "restoreV2MPackage()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "04B4DA33-A2D2-4CAD-B95A-9B25CA2B9D32 - 6fcadbb5469849d4"
+                  uuid = "366D3C5F-61FF-47AB-B2B5-3402CAEF0FEB - 6fcadbb54698b5d7"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -508,12 +30,12 @@
                   urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "40">
+                  startingLineNumber = "148"
+                  endingLineNumber = "148"
+                  offsetFromSymbolStart = "76">
                </Location>
                <Location
-                  uuid = "04B4DA33-A2D2-4CAD-B95A-9B25CA2B9D32 - 6fcadbb5469849d4"
+                  uuid = "366D3C5F-61FF-47AB-B2B5-3402CAEF0FEB - 6fcadbb54698b599"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -523,9 +45,9 @@
                   urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "32">
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "452">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -533,343 +55,55 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "76727B6B-2DC5-411B-BC16-D7A23EA626AB"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngineFiltered.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "getFilteredVerbs()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6B494D57-6B34-48EE-ABF2-D87784DD0848"
+            uuid = "01EBB3F2-4718-4728-9520-23E0A0098221"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "installCurrentStudyPackage()"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "setToVerbModelMode()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "6B494D57-6B34-48EE-ABF2-D87784DD0848 - 6bda6f9364cca90d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.installCurrentStudyPackage() -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "137"
-                  endingLineNumber = "137"
-                  offsetFromSymbolStart = "1836">
-               </Location>
-               <Location
-                  uuid = "6B494D57-6B34-48EE-ABF2-D87784DD0848 - 6bda6f9364cca90d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.installCurrentStudyPackage() -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "137"
-                  endingLineNumber = "137"
-                  offsetFromSymbolStart = "404">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DA3810AF-56E8-4899-B08A-61919FD016A3"
+            uuid = "112F601B-CB06-4105-8173-491FB156765C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
-            landmarkName = "installCurrentStudyPackage()"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "setToVerbModelMode()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "DA3810AF-56E8-4899-B08A-61919FD016A3 - 907a9db81334f637"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.processVerbModel(currentModel: JumpLinguaHelpers.RomanceVerbModel) -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "158"
-                  endingLineNumber = "158"
-                  offsetFromSymbolStart = "260">
-               </Location>
-               <Location
-                  uuid = "DA3810AF-56E8-4899-B08A-61919FD016A3 - 6bda6f9364cc5440"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.installCurrentStudyPackage() -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "158"
-                  endingLineNumber = "158"
-                  offsetFromSymbolStart = "3012">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5C14E821-6EE6-457E-84BE-888BF45AF236"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "installCurrentStudyPackage()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "5C14E821-6EE6-457E-84BE-888BF45AF236 - 907a9db81334f569"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.processVerbModel(currentModel: JumpLinguaHelpers.RomanceVerbModel) -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "152"
-                  endingLineNumber = "152"
-                  offsetFromSymbolStart = "44">
-               </Location>
-               <Location
-                  uuid = "5C14E821-6EE6-457E-84BE-888BF45AF236 - 6bda6f9364cc5758"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.installCurrentStudyPackage() -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "150"
-                  endingLineNumber = "150"
-                  offsetFromSymbolStart = "2060">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6F6832F1-1E41-4FF8-9711-9B1C4EB71B88"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/CarouselViews/ChangeLanguageView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "46715AF4-DAEB-428C-B771-079A011F5764"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/CarouselViews/ChangeLanguageView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "body"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "46715AF4-DAEB-428C-B771-079A011F5764 - d93737fba3b330e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in Verbs_of_a_Feather.ChangeLanguageView.body.getter : some"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/CarouselViews/ChangeLanguageView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "416">
-               </Location>
-               <Location
-                  uuid = "46715AF4-DAEB-428C-B771-079A011F5764 - d93737fba3b330e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in Verbs_of_a_Feather.ChangeLanguageView.body.getter : some"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/CarouselViews/ChangeLanguageView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "316">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4B9D352F-945D-469C-A0A1-EE682A47CDE6"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/View/Views/CarouselViews/ChangeLanguageView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "body"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "4B9D352F-945D-469C-A0A1-EE682A47CDE6 - d93737fba3b3206"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in Verbs_of_a_Feather.ChangeLanguageView.body.getter : some"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/CarouselViews/ChangeLanguageView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "33"
-                  endingLineNumber = "33"
-                  offsetFromSymbolStart = "188">
-               </Location>
-               <Location
-                  uuid = "4B9D352F-945D-469C-A0A1-EE682A47CDE6 - d93737fba3b3206"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in Verbs_of_a_Feather.ChangeLanguageView.body.getter : some"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/CarouselViews/ChangeLanguageView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "33"
-                  endingLineNumber = "33"
-                  offsetFromSymbolStart = "92">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3A1C1EEE-15CF-454C-B0D5-385B3950E342"
+            uuid = "9BE17435-92ED-4695-AB38-439649D9C3EE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1043"
-            endingLineNumber = "1043"
-            landmarkName = "createAndConjugateAgnosticVerb(verb:tense:)"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
+            landmarkName = "init(language:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "45160D97-C144-4F81-BD5C-ABD5AC41982F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../Library/Developer/Xcode/DerivedData/Feather2-hfevctwhibatskhemahkghmwxuoa/SourcePackages/checkouts/JumpLinguaHelpers/Sources/JumpLinguaHelpers/Bescherelle/BVerb.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "init(verbPhrase:languageType:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "677F1549-7FE2-4AA5-B5FA-D2E8E90CB021"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
-            landmarkName = "restoreModelFromCurrentVerbModelString()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F0B8A28C-AD50-42D5-A196-E3556705CD1A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "restoreModelFromCurrentVerbModelString()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "68800C76-8B9E-4DC8-8E4A-52030E219529"
+            uuid = "937C0597-50B5-43AF-AF49-A11FE76B6F28"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -885,79 +119,31 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8FC01A97-46B9-48D4-ABA1-7561D2DFE445"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "processVerbModel(currentModel:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "8FC01A97-46B9-48D4-ABA1-7561D2DFE445 - 907a9db81334f6ab"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.processVerbModel(currentModel: JumpLinguaHelpers.RomanceVerbModel) -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "8FC01A97-46B9-48D4-ABA1-7561D2DFE445 - 907a9db81334f6ab"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageEngine.processVerbModel(currentModel: JumpLinguaHelpers.RomanceVerbModel) -&gt; ()"
-                  moduleName = "Verbs of a Feather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4B255839-F7E5-40D2-837D-3F36F5E0D871"
+            uuid = "DA535E5A-1563-4BA4-9994-04BA569E7BF7"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
-            landmarkName = "trimFilteredVerbList(_:)"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "setToVerbModelMode()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EC75C33B-374B-48DA-8AAF-F914352F35A6"
+            uuid = "C786CC01-E11F-43CC-A1F0-834A73188770"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -965,95 +151,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D1C809CF-CCDD-4BBF-B472-33AF391E91B7"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
-            landmarkName = "setNextLanguage()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CE79E29B-EB10-4822-A4FB-55D6F4F51D91"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
-            landmarkName = "setNextLanguage()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B0D0F317-E363-4592-8026-76CD95DB7080"
+            uuid = "5B8F5313-FFBB-409F-9930-792E8AA7895C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
-            landmarkName = "installCurrentStudyPackage()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "645247C2-0837-45CB-8291-7DFEB584F617"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feather2/LanguageEngine/LanguageEngineView/LanguageViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "init()"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "645247C2-0837-45CB-8291-7DFEB584F617 - 711c8209b5c3fa69"
+                  uuid = "5B8F5313-FFBB-409F-9930-792E8AA7895C - f83acdf53da1d4ea"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageViewModel.setNextLanguage() -&gt; ()"
+                  symbolName = "Verbs_of_a_Feather.LanguageEngine.fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(Swift.Int) -&gt; ()"
                   moduleName = "Verbs of a Feather"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineView/LanguageViewModel.swift"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "43"
-                  endingLineNumber = "43"
-                  offsetFromSymbolStart = "28">
+                  startingLineNumber = "97"
+                  endingLineNumber = "97"
+                  offsetFromSymbolStart = "2780">
                </Location>
                <Location
-                  uuid = "645247C2-0837-45CB-8291-7DFEB584F617 - 7e43c0036615e886"
+                  uuid = "5B8F5313-FFBB-409F-9930-792E8AA7895C - f83acdf53da1d4ea"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Verbs_of_a_Feather.LanguageViewModel.init() -&gt; Verbs_of_a_Feather.LanguageViewModel"
+                  symbolName = "Verbs_of_a_Feather.LanguageEngine.fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList(Swift.Int) -&gt; ()"
                   moduleName = "Verbs of a Feather"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineView/LanguageViewModel.swift"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/LanguageEngine/LanguageEngineVerbOrVerbModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "45"
-                  endingLineNumber = "45"
-                  offsetFromSymbolStart = "272">
+                  startingLineNumber = "97"
+                  endingLineNumber = "97"
+                  offsetFromSymbolStart = "2808">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -367,7 +367,11 @@ extension LanguageEngine{
         for verbModelString in vmStringList{
             vmList.append(findModelForThisVerbString(verbWord: verbModelString))
         }
-        selectedVerbModelList = vmList
+        if vmList.count > 0 {
+            selectedVerbModelList = vmList
+        } else {
+            selectedVerbModelList.append(findModelForThisVerbString(verbWord: currentVerbModelString))
+        }
         
     }
     

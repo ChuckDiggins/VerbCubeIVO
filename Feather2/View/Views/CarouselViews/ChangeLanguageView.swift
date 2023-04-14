@@ -13,11 +13,11 @@ struct ChangeLanguageView : View {
     @AppStorage("Language") var languageString = "Spanish"
     
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     @AppStorage("SpanishV2MChapter") var currentSpanishV2mChapter = "Chapter 3A"
-    @AppStorage("SpanishV2MLesson") var currentSpanishV2mLesson = "AR, ER IR verbs"
+    @AppStorage("SpanishV2MLesson") var currentSpanishV2mLesson = "AR, ER, IR verbs"
     @AppStorage("SpanishCurrentVerbModel") var currentSpanishVerbModelString = "encontrar"
     
     @AppStorage("FrenchV2MChapter") var currentFrenchV2mChapter = "French 1B"

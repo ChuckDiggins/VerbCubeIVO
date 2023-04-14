@@ -39,13 +39,12 @@ struct ShowSegmentedVerbOrModelModePicker: View {
 
     var body: some View{
         VStack{
-//            Button{
+            Button{
 //                languageViewModel.setNextLanguage()
 //                currentLanguageString = languageViewModel.getCurrentLanguage().rawValue
-//            } label: {
-//                Text(currentLanguageString)
-//            }
-            Text(currentLanguageString)
+            } label: {
+                Text(currentLanguageString)
+            }
             Picker("Select Verb or Model Mode", selection: $currentVerbOrModelMode){
                 ForEach(verbOrModelModeList , id:\.self){ Text($0.rawValue)}
             }.pickerStyle(SegmentedPickerStyle())
@@ -75,7 +74,7 @@ struct NavStackCarouselDispatcherView: View {
     @AppStorage("Language") var languageString = "Spanish"
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
-    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER IR verbs"
+    @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @AppStorage("Explanation Page") var explanationPage = 7
     @AppStorage("currentPage") var currentPage = 1

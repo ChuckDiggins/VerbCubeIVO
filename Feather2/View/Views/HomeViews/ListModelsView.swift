@@ -157,11 +157,11 @@ struct ListModelsView: View {
     }
     
 }
-struct ListModelsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListModelsView(languageViewModel: LanguageViewModel())
-    }
-}
+//struct ListModelsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ListModelsView(languageViewModel: LanguageViewModel())
+//    }
+//}
 
 struct PlotModelStructs: View {
    

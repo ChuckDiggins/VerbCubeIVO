@@ -48,8 +48,8 @@ struct VerbModelListView: View {
 //                                    Text("\(vm.modelVerb) \(languageViewModel.findVerbsOfSameModel(targetID: vm.id).count)")
                                     Text("\(vm.modelVerb) \(languageViewModel.getModelVerbCountAt(vm.id))")
                                     Spacer()
-                                    if languageViewModel.isCompleted(verbModel: vm) { Text("✅")}
-                                    if vmecdm.isSelected(verbModelString:vm.modelVerb) { Text("☑️")}
+                                    if languageViewModel.isCompleted(verbModel: vm) { Text("Completed").foregroundColor(.green).background(.black)}
+                                    if vmecdm.isSelected(verbModelString:vm.modelVerb) { Text("Selected").foregroundColor(.yellow).background(.black)}
                                 }.foregroundColor(vmecdm.isSelected(verbModelString:vm.modelVerb) ? Color("ChuckText1") : Color("BethanyGreenText"))
                             }
                             
@@ -58,7 +58,8 @@ struct VerbModelListView: View {
                     if inProgress {
                         ProgressView()
                     }
-                }.fullScreenCover(isPresented: $showSheet, content: {
+                }.padding()
+                .fullScreenCover(isPresented: $showSheet, content: {
                     ListVerbsForModelView(languageViewModel: languageViewModel, vmecdm: vmecdm, verbModel: selectedModel, showSelectButton: true)
                 })
             }
