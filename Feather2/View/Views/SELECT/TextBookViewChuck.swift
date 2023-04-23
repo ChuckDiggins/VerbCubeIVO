@@ -67,7 +67,7 @@ struct TextBookViewChuck: View {
                         router.reset()
                         dismiss()
                     } label: {
-                        Text("¿Install: \(currentV2MGroup.lesson)?")
+                        Text("¿Install: \(currentV2MGroup.lesson) as selected lesson?")
                     }.tint(.purple)
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.roundedRectangle(radius:5))

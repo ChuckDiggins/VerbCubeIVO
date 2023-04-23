@@ -1,16 +1,15 @@
 //
-//  WalkthroughScreen.swift
+//  EXPLOREScreen.swift
 //  Feather2
 //
-//  Created by Charles Diggins on 3/6/23.
+//  Created by Charles Diggins on 4/22/23.
 //
 
 import SwiftUI
 
-struct WalkthroughScreen: View {
-    @AppStorage("currentPage") var currentPage = 1
-    
-//    @State var currentPage = 1
+struct LEARNScreen: View {
+    @AppStorage("Learn Page") var learnPage = 8
+
     var body: some View{
         
         // For Slide Animation...
@@ -19,29 +18,39 @@ struct WalkthroughScreen: View {
             
             // Changing Between Views....
             
-            if currentPage == 1{
-                ScreenView(image: "Feather welcome bird", title: "Learn Verb Conjugation", detail: "Welcome to Verbs of a Feather.  Choose between two modes: Verb Lessons and Verb Models.", bgColor: Color("color1"))
+            if learnPage == 1{
+                LEARNScreenView(image: "LEARN", title: "Learn", detail: "When you are ready to interact with your verbs, click on the Learn button", bgColor: Color("color1"))
                     .transition(.scale)
             }
             
-            if currentPage == 2{
-                ScreenView(image: "Feather welcome crow", title: "Verb Lessons", detail: "Study packages combining verbs and tenses.  One option is configured to a Spanish I textbook.", bgColor: Color("color2"))
+            if learnPage == 2{
+                LEARNScreenView(image: "LEARNMixAndMatch", title: "Mix and Match", detail: "Click this to be quizzed on your verbs and tenses presented as random problems." , bgColor: Color("color2"))
                     .transition(.scale)
             }
             
-            if currentPage == 3{
-                
-                ScreenView(image: "Feather Welcome flying", title: "Verb Models", detail: "Inspired by Bescherelle, Verb Models teach you how to conjugate 1000s of verbs in Feather's 21 tenses.", bgColor: Color("color3"))
+            
+            if learnPage == 3{
+                LEARNScreenView(image: "LEARN Mix and Match Detail", title: "Mix and Match", detail: "Match the subject on the left with the correct verb form on the right." , bgColor: Color("color4"))
                     .transition(.scale)
             }
             
-            if currentPage == 4{
-                ScreenView(image: "Feather Welcome reading", title: "SELT", detail: "Select, Explore, Learn and Test - The four steps to learning Spanish verb conjugation.", bgColor: Color("color4"))
+            if learnPage == 4{
+                LEARNScreenView(image: "LEARNDragAndDrop", title: "Drop and Drag", detail: "This highly interactive game works with male and female, formal and informal subject pronouns." , bgColor: Color("color2"))
                     .transition(.scale)
             }
             
-            if currentPage == 5{
-                ScreenView(image: "Feather Welcome reading", title: "Wait!  Before you start", detail: "To replay this onboarding display, click on the ⚙ on Feather's navigation (top) bar .  In ⚙, you will also find other help packages that explain more.  ", bgColor: Color("color4"))
+            if learnPage == 5{
+                LEARNScreenView(image: "LEARN Drag and Drop Detail", title: "Drag and Drop", detail: "Inspired by DuolingoTM, you drag a conjugated from from the bottom section onto its correct subject pronoun above", bgColor: Color("color4"))
+                    .transition(.scale)
+            }
+            
+            if learnPage == 6{
+                LEARNScreenView(image: "LEARNSubjectTense", title: "Subject Tense", detail: "This is very similar to Subject vs Verb exercise, except Subject vs Tense is much harder.  Try it.", bgColor: Color("color4"))
+                    .transition(.scale)
+            }
+            
+            if learnPage == 7{
+                LEARNScreenView(image: "LEARN Subject vs Tense Detail", title: "Subject Tense", detail: "The exercise randomly picks one of your verbs and picks a subject.  You choose from six possible conjugated verbs each in a different tense.  Pay close attention to correct Tense!", bgColor: Color("color4"))
                     .transition(.scale)
             }
             
@@ -54,8 +63,8 @@ struct WalkthroughScreen: View {
                 withAnimation(.easeInOut){
                     
                     // checking....
-                    if currentPage <= totalPages{
-                        currentPage += 1
+                    if learnPage <= totalLearnPages{
+                        learnPage += 1
                     }
                 }
             }, label: {
@@ -76,7 +85,7 @@ struct WalkthroughScreen: View {
                                 
                             
                             Circle()
-                                .trim(from: 0, to: CGFloat(currentPage) / CGFloat(totalPages))
+                                .trim(from: 0, to: CGFloat(learnPage) / CGFloat(totalPages))
                                 .stroke(Color.white,lineWidth: 4)
                                 .rotationEffect(.init(degrees: -90))
                         }
@@ -90,15 +99,14 @@ struct WalkthroughScreen: View {
     }
 }
 
-
-struct ScreenView: View {
+struct LEARNScreenView: View {
     
     var image: String
     var title: String
     var detail: String
     var bgColor: Color
     
-    @AppStorage("currentPage") var currentPage = 1
+    @AppStorage("Learn Page") var learnPage = 8
     
     var body: some View {
         VStack(spacing: 20){
@@ -106,8 +114,8 @@ struct ScreenView: View {
             HStack{
                 
                 // Showing it only for first Page...
-                if currentPage == 1{
-                    Text("Greetings!  So you want to learn how to conjugate Spanish verbs!")
+                if learnPage == 1{
+                    Text("Welcome to Feather Explore!")
                         .font(.title)
                         .fontWeight(.semibold)
                         // Letter Spacing...
@@ -117,7 +125,7 @@ struct ScreenView: View {
                     // Back Button...
                     Button(action: {
                         withAnimation(.easeInOut){
-                            currentPage -= 1
+                            learnPage -= 1
                         }
                     }, label: {
                         
@@ -134,7 +142,7 @@ struct ScreenView: View {
                 
                 Button(action: {
                     withAnimation(.easeInOut){
-                        currentPage = 4
+                        learnPage = 7
                     }
                 }, label: {
                     Text("Skip")
@@ -171,6 +179,5 @@ struct ScreenView: View {
     }
 }
 
-// total Pages...
-var totalPages = 6
+var totalLearnPages = 8
 

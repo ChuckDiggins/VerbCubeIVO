@@ -94,8 +94,8 @@
             filePath = "Feather2/LanguageEngine/LanguageEngine.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
             landmarkName = "init(language:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -194,6 +194,262 @@
                   offsetFromSymbolStart = "2808">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A7A6A9F1-442D-4681-A85C-2F5615D5520D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/EXPLORE/SimpleVerbConjugation.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CC906CD4-62A7-4D84-8C2E-8371ACE54463"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/Helpers/TextToSpeech.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "textToSpeech(text:language:)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "879737F4-C441-4CD8-8C5E-56F20D393406"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/Helpers/TextToSpeech.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "textToSpeech(text:language:)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CF874097-7D84-423A-9015-6C9096B8C7F4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/HomeViews/AllModelsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
+            landmarkName = "sortVerbModelsAlphabetically()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CF874097-7D84-423A-9015-6C9096B8C7F4 - a7b761aa6348ee9a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Verbs_of_a_Feather.AllModelsView.sortVerbModelsAlphabetically() -&gt; ()"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/HomeViews/AllModelsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "266">
+               </Location>
+               <Location
+                  uuid = "CF874097-7D84-423A-9015-6C9096B8C7F4 - a7b761aa6348ee9a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Verbs_of_a_Feather.AllModelsView.sortVerbModelsAlphabetically() -&gt; ()"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/HomeViews/AllModelsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "284">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A24FEE86-A3B6-4282-900A-71E006D85852"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/HomeViews/AllModelsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
+            landmarkName = "sortVerbModelsAlphabetically()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "626CD687-9E43-43BD-B885-ED023151A22B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/HomeViews/AllModelsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
+            landmarkName = "sortVerbModelsAlphabetically()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "626CD687-9E43-43BD-B885-ED023151A22B - a7b761aa6348f0c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Verbs_of_a_Feather.AllModelsView.sortVerbModelsAlphabetically() -&gt; ()"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/HomeViews/AllModelsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "228"
+                  endingLineNumber = "228"
+                  offsetFromSymbolStart = "2856">
+               </Location>
+               <Location
+                  uuid = "626CD687-9E43-43BD-B885-ED023151A22B - a7b761aa6348f0c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Verbs_of_a_Feather.AllModelsView.sortVerbModelsAlphabetically() -&gt; ()"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/HomeViews/AllModelsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "228"
+                  endingLineNumber = "228"
+                  offsetFromSymbolStart = "2852">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F8AFB5B8-A238-4E97-9303-873B7B2D7936"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/HomeViews/AllModelsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
+            landmarkName = "loadModelVerbString()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "541AC9C4-DA96-4101-9A32-0BFD06DE9423"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Onboarding stuff/SELECTLessonScreen.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5A2A4C2E-D8E0-4851-978E-191642FD5663"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/View/Views/CarouselViews/PreferencesView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "5A2A4C2E-D8E0-4851-978E-191642FD5663 - 6930aa06a1a95b6f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; SwiftUI.TupleView&lt;(Verbs_of_a_Feather.DisclosureGroupPreferences, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, Verbs_of_a_Feather.PersonTypeButtonView)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, &lt;&lt;opaque return type of SwiftUI.View.font(Swift.Optional&lt;SwiftUI.Font&gt;) -&gt; some&gt;&gt;.0)&gt;&gt;, SwiftUI.ScrollView&lt;SwiftUI.TupleView&lt;(Verbs_of_a_Feather.DisclosureGroupPreferences, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, Verbs_of_a_Feather.PersonTypeButtonView)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.border&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ShapeStyle&gt;(_: &#x3c4;_1_0, width: CoreGraphics.CGFloat) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0)&gt; in Verbs_of_a_Feather.PreferencesView.body.getter : some"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/CarouselViews/PreferencesView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "1352">
+               </Location>
+               <Location
+                  uuid = "5A2A4C2E-D8E0-4851-978E-191642FD5663 - d7dacecfebb47477"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #2 () -&gt; SwiftUI.TupleView&lt;(Verbs_of_a_Feather.DisclosureGroupPreferences, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, Verbs_of_a_Feather.PersonTypeButtonView)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, &lt;&lt;opaque return type of SwiftUI.View.font(Swift.Optional&lt;SwiftUI.Font&gt;) -&gt; some&gt;&gt;.0)&gt;&gt;, SwiftUI.ScrollView&lt;SwiftUI.TupleView&lt;(Verbs_of_a_Feather.DisclosureGroupPreferences, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, SwiftUI.ModifiedContent&lt;SwiftUI.Button&lt;SwiftUI.Text&gt;, Verbs_of_a_Feather.ModelTensePersonButtonModifier&gt;, Verbs_of_a_Feather.PersonTypeButtonView)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.border&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ShapeStyle&gt;(_: &#x3c4;_1_0, width: CoreGraphics.CGFloat) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0)&gt; in Verbs_of_a_Feather.PreferencesView.body.getter : some"
+                  moduleName = "Verbs of a Feather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/charlesdiggins/Documents/ChuckUI/Developer/IVO%20versions/Feather2/Feather2/View/Views/CarouselViews/PreferencesView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9C3410AA-5666-49D0-BF0D-F6E65B7769AC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feather2/Feather2App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

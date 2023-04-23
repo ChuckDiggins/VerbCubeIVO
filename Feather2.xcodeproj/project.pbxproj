@@ -35,6 +35,7 @@
 		6E229CA027C68A26009F8E02 /* ShowWordTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */; };
 		6E229CA227C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */; };
 		6E229CB227C98776009F8E02 /* ToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E229CB127C98776009F8E02 /* ToggleItem.swift */; };
+		6E2B2B3729ED9F0D00104ADC /* VerbModelEntityCoreDataFrench.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B2B3629ED9F0D00104ADC /* VerbModelEntityCoreDataFrench.swift */; };
 		6E2D25BF290B23D200D8F35E /* CriticalVerbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2D25BE290B23D200D8F35E /* CriticalVerbView.swift */; };
 		6E2D260A2916E12100D8F35E /* ListVerbsForModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2D26092916E12100D8F35E /* ListVerbsForModelView.swift */; };
 		6E2D260C2916E7EA00D8F35E /* FlashzillaFlashCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2D260B2916E7EA00D8F35E /* FlashzillaFlashCardView.swift */; };
@@ -82,6 +83,11 @@
 		6E7C176028E64A9E00CDF941 /* HomemadeBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C175F28E64A9E00CDF941 /* HomemadeBarChartView.swift */; };
 		6E7C176328EF81C200CDF941 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C176228EF81C200CDF941 /* HeaderView.swift */; };
 		6E978AD8285925BA0085EA4D /* FeatherVerbStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E978AD7285925BA0085EA4D /* FeatherVerbStepView.swift */; };
+		6E98F39629F4793200DAA97C /* SELECTLessonScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F39529F4793200DAA97C /* SELECTLessonScreen.swift */; };
+		6E98F39829F4795800DAA97C /* EXPLOREScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F39729F4795800DAA97C /* EXPLOREScreen.swift */; };
+		6E98F39A29F4797700DAA97C /* LEARNScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F39929F4797700DAA97C /* LEARNScreen.swift */; };
+		6E98F39C29F4798700DAA97C /* TESTScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F39B29F4798700DAA97C /* TESTScreen.swift */; };
+		6E98F39E29F47C8500DAA97C /* SELECTModelScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F39D29F47C8500DAA97C /* SELECTModelScreen.swift */; };
 		6E9A66B428F1E017007BC0C3 /* VerbModelEntityCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9A66B328F1E017007BC0C3 /* VerbModelEntityCoreData.swift */; };
 		6E9A66B728F1F459007BC0C3 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 6E9A66B628F1F459007BC0C3 /* Realm */; };
 		6E9A66B928F1F459007BC0C3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E9A66B828F1F459007BC0C3 /* RealmSwift */; };
@@ -196,6 +202,7 @@
 		6E229C9F27C68A26009F8E02 /* ShowWordTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWordTypeEnum.swift; sourceTree = "<group>"; };
 		6E229CA127C6A9E9009F8E02 /* ActiveVerbCubeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveVerbCubeConfiguration.swift; sourceTree = "<group>"; };
 		6E229CB127C98776009F8E02 /* ToggleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleItem.swift; sourceTree = "<group>"; };
+		6E2B2B3629ED9F0D00104ADC /* VerbModelEntityCoreDataFrench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelEntityCoreDataFrench.swift; sourceTree = "<group>"; };
 		6E2D25BE290B23D200D8F35E /* CriticalVerbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriticalVerbView.swift; sourceTree = "<group>"; };
 		6E2D26092916E12100D8F35E /* ListVerbsForModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListVerbsForModelView.swift; sourceTree = "<group>"; };
 		6E2D260B2916E7EA00D8F35E /* FlashzillaFlashCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashzillaFlashCardView.swift; sourceTree = "<group>"; };
@@ -243,6 +250,11 @@
 		6E7C175F28E64A9E00CDF941 /* HomemadeBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomemadeBarChartView.swift; sourceTree = "<group>"; };
 		6E7C176228EF81C200CDF941 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		6E978AD7285925BA0085EA4D /* FeatherVerbStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatherVerbStepView.swift; sourceTree = "<group>"; };
+		6E98F39529F4793200DAA97C /* SELECTLessonScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SELECTLessonScreen.swift; sourceTree = "<group>"; };
+		6E98F39729F4795800DAA97C /* EXPLOREScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EXPLOREScreen.swift; sourceTree = "<group>"; };
+		6E98F39929F4797700DAA97C /* LEARNScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEARNScreen.swift; sourceTree = "<group>"; };
+		6E98F39B29F4798700DAA97C /* TESTScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTScreen.swift; sourceTree = "<group>"; };
+		6E98F39D29F47C8500DAA97C /* SELECTModelScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SELECTModelScreen.swift; sourceTree = "<group>"; };
 		6E9A66B328F1E017007BC0C3 /* VerbModelEntityCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelEntityCoreData.swift; sourceTree = "<group>"; };
 		6E9A673828F87F1E007BC0C3 /* VerbModelContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VerbModelContainer.xcdatamodel; sourceTree = "<group>"; };
 		6EA29CAA27E792F100CE0372 /* WordCellButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCellButton.swift; sourceTree = "<group>"; };
@@ -443,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				6E9A66B328F1E017007BC0C3 /* VerbModelEntityCoreData.swift */,
+				6E2B2B3629ED9F0D00104ADC /* VerbModelEntityCoreDataFrench.swift */,
 				6E9A673728F87F1E007BC0C3 /* VerbModelContainer.xcdatamodeld */,
 				6EE9B1E328FDFA09003B9155 /* CoreDataUtilitiesView.swift */,
 				6E7BC3362901B163004708AC /* VerbModelEntityCoreDataManager.swift */,
@@ -636,6 +649,11 @@
 				6ECB793829B7AC4700101899 /* ExplanationScreen.swift */,
 				15994DCE29C8BC2D003F76F8 /* WalkthroughWelcomeToModel.swift */,
 				15994DD029C93BB1003F76F8 /* OnboardingViews.swift */,
+				6E98F39529F4793200DAA97C /* SELECTLessonScreen.swift */,
+				6E98F39D29F47C8500DAA97C /* SELECTModelScreen.swift */,
+				6E98F39729F4795800DAA97C /* EXPLOREScreen.swift */,
+				6E98F39929F4797700DAA97C /* LEARNScreen.swift */,
+				6E98F39B29F4798700DAA97C /* TESTScreen.swift */,
 			);
 			path = "Onboarding stuff";
 			sourceTree = "<group>";
@@ -861,10 +879,12 @@
 				6EDE6D8B292944D900060C03 /* NavStackRouter.swift in Sources */,
 				6E7B361E29DC710600885D19 /* ChangeLanguageView.swift in Sources */,
 				6EE9029E293F9BDA005D9704 /* VerbModelListView.swift in Sources */,
+				6E98F39C29F4798700DAA97C /* TESTScreen.swift in Sources */,
 				6E978AD8285925BA0085EA4D /* FeatherVerbStepView.swift in Sources */,
 				6E69297D27D2C6D1003BCD71 /* QuizCubeHandlerClass.swift in Sources */,
 				6E447C9F28A6F64D00528DD9 /* ButtonAnimationView.swift in Sources */,
 				6EDADC3128C9205800C117AD /* LanguageEngineFlash.swift in Sources */,
+				6E98F39629F4793200DAA97C /* SELECTLessonScreen.swift in Sources */,
 				6ECCD47727D900700049B9CA /* VerbMorphView.swift in Sources */,
 				6EDE945128148D5700C1A3DB /* PatternRecognitionView.swift in Sources */,
 				6E447CA928AAA4D100528DD9 /* DisclosureGroupShowMeModelQuizzes.swift in Sources */,
@@ -900,6 +920,7 @@
 				6E69297727D25E76003BCD71 /* LanguageEngineVerbCube.swift in Sources */,
 				6E447C9C28A4710800528DD9 /* SimpleVerbConjugation.swift in Sources */,
 				6E69297527D152E0003BCD71 /* CustomActionSheet.swift in Sources */,
+				6E98F39A29F4797700DAA97C /* LEARNScreen.swift in Sources */,
 				6EE902A129426277005D9704 /* StudyPackage.swift in Sources */,
 				6E447D0A28B3D7D600528DD9 /* QuizCubeOptionsView2.swift in Sources */,
 				6E6CA07127C5441800CCD8BE /* VerbCubeCellInfo.swift in Sources */,
@@ -915,6 +936,7 @@
 				6EBAC2FA27F759B1004DB5D1 /* DragDropUtilities.swift in Sources */,
 				6EDE94532815E45500C1A3DB /* LanguageEngineVerbModel.swift in Sources */,
 				15994DD129C93BB2003F76F8 /* OnboardingViews.swift in Sources */,
+				6E2B2B3729ED9F0D00104ADC /* VerbModelEntityCoreDataFrench.swift in Sources */,
 				15FD03E129AA6C4200D22D5F /* VerbModelManager.swift in Sources */,
 				6E178382296087B700427CFB /* LanguageEngineViewContextFree.swift in Sources */,
 				6EDE944F2814419900C1A3DB /* QuizVerbSingleView.swift in Sources */,
@@ -930,6 +952,7 @@
 				6EE480B82811AFA70091F1D5 /* QuizVerbViewExtensions.swift in Sources */,
 				6E178376295FBE0300427CFB /* ClauseModel.swift in Sources */,
 				6E17837A295FC07100427CFB /* dIndependentAgnosticClause.swift in Sources */,
+				6E98F39E29F47C8500DAA97C /* SELECTModelScreen.swift in Sources */,
 				6EE902C4294D132E005D9704 /* VerbToModelClass.swift in Sources */,
 				6ECCD48A27DC02A40049B9CA /* LanguageEngineViewFilteredVerbs.swift in Sources */,
 				6ECCD47327D801D50049B9CA /* WordCollectionScreen.swift in Sources */,
@@ -969,6 +992,7 @@
 				6EA80F3827BDC77400D6061F /* InteractiveVerbCubeCellView.swift in Sources */,
 				6EF60AE5283E7ECC007E61F3 /* MultipleChoiceView.swift in Sources */,
 				6ECCD48827DBE3600049B9CA /* LanguageViewModel.swift in Sources */,
+				6E98F39829F4795800DAA97C /* EXPLOREScreen.swift in Sources */,
 				15E8829A29A509DC005E93D8 /* VerbModelLessonView.swift in Sources */,
 				6E7BC34129031508004708AC /* VerbAndModelSublistUtilties.swift in Sources */,
 				6E2D25BF290B23D200D8F35E /* CriticalVerbView.swift in Sources */,
@@ -1135,7 +1159,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1173,7 +1197,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

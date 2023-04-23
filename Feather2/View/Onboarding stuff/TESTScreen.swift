@@ -1,16 +1,15 @@
 //
-//  WalkthroughScreen.swift
+//  EXPLOREScreen.swift
 //  Feather2
 //
-//  Created by Charles Diggins on 3/6/23.
+//  Created by Charles Diggins on 4/22/23.
 //
 
 import SwiftUI
 
-struct WalkthroughScreen: View {
-    @AppStorage("currentPage") var currentPage = 1
-    
-//    @State var currentPage = 1
+struct TESTScreen: View {
+    @AppStorage("Test Page") var testPage = 6
+
     var body: some View{
         
         // For Slide Animation...
@@ -19,29 +18,29 @@ struct WalkthroughScreen: View {
             
             // Changing Between Views....
             
-            if currentPage == 1{
-                ScreenView(image: "Feather welcome bird", title: "Learn Verb Conjugation", detail: "Welcome to Verbs of a Feather.  Choose between two modes: Verb Lessons and Verb Models.", bgColor: Color("color1"))
+            if testPage == 1{
+                TESTScreenView(image: "TEST", title: "Test", detail: "When you think you know how to conjugate the verbs in your current lesson or verb model, click on Test!", bgColor: Color("color1"))
                     .transition(.scale)
             }
             
-            if currentPage == 2{
-                ScreenView(image: "Feather welcome crow", title: "Verb Lessons", detail: "Study packages combining verbs and tenses.  One option is configured to a Spanish I textbook.", bgColor: Color("color2"))
+            if testPage == 2{
+                TESTScreenView(image: "TESTMultiple", title: "Multiple Choice", detail: "You can choose between 'Multiple Choice Test'or 'Fill-in Blanks Test'.  Not surprisingly, Fill-in Blanks is harder." , bgColor: Color("color2"))
                     .transition(.scale)
             }
             
-            if currentPage == 3{
-                
-                ScreenView(image: "Feather Welcome flying", title: "Verb Models", detail: "Inspired by Bescherelle, Verb Models teach you how to conjugate 1000s of verbs in Feather's 21 tenses.", bgColor: Color("color3"))
+            if testPage == 3{
+                TESTScreenView(image: "TEST Multiple Choice Detail", title: "Multiple choice", detail: "You are randomly presented with your verbs and tenses and subject pronouns.  You must answer 80% of at least 6 correct.  When you succeed, you will be congratulated and the next lesson or verb model will be selected for you.", bgColor: Color("color4"))
                     .transition(.scale)
             }
             
-            if currentPage == 4{
-                ScreenView(image: "Feather Welcome reading", title: "SELT", detail: "Select, Explore, Learn and Test - The four steps to learning Spanish verb conjugation.", bgColor: Color("color4"))
+            if testPage == 4{
+                TESTScreenView(image: "TESTFillInBlanks", title: "Fill-in the blanks", detail: "Click this for the Fill-in Blanks test.", bgColor: Color("color2"))
                     .transition(.scale)
             }
             
-            if currentPage == 5{
-                ScreenView(image: "Feather Welcome reading", title: "Wait!  Before you start", detail: "To replay this onboarding display, click on the ⚙ on Feather's navigation (top) bar .  In ⚙, you will also find other help packages that explain more.  ", bgColor: Color("color4"))
+            
+            if testPage == 5{
+                TESTScreenView(image: "TEST Fill-in Blanks Detail", title: "Fill-in the blanks", detail: "You are randomly presented with your verbs and tenses and subject pronouns.  You must answer 80% of at least 6 correct.  When you succeed, you will be congratulated and the next lesson or verb model will be selected for you.", bgColor: Color("color4"))
                     .transition(.scale)
             }
             
@@ -54,8 +53,8 @@ struct WalkthroughScreen: View {
                 withAnimation(.easeInOut){
                     
                     // checking....
-                    if currentPage <= totalPages{
-                        currentPage += 1
+                    if testPage <= totalTestPages{
+                        testPage += 1
                     }
                 }
             }, label: {
@@ -76,7 +75,7 @@ struct WalkthroughScreen: View {
                                 
                             
                             Circle()
-                                .trim(from: 0, to: CGFloat(currentPage) / CGFloat(totalPages))
+                                .trim(from: 0, to: CGFloat(testPage) / CGFloat(totalPages))
                                 .stroke(Color.white,lineWidth: 4)
                                 .rotationEffect(.init(degrees: -90))
                         }
@@ -90,15 +89,14 @@ struct WalkthroughScreen: View {
     }
 }
 
-
-struct ScreenView: View {
+struct TESTScreenView: View {
     
     var image: String
     var title: String
     var detail: String
     var bgColor: Color
     
-    @AppStorage("currentPage") var currentPage = 1
+    @AppStorage("Test Page") var testPage = 6
     
     var body: some View {
         VStack(spacing: 20){
@@ -106,8 +104,8 @@ struct ScreenView: View {
             HStack{
                 
                 // Showing it only for first Page...
-                if currentPage == 1{
-                    Text("Greetings!  So you want to learn how to conjugate Spanish verbs!")
+                if testPage == 1{
+                    Text("Welcome to Feather Explore!")
                         .font(.title)
                         .fontWeight(.semibold)
                         // Letter Spacing...
@@ -117,7 +115,7 @@ struct ScreenView: View {
                     // Back Button...
                     Button(action: {
                         withAnimation(.easeInOut){
-                            currentPage -= 1
+                            testPage -= 1
                         }
                     }, label: {
                         
@@ -134,7 +132,7 @@ struct ScreenView: View {
                 
                 Button(action: {
                     withAnimation(.easeInOut){
-                        currentPage = 4
+                        testPage = 6
                     }
                 }, label: {
                     Text("Skip")
@@ -171,6 +169,5 @@ struct ScreenView: View {
     }
 }
 
-// total Pages...
-var totalPages = 6
+var totalTestPages = 6
 

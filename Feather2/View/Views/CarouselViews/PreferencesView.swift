@@ -21,6 +21,11 @@ struct PreferencesView: View {
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7
+    @AppStorage("Selection Lesson Page") var selectionLessonPage = 7
+    @AppStorage("Selection Model Page") var selectionModelPage = 8
+    @AppStorage("Explore Page") var explorePage = 8
+    @AppStorage("Learn Page") var learnPage = 7
+    @AppStorage("Test Page") var testPage = 6
     
     var body: some View {
         
@@ -36,14 +41,53 @@ struct PreferencesView: View {
                     Image(systemName: "globe")
                         .font(.largeTitle)
                 }
+                
+                
                 ScrollView {
                     DisclosureGroupPreferences()
-                    NavigationLink(destination: OnboardingViews())
-                    {
-                    Label("More info views", systemImage: "gear")
+                    Button{
+                        currentPage = 1
+                    } label: {
+                        Text("Show welcome tutorial")
                     }.modifier(ModelTensePersonButtonModifier())
                     
-                    PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
+                    Button{
+                        explanationPage = 1
+                    }label: {
+                        Text("Show overview tutorial")
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    Button{
+                        selectionLessonPage = 1
+                    }label: {
+                        Text("Show SELECT lesson tutorial")
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    Button{
+                        selectionModelPage = 1
+                    }label: {
+                        Text("Show SELECT model tutorial")
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    Button{
+                        explorePage = 1
+                    }label: {
+                        Text("Show EXPLORE tutorial")
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    Button{
+                        learnPage = 1
+                    }label: {
+                        Text("Show LEARN tutorial")
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    Button{
+                        testPage = 1
+                    }label: {
+                        Text("Show TEST tutorial")
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    
                     
 //                    Button{
 //                        languageViewModel.toggleSpeechMode()
@@ -60,18 +104,10 @@ struct PreferencesView: View {
                     
 //                    ListVerbModelsView(languageViewModel: languageViewModel)
                     
-                    ChangeLanguageView(languageViewModel: languageViewModel)
+//                    ChangeLanguageView(languageViewModel: languageViewModel)
                     
-                    
-                    Button{
-//                        languageViewModel.restoreSelectedVerbs()
-                       exit(0)
-                    } label: {
-                        Text("Exit Application")
-                    }.foregroundColor(.red).border(.red)
-                       
-                    VStack{
-                        Text("Testing buttons")
+//                    VStack{
+//                        Text("Testing buttons")
                         
 //                        Button{
 //                            languageViewModel.clearAllVerbCountsInCoreData()
@@ -92,12 +128,7 @@ struct PreferencesView: View {
 //                            Text("Get all CoreData verb counts")
 //                        }.modifier(ModelTensePersonButtonModifier())
 //
-                        Button{
-                            languageViewModel.setAllVerbModelsIncomplete()
-                        } label: {
-                            Text("Set all verb models incomplete")
-                        }.modifier(ModelTensePersonButtonModifier())
-                        
+//
 //                        Button{
 //                            languageViewModel.setSelectedVerbModelsComplete()
 //                            languageViewModel.selectNextOrderedVerbModel()
@@ -114,15 +145,34 @@ struct PreferencesView: View {
 //                        }.modifier(ModelTensePersonButtonModifier())
 //
                         
-                    }
-                    .alert("", isPresented: $modelCompleted){
-                        //no action
-                    } message: {
-                        Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
-                    }
-                    .padding(25)
-                    .border(.red)
+//                    }
+//
                 }
+                
+                VStack{
+                    PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
+                    
+                    Button{
+                        languageViewModel.setAllVerbModelsIncomplete()
+                    } label: {
+                        Text("Set all verb models incomplete")
+                    }.modifier(ModelTensePersonButtonModifier())
+                    
+                    
+                    Button{
+                        //                        languageViewModel.restoreSelectedVerbs()
+                        exit(0)
+                    } label: {
+                        Text("Exit Application")
+                    }.foregroundColor(.red).border(.red)
+                }
+                .alert("", isPresented: $modelCompleted){
+                    //no action
+                } message: {
+                    Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
+                }
+                .padding(25)
+                .border(.red)
                 Spacer()
             }.onAppear{
                 currenSubjectPronounType = languageViewModel.getSubjectPronounType()

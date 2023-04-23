@@ -7,6 +7,8 @@
 
 import SwiftUI
 import JumpLinguaHelpers
+import AVFoundation
+
 //import RealmSwift
 
 //enum  TeachMeMode : String {
@@ -14,7 +16,7 @@ import JumpLinguaHelpers
 //}
 
 enum  VerbOrModelMode : String {
-   case verbMode = "Verb Mode"
+   case verbMode = "Lesson Mode"
    case modelMode = "Model Mode"
 }
 
@@ -114,6 +116,7 @@ class LanguageEngine : ObservableObject, Equatable {
     var verbModelFilteredVerbList = [Verb]()
     var studyPackageFilteredVerbList = [Verb]()
     var currentVerbModel = RomanceVerbModel()
+    
     private var currentVerb = Verb()
     private var currentTense = Tense.present
     private var currentPerson = Person.S1

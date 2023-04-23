@@ -76,8 +76,13 @@ struct NavStackCarouselDispatcherView: View {
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
-    @AppStorage("Explanation Page") var explanationPage = 7
     @AppStorage("currentPage") var currentPage = 1
+    @AppStorage("Explanation Page") var explanationPage = 7
+    @AppStorage("Selection Lesson Page") var selectionLessonPage = 7
+    @AppStorage("Selection Model Page") var selectionModelPage = 8
+    @AppStorage("Explore Page") var explorePage = 8
+    @AppStorage("Learn Page") var learnPage = 7
+    @AppStorage("Test Page") var testPage = 7
     
     @State var currentVerbOrModelMode = VerbOrModelMode.modelMode
     @State var verbOrModelModeList = [VerbOrModelMode.verbMode, .modelMode]
@@ -124,43 +129,64 @@ struct NavStackCarouselDispatcherView: View {
                         }
                     }
                 }
-                
-                .navigationTitle( currentVerbOrModelMode == .modelMode ? "Verb Model: \(currentVerbModelString)" : "\(currentV2mLesson)")
+                .navigationTitle( currentVerbOrModelMode == .modelMode ? "Model: \(currentVerbModelString)" : "\(currentV2mLesson)")
+               
+//                .navigationBarTitleDisplayMode(.automatic)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationDestination(for: ExerciseStruct.self){ exercise in
                     ExploreCarouselView(languageViewModel: languageViewModel, exerciseManager: ExerciseDataManager(languageViewModel.getVerbOrModelMode(), exercise.mode, languageViewModel.getSpecialVerbType(), languageViewModel.hasSimpleTenses()), selected: $selected )
                 }
-                
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing){
-                        NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
-                        {
-                        Label("Find", systemImage: "magnifyingglass")
+                .navigationBarItems(
+                    trailing:
+                        HStack(spacing:0){
+                            NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
+                            {
+                            Label("Find", systemImage: "magnifyingglass")
+                            }
+                            NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
+                            {
+                            Label("Tenses", systemImage: "t.circle")
+                            }
+                            NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
+                            {
+                            Label("Settings", systemImage: "gear")
+                            }
                         }
-                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
-                        {
-                        Label("Settings", systemImage: "gear")
-                        }
-//                        NavigationLink(destination: OnboardingViews())
+                )
+//                    .toolbar {
+//                    ToolbarItemGroup(placement: .navigationBarLeading){
+//                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
 //                        {
-//                        Label("Onboarding views", systemImage: "gear")
+//                        Label("Settings", systemImage: "gear")
 //                        }
-//                        Button{
-//                            explanationPage = 1
-//                        } label: {
-//                            Label("Settings", systemImage: "questionmark.folder")
+//                    }
+//                    ToolbarItemGroup(placement: .navigationBarTrailing){
+//
+//                        NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
+//                        {
+//                        Label("Find", systemImage: "magnifyingglass")
 //                        }
-                        NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
-                        {
-                        Label("Tenses", systemImage: "t.circle")
-                        }
-                    }
-                }
+//
+////                        NavigationLink(destination: OnboardingViews())
+////                        {
+////                        Label("Onboarding views", systemImage: "gear")
+////                        }
+////                        Button{
+////                            explanationPage = 1
+////                        } label: {
+////                            Label("Settings", systemImage: "questionmark.folder")
+////                        }
+//                        NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
+//                        {
+//                        Label("Tenses", systemImage: "t.circle")
+//                        }
+//                    }
+//                }
                 
                 .fullScreenCover(isPresented: $selected, content: {
                     switch languageViewModel.getCurrentExercise().title{
                         //Select
-                    case "Realidades 1":
+                    case "Spanish I Textbook":
                         TextBookView2(languageViewModel: languageViewModel)
                     case "Challenging Lessons":
                         TextBookViewChuck(languageViewModel: languageViewModel)

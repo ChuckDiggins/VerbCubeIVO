@@ -1,16 +1,15 @@
 //
-//  WalkthroughScreen.swift
+//  EXPLOREScreen.swift
 //  Feather2
 //
-//  Created by Charles Diggins on 3/6/23.
+//  Created by Charles Diggins on 4/22/23.
 //
 
 import SwiftUI
 
-struct WalkthroughScreen: View {
-    @AppStorage("currentPage") var currentPage = 1
-    
-//    @State var currentPage = 1
+struct EXPLOREScreen: View {
+    @AppStorage("Explore Page") var explorePage = 8
+
     var body: some View{
         
         // For Slide Animation...
@@ -19,29 +18,39 @@ struct WalkthroughScreen: View {
             
             // Changing Between Views....
             
-            if currentPage == 1{
-                ScreenView(image: "Feather welcome bird", title: "Learn Verb Conjugation", detail: "Welcome to Verbs of a Feather.  Choose between two modes: Verb Lessons and Verb Models.", bgColor: Color("color1"))
+            if explorePage == 1{
+                EXPLOREScreenView(image: "EXPLORE", title: "Explore", detail: "When you are ready to explore your verbs, click on the Explore button", bgColor: Color("color1"))
                     .transition(.scale)
             }
             
-            if currentPage == 2{
-                ScreenView(image: "Feather welcome crow", title: "Verb Lessons", detail: "Study packages combining verbs and tenses.  One option is configured to a Spanish I textbook.", bgColor: Color("color2"))
+            if explorePage == 2{
+                EXPLOREScreenView(image: "EXPLOREVerbConjugation", title: "Simple Verb Conjugation", detail: "This will take you to the Simple Verb Conjugation exercise." , bgColor: Color("color2"))
                     .transition(.scale)
             }
             
-            if currentPage == 3{
-                
-                ScreenView(image: "Feather Welcome flying", title: "Verb Models", detail: "Inspired by Bescherelle, Verb Models teach you how to conjugate 1000s of verbs in Feather's 21 tenses.", bgColor: Color("color3"))
+            
+            if explorePage == 3{
+                EXPLOREScreenView(image: "EXPLORE Simple Verb Conjugation Detail", title: "Simple Verb Conjugation", detail: "Step through conjugating each verb for each tense.  You can also 'Set tenses'" , bgColor: Color("color4"))
                     .transition(.scale)
             }
             
-            if currentPage == 4{
-                ScreenView(image: "Feather Welcome reading", title: "SELT", detail: "Select, Explore, Learn and Test - The four steps to learning Spanish verb conjugation.", bgColor: Color("color4"))
+            if explorePage == 4{
+                EXPLOREScreenView(image: "EXPLOREVerbMorphing", title: "Multi-verb Morphing", detail: "If you are in model mode, you can watch all your verbs conjugate or 'morph' at the same time.  This is not available in lesson mode." , bgColor: Color("color2"))
                     .transition(.scale)
             }
             
-            if currentPage == 5{
-                ScreenView(image: "Feather Welcome reading", title: "Wait!  Before you start", detail: "To replay this onboarding display, click on the ⚙ on Feather's navigation (top) bar .  In ⚙, you will also find other help packages that explain more.  ", bgColor: Color("color4"))
+            if explorePage == 5{
+                EXPLOREScreenView(image: "EXPLORE Multi-verb Morphing Detail", title: "Verb Morph Window", detail: "When you click on the 'Click me' button you start the morphing sequence.  With each click, the verbs for your current model conjugate one step at a time with comments.", bgColor: Color("color4"))
+                    .transition(.scale)
+            }
+            
+            if explorePage == 6{
+                EXPLOREScreenView(image: "EXPLORENormal", title: "Explore Normal", detail: "This exercise will show you how your verb conjugates interactively.  In Lesson Mode, Verbs like Gustar and Auxiliary Verb lessons will active different options here.", bgColor: Color("color4"))
+                    .transition(.scale)
+            }
+            
+            if explorePage == 7{
+                EXPLOREScreenView(image: "EXPLORE Normal Verbs Detail", title: "Exploring normal verbs", detail: "This window allows you to change tense, person and verb with simple button clicks.  Or change all three with Randomize.", bgColor: Color("color4"))
                     .transition(.scale)
             }
             
@@ -54,8 +63,8 @@ struct WalkthroughScreen: View {
                 withAnimation(.easeInOut){
                     
                     // checking....
-                    if currentPage <= totalPages{
-                        currentPage += 1
+                    if explorePage <= totalExplorePages{
+                        explorePage += 1
                     }
                 }
             }, label: {
@@ -76,7 +85,7 @@ struct WalkthroughScreen: View {
                                 
                             
                             Circle()
-                                .trim(from: 0, to: CGFloat(currentPage) / CGFloat(totalPages))
+                                .trim(from: 0, to: CGFloat(explorePage) / CGFloat(totalPages))
                                 .stroke(Color.white,lineWidth: 4)
                                 .rotationEffect(.init(degrees: -90))
                         }
@@ -90,15 +99,14 @@ struct WalkthroughScreen: View {
     }
 }
 
-
-struct ScreenView: View {
+struct EXPLOREScreenView: View {
     
     var image: String
     var title: String
     var detail: String
     var bgColor: Color
     
-    @AppStorage("currentPage") var currentPage = 1
+    @AppStorage("Explore Page") var explorePage = 8
     
     var body: some View {
         VStack(spacing: 20){
@@ -106,8 +114,8 @@ struct ScreenView: View {
             HStack{
                 
                 // Showing it only for first Page...
-                if currentPage == 1{
-                    Text("Greetings!  So you want to learn how to conjugate Spanish verbs!")
+                if explorePage == 1{
+                    Text("Welcome to Feather Explore!")
                         .font(.title)
                         .fontWeight(.semibold)
                         // Letter Spacing...
@@ -117,7 +125,7 @@ struct ScreenView: View {
                     // Back Button...
                     Button(action: {
                         withAnimation(.easeInOut){
-                            currentPage -= 1
+                            explorePage -= 1
                         }
                     }, label: {
                         
@@ -134,7 +142,7 @@ struct ScreenView: View {
                 
                 Button(action: {
                     withAnimation(.easeInOut){
-                        currentPage = 4
+                        explorePage = 7
                     }
                 }, label: {
                     Text("Skip")
@@ -171,6 +179,4 @@ struct ScreenView: View {
     }
 }
 
-// total Pages...
-var totalPages = 6
-
+var totalExplorePages = 8

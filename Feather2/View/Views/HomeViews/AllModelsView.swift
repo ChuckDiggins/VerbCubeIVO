@@ -38,33 +38,35 @@ struct AllModelsView: View {
     @State private var modelVerbString = ""
     @State private var userString = ""
     @State private var currentModelCompleted = false
+    @State private var currentModelSelected = false
+    @State private var sortedModelList = [RomanceVerbModel]()
     
     var body: some View {
         VStack{
             ExitButtonView()
-//            HStack{
-//                TextField("🔍", text: $userString,
-//                          onEditingChanged: { changed in
-////                    findClosestModel(userString)
-//                }){
-//                }
-//                .disableAutocorrection(true)
-//
-//                .modifier(NeumorphicTextfieldModifier())
-//                .onChange(of: userString){ (value) in
-//                    findClosestModel(userString)
-//                }
-//                .onSubmit(){
-//                    findClosestModel(userString)
-//                    userString = ""
-//                }
-//            }
+            HStack{
+                TextField("🔍", text: $userString,
+                          onEditingChanged: { changed in
+                    findClosestModel(userString)
+                }){
+                }
+                .disableAutocorrection(true)
+
+                .modifier(NeumorphicTextfieldModifier())
+                .onChange(of: userString){ (value) in
+                    findClosestModel(userString)
+                }
+                .onSubmit(){
+                    findClosestModel(userString)
+                    userString = ""
+                }
+            }
             ScrollView{
                 Button{
                     setNextVerbModel()
                 } label: {
                     HStack{
-                        Text("Current model = \(currentModel.id): \(modelVerbString)")
+                        Text("Current model = \(modelVerbString)")
                         Spacer()
                         Image(systemName: "arrow.triangle.2.circlepath").foregroundColor(.yellow)
                     }
@@ -107,26 +109,37 @@ struct AllModelsView: View {
                 .border(.red)
                 .background(.yellow)
                 
-                Button{
-                    languageViewModel.setVerbModelTo(currentModel)
-                    router.reset()
-                    dismiss()
-                } label: {
-                    Text("Select this verb model")
+                HStack{
+                    Button{
+                        languageViewModel.setVerbModelTo(currentModel)
+                        router.reset()
+                        dismiss()
+                    } label: {
+                        Text("¿Install: \(currentModel.modelVerb) as selected model?")
+                    }.tint(.purple)
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.roundedRectangle(radius:5))
+                    .controlSize(.regular)
+                    .foregroundColor(.yellow)
                 }
-                .disabled(currentModelCompleted)
-                .frame(width: 300, height: 35, alignment: .center)
-                .background(.yellow)
-                .foregroundColor(.black)
-                .cornerRadius(10)
-                .padding(.bottom)
                     
                 
                 if currentModelCompleted {
                     Button{
 //                        currentModelCompleted.toggle()
                     } label: {
-                        Text("Completed -- ✅")
+                        Text("\(currentModel.modelVerb) has been completed")
+                    }.frame(width: 300, height: 35, alignment: .center)
+                        .background(.white)
+                        .foregroundColor(.black)
+                        .cornerRadius(10)
+                        .padding(.bottom)
+                }
+                if currentModelSelected {
+                    Button{
+//                        currentModelCompleted.toggle()
+                    } label: {
+                        Text("\(currentModel.modelVerb) is current selection")
                     }.frame(width: 300, height: 35, alignment: .center)
                         .background(.white)
                         .foregroundColor(.black)
@@ -163,7 +176,7 @@ struct AllModelsView: View {
                 tempTenseList = languageViewModel.getTenseList()
                 languageViewModel.setTenses(tenseList: tenseList)
                 currentLanguage = languageViewModel.getCurrentLanguage()
-                verbModelList = languageViewModel.getOrderedVerbModelList()
+                sortVerbModelsAlphabetically()
                 currentModel = verbModelList[0]
                 loadModelVerbString()
                 setCurrentVerb()
@@ -203,16 +216,42 @@ struct AllModelsView: View {
 
     }
     
+    //modelDictionary: [String: Int] = [:]
+    
+    func sortVerbModelsAlphabetically(){
+        verbModelList.removeAll()
+        
+        var modelNameList = [String]()
+        for m in languageViewModel.getVerbModels() {
+            modelNameList.append(m.modelVerb)
+        }
+        modelNameList.sort()
+        
+        for name in modelNameList{
+            for m in languageViewModel.getVerbModels(){
+                if name == m.modelVerb
+                {
+                verbModelList.append(m)
+//                print("sortVerbModelsAlphabetically: \(m.id), \(m.modelVerb)")
+                break
+                }
+            }
+        }
+//        print("sortVerbModelsAlphabetically: sorted verbModelList \(verbModelList.count) models, originally \(languageViewModel.getVerbModels().count) models")
+    }
+    
     func findClosestModel(_ userString: String){
 //        var modelIndex = 0
         var string1 = ""
         var string2 = ""
+        
         for index in 0 ..< verbModelList.count-1 {
 //            modelIndex = index
             string1 = verbModelList[index].modelVerb
             string2 = verbModelList[index+1].modelVerb
             if userString > string1 && userString < string2 {
                 currentModel = verbModelList[index+1]
+                verbModelIndex = index+1
                 break
             }
         }
@@ -222,12 +261,14 @@ struct AllModelsView: View {
     }
     
     func loadModelVerbString(){
-        if currentModel.modelVerb == "regularAR" { modelVerbString = "cortar" }
-        else if currentModel.modelVerb == "regularER" { modelVerbString = "deber" }
-        else if currentModel.modelVerb == "regularIR" { modelVerbString = "vivir" }
-        else {
-            modelVerbString = currentModel.modelVerb
-        }
+//        if currentModel.modelVerb == "regularAR" { modelVerbString = "cortar" }
+//        else if currentModel.modelVerb == "regularER" { modelVerbString = "deber" }
+//        else if currentModel.modelVerb == "regularIR" { modelVerbString = "vivir" }
+//        else
+//        {
+//            modelVerbString = currentModel.modelVerb
+//        }
+        modelVerbString = currentModel.modelVerb
     }
     
     func swipeUp(){
@@ -280,7 +321,9 @@ struct AllModelsView: View {
         loadModelVerbString()
         analyzeModel()
         currentModelCompleted = false
+        currentModelSelected = false
         if languageViewModel.isCompleted(verbModel: currentModel){ currentModelCompleted = true}
+        if vmecdm.isSelected(verbModelString:currentModel.modelVerb){ currentModelSelected = true}
         currentTense = languageViewModel.getCurrentTense()
         setSubjunctiveStuff()
         let verbList = languageViewModel.findVerbsOfSameModel(targetID: currentModel.id)

@@ -22,6 +22,7 @@ struct ListVerbsForModelView: View {
     @State var currentLanguage = LanguageType.Spanish
     @State var selectedCount = 0
     @State var modelName = "No name"
+    @State var verbListTruncated = false
     @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
@@ -48,18 +49,18 @@ struct ListVerbsForModelView: View {
                                          //                                 GridItem(.fixed(gridFixSize)),
                                          GridItem(.fixed(gridFixSize))]
                         
-                        if languageViewModel.isModelMode() {
-                            Text("Model: \(currentVerbModelString)").font(.title2)
-                        }
-                        else {
-                            VStack{
-                                Text("Chapter: \(currentV2mChapter)")
-                                Text("Lesson: \(currentV2mLesson)")
-                            }.font(.title2)
-                        }
-
-                        Divider().frame(height:2).background(.yellow)
-                    
+//                        if languageViewModel.isModelMode() {
+//                            Text("Model: \(currentVerbModelString)").font(.title2)
+//                        }
+//                        else {
+//                            VStack{
+//                                Text("Chapter: \(currentV2mChapter)")
+//                                Text("Lesson: \(currentV2mLesson)")
+//                            }.font(.title2)
+//                        }
+//
+//                        Divider().frame(height:2).background(.yellow)
+//
                         if showSelectButton {
                             HStack{
                                 Button{
@@ -68,7 +69,7 @@ struct ListVerbsForModelView: View {
                                     router.reset()
                                     dismiss()
                                 } label: {
-                                    Text("¿Install: \(verbModel.modelVerb)?")
+                                    Text("¿Install: \(verbModel.modelVerb) as selected model?")
 //                                    if verbModel.id > 0 {
 //                                        Text("¿Install: \(verbModel.modelVerb)?")
 //                                    }else{
@@ -81,15 +82,23 @@ struct ListVerbsForModelView: View {
                                 .foregroundColor(.yellow)
                             }
                             HStack{
-                                Text("Verb list for")
+                                if verbListTruncated {
+                                    Text("Partial verb list for")
+                                } else {
+                                    Text("Verb list for")
+                                }
                                 if verbModel.id > 0 {
                                     Text("\(verbModel.modelVerb)")
                                 }else{
                                     Text("\(languageViewModel.getTemporaryVerbModel().modelVerb)")
                                 }
-                            }.font(.title)
+                            }.font(.title2)
                         } else {
-                                Text("Verb List")
+                            if verbListTruncated {
+                                Text("Partial verb list")
+                            } else {
+                                Text("Verb list")
+                            }
                         }
                         
                         
@@ -164,9 +173,10 @@ struct ListVerbsForModelView: View {
     func truncateAndShuffleVerbList(){
         verbList.shuffle()
         let verbCount = verbList.count
-        
+        verbListTruncated = false
         if verbCount >= maxVerbCount {
             verbList.removeLast(verbCount-maxVerbCount)
+            verbListTruncated = true
         }
         verbList.shuffle()
     }

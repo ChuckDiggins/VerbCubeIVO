@@ -113,7 +113,7 @@ struct ExerciseDataManager{
         switch verbOrModelMode {
         case .verbMode:
             let data = [
-                ExerciseData(id: 0, image: "SELECTRealidades", studentLevel: "Beginner", title: "Realidades 1", details: "Realidades 1 is a common text book used for first level Spanish.  Each exercise combines the verbs and tenses associated with a chapter section in Realidades.", active: true),
+                ExerciseData(id: 0, image: "SELECTRealidades", studentLevel: "Beginner", title: "Spanish I Textbook", details: "Realidades 1 is a common text book used for first level Spanish.  Each exercise combines the verbs and tenses associated with a chapter section in Realidades.", active: true),
                 
                 ExerciseData(id: 1, image: "SELECTChallengingLessons", studentLevel: "Beginner", title: "Challenging Lessons", details: "Advanced lessons are a collection of verb/tenses to help you master verb conjugation", active: true),
                 
@@ -144,6 +144,7 @@ struct ExerciseDataManager{
         case .verbsLikeGustar:
             data = [
                 ExerciseData(id: 0, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
+                
                 ExerciseData(id: 1, image: "EXPLOREGustar", studentLevel: "Beginner", title: "Explore Verbs Like Gustar", details: "Verbs like gustar conjugate in the indirect sense.  Instead of 'I like ice cream', verbs like gustar conjugate more like 'ice cream is pleasing to me'", active: true)
             ]
         case .auxiliaryVerbsInfinitives:
@@ -157,29 +158,33 @@ struct ExerciseDataManager{
         default:
             if hasSimpleTenses{
                 data = [
-                    ExerciseData(id: 0, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
                     
-                    ExerciseData(id: 1, image: "EXPLOREVerbCube", studentLevel: "Intermediate", title: "Verb Cube", details: "The Verb Cube allows you to look at your active verb list in 3-dimensions: Verb, Tense, and Person.", active: true),
+                    ExerciseData(id: 0, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
                     
-                    ExerciseData(id: 2, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
+                    ExerciseData(id: 1, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
                     
-                    ExerciseData(id: 3, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
+                    ExerciseData(id: 2, image: "EXPLORENormal", studentLevel: "All levels", title: "Explore Normal Verbs", details: "Almost all Spanish verbs are 'normal'.  This means they follow the simple pattern of Subject-Verb.  This includes reflexive verbs and verb phrases.  Thus, 'darse con' is a normal verb.", active: true),
                     
-                    ExerciseData(id: 4, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
+                    ExerciseData(id: 3, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
                     
-                    ExerciseData(id: 5, image: "EXPLORENormal", studentLevel: "All levels", title: "Explore Normal Verbs", details: "Almost all Spanish verbs are 'normal'.  This means they follow the simple pattern of Subject-Verb.  This includes reflexive verbs and verb phrases.  Thus, 'darse con' is a normal verb.", active: true)
+                    ExerciseData(id: 4, image: "EXPLOREVerbCube", studentLevel: "Intermediate", title: "Verb Cube", details: "The Verb Cube allows you to look at your active verb list in 3-dimensions: Verb, Tense, and Person.", active: true),
+                    
+                    ExerciseData(id: 5, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true)
+                    
                 ]
             } else {
                 data = [
-                    ExerciseData(id: 0, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
                     
-                    ExerciseData(id: 1, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
+                    ExerciseData(id: 0, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
                     
-                    ExerciseData(id: 2, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
+                    ExerciseData(id: 1, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
                     
-                    ExerciseData(id: 3, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
+                    ExerciseData(id: 2, image: "EXPLORENormal", studentLevel: "All levels", title: "Explore Normal Verbs", details: "Almost all Spanish verbs are 'normal'.  This means they follow the simple pattern of Subject-Verb.  This includes reflexive verbs and verb phrases.  Thus, 'darse con' is a normal verb.", active: true),
                     
-                    ExerciseData(id: 4, image: "EXPLORENormal", studentLevel: "All levels", title: "Explore Normal Verbs", details: "Almost all Spanish verbs are 'normal'.  This means they follow the simple pattern of Subject-Verb.  This includes reflexive verbs and verb phrases.  Thus, 'darse con' is a normal verb.", active: true)
+                    ExerciseData(id: 3, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
+                    
+                    ExerciseData(id: 4, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
+                    
                 ]
             }
         }//switch svt

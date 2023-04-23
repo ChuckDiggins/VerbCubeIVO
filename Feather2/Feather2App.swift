@@ -35,6 +35,11 @@ struct Feather2App: SwiftUI.App {
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7
+    @AppStorage("Selection Lesson Page") var selectionLessonPage = 7
+    @AppStorage("Selection Model Page") var selectionModelPage = 8
+    @AppStorage("Explore Page") var explorePage = 8
+    @AppStorage("Learn Page") var learnPage = 7
+    @AppStorage("Test Page") var testPage = 6
     
 //    @StateObject private var dataController = DataController()
     
@@ -44,6 +49,21 @@ struct Feather2App: SwiftUI.App {
                 WalkthroughScreen()
             } else if explanationPage < totalExplanationPages{
                 ExplanationScreen1()
+            }
+            else if selectionLessonPage < totalSelectLessonPages {
+                SELECTLessonScreen()
+            }
+            else if selectionModelPage < totalSelectModelPages {
+                SELECTModelScreen()
+            }
+            else if explorePage < totalExplorePages {
+                EXPLOREScreen()
+            }
+            else if learnPage < totalLearnPages {
+                LEARNScreen()
+            }
+            else if testPage < totalTestPages {
+                TESTScreen()
             }
             else {
                 NavigationStack{

@@ -9,11 +9,15 @@ import SwiftUI
 import JumpLinguaHelpers
 import AVFoundation
 
+
+
 func textToSpeech(text: String, language: LanguageType ){
-    let utterance = AVSpeechUtterance(string: text)
+    var utterance = AVSpeechUtterance(string: "")
+    AVSpeechSynthesisVoice.speechVoices() // <--  fetch voice dependencies
+    utterance = AVSpeechUtterance(string: text)
     switch language {
     case .Spanish:
-        utterance.voice = AVSpeechSynthesisVoice(language: "es-US")
+        utterance.voice = AVSpeechSynthesisVoice(language: "es-MX")
     case .French:
         utterance.voice = AVSpeechSynthesisVoice(language:  "fr-FR")
     case .English:
