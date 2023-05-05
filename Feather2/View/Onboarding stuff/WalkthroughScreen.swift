@@ -25,26 +25,25 @@ struct WalkthroughScreen: View {
             }
             
             if currentPage == 2{
-                ScreenView(image: "Feather welcome crow", title: "Verb Lessons", detail: "Study packages combining verbs and tenses.  One option is configured to a Spanish I textbook.", bgColor: Color("color2"))
+                ScreenView(image: "Feather welcome crow", title: "Verb Lessons", detail: "A verb lesson is a combination of a set of verbs and one or more tenses.  The first set of lessons is configured to a textbook of Spanish Level 1.", bgColor: Color("color2"))
                     .transition(.scale)
             }
             
             if currentPage == 3{
                 
-                ScreenView(image: "Feather Welcome flying", title: "Verb Models", detail: "Inspired by Bescherelle, Verb Models teach you how to conjugate 1000s of verbs in Feather's 21 tenses.", bgColor: Color("color3"))
+                ScreenView(image: "Feather Welcome flying", title: "Verb Models", detail: "Verb Models:  Model-Based Verb Conjugation or MBVC is inspired by Bescherelle. MBVC can teach you how to conjugate 1000s of verbs in Feather's 21 tenses.", bgColor: Color("color3"))
                     .transition(.scale)
             }
             
             if currentPage == 4{
-                ScreenView(image: "Feather Welcome reading", title: "SELT", detail: "Select, Explore, Learn and Test - The four steps to learning Spanish verb conjugation.", bgColor: Color("color4"))
+                ScreenView(image: "Feather Welcome reading", title: "SELT", detail: "Select, Explore, Learn and Test - The four steps to learning Spanish verb conjugation. Verb Lessons and Verb Models all follow SELT.", bgColor: Color("color4"))
                     .transition(.scale)
             }
             
             if currentPage == 5{
-                ScreenView(image: "Feather Welcome reading", title: "Wait!  Before you start", detail: "To replay this onboarding display, click on the ⚙ on Feather's navigation (top) bar .  In ⚙, you will also find other help packages that explain more.  ", bgColor: Color("color4"))
+                ScreenView(image: "Feather Navigation Bar", title: "Wait!  Before you finish this tutorial", detail: "To replay this welcome tutorial and several others, click on the graduation cap on Feather's navigation (top) bar.", bgColor: Color("color4"))
                     .transition(.scale)
             }
-            
         }
         .overlay(
         

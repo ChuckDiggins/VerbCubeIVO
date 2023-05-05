@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		15994DCF29C8BC2D003F76F8 /* WalkthroughWelcomeToModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994DCE29C8BC2D003F76F8 /* WalkthroughWelcomeToModel.swift */; };
-		15994DD129C93BB2003F76F8 /* OnboardingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994DD029C93BB1003F76F8 /* OnboardingViews.swift */; };
+		15994DD129C93BB2003F76F8 /* TutorialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994DD029C93BB1003F76F8 /* TutorialsView.swift */; };
 		15E8829A29A509DC005E93D8 /* VerbModelLessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E8829929A509DC005E93D8 /* VerbModelLessonView.swift */; };
 		15FD03E129AA6C4200D22D5F /* VerbModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FD03E029AA6C4200D22D5F /* VerbModelManager.swift */; };
 		6E02076B2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E02076A2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift */; };
@@ -175,7 +175,7 @@
 
 /* Begin PBXFileReference section */
 		15994DCE29C8BC2D003F76F8 /* WalkthroughWelcomeToModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughWelcomeToModel.swift; sourceTree = "<group>"; };
-		15994DD029C93BB1003F76F8 /* OnboardingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViews.swift; sourceTree = "<group>"; };
+		15994DD029C93BB1003F76F8 /* TutorialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialsView.swift; sourceTree = "<group>"; };
 		15E8829929A509DC005E93D8 /* VerbModelLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelLessonView.swift; sourceTree = "<group>"; };
 		15FD03E029AA6C4200D22D5F /* VerbModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerbModelManager.swift; sourceTree = "<group>"; };
 		6E02076A2853CCEB009D0FB6 /* ScanMorphStructExtractInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMorphStructExtractInfo.swift; sourceTree = "<group>"; };
@@ -648,7 +648,7 @@
 				6ECB793629B6815900101899 /* WalkthroughScreen.swift */,
 				6ECB793829B7AC4700101899 /* ExplanationScreen.swift */,
 				15994DCE29C8BC2D003F76F8 /* WalkthroughWelcomeToModel.swift */,
-				15994DD029C93BB1003F76F8 /* OnboardingViews.swift */,
+				15994DD029C93BB1003F76F8 /* TutorialsView.swift */,
 				6E98F39529F4793200DAA97C /* SELECTLessonScreen.swift */,
 				6E98F39D29F47C8500DAA97C /* SELECTModelScreen.swift */,
 				6E98F39729F4795800DAA97C /* EXPLOREScreen.swift */,
@@ -935,7 +935,7 @@
 				6EDADC3E28D110DE00C117AD /* ModelLessonView.swift in Sources */,
 				6EBAC2FA27F759B1004DB5D1 /* DragDropUtilities.swift in Sources */,
 				6EDE94532815E45500C1A3DB /* LanguageEngineVerbModel.swift in Sources */,
-				15994DD129C93BB2003F76F8 /* OnboardingViews.swift in Sources */,
+				15994DD129C93BB2003F76F8 /* TutorialsView.swift in Sources */,
 				6E2B2B3729ED9F0D00104ADC /* VerbModelEntityCoreDataFrench.swift in Sources */,
 				15FD03E129AA6C4200D22D5F /* VerbModelManager.swift in Sources */,
 				6E178382296087B700427CFB /* LanguageEngineViewContextFree.swift in Sources */,
@@ -1159,7 +1159,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1197,7 +1197,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

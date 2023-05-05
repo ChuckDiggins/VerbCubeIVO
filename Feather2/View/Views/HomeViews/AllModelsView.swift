@@ -45,7 +45,7 @@ struct AllModelsView: View {
         VStack{
             ExitButtonView()
             HStack{
-                TextField("🔍", text: $userString,
+                TextField("🔍Type name here", text: $userString,
                           onEditingChanged: { changed in
                     findClosestModel(userString)
                 }){

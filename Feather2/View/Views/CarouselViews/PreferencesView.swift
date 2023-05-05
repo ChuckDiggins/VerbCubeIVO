@@ -34,61 +34,19 @@ struct PreferencesView: View {
                 .ignoresSafeArea()
             
             VStack{
-                
-                HStack{
-                    Text("Preferences")
-                        .font(.title)
-                    Image(systemName: "globe")
-                        .font(.largeTitle)
-                }
-                
-                
-                ScrollView {
-                    DisclosureGroupPreferences()
-                    Button{
-                        currentPage = 1
-                    } label: {
-                        Text("Show welcome tutorial")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    Button{
-                        explanationPage = 1
-                    }label: {
-                        Text("Show overview tutorial")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    Button{
-                        selectionLessonPage = 1
-                    }label: {
-                        Text("Show SELECT lesson tutorial")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    Button{
-                        selectionModelPage = 1
-                    }label: {
-                        Text("Show SELECT model tutorial")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    Button{
-                        explorePage = 1
-                    }label: {
-                        Text("Show EXPLORE tutorial")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    Button{
-                        learnPage = 1
-                    }label: {
-                        Text("Show LEARN tutorial")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    Button{
-                        testPage = 1
-                    }label: {
-                        Text("Show TEST tutorial")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    
-                    
+                Text("Click to set Subject Type:")
+                PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
+                Button{
+                    //                        languageViewModel.restoreSelectedVerbs()
+                    exit(0)
+                } label: {
+                    Text("Exit Application")
+                }.foregroundColor(.red).border(.red)
+//
+//                ScrollView {
+//                    DisclosureGroupPreferences()
+//
+//
 //                    Button{
 //                        languageViewModel.toggleSpeechMode()
 //                        setSpeechModeActiveString()
@@ -143,43 +101,30 @@ struct PreferencesView: View {
 //                        } label: {
 //                            Text("Set all lessons and models empty")
 //                        }.modifier(ModelTensePersonButtonModifier())
-//
+                
+//                          Button{
+                //                        languageViewModel.setAllVerbModelsIncomplete()
+                //                    } label: {
+                //                        Text("Set all verb models incomplete")
+                //                    }.modifier(ModelTensePersonButtonModifier())
                         
 //                    }
 //
-                }
-                
-                VStack{
-                    PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
-                    
-                    Button{
-                        languageViewModel.setAllVerbModelsIncomplete()
-                    } label: {
-                        Text("Set all verb models incomplete")
-                    }.modifier(ModelTensePersonButtonModifier())
-                    
-                    
-                    Button{
-                        //                        languageViewModel.restoreSelectedVerbs()
-                        exit(0)
-                    } label: {
-                        Text("Exit Application")
-                    }.foregroundColor(.red).border(.red)
-                }
-                .alert("", isPresented: $modelCompleted){
-                    //no action
-                } message: {
-                    Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
-                }
-                .padding(25)
-                .border(.red)
-                Spacer()
+//                }
+//                .alert("", isPresented: $modelCompleted){
+//                    //no action
+//                } message: {
+//                    Text("Current verb model: \(languageViewModel.getCurrentVerbModel().modelVerb)")
+//                }
+//                .padding(25)
+//                .border(.red)
+//                Spacer()
             }.onAppear{
                 currenSubjectPronounType = languageViewModel.getSubjectPronounType()
                 currenSubjectPronounTypeString = languageViewModel.getSubjectPronounType().rawValue
                 setSpeechModeActiveString()
             }
-        }
+        }.foregroundColor(Color("BethanyGreenText"))
     }
     func setSpeechModeActiveString(){
         if languageViewModel.isSpeechModeActive() {

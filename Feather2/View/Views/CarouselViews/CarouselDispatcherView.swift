@@ -137,6 +137,17 @@ struct NavStackCarouselDispatcherView: View {
                     ExploreCarouselView(languageViewModel: languageViewModel, exerciseManager: ExerciseDataManager(languageViewModel.getVerbOrModelMode(), exercise.mode, languageViewModel.getSpecialVerbType(), languageViewModel.hasSimpleTenses()), selected: $selected )
                 }
                 .navigationBarItems(
+                    leading:
+                        HStack(spacing:0){
+                            NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
+                            {
+                            Label("Settings", systemImage: "p.circle")
+                            }
+                            NavigationLink(destination: TutorialsView())
+                            {
+                            Label("Tutorials", systemImage: "graduationcap")
+                            }
+                        }.font(.caption),
                     trailing:
                         HStack(spacing:0){
                             NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
@@ -147,40 +158,15 @@ struct NavStackCarouselDispatcherView: View {
                             {
                             Label("Tenses", systemImage: "t.circle")
                             }
-                            NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
-                            {
-                            Label("Settings", systemImage: "gear")
-                            }
-                        }
+                        }.font(.caption)
+                    
                 )
-//                    .toolbar {
-//                    ToolbarItemGroup(placement: .navigationBarLeading){
-//                        NavigationLink(destination: PreferencesView(languageViewModel: languageViewModel ))
-//                        {
-//                        Label("Settings", systemImage: "gear")
-//                        }
-//                    }
-//                    ToolbarItemGroup(placement: .navigationBarTrailing){
 //
-//                        NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
-//                        {
-//                        Label("Find", systemImage: "magnifyingglass")
-//                        }
-//
-////                        NavigationLink(destination: OnboardingViews())
-////                        {
-////                        Label("Onboarding views", systemImage: "gear")
-////                        }
 ////                        Button{
 ////                            explanationPage = 1
 ////                        } label: {
 ////                            Label("Settings", systemImage: "questionmark.folder")
 ////                        }
-//                        NavigationLink(destination: TenseSelectionView(languageViewModel: languageViewModel ))
-//                        {
-//                        Label("Tenses", systemImage: "t.circle")
-//                        }
-//                    }
 //                }
                 
                 .fullScreenCover(isPresented: $selected, content: {

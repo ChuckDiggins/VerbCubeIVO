@@ -745,7 +745,7 @@ class LanguageEngine : ObservableObject, Equatable {
         criticalVerbForms.appendCriticalForm(person: .S3, tense: .preterite, comment: "Third person singular, preterite tense")
         criticalVerbForms.appendCriticalForm(person: .P3, tense: .preterite, comment: "Third person plural, preterite tense")
         criticalVerbForms.appendCriticalForm(person: .P3, tense: .imperfectSubjunctiveRA, comment: "Third person plural,imperfect subjunctive tense")
-        criticalVerbForms.appendCriticalForm(person: .P3, tense: .pastParticiple, comment: "Past participle")
+//        criticalVerbForms.appendCriticalForm(person: .P3, tense: .pastParticiple, comment: "Past participle")
     }
     
     func testLogic(tense: Tense){
