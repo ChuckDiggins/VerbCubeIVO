@@ -55,7 +55,12 @@ class FlashCard: ObservableObject {
     }
     
     func isCorrectAnswer(ans: String)->Bool{
-        if ans == correctAnswer { return true}
+        var newAns = VerbUtilities().removeLeadingOrFollowingBlanks(characterArray: ans)
+        newAns = VerbUtilities().removeExtraBlanks(verbString: newAns)
+        var newCorrectAnswer = VerbUtilities().removeLeadingOrFollowingBlanks(characterArray: correctAnswer)
+        if newAns == newCorrectAnswer {
+            return true
+        }
         return false
     }
     

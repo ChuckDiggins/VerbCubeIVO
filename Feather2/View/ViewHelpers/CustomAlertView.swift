@@ -20,7 +20,6 @@ struct CustomAlertView: View {
                 } label: {
                     VStack{
                         Text("Next problem")
-                        Text("Click on Verb or Tense")
                     }.padding()
                 }
             } .frame(minWidth: 0, maxWidth: 350)

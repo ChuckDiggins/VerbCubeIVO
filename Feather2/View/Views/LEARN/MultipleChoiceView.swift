@@ -157,7 +157,8 @@ struct MultipleChoiceView: View {
                                     showNewProblem()
                                 } label: {
                                     Text(rightHandStringList[index])
-                                        .frame(width: 200, height: 30)
+                                        .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
+//                                        .frame(width: 200, height: 30)
                                         .rotationEffect(Angle.degrees(rightHandRotate[0] ? 360 : 0))
                                         .animation(.linear(duration: 1), value: rightHandRotate[0]) // Delay the animation
                                         .font(.headline)
@@ -219,7 +220,7 @@ struct MultipleChoiceView: View {
     }
     
     func fillParticipleForThisTense(_ tense: Tense) {
-        var thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
+        let thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
         if tense.isProgressive(){
             rightParticiple = thisVerb.createGerund()
         } else if tense.isPerfectIndicative(){
@@ -315,7 +316,7 @@ struct MultipleChoiceView: View {
             setNewPerson()
             setNewVerb()
         }
-        loadRightHandVerbsForThisLeftHandSubject(inputVerb: currentVerb, tense: currentTense, person: currentPerson)
+        loadRightHandVerbsForThisLeftHandSubject(tense: currentTense, person: currentPerson)
     }
     
     func createNextProblem(){
@@ -339,7 +340,7 @@ struct MultipleChoiceView: View {
             }
             setNewPerson()
             resetScores()
-            loadRightHandVerbsForThisLeftHandSubject(inputVerb: currentVerb, tense: currentTense, person: currentPerson)
+            loadRightHandVerbsForThisLeftHandSubject(tense: currentTense, person: currentPerson)
         case .oneSubjectToFiveTenses:
             switch primaryProblemMode {
             case .verbMode:
@@ -359,11 +360,11 @@ struct MultipleChoiceView: View {
             }
             setNewPerson()
             resetScores()
-            loadRightHandVerbsForThisLeftHandSubject(inputVerb: currentVerb, tense: currentTense, person: currentPerson)
+            loadRightHandVerbsForThisLeftHandSubject(tense: currentTense, person: currentPerson)
         case .oneVerbToFiveSubjects:
-            rightHandStringList = loadSubjectsForThisVerb(verb: currentVerb, tense: currentTense, person: currentPerson)
+            rightHandStringList = loadSubjectsForThisVerb(tense: currentTense, person: currentPerson)
         case .oneVerbToFiveModels:
-            rightHandStringList = loadModelsForThisVerb(verb: currentVerb)
+            rightHandStringList = loadModelsForThisVerb()
         }
     }
     
@@ -375,27 +376,29 @@ struct MultipleChoiceView: View {
 //        studentScoreModel.resetAllScores()
     }
     
-    func loadRightHandVerbsForThisLeftHandSubject(inputVerb: Verb, tense: Tense, person: Person){
-        var verb = inputVerb
+    func loadRightHandVerbsForThisLeftHandSubject(tense: Tense, person: Person){
         fillParticipleForThisTense(tense)
-        if multipleChoiceType == .oneSubjectToFiveTenses {
-            if tense.isProgressive(){
-                verb = Verb(spanish: "estar", french: "avoir", english: "be")
-            }
-            else if tense.isPerfectIndicative(){
-                verb = Verb(spanish: "haber", french: "avoir", english: "have")
-            }
-        }
         
         rightHandStringList.removeAll()
         currentTense = tense
+        if multipleChoiceType == .oneSubjectToFiveTenses {
+            currentTense = tense.getSimpleTenseFromCompoundTense()
+        }
         setSubjunctiveParticiple()
+        print("loadRightHandVerbsForThisLeftHandSubject")
         switch multipleChoiceType {
         case .oneSubjectToFiveVerbs:
             randomPersonList.shuffle()
+            let dos = languageViewModel.getDirectObjectStruct(specialVerbType: languageViewModel.getSpecialVerbType())
+            let directObjectString = dos.objectString
+            number = dos.objectNumber
+            var gerundString = languageViewModel.getGerundString(specialVerbType: languageViewModel.getSpecialVerbType())
+            var infinitiveString = languageViewModel.getInfinitiveString(specialVerbType: languageViewModel.getSpecialVerbType())
             for person in randomPersonList {
-                var str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: currentTense, person: person)
-                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
+                //the first line creates the morphStruct manager
+                var str = languageViewModel.createAndConjugateVerb(verb: currentVerb, tense: currentTense, person: person, number: number, specialVerbType: languageViewModel.getSpecialVerbType(), directObjectString: directObjectString, gerundString: gerundString, infinitiveString: infinitiveString)
+//                    + rightParticiple
+//                print("verb = \(currentVerb.getWordAtLanguage(language: currentLanguage)) ... str = \(str)")
                 rightHandStringList.append( str )
                 if person == currentPerson {
                     correctRightHandString = str
@@ -404,11 +407,20 @@ struct MultipleChoiceView: View {
             
         case .oneSubjectToFiveTenses:
             randomTenseList.shuffle()
+            let dos = languageViewModel.getDirectObjectStruct(specialVerbType: languageViewModel.getSpecialVerbType())
+            let directObjectString = dos.objectString
+            number = dos.objectNumber
+            var gerundString = languageViewModel.getGerundString(specialVerbType: languageViewModel.getSpecialVerbType())
+            var infinitiveString = languageViewModel.getInfinitiveString(specialVerbType: languageViewModel.getSpecialVerbType())
+            
+            //don't allow compound tenses into this comparison
+            var simpleTense = Tense.present
             for tense in randomTenseList {
-                var str = languageViewModel.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
-                str = languageViewModel.getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "") + rightParticiple
+//                simpleTense = tense.getSimpleTenseFromCompoundTense()
+                var str = languageViewModel.createAndConjugateVerb(verb: currentVerb, tense: tense, person: person, number: number, specialVerbType: languageViewModel.getSpecialVerbType(), directObjectString: directObjectString, gerundString: gerundString, infinitiveString: infinitiveString)
+                
                 rightHandStringList.append( str )
-                if tense == currentTense.getSimpleTenseFromCompoundTense() {
+                if tense == currentTense {
                     correctRightHandString = str
                 }
             }
@@ -421,13 +433,13 @@ struct MultipleChoiceView: View {
     }
     
     
-    func loadSubjectsForThisVerb(verb: Verb, tense: Tense, person: Person)->[String]{
+    func loadSubjectsForThisVerb(tense: Tense, person: Person)->[String]{
         let stringList = [String]()
         correctRightHandString = ""
         return stringList
     }
     
-    func loadModelsForThisVerb(verb: Verb)->[String]{
+    func loadModelsForThisVerb()->[String]{
         let stringList = [String]()
         correctRightHandString = ""
         return stringList
@@ -523,12 +535,26 @@ struct MultipleChoiceView: View {
 //        personMixString.append(PersonMixStruct(person: .P2, personString: getSubjectStringAtPerson(person : .P2)))
 //        personMixString.append(PersonMixStruct(person: .P3, personString: getSubjectStringAtPerson(person : .P3)))
 //
-        personMixString.append(PersonMixStruct(person: .S1, personString: languageViewModel.getPersonString(personIndex: 0, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .S2, personString: languageViewModel.getPersonString(personIndex: 1, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .S3, personString: languageViewModel.getPersonString(personIndex: 2, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .P1, personString: languageViewModel.getPersonString(personIndex: 3, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .P2, personString: languageViewModel.getPersonString(personIndex: 4, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
-        personMixString.append(PersonMixStruct(person: .P3, personString: languageViewModel.getPersonString(personIndex: 5, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
+        let dos = languageViewModel.getDirectObjectStruct(specialVerbType: languageViewModel.getSpecialVerbType())
+        let directObjectString = dos.objectString
+        number = dos.objectNumber
+        var gerund = languageViewModel.getGerundString(specialVerbType: languageViewModel.getSpecialVerbType())
+        var infinitive = languageViewModel.getInfinitiveString(specialVerbType: languageViewModel.getSpecialVerbType())
+        var residString = ""
+        dependentVerb = getVerbFromRandomInfinitives()
+        print("fillPersonMixStruct: dependentVerb = \(dependentVerb.getWordAtLanguage(language: currentLanguage))")
+        switch languageViewModel.getSpecialVerbType(){
+        case .verbsLikeGustar: residString = directObjectString
+        case .auxiliaryVerbsGerunds: residString = gerund
+        case .auxiliaryVerbsInfinitives: residString = infinitive
+        default: residString = ""
+        }
+        personMixString.append(PersonMixStruct(person: .S1, personString: languageViewModel.getPersonString(personIndex: 0, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: residString)))
+        personMixString.append(PersonMixStruct(person: .S2, personString: languageViewModel.getPersonString(personIndex: 1, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: residString)))
+        personMixString.append(PersonMixStruct(person: .S3, personString: languageViewModel.getPersonString(personIndex: 2, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: residString)))
+        personMixString.append(PersonMixStruct(person: .P1, personString: languageViewModel.getPersonString(personIndex: 3, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: residString)))
+        personMixString.append(PersonMixStruct(person: .P2, personString: languageViewModel.getPersonString(personIndex: 4, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: residString)))
+        personMixString.append(PersonMixStruct(person: .P3, personString: languageViewModel.getPersonString(personIndex: 5, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: residString)))
     }
 }
 

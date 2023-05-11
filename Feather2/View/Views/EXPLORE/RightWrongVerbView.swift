@@ -13,7 +13,7 @@ struct RightWrongVerbView: View {
     @State var currentLanguage = LanguageType.Agnostic
     @EnvironmentObject var router: Router
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"  
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"  
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
@@ -173,7 +173,7 @@ struct RightWrongVerbView: View {
                         currentLanguage = languageViewModel.getLanguageEngine().getCurrentLanguage()
                         currentVerb = languageViewModel.getCurrentFilteredVerb()
                         currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
-                        
+                        fillPersonStrings()
                         currentTenseString = currentTense.rawValue
                         specialVerbType = languageViewModel.getStudyPackage().specialVerbType
                         dependentVerb = languageViewModel.findVerbFromString(verbString: "bailar", language: currentLanguage)
@@ -188,6 +188,12 @@ struct RightWrongVerbView: View {
             .background(Color("BethanyNavalBackground"))
         }
         
+    }
+    
+    func fillPersonStrings(){
+        for personIndex in 0..<6 {
+            person[personIndex] = Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: languageViewModel.getSubjectPronounType())
+        }
     }
     
     func getNextTense(){
@@ -271,7 +277,7 @@ struct RightWrongVerbView: View {
     
     func setCurrentVerb(){
         let vu = VerbUtilities()
-        setSubjunctiveStuff()
+//        setSubjunctiveStuff()
         currentVerbString = currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
         var result = vu.analyzeSpanishWordPhrase(testString: currentVerbString)
         currentVerbModel = languageViewModel.findModelForThisVerbString(verbWord: result.0)

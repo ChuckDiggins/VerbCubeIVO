@@ -20,6 +20,34 @@ enum FrenchVerbLessons: String, CaseIterable{
     }
 }
 
+enum SpanishSpecials: String, CaseIterable{
+    
+    case specialsAuxGerund = "Auxiliary - Gerund"
+    case specialsAuxInfinitives = "Auxiliary - Infinitives"
+    case specialsVerbsLikeGustar = "Verbs like Gustar"
+    case specialsWeatherTime = "Weather and Time"
+    case specialsReflexives = "Reflexives"
+  
+    public func getInteger()->String {
+        switch self{
+        case .specialsAuxGerund: return "Special 1"
+        case .specialsAuxInfinitives: return "Special 2"
+        case .specialsVerbsLikeGustar: return "Special 3"
+        case .specialsWeatherTime: return "Special 4"
+        case .specialsReflexives: return "Special 5"
+        }
+    }
+    
+    public func getChapterDescription()->String{
+        switch self{
+        case .specialsAuxGerund: return "Auxiliary - Gerund"
+        case .specialsAuxInfinitives: return "Auxiliary - Infinitives"
+        case .specialsVerbsLikeGustar: return "Verbs like Gustar"
+        case .specialsWeatherTime: return "Weather and Time"
+        case .specialsReflexives: return "Reflexives"
+        }
+    }
+}
 
 enum Chuck1Chapters: String, CaseIterable{
     case chuck1A = "Extra 1A"
@@ -145,15 +173,15 @@ extension LanguageEngine{
         self.v2MGroup = v2MGroup
     }
     
-        
-    
     func loadAllV2Ms(){
         switch getCurrentLanguage(){
         case .Spanish:
+            fillV2MGroupManager(textBook: "Specials" )
             fillV2MGroupManager(textBook: "Spanish I")
     //        fillV2MGroupManager(textBook: "Realidades II" )
     //        fillV2MGroupManager(textBook: "Realidades III" )
             fillV2MGroupManager(textBook: "Extra 1" )
+           
         case .French:
             fillV2MGroupManager(textBook: "French 1")
         default:
@@ -173,6 +201,8 @@ extension LanguageEngine{
             loadRealidadesIII()
         case "Extra 1":
             loadChuck1()
+        case "Specials":
+            loadSpanishSpecials()
         case "French 1":
             loadFrench1()
         default:
@@ -212,6 +242,52 @@ extension LanguageEngine{
                v2MGroupManager.appendGroup(v2mGroupFrench1B)
     }
     
+    func loadSpanishSpecials(){
+        let v2mGroupSpanishSpecialsGustar = VerbToModelGroup(chapter: "Specials", lesson: "Verbs like gustar",
+            verbToModelList :
+                [VerbToModelStruct("aburrir"), VerbToModelStruct("doler"), VerbToModelStruct("encantar"), VerbToModelStruct("faltar"),
+                 VerbToModelStruct("gustar"),
+                 VerbToModelStruct("interesar"), VerbToModelStruct("quedar"), ],
+                tenseList: [.present, .preterite, .presentSubjunctive],
+                specialVerbType: .verbsLikeGustar)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsGustar)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsGustar)
+        
+        let v2mGroupSpanishSpecialsAuxiliaryGerunds = VerbToModelGroup(chapter: "Specials", lesson: "Auxiliary - Gerunds",
+                verbToModelList :
+                    [VerbToModelStruct("andar"), VerbToModelStruct("seguir"), VerbToModelStruct("venir"), VerbToModelStruct("verse"), VerbToModelStruct("ir")],
+                tenseList: [.present, .preterite, .presentSubjunctive, .presentPerfect],
+                specialVerbType: .auxiliaryVerbsGerunds)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsAuxiliaryGerunds)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsAuxiliaryGerunds)
+        
+        let v2mGroupSpanishSpecialsAuxiliaryInfinitives = VerbToModelGroup(chapter: "Specials", lesson: "Auxiliary - Infinitives",
+                verbToModelList :
+                    [VerbToModelStruct("tener que"), VerbToModelStruct("volver a"), VerbToModelStruct("acabar de"), VerbToModelStruct("quedar sin"), VerbToModelStruct("venir a")],
+                tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
+                specialVerbType: .auxiliaryVerbsInfinitives)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsAuxiliaryInfinitives)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsAuxiliaryInfinitives)
+        
+        
+        let v2mGroupSpanishSpecialsWeatherTime = VerbToModelGroup(chapter: "Specials", lesson: "Weather and Time",
+                verbToModelList :
+                    [VerbToModelStruct("llover"), VerbToModelStruct("anochecer"),],
+                tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
+                specialVerbType: .weatherAndTime)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsWeatherTime)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsWeatherTime)
+        
+        let v2mGroupSpanishReflexives = VerbToModelGroup(chapter: "Specials", lesson: "Reflexives",
+                verbToModelList :
+                    [VerbToModelStruct("casarse"), VerbToModelStruct("tenerse"),],
+                tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
+                specialVerbType: .normal)
+               fillAssociatedModelList(v2mGroupSpanishReflexives)
+               v2MGroupManager.appendGroup(v2mGroupSpanishReflexives)
+        
+    }
+    
     func loadChuck1(){
         let v2mGroupChuck1A = VerbToModelGroup(chapter: "Extra 1A", lesson: "Auxiliary - infinitive",
                                          verbToModelList :
@@ -229,11 +305,11 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck1A2)
         v2MGroupManager.appendGroup(v2mGroupChuck1A2)
         
-        let v2mGroupChuck1A3 = VerbToModelGroup(chapter: "Extra 1A", lesson: "Simple Verbs",
+        let v2mGroupChuck1A3 = VerbToModelGroup(chapter: "Extra 1A", lesson: "Like gustar",
                                          verbToModelList :
-                                            [VerbToModelStruct("comprar"), VerbToModelStruct("deber"), VerbToModelStruct("vivir"), VerbToModelStruct("hablar"), VerbToModelStruct("comer"), VerbToModelStruct("abrir")],
-                                                tenseList: [.present, .preterite, .imperfect, .conditional, .future, .presentSubjunctive],
-                                           specialVerbType: .normal)
+                                            [VerbToModelStruct("aburrir"), VerbToModelStruct("doler"), VerbToModelStruct("encantar"), VerbToModelStruct("faltar"), VerbToModelStruct("interesar"), VerbToModelStruct("quedar"), ],
+                                           tenseList: [.present, .preterite, .presentSubjunctive],
+                                         specialVerbType: .verbsLikeGustar)
         fillAssociatedModelList(v2mGroupChuck1A3)
         v2MGroupManager.appendGroup(v2mGroupChuck1A3)
         

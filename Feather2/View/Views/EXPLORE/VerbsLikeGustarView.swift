@@ -8,10 +8,6 @@
 import SwiftUI
 import JumpLinguaHelpers
 
-struct ObjectStruct {
-    var objectString : String
-    var objectNumber : Number
-}
 
 enum VLGButtonType {
     case indirectObject, directObject, verb, all
@@ -45,11 +41,7 @@ struct VerbsLikeGustarView: View {
     @State var verbSelected = false
     @State var directObjectSelected = false
     
-    @State var directObjectList = [ObjectStruct(objectString: "la cosa", objectNumber: .singular),
-                                   ObjectStruct(objectString: "las cosas", objectNumber: .plural),
-                                   ObjectStruct(objectString: "el libro", objectNumber: .singular),
-                                   ObjectStruct(objectString: "los libros", objectNumber: .plural),
-                                   ObjectStruct(objectString: "bailar", objectNumber: .singular),]
+   
     var body: some View {
         ZStack{
             Color("BethanyNavalBackground")

@@ -1,14 +1,16 @@
 //
-//  TextBookViewChuck.swift
+//  ExtrasView.swift
 //  Feather2
 //
-//  Created by Charles Diggins on 3/6/23.
+//  Created by Charles Diggins on 5/6/23.
 //
+
+import SwiftUI
 
 import SwiftUI
 import JumpLinguaHelpers
 
-struct TextBookViewChuck: View {
+struct SpecialsView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @State var currentLanguage = LanguageType.Agnostic
     @Environment(\.dismiss) private var dismiss
@@ -23,15 +25,16 @@ struct TextBookViewChuck: View {
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
+    @AppStorage("CurrentSpecialsOption") var currentSpecialsOptionString = "Auxiliary - Gerund"
+    @State var tempSpecialOptionString = "Not set"
     
     var body: some View {
         VStack{
             ExitButtonView()
             HStack{
-                Text("Current lesson:").foregroundColor(Color("ChuckText1"))
+                Text("Current option:").foregroundColor(Color("ChuckText1"))
                 VStack{
-                    Text(currentV2mChapter)
-                    Text(currentV2mLesson)
+                    Text(currentSpecialsOptionString)
                 }
             }
             
@@ -42,18 +45,15 @@ struct TextBookViewChuck: View {
                     VStack{
                         GeometryReader{ geo in
                             ScrollView{
-                                ForEach(Chuck1Chapters.allCases, id:\.self){ chapter in
-                                    Text(chapter.getChapterDescription()).bold().foregroundColor(Color("ChuckText1"))
-                                    ForEach(languageViewModel.getV2MGroupManager().getV2MGroupListAtChapter(chapter: chapter.rawValue), id:\.self){ v2m in
-                                        Button{
-                                            processV2MGroup(v2mGroup: v2m)
-                                        } label: {
-                                            Text("\(v2m.lesson)")
-                                        }.frame(width: 300)
-                                            .padding(.horizontal, 5)
-                                            .foregroundColor(v2m == currentV2MGroup ? .black : Color("BethanyGreenText"))
-                                            .background(v2m == currentV2MGroup ? .yellow : Color("BethanyNavalBackground"))
-                                    }
+                                ForEach(v2MGroupList, id:\.self){ v2m in
+                                    Button{
+                                        processV2MGroup(v2mGroup: v2m)
+                                    } label: {
+                                        Text("\(v2m.lesson)")
+                                    }.frame(width: 300)
+                                        .padding(.horizontal, 5)
+                                        .foregroundColor(v2m == currentV2MGroup ? .black : Color("BethanyGreenText"))
+                                        .background(v2m == currentV2MGroup ? .yellow : Color("BethanyNavalBackground"))
                                 }
                             }
                         }
@@ -78,7 +78,8 @@ struct TextBookViewChuck: View {
             }
         }
         .onAppear{
-            fillV2MGroupManager("")
+            fillV2MGroupManager("Specials")
+            tempSpecialOptionString = currentSpecialsOptionString
             currentLanguage = languageViewModel.getCurrentLanguage()
         }
         .foregroundColor(Color("BethanyGreenText"))
@@ -87,18 +88,21 @@ struct TextBookViewChuck: View {
     
     func processV2MGroup(v2mGroup: VerbToModelGroup){
         currentV2MGroup = v2mGroup
-        print("currentV2MGroup changed \(currentV2MGroup.lesson)")
+        tempSpecialOptionString = currentV2MGroup.lesson
+        print("specials option changed \(tempSpecialOptionString)")
     }
     
     func installLessonAsPackage(){
-        languageViewModel.setV2MGroup(v2MGroup: currentV2MGroup)
-        let studyPackage = languageViewModel.convertV2MGroupToStudyPackage(v2MGroup: currentV2MGroup)
-        languageViewModel.setStudyPackageTo(currentV2MGroup.chapter, currentV2MGroup.lesson)
+        currentSpecialsOptionString = tempSpecialOptionString
+        let specialsPackage = languageViewModel.convertV2MGroupToStudyPackage(v2MGroup: currentV2MGroup)
+        languageViewModel.setSpecialsPackageSimple(specialsPackage)
+//        languageViewModel.setSpecialOptionsTo(currentV2MGroup.lesson)
     }
     
     func fillV2MGroupManager(_ chapter: String){
-        var chapter = Realidades1Chapters.allCases[0]
-        v2MGroupList = languageViewModel.getV2MGroupManager().getV2MGroupListAtChapter(chapter: chapter.rawValue)
+        v2MGroupList = languageViewModel.getV2MGroupManager().getV2MGroupListAtChapter(chapter: "Specials")
+        dumpV2MGroupManager()
+        dumpV2MGroupList()
         currentV2MGroup = v2MGroupList[0]
     }
      
@@ -115,7 +119,7 @@ struct TextBookViewChuck: View {
         for v2mGroup in languageViewModel.getV2MGroupManager().getV2MGroupList(){
             print("v2mGroup: Book \(v2mGroup.chapter), Lesson: \(v2mGroup.lesson)")
             for v2m in v2mGroup.verbToModelList {
-                print("v2m: \(v2m.verb.getWordAtLanguage(language: currentLanguage)), model: \(v2m.model.modelVerb)")
+                print("v2m: \(v2m)")
             }
         }
         
@@ -123,3 +127,5 @@ struct TextBookViewChuck: View {
     
     
 }
+
+

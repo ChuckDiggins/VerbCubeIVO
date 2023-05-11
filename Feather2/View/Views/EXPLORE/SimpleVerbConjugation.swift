@@ -128,7 +128,6 @@ struct SimpleVerbConjugation: View {
                         if languageViewModel.getFilteredVerbs().count > 1 { 
                             multipleVerbFlag = true
                         }
-//                        setSubjunctiveStuff()
                         
                     }
                     //                    processTextField()
@@ -161,9 +160,11 @@ struct SimpleVerbConjugation: View {
         }//ZStack
     }
     
+    //uses current person type
+    
     func fillPersonStrings(){
         for personIndex in 0..<6 {
-            person[0] = Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: languageViewModel.getSubjectPronounType())
+            person[personIndex] = Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: languageViewModel.getSubjectPronounType())
         }
     }
     
@@ -209,7 +210,7 @@ struct SimpleVerbConjugation: View {
     }
     
     func getParticipleForThisTense() {
-        var thisVerb = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb())
+        let thisVerb = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb())
         if languageViewModel.getCurrentTense().isProgressive(){
             rightParticiple = thisVerb.createGerund()
         } else if languageViewModel.getCurrentTense().isPerfectIndicative(){
@@ -221,7 +222,6 @@ struct SimpleVerbConjugation: View {
     
     func setCurrentVerb(){
         //        currentVerbPhrase = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
-        //        setSubjunctiveStuff()
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         getParticipleForThisTense()
 //        setSubjunctiveStuff()
@@ -233,8 +233,19 @@ struct SimpleVerbConjugation: View {
         setPatternStuff()
         //        var msm = languageViewModel.getMorphStructManager()
         vvm.removeAll()
+        let dos = languageViewModel.getDirectObjectStruct(specialVerbType: languageViewModel.getSpecialVerbType())
+        let directObjectString = dos.objectString
+        number = dos.objectNumber
+        var gerund = languageViewModel.getGerundString(specialVerbType: languageViewModel.getSpecialVerbType())
+        var infinitive = languageViewModel.getInfinitiveString(specialVerbType: languageViewModel.getSpecialVerbType())
         for i in 0..<6 {
             var vs = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbPhrase, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+           
+            print("vs = \(vs) + gerund \(gerund) + infinitive \(infinitive) + directObjectString \(directObjectString)")
+            vs += gerund
+            vs += infinitive
+            vs += " " + directObjectString
+//            print("vs = \(vs)")
             if languageViewModel.getCurrentTense() == .imperative && i == 0 {
                 vs = ""
             }
@@ -245,13 +256,6 @@ struct SimpleVerbConjugation: View {
         isAnalyzed.toggle()
     }
     
-    func setSubjunctiveStuff(){
-        subjunctiveWord = ""
-        if languageViewModel.getCurrentTense().isSubjunctive() {
-            if currentLanguage == .French { subjunctiveWord = "qui "}
-            else {subjunctiveWord = "que "}
-        }
-    }
     @ViewBuilder
     func processTextField()->some View{
         VStack{

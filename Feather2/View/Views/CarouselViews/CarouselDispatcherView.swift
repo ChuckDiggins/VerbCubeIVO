@@ -23,13 +23,13 @@ struct ExerciseStruct: Identifiable, Hashable {
 
 struct ShowSegmentedVerbOrModelModePicker: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel
-    @Binding var currentVerbOrModelMode: VerbOrModelMode
+    @Binding var currentVerbOrModelMode: LessonModelSpecialsMode
     @Binding var selectImageString : String
-    var verbOrModelModeList : [ VerbOrModelMode ]
+    var verbOrModelModeList : [ LessonModelSpecialsMode ]
     @State var currentLanguageString = "Agnostic"
 
-    init(_ currentVerbOrModelMode: Binding<VerbOrModelMode>, _ selectImageString : Binding<String>,
-         verbOrModelModeList: [ VerbOrModelMode ]){
+    init(_ currentVerbOrModelMode: Binding<LessonModelSpecialsMode>, _ selectImageString : Binding<String>,
+         verbOrModelModeList: [ LessonModelSpecialsMode ]){
         self.verbOrModelModeList = verbOrModelModeList
         self._selectImageString = selectImageString
         self._currentVerbOrModelMode = currentVerbOrModelMode
@@ -45,20 +45,26 @@ struct ShowSegmentedVerbOrModelModePicker: View {
             } label: {
                 Text(currentLanguageString)
             }
-            Picker("Select Verb or Model Mode", selection: $currentVerbOrModelMode){
+            Picker("Select Mode", selection: $currentVerbOrModelMode){
                 ForEach(verbOrModelModeList , id:\.self){ Text($0.rawValue)}
             }.pickerStyle(SegmentedPickerStyle())
 //                .padding()
         }.onChange(of: currentVerbOrModelMode){ _ in
             switch currentVerbOrModelMode {
-            case .verbMode:
-                languageViewModel.setToVerbMode()
+            case .lessonMode:
+                languageViewModel.installCurrentStudyPackage()
+                languageViewModel.setToLessonMode()
                 selectImageString = "SELECT Verb Lesson"
             case .modelMode:
                 languageViewModel.setToVerbModelMode()
                 selectImageString = "SELECT Verb Model"
+            case .specialsMode:
+                languageViewModel.setToSpecialsMode()
+                languageViewModel.installCurrentSpecialsPackage()
+                selectImageString = "SELECT Special Mode"
             }
-            print("changing verb or model mode to: \(currentVerbOrModelMode.rawValue)")
+            
+//            print("changing verb or model mode to: \(currentVerbOrModelMode.rawValue)")
         }
         .onAppear{
             currentLanguageString = languageViewModel.getCurrentLanguage().rawValue
@@ -72,10 +78,11 @@ struct NavStackCarouselDispatcherView: View {
     @Environment(\.dismiss) private var dismiss
     
     @AppStorage("Language") var languageString = "Spanish"
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
+    @AppStorage("CurrentSpecialsOption") var currentSpecialsOptionString = "Auxiliary - Gerund"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7
     @AppStorage("Selection Lesson Page") var selectionLessonPage = 7
@@ -84,12 +91,12 @@ struct NavStackCarouselDispatcherView: View {
     @AppStorage("Learn Page") var learnPage = 7
     @AppStorage("Test Page") var testPage = 7
     
-    @State var currentVerbOrModelMode = VerbOrModelMode.modelMode
-    @State var verbOrModelModeList = [VerbOrModelMode.verbMode, .modelMode]
+    @State var currentVerbOrModelMode = LessonModelSpecialsMode.modelMode
+    @State var verbOrModelModeList = [LessonModelSpecialsMode.lessonMode, .modelMode, .specialsMode]
     @State var selectedCount = 0
     @State var verbsExistForAll3Endings = true
     @State var selected  = false
-    @State private var exerciseMgr = ExerciseDataManager(.verbMode, .Select, .normal, true)
+    @State private var exerciseMgr = ExerciseDataManager(.lessonMode, .Select, .normal, true)
     @State private var imageLength = CGFloat(125)
     @State private var multipleChoiceShown = true
     @State private var textEditorShown = true
@@ -129,8 +136,7 @@ struct NavStackCarouselDispatcherView: View {
                         }
                     }
                 }
-                .navigationTitle( currentVerbOrModelMode == .modelMode ? "Model: \(currentVerbModelString)" : "\(currentV2mLesson)")
-               
+                .navigationTitle(getCurrentModeString())
 //                .navigationBarTitleDisplayMode(.automatic)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationDestination(for: ExerciseStruct.self){ exercise in
@@ -170,12 +176,15 @@ struct NavStackCarouselDispatcherView: View {
 //                }
                 
                 .fullScreenCover(isPresented: $selected, content: {
+                    
                     switch languageViewModel.getCurrentExercise().title{
                         //Select
                     case "Spanish I Textbook":
                         TextBookView2(languageViewModel: languageViewModel)
                     case "Challenging Lessons":
                         TextBookViewChuck(languageViewModel: languageViewModel)
+                    case "Extras":
+                        SpecialsView(languageViewModel: languageViewModel)
                     case "Verb Model List": VerbModelListView(languageViewModel: languageViewModel, vmecdm: vmecdm)
 //                    case "Verb Model List": VerbModelLessonView(languageViewModel: languageViewModel, vmecdm: vmecdm)
                     case "Verb Models": AllModelsView(languageViewModel: languageViewModel, vmecdm: vmecdm)
@@ -195,7 +204,7 @@ struct NavStackCarouselDispatcherView: View {
                     case "Right and Wrong":
                          RightWrongVerbView(languageViewModel: languageViewModel)
                     case "Explore Verbs Like Gustar": VerbsLikeGustarView(languageViewModel: languageViewModel)
-                    case "Explore Auxiliary Verbs": AuxiliaryPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getStudyPackage().specialVerbType)
+                    case "Explore Auxiliary Verbs": AuxiliaryPhraseView(languageViewModel: languageViewModel)
                     case "Explore Normal Verbs": NormalPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getStudyPackage().specialVerbType)
                         //Learn
                     case "Mix and Match": MixAndMatchView(languageViewModel: languageViewModel)
@@ -228,7 +237,7 @@ struct NavStackCarouselDispatcherView: View {
             }
             
             if !languageViewModel.verbOrModelModeInitialized() {
-                let savedMode = verbOrModelMode
+                let savedMode = verbOrModelModeString
                 languageViewModel.setStudyPackageTo(currentV2mChapter, currentV2mLesson)
                 languageViewModel.setVerbModelTo(languageViewModel.findModelForThisVerbString(verbWord: currentVerbModelString))
                 languageViewModel.setVerbOrModelMode(savedMode)
@@ -237,7 +246,14 @@ struct NavStackCarouselDispatcherView: View {
             selectedCount = languageViewModel.getSelectedVerbModelList().count
             currentVerbOrModelMode = languageViewModel.getVerbOrModelMode()
             verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
-            
+            switch currentVerbOrModelMode {
+            case .lessonMode:
+                selectImageString = "SELECT Verb Lesson"
+            case .modelMode:
+                selectImageString = "SELECT Verb Model"
+            case .specialsMode:
+                selectImageString = "SELECT Special Mode"
+            }
             AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         }
@@ -247,12 +263,20 @@ struct NavStackCarouselDispatcherView: View {
         
         
     }
+    func getCurrentModeString()->String{
+        switch currentVerbOrModelMode{
+        case .modelMode: return "Model: \(currentVerbModelString)"
+        case .lessonMode: return "\(currentV2mLesson)"
+        case .specialsMode: return "\(currentSpecialsOptionString)"
+        }
+    }
     
     func getCurrentSelectImage(_ exercise: ExerciseStruct)->Image{
         var currentImage = exercise.image
         if ( exercise.mode == .Select ){
             currentImage = Image(selectImageString)
         }
+//        print("getCurrentSelectImage: selectImageString = \(selectImageString)")
         return currentImage
     }
     

@@ -12,7 +12,21 @@ import JumpLinguaHelpers
 extension LanguageEngine{
     
     func isModelMode()->Bool{
-        if verbOrModelMode == .modelMode {
+        if lessonModelSpecialsMode == .modelMode {
+            return true
+        }
+        return false
+    }
+    
+    func isLessonMode()->Bool{
+        if lessonModelSpecialsMode == .lessonMode {
+            return true
+        }
+        return false
+    }
+    
+    func isSpecialsMode()->Bool{
+        if lessonModelSpecialsMode == .specialsMode {
             return true
         }
         return false
@@ -20,8 +34,9 @@ extension LanguageEngine{
     
     func setVerbOrModelMode(_ verbOrModelModeString: String){
         switch verbOrModelModeString{
-        case "Verbs": verbOrModelMode = .verbMode
-        default: verbOrModelMode = .modelMode
+        case "Lessons": lessonModelSpecialsMode = .lessonMode
+        case "Specials": lessonModelSpecialsMode = .specialsMode
+        default: lessonModelSpecialsMode = .modelMode
         }
     }
     
@@ -31,23 +46,37 @@ extension LanguageEngine{
         installCurrentStudyPackage()
     }
     
-    func setToVerbMode(){
-        verbOrModelMode = .verbMode
-        filteredVerbList = studyPackageFilteredVerbList
+    func setToLessonMode(){
+        lessonModelSpecialsMode = .lessonMode
+        filteredVerbList = studyPackage.preferredVerbList
         fillVerbCubeAndQuizCubeLists()
         setTenses(tenseList: studyPackage.tenseList)
-        specialVerbType = studyPackage.specialVerbType
+        setSpecialVerbType(studyPackage.specialVerbType)
 //        print("setToVerbMode: specialVerbType = \(specialVerbType.rawValue)")
-        verbOrModelModeString = "Verbs"
+        verbOrModelModeString = "Lessons"
     }
     
     func setToVerbModelMode(){
-        verbOrModelMode = .modelMode
+        verbOrModelModeString = "Models"
+        lessonModelSpecialsMode = .modelMode
         filteredVerbList = verbModelFilteredVerbList
         fillVerbCubeAndQuizCubeLists()
-        specialVerbType = SpecialVerbType.normal
+        setSpecialVerbType( SpecialVerbType.normal )
 //        print("setToVerbModelMode: specialVerbType = \(specialVerbType.rawValue)")
         setTenses(tenseList: [.present, .imperfect, .preterite, .conditional, .future])
+    }
+    
+    func setToSpecialsMode(){
+        lessonModelSpecialsMode = .specialsMode
+        let v2MGroupList = getV2MGroupManager().getV2MGroupListAtChapter(chapter: "Specials")
+        for v2mGroup in v2MGroupList {
+            if v2mGroup.lesson == currentSpecialsOptionString {
+                let specialsPackage = convertV2MGroupToStudyPackage(v2mGroup: v2mGroup)
+                setSpecialsPackageSimple(specialsPackage)
+                verbOrModelModeString = "Specials"
+            }
+        }
+        
     }
     
     func setStudyPackageTo(_ chapterString: String, _ lessonString: String){
@@ -60,7 +89,7 @@ extension LanguageEngine{
     }
     
     func setVerbModelTo(_ verbModel: RomanceVerbModel){
-        verbOrModelMode = .modelMode
+        lessonModelSpecialsMode = .modelMode
         currentVerbModel = verbModel
         currentVerbModelString = currentVerbModel.modelVerb
         selectThisVerbModel(verbModel: currentVerbModel)
@@ -127,15 +156,15 @@ extension LanguageEngine{
     }
     
     
-    func getVerbOrModelMode()->VerbOrModelMode{
-        verbOrModelMode
+    func getVerbOrModelMode()->LessonModelSpecialsMode{
+        lessonModelSpecialsMode
     }
     
     func installStudyPackage(sp: StudyPackageClass){
         setStudyPackageTo(sp.chapter, sp.lesson)
         tenseList = sp.tenseList
         studyPackage = sp
-        specialVerbType = studyPackage.specialVerbType
+        setSpecialVerbType( studyPackage.specialVerbType )
         setToVerbMode(sp.chapter, sp.lesson)
     }
     
@@ -144,20 +173,50 @@ extension LanguageEngine{
         print("restoreV2MPackage: \(getCurrentLanguage().rawValue)")
         loadAllV2Ms()
         fillSelectedVerbModelListAndPutAssociatedVerbsInFilteredVerbList()
-        if verbOrModelMode == .modelMode {
+        if lessonModelSpecialsMode == .modelMode {
             restoreModelFromCurrentVerbModelString()
-        } else {
+        } else if lessonModelSpecialsMode == .lessonMode {
             installCurrentStudyPackage()
+        } else {
+            installCurrentSpecialsPackage()
         }
         fillVerbCubeAndQuizCubeLists()
         verbOrModelModeInitialized = true
     }
     
+    func installCurrentSpecialsPackage(){
+        let v2MGroupList = getV2MGroupManager().getV2MGroupListAtChapter(chapter: "Specials")
+        for v2m in v2MGroupList {
+            if v2m.lesson == currentSpecialsOptionString {
+                let specialsPackage = convertV2MGroupToStudyPackage(v2mGroup: v2m)
+                setSpecialsPackageSimple(specialsPackage)
+            }
+        }
+    }
+    
+    func setSpecialsPackageSimple(_ specialsPackage: StudyPackageClass){
+        print("setSpecialsPackageSimple: \(currentSpecialsOptionString)")
+        filteredVerbList = specialsPackage.preferredVerbList
+        setSpecialVerbType(specialsPackage.specialVerbType)
+        setTenses(tenseList: specialsPackage.tenseList)
+        fillVerbCubeAndQuizCubeLists()
+    }
+    
+    func getSpecialVerbType()->SpecialVerbType{
+//        print("...... getSpecialVerbType = \(specialVerbType.rawValue)")
+        return specialVerbType
+    }
+    
+    func setSpecialVerbType(_ svt: SpecialVerbType){
+        specialVerbType = svt
+//        print("... setSpecialVerbType = \(specialVerbType.rawValue)")
+    }
+    
     func installCurrentStudyPackage() {
         var v2mFound = false
-        print("installCurrentStudyPackage: find \(currentV2mChapter), \(currentV2mLesson)")
+//        print("installCurrentStudyPackage: find \(currentV2mChapter), \(currentV2mLesson)")
         for v2m in v2MGroupManager.getV2MGroupList() {
-            print("installCurrentStudyPackage: \(v2m.chapter), \(v2m.lesson)")
+//            print("installCurrentStudyPackage: \(v2m.chapter), \(v2m.lesson)")
             if v2m.chapter == currentV2mChapter && v2m.lesson == currentV2mLesson {
                 v2MGroup = v2m
                 v2mFound = true
@@ -169,12 +228,12 @@ extension LanguageEngine{
             studyPackage = convertV2MGroupToStudyPackage(v2mGroup: v2MGroup)
             studyPackageFilteredVerbList = studyPackage.preferredVerbList
             filteredVerbList = studyPackageFilteredVerbList
-            specialVerbType = studyPackage.specialVerbType
+            setSpecialVerbType(studyPackage.specialVerbType)
             setTenses(tenseList: studyPackage.tenseList)
 //            print("installCurrentStudyPackage: specialVerbType = \(specialVerbType.rawValue)")
         }
 //        else {
-            print("installCurrentStudyPackage: StudyPackage \(currentV2mChapter), \(currentV2mLesson) found \(v2mFound)")
+//            print("installCurrentStudyPackage: StudyPackage \(currentV2mChapter), \(currentV2mLesson) found \(v2mFound)")
 //        }
         
     }

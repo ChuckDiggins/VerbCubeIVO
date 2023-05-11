@@ -19,7 +19,7 @@ struct TextBookView2: View {
     @State var chapterSelection = Realidades1Chapters.chapter1A
     @State var lessonSelection = 0
     let numOfChapters = Realidades1Chapters.allCases.count
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"

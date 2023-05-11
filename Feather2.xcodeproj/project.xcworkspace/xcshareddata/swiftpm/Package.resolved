@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChuckDiggins/JumpLinguaHelpers.git",
       "state" : {
-        "revision" : "c2cd3b4b3b64dc7f997c24d96f0862ed59341b2e",
-        "version" : "0.11.9"
+        "revision" : "9b320472deef3c259db172d047292a8f20b03700",
+        "version" : "0.12.2"
       }
     },
     {

@@ -63,7 +63,7 @@ struct MixAndMatchView: View {
     @State var currentTense = Tense.present
     @State var currentVerb = Verb()
     @State var currentPerson = Person.S1
-    @State var currentModelString = ""
+//    @State var currentModelString = ""
     @State var currentVerbString = ""
     @State var currentTenseString = ""
     @State private var mixMatchList = [MixMatchStruct]()
@@ -102,10 +102,24 @@ struct MixAndMatchView: View {
                 HStack{
                     ExitButtonViewWithSpeechIcon(setSpeechModeActive: setSpeechModeActive)
                 }
-                DisclosureGroupMixAndMatch()
+//                DisclosureGroupMixAndMatch()
 //                ListVerbModelsView(languageViewModel: languageViewModel)
-                RandomVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
-                TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
+//                RandomVerbButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
+                Button{
+                    setCurrentVerb()
+                } label: {
+                    Text("Verb: \(currentVerbString)")
+                        .modifier(ModelTensePersonButtonModifier())
+                }
+                Button{
+                    currentTense = languageViewModel.getNextTense()
+                    fillMixMatchList()
+                    correctAnswerCount = 0
+                } label: {
+                    Text("Tense: \(currentTense.rawValue)")
+                        .modifier(ModelTensePersonButtonModifier())
+                }
+//                TenseButtonView(languageViewModel: languageViewModel, function: setCurrentVerb)
                 HStack{
                     ZStack{
                         ProgressBar(value: $progressValue, barColor: .red).frame(height: 20)
@@ -124,7 +138,7 @@ struct MixAndMatchView: View {
                     currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
                     currentTenseString = currentTense.rawValue
                     getParticipleForThisTense()
-                    dependentVerb = languageViewModel.findVerbFromString(verbString: "bailar", language: currentLanguage)
+                    dependentVerb = getVerbFromRandomInfinitives()
                     setCurrentVerb()
                     fillPersonMixStruct()
                     fillMixMatchList()
@@ -182,6 +196,7 @@ struct MixAndMatchView: View {
                 .modifier(TextModifier())
                 Spacer()
             }
+            
             if showAlert {
                 CustomAlertView(show: $showAlert )
             }
@@ -244,6 +259,7 @@ struct MixAndMatchView: View {
     func fillPersonMixStruct(){
         
         personMixString.removeAll()
+        print("fillPersonMixStruct: \(languageViewModel.getSpecialVerbType().rawValue)")
         personMixString.append(PersonMixStruct(person: .S1, personString: languageViewModel.getPersonString(personIndex: 0, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
         personMixString.append(PersonMixStruct(person: .S2, personString: languageViewModel.getPersonString(personIndex: 1, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
         personMixString.append(PersonMixStruct(person: .S3, personString: languageViewModel.getPersonString(personIndex: 2, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
@@ -252,16 +268,8 @@ struct MixAndMatchView: View {
         personMixString.append(PersonMixStruct(person: .P3, personString: languageViewModel.getPersonString(personIndex: 5, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: "bailar")))
     }
     
-    func setSubjunctiveParticiple(){
-        subjunctiveParticiple = ""
-        if currentTense == .presentSubjunctive || currentTense == .imperfectSubjunctiveRA || currentTense == .imperfectSubjunctiveSE {
-            subjunctiveParticiple = "que "
-            if currentLanguage == .French {subjunctiveParticiple = "qui "}
-        }
-    }
-    
     func getParticipleForThisTense() {
-        var thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
+        let thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
         if languageViewModel.getCurrentTense().isProgressive(){
             rightParticiple = thisVerb.createGerund()
         } else if languageViewModel.getCurrentTense().isPerfectIndicative(){
@@ -275,9 +283,14 @@ struct MixAndMatchView: View {
         getParticipleForThisTense()
 
         mixMatchList.removeAll()
+        print("MixAndMatch: fillMixMatchList: currentVerb = \(currentVerb.getWordAtLanguage(language: currentLanguage))")
+        let dos = languageViewModel.getDirectObjectStruct(specialVerbType: languageViewModel.getSpecialVerbType())
+        let directObjectString = dos.objectString
+        number = dos.objectNumber
+        var gerundString = languageViewModel.getGerundString(specialVerbType: languageViewModel.getSpecialVerbType())
+        var infinitiveString = languageViewModel.getInfinitiveString(specialVerbType: languageViewModel.getSpecialVerbType())
         for pms in personMixString {
-            var verbString = languageViewModel.getVerbString(personIndex: pms.person.getIndex(), number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbString, dependentVerb: dependentVerb, residualPhrase: "")
-//            + rightParticiple
+            var verbString = languageViewModel.createAndConjugateVerb(verb: currentVerb, tense: languageViewModel.getCurrentTense(), person: pms.person, number: number, specialVerbType: languageViewModel.getSpecialVerbType(), directObjectString: directObjectString, gerundString: gerundString, infinitiveString: infinitiveString)
             mixMatchList.append(MixMatchStruct(matchID: pms.person.getIndex(), person: pms.person, subjectString: pms.personString,
                                                verbString: verbString))
         }
@@ -307,7 +320,10 @@ struct MixAndMatchView: View {
         correctAnswerCount = 0
         totalCorrectCount = mixMatchList.count
         progressValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
-        if correctAnswerCount == totalCorrectCount && correctAnswerCount > 0 { showAlert.toggle() }
+        if correctAnswerCount == totalCorrectCount && correctAnswerCount > 0 {
+            showAlert.toggle()
+            
+        }
     }
     
     func getWordToMatch(subjectIndex: Int, matchString: String){
@@ -358,7 +374,10 @@ struct MixAndMatchView: View {
             }
             
             progressValue =  Float(correctAnswerCount) / Float(totalCorrectCount)
-            if correctAnswerCount == totalCorrectCount && correctAnswerCount > 0 { showAlert = true }
+            if correctAnswerCount == totalCorrectCount && correctAnswerCount > 0 {
+                showAlert = true
+                setCurrentVerb()
+            }
             else {showAlert = false}
             
             printFlags()
@@ -436,15 +455,12 @@ struct MixAndMatchView: View {
         
     func setCurrentVerb(){
         currentVerb = languageViewModel.getRandomVerb()
+        print("MixAndMatch: setCurrentVerb: currentVerb = \(currentVerb.getWordAtLanguage(language: currentLanguage))")
         currentVerbString = currentVerb.getWordAtLanguage(language: currentLanguage)
         currentTense = languageViewModel.getCurrentTense()
-        languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: currentTense)
+//        languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: currentTense)
         //this sets up the initial invitation message to the user "Click here"
-        currentTenseString = languageViewModel.getCurrentTense().rawValue
-        
-//        currentModelString = languageViewModel.getRomanceVerb(verb: languageViewModel.getCurrentFilteredVerb()).getBescherelleInfo()
-        currentModelString = languageViewModel.getRomanceVerb(verb: currentVerb).getBescherelleInfo()
-        setSubjunctiveParticiple()
+//        dependentVerb = getVerbFromRandomInfinitives()
         fillMixMatchList()
         correctAnswerCount = 0
     }

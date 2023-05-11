@@ -27,9 +27,14 @@ extension LanguageViewModel{
         languageEngine.fillFilezillaFlashCardsWithProblemsOfMixedRandomTenseAndPerson(maxCount:maxCount)
     }
     
-    func fillFlashCardsForProblemsOfMixedRandomTenseAndPerson(){
-        languageEngine.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
+    func fillFlashCardsForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: Bool){
+        languageEngine.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: isMultipleChoiceProblem)
     }
+
+    func fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: Bool)->FlashCard{
+        languageEngine.fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: isMultipleChoiceProblem)
+    }
+
 
     func getCurrentFlashCard()->FlashCard{
         languageEngine.getCurrentFlashCard()

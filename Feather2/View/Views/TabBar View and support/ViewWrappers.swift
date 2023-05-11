@@ -153,22 +153,19 @@ struct VerbSeeWrapper: View {
                 }.modifier(OtherBlueButtonModifier())
                 
                 VStack{
-                    
-                    
-                    switch languageViewModel.getStudyPackage().specialVerbType{
-                        
+                    switch getSpecialVerbType(){                        
                     case .verbsLikeGustar:
                         NavigationLink(destination: VerbsLikeGustarView(languageViewModel: languageViewModel))
                         {
                         Text("Exploree Verbs like Gustar")
                         }.modifier(OtherBlueButtonModifier())
                     case .auxiliaryVerbsInfinitives, .auxiliaryVerbsGerunds:
-                        NavigationLink(destination: AuxiliaryPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getStudyPackage().specialVerbType))
+                        NavigationLink(destination: AuxiliaryPhraseView(languageViewModel: languageViewModel))
                         {
                         Text("Explore Aux Verbs + Inf")
                         }.modifier(OtherBlueButtonModifier())
                     default:
-                        NavigationLink(destination: NormalPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getStudyPackage().specialVerbType))
+                        NavigationLink(destination: NormalPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getSpecialVerbType()))
                         {
                         Text("Explore Normal Verbs")
                         }.modifier(OtherBlueButtonModifier())
@@ -191,6 +188,11 @@ struct VerbSeeWrapper: View {
             
         }
         
+    }
+    
+    func getSpecialVerbType()->SpecialVerbType{
+        let    svt = languageViewModel.getSpecialVerbType()
+        return svt
     }
 }
 
@@ -291,8 +293,6 @@ struct VerbTestWrapper: View {
                         Text("Fill-in Blank")
                     }.modifier(OtherBlueButtonModifier())
                 }
-            }.onAppear{
-                languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
             }
             .padding(40)
             
@@ -337,13 +337,13 @@ struct VerbFindWrapper: View {
 }
 
 enum StatusDisplayMode {
-    case verbs, models, types1, types2
+    case verbs, models, specials, types2
     
     public func getName()->String{
         switch self{
         case .verbs: return "Verbs"
         case .models: return "Models"
-        case .types1: return "Status"
+        case .specials: return "Specials"
         case .types2: return "Status"
         }
     }

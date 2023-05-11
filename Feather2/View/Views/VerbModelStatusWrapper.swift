@@ -40,7 +40,7 @@ struct VerbModelStatusWrapper: View {
     
     @State var displayMode = StatusDisplayMode.verbs
     
-    @State var displayModeList = [ StatusDisplayMode.verbs, .models, .types1, .types2]
+    @State var displayModeList = [ StatusDisplayMode.verbs, .models, .specials, .types2]
     var body: some View {
         VStack{
             VStack{
@@ -69,7 +69,7 @@ struct VerbModelStatusWrapper: View {
                             VerbCount(name: "selected", count: selectedModelCount),
                             VerbCount(name: "completed", count: completedModelCount),
                         ])
-                    }else if displayMode == .types1 {
+                    }else if displayMode == .specials {
                         VerbChartView(verbCounts : [
                             VerbCount(name: "regular", count: regularCompleteCount),
                             VerbCount(name: "critical", count: criticalCompleteCount),

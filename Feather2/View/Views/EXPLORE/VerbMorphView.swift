@@ -346,13 +346,13 @@ struct VerbMorphView: View {
         }
     }
     
-    func setSubjunctiveStuff(){
-        subjunctiveWord = ""
-        if languageViewModel.getCurrentTense().isSubjunctive() {
-            if currentLanguage == .French { subjunctiveWord = "qui"}
-            else {subjunctiveWord = "que"}
-        }
-    }
+//    func setSubjunctiveStuff(){
+//        subjunctiveWord = ""
+//        if languageViewModel.getCurrentTense().isSubjunctive() {
+//            if currentLanguage == .French { subjunctiveWord = "qui"}
+//            else {subjunctiveWord = "que"}
+//        }
+//    }
 
     func setCurrentVerb(){
         languageViewModel.createAndConjugateCurrentFilteredVerb()
@@ -365,8 +365,6 @@ struct VerbMorphView: View {
         
         let result = VerbUtilities().analyzeSpanishWordPhrase(testString: currentVerbString)
         currentVerbModel = languageViewModel.findModelForThisVerbString(verbWord: result.verbWord)
-        
-        setSubjunctiveStuff()
         setPatternStuff()
         for person in personList{
             showNewVerb(person: person)

@@ -18,13 +18,21 @@ extension LanguageViewModel{
         languageEngine.setVerbOrModelMode(verbOrModelModeString)
     }
     
-    func setToVerbMode(){
-        languageEngine.setToVerbMode()
+    func setToSpecialsMode(){
+        languageEngine.setToSpecialsMode()
+    }
+    
+    func setToLessonMode(){
+        languageEngine.setToLessonMode()
     }
     
     func setToVerbMode(_ chapterString: String, _ lessonString: String){
         languageEngine.setToVerbMode(chapterString, lessonString)
     }
+    
+//    func setSpecialOptionsTo(_ optionsString: String){
+//        languageEngine.setSpecialOptionsTo(optionsString)
+//    }
     
     func setStudyPackageTo(_ chapterString: String, _ lessonString: String){
         languageEngine.setStudyPackageTo(chapterString, lessonString)
@@ -59,4 +67,11 @@ extension LanguageViewModel{
         languageEngine.trimFilteredVerbList(maxCount)
     }
     
+    func setSpecialsPackageSimple(_ specialsPackage: StudyPackageClass){
+        languageEngine.setSpecialsPackageSimple(specialsPackage)
+    }
+    
+    func installCurrentSpecialsPackage(){
+        languageEngine.installCurrentSpecialsPackage()
+    }
 }

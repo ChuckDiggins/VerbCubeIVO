@@ -113,7 +113,6 @@ struct QuizVerbView: View {
     func setCurrentVerb(){
         currentVerb = languageViewModel.getCurrentVerb()
         bValidVerb = true
-        setSubjunctiveStuff()
         currentVerbString = currentVerb.getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         languageViewModel.createAndConjugateAgnosticVerb(verb: currentVerb, tense: languageViewModel.getCurrentTense())
@@ -141,15 +140,6 @@ struct QuizVerbView: View {
 //            }
             person[i] = subjunctiveWord + Person.all[i].getSubjectString(language: languageViewModel.getCurrentLanguage(), subjectPronounType: languageViewModel.getSubjectPronounType(), verbStartsWithVowel: vu.startsWithVowelSound(characterArray: correctAnswer[i]))
 //            print("setCurrentVerb:  studentAnswer: \(studentAnswer[i]), correctAnswer: \(correctAnswer[i])")
-        }
-    }
-    
-    
-    func setSubjunctiveStuff(){
-        subjunctiveWord = ""
-        if currentTense.isSubjunctive() {
-            if currentLanguage == .French { subjunctiveWord = "qui "}
-            else {subjunctiveWord = "que "}
         }
     }
 

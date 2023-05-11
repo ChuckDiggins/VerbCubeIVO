@@ -33,6 +33,7 @@ extension LanguageViewModel{
     }
     
     func getCurrentExercise()->ExerciseData{
-        languageEngine.currentExercise
+        print("getCurrentExercise: \(languageEngine.currentExercise.title)")
+        return languageEngine.currentExercise
     }
 }

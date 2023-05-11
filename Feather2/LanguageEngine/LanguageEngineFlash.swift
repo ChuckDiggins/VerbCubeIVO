@@ -15,6 +15,7 @@ class ProblemStruct {
     var answer = [String]()
     var question = ""
     var correctAnswer = ""
+    var residualPhrase = ""
     
     func appendAnswer(answer: String){
         self.answer.append(answer)
@@ -25,6 +26,10 @@ class ProblemStruct {
             return answer[index]
         }
         return ""
+    }
+    
+    func getResidualPhrase()->String{
+        residualPhrase
     }
     
 }
@@ -44,12 +49,12 @@ extension LanguageEngine{
         getStudentScoreModel().incrementPersonScore(value: person, correctScore: 0, wrongScore: 1)
     }
     
-    func createProblemForThisTense(verb: Verb, tense: Tense)->ProblemStruct{
+    func createProblemForThisTense(verb: Verb, tense: Tense, isMultipleChoiceProblem: Bool)->ProblemStruct{
         let probStruct = ProblemStruct()
         var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
 //        let dependentVerb = findVerbFromString(verbString: "comprar", language: getCurrentLanguage())
         let dependentVerb = Verb()
-        let number = Number.singular
+        var number = Number.singular
         personList.shuffle()
         let correctPerson = personList[0]
         personList.shuffle()
@@ -58,11 +63,34 @@ extension LanguageEngine{
         
         probStruct.personString = personString
         probStruct.question = "Verb: \(verb.getWordAtLanguage(language: getCurrentLanguage())), tense: \(tense.rawValue), person: \(personString)"
+        let dos = getDirectObjectStruct(specialVerbType: specialVerbType)
+        let directObjectString = dos.objectString
+        number = dos.objectNumber
+        let gerundString = getGerundString(specialVerbType: specialVerbType)
+        let infinitiveString = getInfinitiveString(specialVerbType: specialVerbType)
         
         createAndConjugateAgnosticVerb(verb: verb, tense: tense)
         for person in personList {
 //            let verbString = createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
-            let verbString = getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: verb.getWordString(), dependentVerb: dependentVerb, residualPhrase: "")
+            var verbString = getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: verb.getWordString(), dependentVerb: dependentVerb, residualPhrase: "")
+//            verbString = VerbUtilities().removeLeadingOrFollowingBlanks(characterArray: verbString)
+            //only add extras if this is multiple choice
+            //don't want this for fill-in the blanks
+            if isMultipleChoiceProblem {
+                switch specialVerbType{
+                case .verbsLikeGustar:
+                    verbString += directObjectString
+                    probStruct.residualPhrase = directObjectString
+                case .auxiliaryVerbsGerunds:
+                    verbString += gerundString
+                    probStruct.residualPhrase = gerundString
+                case .auxiliaryVerbsInfinitives:
+                    verbString += infinitiveString
+                    probStruct.residualPhrase = infinitiveString
+                default: break
+                }
+            }
+            verbString = VerbUtilities().removeExtraBlanks(verbString: verbString)
             probStruct.appendAnswer(answer: verbString)
             probStruct.person = correctPerson
             if person == correctPerson {
@@ -75,7 +103,7 @@ extension LanguageEngine{
     
     //not happy with shuffle
     
-    func createProblemForThisPerson(verb: Verb, person: Person)->ProblemStruct{
+    func createProblemForThisPerson(verb: Verb, person: Person, isMultipleChoiceProblem: Bool)->ProblemStruct{
         let probStruct = ProblemStruct()
         
         if tenseList.count == 0 {
@@ -86,7 +114,7 @@ extension LanguageEngine{
         
         //        let dependentVerb = findVerbFromString(verbString: "comprar", language: getCurrentLanguage())
         let dependentVerb = Verb()
-        let number = Number.singular
+        var number = Number.singular
         
 //        probStruct.question = "Verb: \(verb.getWordAtLanguage(language: getCurrentLanguage())), tense: \(correctTense.rawValue), person: \(person.getMaleString())"
         
@@ -94,12 +122,33 @@ extension LanguageEngine{
         probStruct.personString = personString
         probStruct.question = "Verb: \(verb.getWordAtLanguage(language: getCurrentLanguage())), tense: \(correctTense?.rawValue ?? Tense.present.rawValue), person: \(personString))"
         
-        var localTenseList = tenseList.shuffled()
+        let localTenseList = tenseList.shuffled()
+        let dos = getDirectObjectStruct(specialVerbType: specialVerbType)
+        let directObjectString = dos.objectString
+        number = dos.objectNumber
+        let gerundString = getGerundString(specialVerbType: specialVerbType)
+        let infinitiveString = getInfinitiveString(specialVerbType: specialVerbType)
         
         for tense in localTenseList {
             createAndConjugateAgnosticVerb(verb: verb, tense: tense)
-            let verbString = getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: verb.getWordString(), dependentVerb: dependentVerb, residualPhrase: "")
-//            let verbString = createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+            var verbString = getVerbString(personIndex: person.getIndex(), number: number, tense: tense, specialVerbType: specialVerbType, verbString: verb.getWordString(), dependentVerb: dependentVerb, residualPhrase: "")
+            //only add extras if this is multiple choice
+            //don't want this for fill-in the blanksif isMultipleChoiceProblem {
+            if isMultipleChoiceProblem {
+                switch specialVerbType{
+                case .verbsLikeGustar:
+                    verbString += directObjectString
+                    probStruct.residualPhrase = directObjectString
+                case .auxiliaryVerbsGerunds:
+                    verbString += gerundString
+                    probStruct.residualPhrase = gerundString
+                case .auxiliaryVerbsInfinitives:
+                    verbString += infinitiveString
+                    probStruct.residualPhrase = infinitiveString
+                default: break
+                }
+            }
+            verbString = VerbUtilities().removeExtraBlanks(verbString: verbString)
             probStruct.appendAnswer(answer: verbString)
             probStruct.tense = correctTense ?? Tense.present
             if tense == correctTense {
@@ -131,6 +180,8 @@ extension LanguageEngine{
         var tenseString = ""
         var ps = ProblemStruct()
         
+        
+        
         for _ in 0 ..< maxCount {
             verbList.shuffle()
             var verb = verbList.randomElement()
@@ -138,24 +189,22 @@ extension LanguageEngine{
             let problemType = problemList.randomElement()!
             switch problemType{
             case .Person:
-                
                 personCount += 1
                 let targetPerson = personList.randomElement()!
-                ps = createProblemForThisPerson(verb: verb!, person: targetPerson)
+                ps = createProblemForThisPerson(verb: verb!, person: targetPerson, isMultipleChoiceProblem: true)
                 personString = ps.personString
                 tenseString = ps.tense.rawValue
 //                if ps.tense == .presentSubjunctive { personString = "que " + personString}
             case .Tense:
-                
                 tenseCount += 1
                 let targetTense = tenseList.randomElement()!
                 createAndConjugateAgnosticVerb(verb: verb!, tense: targetTense)
-                ps = createProblemForThisTense(verb: verb!, tense: targetTense)
+                ps = createProblemForThisTense(verb: verb!, tense: targetTense, isMultipleChoiceProblem: true)
                 personString = ps.personString
 //                if targetTense == .presentSubjunctive { personString = "que " + personString}
                 tenseString = targetTense.rawValue
             }
-            filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb!.getWordAtLanguage(language: getCurrentLanguage())) \n\(tenseString) tense  \n\(personString) ____________ ", answer: ps.correctAnswer))
+            filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb!.getWordAtLanguage(language: getCurrentLanguage())) \(ps.residualPhrase)  \n\(tenseString) tense  \n\(personString) ____________ ", answer: ps.correctAnswer))
             
             if verbList.count > maxCount {
                 break
@@ -166,7 +215,7 @@ extension LanguageEngine{
         return filezillaCardList
     }
     
-    func fillFlashCardsForProblemsOfCurrentTenseAndRandomPerson(){
+    func fillFlashCardsForProblemsOfCurrentTenseAndRandomPerson(isMultipleChoiceProblem: Bool){
         flashCardMgr.clearAll()
         var tenseList = getTenseList()
         var verbList = getFilteredVerbs()
@@ -176,11 +225,13 @@ extension LanguageEngine{
         personList.shuffle()
         
         let problemList = [ProblemTypeEnum.Tense, ProblemTypeEnum.Person]
-        let maxCardCount = 30
-        
-        
         var personCount = 0
         var tenseCount = 0
+//        let dos = getDirectObjectStruct(specialVerbType: getSpecialVerbType())
+//        let directObjectString = dos.objectString
+//        var number = dos.objectNumber
+//        var gerundString = getGerundString(specialVerbType: getSpecialVerbType())
+//        var infinitiveString = getInfinitiveString(specialVerbType: getSpecialVerbType())
         
         for _ in verbList {
             var randomVerb = verbList.randomElement()!
@@ -189,7 +240,7 @@ extension LanguageEngine{
             case .Person:
                 personCount += 1
                 let targetPerson = personList.randomElement()!
-                let ps = createProblemForThisPerson(verb: randomVerb, person: targetPerson)
+                let ps = createProblemForThisPerson(verb: randomVerb, person: targetPerson, isMultipleChoiceProblem: isMultipleChoiceProblem)
                 flashCardMgr.addFlashCard( fcp: FlashCard(verb: randomVerb, tense: ps.tense, person: targetPerson, personString: ps.personString,
                                                           answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
                                                           answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
@@ -199,7 +250,7 @@ extension LanguageEngine{
             case .Tense:
                 tenseCount += 1
                 let targetTense = tenseList.randomElement()!
-                let ps = createProblemForThisTense(verb: randomVerb, tense: targetTense)
+                let ps = createProblemForThisTense(verb: randomVerb, tense: targetTense, isMultipleChoiceProblem: isMultipleChoiceProblem)
                 flashCardMgr.addFlashCard( fcp: FlashCard(verb: randomVerb, tense: targetTense, person: ps.person, personString: ps.personString,
                                                           answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
                                                           answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
@@ -212,7 +263,51 @@ extension LanguageEngine{
         print("personCount = \(personCount), tenseCount = \(tenseCount)")
     }
     
-    func fillFlashCardsForProblemsOfMixedRandomTenseAndPerson(){
+    func fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: Bool)->FlashCard{
+        var tenseList = getTenseList()
+        var verbList = getFilteredVerbs()
+        verbList.shuffle()
+        tenseList.shuffle()
+        var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
+        personList.shuffle()
+        
+        let problemList = [ProblemTypeEnum.Tense, ProblemTypeEnum.Person]
+   
+        var personCount = 0
+        var tenseCount = 0
+        
+        verbList.shuffle()
+        var fcp = FlashCard()
+        let randomVerb = verbList.randomElement()!
+        var problemType = problemList.randomElement()!
+        if tenseList.count < 5 { problemType = .Tense}
+        switch problemType{
+        case .Person:
+            personCount += 1
+            let targetPerson = personList.randomElement()!
+            let ps = createProblemForThisPerson(verb: randomVerb, person: targetPerson, isMultipleChoiceProblem: isMultipleChoiceProblem)
+            fcp = FlashCard(verb: randomVerb, tense: ps.tense, person: targetPerson,
+                                personString: ps.personString,
+                                answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
+                                answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
+                                answer5: ps.getAnswer(index:4), answer6: ps.getAnswer(index:5),
+                                correctAnswer: ps.correctAnswer, question: ps.question)
+            
+        case .Tense:
+            tenseCount += 1
+            let targetTense = tenseList.randomElement()!
+            let ps = createProblemForThisTense(verb: randomVerb, tense: targetTense, isMultipleChoiceProblem: isMultipleChoiceProblem)
+            fcp = FlashCard(verb: randomVerb, tense: targetTense, person: ps.person,
+                                personString: ps.personString,
+                                answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
+                                answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
+                                answer5: ps.getAnswer(index:4), answer6: ps.getAnswer(index:5),
+                                correctAnswer: ps.correctAnswer, question: ps.question)
+        }
+        return fcp
+    }
+    
+    func fillFlashCardsForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: Bool){
         flashCardMgr.clearAll()
         var tenseList = getTenseList()
         var verbList = getFilteredVerbs()
@@ -222,14 +317,12 @@ extension LanguageEngine{
         personList.shuffle()
         
         let problemList = [ProblemTypeEnum.Tense, ProblemTypeEnum.Person]
-        let maxCardCount = 30
-        
-        
+   
         var personCount = 0
         var tenseCount = 0
         
         verbList.shuffle()
-        for i in 0 ..< 10 {
+        for _ in 0 ..< 10 {
             let randomVerb = verbList.randomElement()!
             var problemType = problemList.randomElement()!
             if tenseList.count < 5 { problemType = .Tense}
@@ -237,7 +330,7 @@ extension LanguageEngine{
             case .Person:
                 personCount += 1
                 let targetPerson = personList.randomElement()!
-                let ps = createProblemForThisPerson(verb: randomVerb, person: targetPerson)
+                let ps = createProblemForThisPerson(verb: randomVerb, person: targetPerson, isMultipleChoiceProblem: isMultipleChoiceProblem)
                 var fcp = FlashCard(verb: randomVerb, tense: ps.tense, person: targetPerson,
                                     personString: ps.personString,
                                     answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
@@ -254,7 +347,7 @@ extension LanguageEngine{
             case .Tense:
                 tenseCount += 1
                 let targetTense = tenseList.randomElement()!
-                let ps = createProblemForThisTense(verb: randomVerb, tense: targetTense)
+                let ps = createProblemForThisTense(verb: randomVerb, tense: targetTense, isMultipleChoiceProblem: isMultipleChoiceProblem)
                 var fcp = FlashCard(verb: randomVerb, tense: targetTense, person: ps.person,
                                     personString: ps.personString,
                                          answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),

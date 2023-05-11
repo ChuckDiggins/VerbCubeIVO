@@ -18,7 +18,7 @@ struct VerbModelListView: View {
     @State var modelName = "No name"
     @State var showSheet = false
     @State var selectedModel = RomanceVerbModel()
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     @State private var inProgress = false
     @State private var orderedVerbModelList = [RomanceVerbModel]()

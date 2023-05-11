@@ -97,6 +97,14 @@ class LanguageViewModel : ObservableObject, Equatable {
         languageEngine.isModelMode()
     }
     
+    func isLessonMode()->Bool{
+        languageEngine.isLessonMode()
+    }
+    
+    func isSpecialsMode()->Bool{
+        languageEngine.isSpecialsMode()
+    }
+    
     func setTemporaryVerbModel(verbModel: RomanceVerbModel){
         languageEngine.setTemporaryVerbModel(verbModel: verbModel)
     }
@@ -135,7 +143,10 @@ class LanguageViewModel : ObservableObject, Equatable {
         
     }
     
-    func getVerbOrModelMode()->VerbOrModelMode{
+    func installCurrentStudyPackage(){
+        languageEngine.installCurrentStudyPackage()
+    }
+    func getVerbOrModelMode()->LessonModelSpecialsMode{
         languageEngine.getVerbOrModelMode()
     }
     
@@ -152,7 +163,7 @@ class LanguageViewModel : ObservableObject, Equatable {
     }
     
     func getSpecialVerbType()->SpecialVerbType{
-        languageEngine.specialVerbType
+        languageEngine.getSpecialVerbType()
     }
     
     func getPersonString(personIndex: Int, tense: Tense, specialVerbType: SpecialVerbType, verbString: String)->String{
@@ -161,6 +172,10 @@ class LanguageViewModel : ObservableObject, Equatable {
     
     func getVerbString(personIndex: Int, number: Number, tense: Tense, specialVerbType: SpecialVerbType,  verbString: String, dependentVerb: Verb, residualPhrase: String)->String{
         languageEngine.getVerbString(personIndex: personIndex, number: number, tense: tense, specialVerbType: specialVerbType, verbString: verbString, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+    }
+    
+    func getVerbString(personIndex: Int, number: Number, tense: Tense, specialVerbType: SpecialVerbType, verbString: String, directObjectString: String, gerundString: String, infinitiveString: String)->String{
+        languageEngine.getVerbString(personIndex: personIndex, number: number, tense: tense, specialVerbType: specialVerbType, verbString: verbString, directObjectString: directObjectString, gerundString: gerundString, infinitiveString: infinitiveString)
     }
     
     func computeVerbsExistForAll3Endings()->Bool{
@@ -192,11 +207,23 @@ class LanguageViewModel : ObservableObject, Equatable {
     }
     
     func getSubjunctiveTerm(tense: Tense)->String{
-        if  tense == .presentSubjunctive || tense == .imperfectSubjunctiveRA  || tense == .imperfectSubjunctiveSE {
-            if currentLanguage == .Spanish { return "que"}
-            else if currentLanguage == .French { return "qui"}
-        }
+//        if  tense == .presentSubjunctive || tense == .imperfectSubjunctiveRA  || tense == .imperfectSubjunctiveSE {
+//            if currentLanguage == .Spanish { return "que"}
+//            else if currentLanguage == .French { return "qui"}
+//        }
         return ""
+    }
+    
+    func getDirectObjectStruct(specialVerbType: SpecialVerbType)->ObjectStruct{
+        languageEngine.getDirectObjectStruct(specialVerbType: specialVerbType)
+    }
+    
+    func getGerundString(specialVerbType: SpecialVerbType)->String{
+        languageEngine.getGerundString(specialVerbType: specialVerbType)
+    }
+    
+    func getInfinitiveString(specialVerbType: SpecialVerbType)->String{
+        languageEngine.getInfinitiveString(specialVerbType: specialVerbType)
     }
     
     func initializeStudentScoreModel(){
@@ -252,6 +279,7 @@ class LanguageViewModel : ObservableObject, Equatable {
     func getRandomVerb()->Verb{
         languageEngine.getRandomVerb()
     }
+
     
     func getCoreVerb(verb: Verb)->Verb{
         languageEngine.getCoreVerb(verb: verb)
@@ -355,6 +383,12 @@ class LanguageViewModel : ObservableObject, Equatable {
     
     func createAndConjugateAgnosticVerb(verb: Verb, tense: Tense, person: Person)->String{
         languageEngine.createAndConjugateAgnosticVerb(verb: verb, tense: tense, person: person)
+    }
+    
+    func createAndConjugateVerb(verb: Verb, tense: Tense, person: Person, number: Number,  specialVerbType: SpecialVerbType, directObjectString: String, gerundString: String, infinitiveString: String)->String{
+//        print("languageViewModel: createAndConjugateVerb verb: \(verb.getWordAtLanguage(language: currentLanguage))")
+        
+        return languageEngine.createAndConjugateVerb(verb: verb, tense: tense, person: person, number: number,  specialVerbType: specialVerbType, directObjectString: directObjectString, gerundString: gerundString, infinitiveString: infinitiveString)
     }
     
     func createAndConjugateCurrentFilteredVerb(){

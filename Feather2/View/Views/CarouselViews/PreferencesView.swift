@@ -15,7 +15,7 @@ struct PreferencesView: View {
     @State var speechModeActiveString = "Speech mode is ACTIVE"
     @State var tenseList = [Tense]()
     @State var modelCompleted = false
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
@@ -37,6 +37,7 @@ struct PreferencesView: View {
                 Text("Click to set Subject Type:")
                 PersonTypeButtonView(languageViewModel: languageViewModel, function: dummy)
                 Button{
+                    print("on exit: \(verbOrModelModeString)")
                     //                        languageViewModel.restoreSelectedVerbs()
                     exit(0)
                 } label: {

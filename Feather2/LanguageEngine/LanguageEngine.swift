@@ -15,10 +15,11 @@ import AVFoundation
 //    case model, pattern
 //}
 
-enum  VerbOrModelMode : String {
-   case verbMode = "Lesson Mode"
-   case modelMode = "Model Mode"
-}
+enum  LessonModelSpecialsMode : String {
+   case lessonMode = "Lessons"
+   case modelMode = "Models"
+    case specialsMode = "Specials"
+} 
 
 struct StudyPackageData {
     var name = ""
@@ -97,16 +98,17 @@ class LanguageEngine : ObservableObject, Equatable {
     static func == (lhs: LanguageEngine, rhs: LanguageEngine) -> Bool {
         return lhs.currentLanguage.rawValue == rhs.currentLanguage.rawValue
     }
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("Language") var languageString = "Spanish"
     
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
+    @AppStorage("CurrentSpecialsOption") var currentSpecialsOptionString = "Auxiliary - Gerund"
     
-    @AppStorage("SpanishV2MChapter") var currentSpanishV2mChapter = "Chapter 3A"
-    @AppStorage("SpanishV2MLesson") var currentSpanishV2mLesson = "AR, ER, IR verbs"
-    @AppStorage("SpanishCurrentVerbModel") var currentSpanishVerbModelString = "encontrar"
+//    @AppStorage("SpanishV2MChapter") var currentSpanishV2mChapter = "Chapter 3A"
+//    @AppStorage("SpanishV2MLesson") var currentSpanishV2mLesson = "AR, ER, IR verbs"
+//    @AppStorage("SpanishCurrentVerbModel") var currentSpanishVerbModelString = "encontrar"
     
     @AppStorage("FrenchV2MChapter") var currentFrenchV2mChapter = "French 1B"
     @AppStorage("FrenchV2MLesson") var currentFrenchV2mLesson = "Harder verbs, more tenses"
@@ -132,7 +134,7 @@ class LanguageEngine : ObservableObject, Equatable {
     var vmecdm = VerbModelEntityCoreDataManager()
     @Published private var currentLanguage = LanguageType.Agnostic
     var verbModelManager = VerbModelManager()
-    var verbOrModelMode = VerbOrModelMode.verbMode
+    var lessonModelSpecialsMode = LessonModelSpecialsMode.lessonMode
     var verbOrModelModeInitialized = false
     
     var currentExercise = ExerciseData(id: 0, image: "image", studentLevel: "Beginner", title: "Title", details: "No details", active: true)
@@ -153,6 +155,7 @@ class LanguageEngine : ObservableObject, Equatable {
     
     var selectedNewVerbModelType = NewVerbModelType.Regular
     var selectedSpecialPatternType = SpecialPatternType.c2z
+    var specialsPackage = StudyPackageClass()
     var studyPackage = StudyPackageClass()
     var studyPackageManagerList = [StudyPackageManager]()
     var studyPackageData = StudyPackageData()
@@ -269,10 +272,13 @@ class LanguageEngine : ObservableObject, Equatable {
         createOrderedModelList()
         fillVerbModelLessonList()
         
-        verbOrModelMode = .modelMode
-        if verbOrModelModeString == "Verbs" {
-            verbOrModelMode = .verbMode
-        }
+        print(verbOrModelModeString)
+        lessonModelSpecialsMode = .modelMode
+        if verbOrModelModeString == "Lessons" {
+            lessonModelSpecialsMode = .lessonMode
+        } else if verbOrModelModeString == "Specials" {
+            lessonModelSpecialsMode = .specialsMode
+        } 
         
         print("currentLanguage = \(currentLanguage.rawValue)")
         restoreV2MPackage()
@@ -297,9 +303,9 @@ class LanguageEngine : ObservableObject, Equatable {
             currentVerbModelString = currentFrenchVerbModelString
         case .French: //changing to Spanish
             nextLanguage = .Spanish
-            currentV2mChapter = currentSpanishV2mChapter
-            currentV2mLesson = currentSpanishV2mLesson
-            currentVerbModelString = currentSpanishVerbModelString
+            currentV2mChapter = currentFrenchV2mChapter
+            currentV2mLesson = currentFrenchV2mLesson
+            currentVerbModelString = currentFrenchVerbModelString
         default:
             nextLanguage = .Agnostic
         }
@@ -461,6 +467,25 @@ class LanguageEngine : ObservableObject, Equatable {
     
     // MARK: getVerbString
     
+    
+    func getVerbString(personIndex: Int, number: Number, tense: Tense, specialVerbType: SpecialVerbType, verbString: String, directObjectString: String, gerundString: String, infinitiveString: String)->String{
+        var msm = morphStructManager
+        let vs = msm.getFinalVerbForm(person: Person.all[personIndex])
+        switch specialVerbType{
+        case .normal: return vs
+        case .verbsLikeGustar:
+            let vu = VerbUtilities()
+            let verbStartsWithVowel = vu.startsWithVowelSound(characterArray: verbString)
+            var p = Person.S3
+            if number == .plural { p = Person.P3}
+            let verbString = msm.getFinalVerbForm(person: p)
+            return Person.all[personIndex].getIndirectObjectPronounString(language: currentLanguage, verbStartsWithVowel: verbStartsWithVowel) + " " + verbString + " " + directObjectString
+        case .auxiliaryVerbsGerunds: return vs + " " + gerundString
+        case .auxiliaryVerbsInfinitives: return vs + " " + infinitiveString
+        default: return vs
+        }
+    }
+    
     func getVerbString(personIndex: Int, number: Number, tense: Tense, specialVerbType: SpecialVerbType, verbString: String, dependentVerb: Verb, residualPhrase: String)->String{
         var msm = morphStructManager
         switch specialVerbType{
@@ -506,6 +531,7 @@ class LanguageEngine : ObservableObject, Equatable {
         BehavioralVerbModel().isAuxiliary(language: currentLanguage, verb: verb)
     }
     
+    
     func getSimpleTensesFromList(_ tenseList: [Tense])->[Tense]{
         var simpleTenseList = [Tense]()
         for tense in tenseList{
@@ -514,6 +540,36 @@ class LanguageEngine : ObservableObject, Equatable {
         return simpleTenseList
     }
     
+    func getDirectObjectStruct(specialVerbType: SpecialVerbType)->ObjectStruct{
+        switch specialVerbType{
+        case .normal: return nullDirectObject
+        case .verbsLikeGustar: return getRandomDirectObject()
+        case .auxiliaryVerbsGerunds: return nullDirectObject
+        case .auxiliaryVerbsInfinitives: return nullDirectObject
+        default: return nullDirectObject
+        }
+    }
+        
+    func getGerundString(specialVerbType: SpecialVerbType)->String{
+        switch specialVerbType{
+        case .normal: return ""
+        case .verbsLikeGustar: return ""
+        case .auxiliaryVerbsGerunds: return getRandomGerund()
+        case .auxiliaryVerbsInfinitives: return ""
+        default: return ""
+        }
+    }
+            
+    func getInfinitiveString(specialVerbType: SpecialVerbType)->String{
+        switch specialVerbType{
+        case .normal: return ""
+        case .verbsLikeGustar: return ""
+        case .auxiliaryVerbsGerunds: return ""
+        case .auxiliaryVerbsInfinitives: return getRandomInfinitive()
+        default: return ""
+        }
+    }
+         
     func getPersonString(personIndex: Int, tense: Tense, specialVerbType: SpecialVerbType, verbString: String)->String{
         let vu = VerbUtilities()
         let verbStartsWithVowel = vu.startsWithVowelSound(characterArray: verbString)
@@ -997,8 +1053,49 @@ class LanguageEngine : ObservableObject, Equatable {
         
         let ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
         morphStructManager.set(index: person.getIndex(), ms: ms)
-        return morphStructManager.getFinalVerbForm(person: person)
+        let fvf = morphStructManager.getFinalVerbForm(person: person)
+//        print("createAndConjugateAgnosticVerb: \(person.getMaleString()), verb: \(verb.getWordAtLanguage(language: .Spanish)), final form: \(fvf)")
+        return fvf
     }
+    
+    func createAndConjugateVerb(verb: Verb, tense: Tense, person: Person, number: Number,  specialVerbType: SpecialVerbType, directObjectString: String, gerundString: String, infinitiveString: String)->String{
+        var vmm = VerbModelManager()
+        var bVerb = verb.getBVerb()
+        switch currentLanguage {
+        case .Spanish:
+            bVerb = vmm.createSpanishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        case .French:
+            bVerb = vmm.createFrenchBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage))
+        case .English:
+            bVerb = vmm.createEnglishBVerb(verbPhrase: verb.getWordStringAtLanguage(language: currentLanguage), separable: .both)
+        default:
+            break
+        }
+
+        switch specialVerbType{
+        case .normal:
+            var ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
+            return ms.finalVerbForm()
+        case .verbsLikeGustar:
+            let vu = VerbUtilities()
+            let verbStartsWithVowel = vu.startsWithVowelSound(characterArray: verb.getWordAtLanguage(language: currentLanguage))
+            
+            var inversePerson = Person.S3
+            if number == .plural {inversePerson = Person.P3}
+            
+            var newMS = bVerb.getConjugatedMorphStruct(tense: tense, person: inversePerson, conjugateEntirePhrase : true )
+            let finalString = person.getIndirectObjectPronounString(language: currentLanguage, verbStartsWithVowel: verbStartsWithVowel) + " " + newMS.finalVerbForm() + " " + directObjectString
+            return finalString
+        case .auxiliaryVerbsGerunds:
+            var ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
+            return ms.finalVerbForm() + gerundString
+        case .auxiliaryVerbsInfinitives:
+            var ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
+            return ms.finalVerbForm() + infinitiveString
+        default: return ""
+        }
+    }
+
     
     func createAndConjugateCurrentFilteredVerb(){
 //        let verbStr = getCurrentFilteredVerb().getWordAtLanguage(language: currentLanguage)

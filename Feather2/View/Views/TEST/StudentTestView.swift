@@ -72,10 +72,12 @@ enum FlashMode {
 
 struct CombinedAlert: View {
     @ObservedObject var languageViewModel : LanguageViewModel
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
+    @AppStorage("CurrentSpecialsOption") var currentSpecialsOptionString = "Auxiliary - Gerund"
+    
     var flashMode : FlashMode
     @State var currentLanguage = LanguageType.Agnostic
     
@@ -91,6 +93,7 @@ struct CombinedAlert: View {
     @State var percentCorrect = 0.0
     @State var minimumPercentCorrect = 0.8
     @State var completedModelsToPass = 5
+    @State var isMultipleChoiceProblem = true
     
     enum FocusField: Hashable {
         case field
@@ -140,8 +143,6 @@ struct CombinedAlert: View {
                 currentLanguage = languageViewModel.getCurrentLanguage()
                 wrong = languageViewModel.getWrongScore()
                 correct = languageViewModel.getCorrectScore()
-                languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
-                getNextStudentProblem()
             }
             
         }
@@ -154,6 +155,7 @@ struct CombinedAlert: View {
     }
     
     fileprivate func MultipleChoiceView() -> some View {
+        isMultipleChoiceProblem = true
         let gridFixSize = CGFloat(300.0)
         let gridItems = [GridItem(.fixed(gridFixSize)),
                          //                         GridItem(.fixed(gridFixSize))
@@ -197,7 +199,9 @@ struct CombinedAlert: View {
                                 Text(personString).foregroundColor(.red)
                                 Text(fcp.getAnswer(i: i))
                                 
-                            }.frame(width:300, height:30, alignment: .leading)
+                            }
+//                            .frame(width:300, height:30, alignment: .leading)
+                                .frame(minWidth: 50, maxWidth: .infinity, minHeight: 30)
                                 .padding(3)
                                 .font(.callout)
                                 .background(.yellow)
@@ -207,7 +211,10 @@ struct CombinedAlert: View {
                         
                     }
                 }
+            }.onAppear{
+                getNextStudentProblem()
             }
+            
             if answerComplete{
                 messageFooter()
             }
@@ -226,7 +233,7 @@ struct CombinedAlert: View {
     func thisProblemComplete()->Bool{
         var modelComplete = false
         var percentCorrect = 0.0
-        var total = correct + wrong
+        let total = correct + wrong
         if total > completedModelsToPass {
             percentCorrect = Double(correct) / Double(total)
             if percentCorrect > minimumPercentCorrect {
@@ -303,7 +310,12 @@ struct CombinedAlert: View {
             Spacer()
             
         }.border(.yellow)
+            .onAppear{
+                isMultipleChoiceProblem = false
+                getNextStudentProblem()
+            }
     }
+    
     func setSpeechModeActive(){
         speechModeActive.toggle()
         if speechModeActive {
@@ -359,7 +371,7 @@ struct CombinedAlert: View {
             }
             VStack{
                 Text(userMsg1)
-                Text(userMsg2)
+                Text(userMsg2).foregroundColor(.black).background(.yellow)
             }
             
         }.frame(width: 300, height: 100)
@@ -374,13 +386,15 @@ struct CombinedAlert: View {
                     if languageViewModel.isModelMode() {
                         Text("Model: \(currentVerbModelString)").font(.title2)
                     }
+                    else if languageViewModel.isSpecialsMode(){
+                        Text("Specials: \(currentSpecialsOptionString)").font(.title2)
+                    }
                     else {
                         VStack{
                             Text("Chapter: \(currentV2mChapter)")
                             Text("Lesson: \(currentV2mLesson)")
                         }.font(.title2)
                     }
-                    
                     Spacer()
                 }.font(.callout)
                     .bold()
@@ -417,7 +431,6 @@ struct CombinedAlert: View {
                     languageViewModel.resetScores()
                     wrong = languageViewModel.getWrongScore()
                     correct = languageViewModel.getCorrectScore()
-                    languageViewModel.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson()
                     getNextStudentProblem()
                     newModel.toggle()
                 }
@@ -444,12 +457,8 @@ struct CombinedAlert: View {
     func getNextStudentProblem(){
         answerComplete = false
         answerText = ""
-        languageViewModel.setNextFlashCard()
-        fcp = languageViewModel.getCurrentFlashCard()
+        fcp = languageViewModel.fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: isMultipleChoiceProblem)
         personString = fcp.personString
-        if fcp.tense.isSubjunctive() {
-            personString = "que " + personString
-        }
         self.focusedField = .field
     }
     

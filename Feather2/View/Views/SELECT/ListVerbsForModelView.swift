@@ -23,7 +23,7 @@ struct ListVerbsForModelView: View {
     @State var selectedCount = 0
     @State var modelName = "No name"
     @State var verbListTruncated = false
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "ser"
@@ -135,8 +135,10 @@ struct ListVerbsForModelView: View {
                             verbModel = languageViewModel.getCurrentVerbModel()
                             verbList = languageViewModel.getFilteredVerbs()
                         }
-                    } else {
+                    } else if languageViewModel.isLessonMode() {
                         verbList = languageViewModel.getStudyPackage().preferredVerbList
+                    } else {
+                        verbList = languageViewModel.getFilteredVerbs()
                     }
                     
 //                    analyzeModel()

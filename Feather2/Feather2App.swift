@@ -29,10 +29,11 @@ struct Feather2App: SwiftUI.App {
     @StateObject var vmecdm = VerbModelEntityCoreDataManager()
     @StateObject var router = Router()
     @AppStorage("Language") var languageString = "Spanish"
-    @AppStorage("VerbOrModelMode") var verbOrModelMode = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("V2MChapter") var currentV2mChapter = "Chapter 3A"
     @AppStorage("V2MLesson") var currentV2mLesson = "AR, ER, IR verbs"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
+    @AppStorage("CurrentSpecialsOption") var currentSpecialsOptionString = "Auxiliary - Gerund"
     @AppStorage("currentPage") var currentPage = 1
     @AppStorage("Explanation Page") var explanationPage = 7
     @AppStorage("Selection Lesson Page") var selectionLessonPage = 7

@@ -42,6 +42,7 @@ struct DictionaryView: View {
     @State var showReflexivePronoun = true
     @State var isReflexive = true
     @State var residualPhrase = ""
+    @State var showReflexivesOnly = false
     @State private var matching = [false, false, false, false, false, false]
     
     //swipe gesture
@@ -54,7 +55,7 @@ struct DictionaryView: View {
     @State var orthoString = ""
     @State var userString = ""
     
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     //@State var bAddNewVerb = false
@@ -177,6 +178,24 @@ struct DictionaryView: View {
                 }.font(.system(size: 18))
             }
             VStack{
+                Button{
+                    showReflexivesOnly.toggle()
+                    modelLocked = false
+                    getNextVerbAtThisModel()
+                } label: {
+                    HStack{
+                        Text("Show reflexives only")
+                        Spacer()
+                        Label("", systemImage: showReflexivesOnly ? "lock" : "lock.open")
+                    }
+                    .padding()
+                    .font(.caption)
+                    .frame(width: 300, height: 30, alignment: .leading)
+                    .border(.red)
+                    .foregroundColor(showReflexivesOnly ? Color.black : Color("BethanyGreenText"))
+                    .background(showReflexivesOnly ? Color.yellow : Color("BethanyNavalBackground"))
+                }
+                
                 HStack{
                     Text("\(currentVerbModel.id).")
                     Text("Model \(currentVerbModel.modelVerb)")
@@ -359,6 +378,7 @@ struct DictionaryView: View {
     func getPreviousVerbAtThisModel(){
         var searchCount = 0
         var modelFound = false
+        var reflexiveVerbFound = false
         if modelLocked {
             repeat {
                 searchCount += 1
@@ -378,7 +398,24 @@ struct DictionaryView: View {
                 }
             } while !modelFound && searchCount < verbList.count
             
-        } else {
+        } else if showReflexivesOnly {
+            repeat {
+                searchCount += 1
+                currentIndex -= 1
+                if currentIndex < 0 {currentIndex = verbCount-1}
+                currentVerbNumber = currentIndex + 1
+                let thisVerb = verbList[currentIndex]
+                spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
+                let vu = VerbUtilities()
+                let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
+                if result.isReflexive {
+                    reflexiveVerbFound = true
+                    currentVerb = verbList[currentIndex]
+                    showCurrentWordInfo()
+                }
+            } while !reflexiveVerbFound  && searchCount < verbList.count
+        }
+        else {
             currentIndex -= 1
             if currentIndex < 0 {currentIndex = verbCount-1}
             currentVerbNumber = currentIndex + 1
@@ -392,11 +429,13 @@ struct DictionaryView: View {
         var thisModel = RomanceVerbModel()
         var searchCount = 0
         var modelFound = false
+        var reflexiveVerbFound = false
         if modelLocked {
             repeat {
                 searchCount += 1
                 currentIndex += 1
                 if currentIndex >= verbCount { currentIndex = 0  }
+                currentVerbNumber = currentIndex + 1
                 let thisVerb = verbList[currentIndex]
                 spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
                 let vu = VerbUtilities()
@@ -408,7 +447,22 @@ struct DictionaryView: View {
                     modelFound = true
                 }
             } while !modelFound && searchCount < verbList.count
-        } else {
+        } else if showReflexivesOnly {
+            repeat {
+                searchCount += 1
+                currentIndex += 1
+                if currentIndex >= verbCount { currentIndex = 0  }
+                let thisVerb = verbList[currentIndex]
+                spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
+                let vu = VerbUtilities()
+                let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
+                if result.isReflexive {
+                    reflexiveVerbFound = true
+                    currentVerb = verbList[currentIndex]
+                    showCurrentWordInfo()
+                }
+            } while !reflexiveVerbFound && searchCount < verbList.count
+        }else {
             currentIndex += 1
             if currentIndex >= verbCount {currentIndex = 0}
             currentVerb = verbList[currentIndex]

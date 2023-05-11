@@ -13,7 +13,7 @@ struct AllModelsView: View {
     @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var router: Router
-    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Verbs"
+    @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     @State var isSwiping = true

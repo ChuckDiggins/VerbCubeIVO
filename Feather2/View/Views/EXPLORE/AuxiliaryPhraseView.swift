@@ -14,7 +14,7 @@ enum APButtonType {
 
 struct AuxiliaryPhraseView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
-    @State var specialVerbType : SpecialVerbType
+//    @State var specialVerbType : SpecialVerbType
     @State var currentLanguage = LanguageType.Spanish
     
     @State var currentVerb = Verb()
@@ -23,7 +23,7 @@ struct AuxiliaryPhraseView: View {
     @State var currentTenseString = "present"
     @State var subjectString = "yo"
     @State var auxiliaryVerbString = "tengo que"
-    @State var mainVerbString = "bailar"
+    @State var mainVerbString = "comprar"
     @State var subjunctiveWord = "que"
     @State private var currentNumber = Number.singular
     @State private var mainVerb = Verb()
@@ -164,7 +164,6 @@ struct AuxiliaryPhraseView: View {
             }.onAppear{
                 currentLanguage = languageViewModel.getCurrentLanguage()
                 currentVerb = languageViewModel.getCurrentFilteredVerb()
-                setSubjunctiveStuff()
                 createMainVerbList()
                 createRandomClause()
                 currentTenseString = languageViewModel.getCurrentTense().rawValue
@@ -213,13 +212,13 @@ struct AuxiliaryPhraseView: View {
         }
     }
     
-    func setSubjunctiveStuff(){
-        subjunctiveWord = ""
-        if languageViewModel.getCurrentTense().isSubjunctive() {
-            if currentLanguage == .French { subjunctiveWord = "qui "}
-            else {subjunctiveWord = "que "}
-        }
-    }
+//    func setSubjunctiveStuff(){
+//        subjunctiveWord = ""
+//        if languageViewModel.getCurrentTense().isSubjunctive() {
+//            if currentLanguage == .French { subjunctiveWord = "qui "}
+//            else {subjunctiveWord = "que "}
+//        }
+//    }
     
     func changeTense(){
         let tense = languageViewModel.getNextTense()
@@ -270,8 +269,8 @@ struct AuxiliaryPhraseView: View {
         languageViewModel.createAndConjugateCurrentFilteredVerb()
         let tense = languageViewModel.getCurrentTense()
         currentTenseString = tense.rawValue
-        auxiliaryVerbString = languageViewModel.getVerbString(personIndex: currentPersonIndex, number: currentNumber, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: currentVerb.getWordString(), dependentVerb: mainVerb, residualPhrase: residualPhrase)
-        subjectString = languageViewModel.getPersonString(personIndex: currentPersonIndex, tense: languageViewModel.getCurrentTense(), specialVerbType: specialVerbType, verbString: auxiliaryVerbString)
+        auxiliaryVerbString = languageViewModel.getVerbString(personIndex: currentPersonIndex, number: currentNumber, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerb.getWordString(), dependentVerb: mainVerb, residualPhrase: residualPhrase)
+        subjectString = languageViewModel.getPersonString(personIndex: currentPersonIndex, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: auxiliaryVerbString)
         mainVerbString = mainVerbStringList[mainVerbIndex]
         
         currentPhrase = subjectString + auxiliaryVerbString + mainVerbString
@@ -299,11 +298,11 @@ struct AuxiliaryPhraseView: View {
     
     func createMainVerbList(){
         mainVerbIndex = 0
-        if specialVerbType == .auxiliaryVerbsGerunds {
-            mainVerbStringList =  ["bailando", "comiendo", "hablando", "viniendo"]
+        if languageViewModel.getSpecialVerbType() == .auxiliaryVerbsGerunds {
+            mainVerbStringList =  gerundList
         }
         else {
-            mainVerbStringList = ["bailar", "comer", "hablar", "venir"]
+            mainVerbStringList = infinitiveList
         }
         
     }
