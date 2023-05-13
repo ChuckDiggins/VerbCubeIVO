@@ -21,8 +21,10 @@ enum SpecialVerbType : String{
     case ThirdPersonOnly = "3rd Person Only Verbs"
     case auxiliaryVerbsInfinitives = "Auxiliary Verbs - infinitives"
     case auxiliaryVerbsGerunds = "Auxiliary Verbs - gerunds"
+    case haberHay = "Haber Hay"
     case defective = "Defective"
     case normal = "Normal"
+    case reflexive = "Reflexive"
 }
 
 enum LessonNameEnum : String {

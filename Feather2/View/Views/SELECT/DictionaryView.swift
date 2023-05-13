@@ -173,9 +173,9 @@ struct DictionaryView: View {
                     Text(verb1String[personIndex])
                         .padding()
                         .frame(width: 250, height: 30, alignment: .leading)
-                        .background(matching[personIndex] ? Color.yellow : Color.red)
-                        .foregroundColor(.black)
-                }.font(.system(size: 18))
+                        .background(matching[personIndex] ? Color("BethanyNavalBackground") : Color.red)
+                        .foregroundColor(matching[personIndex] ? Color("BethanyGreenText") : Color.black)
+                }.font(.system(size: 12))
             }
             VStack{
                 Button{

@@ -457,7 +457,7 @@ struct CombinedAlert: View {
     func getNextStudentProblem(){
         answerComplete = false
         answerText = ""
-        fcp = languageViewModel.fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: isMultipleChoiceProblem)
+        fcp = languageViewModel.fillSingleFlashCard(isMultipleChoiceProblem: isMultipleChoiceProblem)
         personString = fcp.personString
         self.focusedField = .field
     }

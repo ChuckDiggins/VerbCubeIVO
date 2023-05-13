@@ -59,6 +59,8 @@ class ParticipleManager{
     }
 }
 
+let synthesizer = AVSpeechSynthesizer()
+
 struct ModelVerbCountStruct {
     var id : Int
     var verbCount : Int
@@ -489,7 +491,7 @@ class LanguageEngine : ObservableObject, Equatable {
     func getVerbString(personIndex: Int, number: Number, tense: Tense, specialVerbType: SpecialVerbType, verbString: String, dependentVerb: Verb, residualPhrase: String)->String{
         var msm = morphStructManager
         switch specialVerbType{
-        case .normal:
+        case .normal, .reflexive:
             return  msm.getFinalVerbForm(person: Person.all[personIndex]) +  residualPhrase
         case .verbsLikeGustar:
             let vu = VerbUtilities()
@@ -522,6 +524,28 @@ class LanguageEngine : ObservableObject, Equatable {
         case .defective:
             if personIndex == personIndex || personIndex == 5 {
                 return msm.getFinalVerbForm(person: Person.all[personIndex])
+            }
+            return ""
+        case .haberHay:
+            var residString = verbString
+            residString.removeFirst(5)
+//            print("getVerbString: .haberHay:  print \(verbString)")
+            var totalString = ""
+            switch tense {
+            case .present:
+                if personIndex == 2 || personIndex == 5 { return "hay" + residString }
+            case .imperfect:
+                if personIndex == 2 || personIndex == 5 { return "había" + residString }
+            case .conditional:
+                if personIndex == 2 || personIndex == 5 { return "habría" + residString }
+            case .future:
+                if personIndex == 2 || personIndex == 5 { return "habrá" + residString }
+            case .presentSubjunctive:
+                if personIndex == 2 || personIndex == 5 { return "Ojalá que haya" + residString }
+            case .imperfectSubjunctiveRA, .imperfectSubjunctiveSE:
+                if personIndex == 2 || personIndex == 5 { return "Ojalá que hubiera" + residString }
+            case .pastParticiple: return "habido" + residString
+            default: return ""
             }
             return ""
         }
@@ -580,7 +604,8 @@ class LanguageEngine : ObservableObject, Equatable {
         }
         
         switch specialVerbType{
-        case .normal:  return Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: getSubjectPronounType())
+        case .normal, .reflexive:
+            return Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: getSubjectPronounType())
         case .verbsLikeGustar:
             return subjunctiveWord + " a " + Person.all[personIndex].getPrepositionalPronounString(language: currentLanguage, gender: .masculine, verbStartsWithVowel: verbStartsWithVowel)
         case .weatherAndTime:
@@ -588,7 +613,7 @@ class LanguageEngine : ObservableObject, Equatable {
             return ""
         case .ThirdPersonOnly:
             if personIndex == 2 || personIndex == 5 {
-                return subjunctiveWord + Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: getSubjectPronounType(), verbStartsWithVowel: verbStartsWithVowel)
+                return subjunctiveWord
             }
             return ""
             
@@ -599,6 +624,9 @@ class LanguageEngine : ObservableObject, Equatable {
             if personIndex == 2 || personIndex == 5 {
                 return subjunctiveWord + Person.all[personIndex].getSubjectString(language: currentLanguage, subjectPronounType: getSubjectPronounType(), verbStartsWithVowel: verbStartsWithVowel)
             }
+            return ""
+        case .haberHay:
+//            print("getPersonString: .haberHay:  print \(verbString)")
             return ""
         }
     }

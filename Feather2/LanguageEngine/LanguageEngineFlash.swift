@@ -162,30 +162,56 @@ extension LanguageEngine{
         case Tense, Person
     }
     
+    func fillFilezillaFlashCards(maxCount: Int)->[FilezillaCard]{
+        switch getSpecialVerbType(){
+        case .normal, .verbsLikeGustar, .auxiliaryVerbsGerunds, .auxiliaryVerbsInfinitives:
+            return fillFilezillaFlashCardsWithProblemsOfMixedRandomTenseAndPerson(maxCount: maxCount)
+        default:
+            return fillFilezillaFlashCardsForDefectiveVerb(maxCount: maxCount)
+        }
+    }
+    func fillFilezillaFlashCardsForDefectiveVerb(maxCount: Int)->[FilezillaCard]{
+        var filezillaCardList = [FilezillaCard]()
+        var tenseList = getTenseList()
+        var personList = [Person.S3, .P3]
+        
+        personList.shuffle()
+        var person = personList[0]
+        if getSpecialVerbType() == .weatherAndTime { person = .S3 }
+        var ps = ProblemStruct()
+        for _ in 0 ..< maxCount {
+            verbList.shuffle()
+            let verb = filteredVerbList.randomElement()
+            ps = createProblemForThisPerson(verb: verb!, person: person, isMultipleChoiceProblem: true)
+            if getSpecialVerbType() == .weatherAndTime {
+                filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb!.getWordAtLanguage(language: getCurrentLanguage())) \(ps.residualPhrase)  \n\(ps.tense.rawValue) tense", answer: ps.correctAnswer))
+            } else {
+                filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb!.getWordAtLanguage(language: getCurrentLanguage())) \(ps.residualPhrase)  \n\(ps.tense.rawValue) tense \n\(ps.personString) ____________ ", answer: ps.correctAnswer))
+            }
+            if filezillaCardList.count > maxCount {
+                break
+            }
+        }
+        return filezillaCardList
+    }
+    
     func fillFilezillaFlashCardsWithProblemsOfMixedRandomTenseAndPerson(maxCount: Int)->[FilezillaCard]{
         var filezillaCardList = [FilezillaCard]()
         var tenseList = getTenseList()
         var verbList = getFilteredVerbs()
 //        verbList.shuffle()
         tenseList.shuffle()
-        var personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
-        personList.shuffle()
-        
+        let personList = [Person.S1, .S2, .S3, .P1, .P2, .P3]
         let problemList = [ProblemTypeEnum.Tense, ProblemTypeEnum.Person]
-        
-        
         var personCount = 0
         var tenseCount = 0
         var personString = ""
         var tenseString = ""
         var ps = ProblemStruct()
-        
-        
-        
+
         for _ in 0 ..< maxCount {
             verbList.shuffle()
-            var verb = verbList.randomElement()
-            
+            let verb = verbList.randomElement()
             let problemType = problemList.randomElement()!
             switch problemType{
             case .Person:
@@ -194,22 +220,19 @@ extension LanguageEngine{
                 ps = createProblemForThisPerson(verb: verb!, person: targetPerson, isMultipleChoiceProblem: true)
                 personString = ps.personString
                 tenseString = ps.tense.rawValue
-//                if ps.tense == .presentSubjunctive { personString = "que " + personString}
             case .Tense:
                 tenseCount += 1
                 let targetTense = tenseList.randomElement()!
-                createAndConjugateAgnosticVerb(verb: verb!, tense: targetTense)
                 ps = createProblemForThisTense(verb: verb!, tense: targetTense, isMultipleChoiceProblem: true)
                 personString = ps.personString
-//                if targetTense == .presentSubjunctive { personString = "que " + personString}
                 tenseString = targetTense.rawValue
             }
+        
             filezillaCardList.append(FilezillaCard(prompt: "\nVerb: \(verb!.getWordAtLanguage(language: getCurrentLanguage())) \(ps.residualPhrase)  \n\(tenseString) tense  \n\(personString) ____________ ", answer: ps.correctAnswer))
             
-            if verbList.count > maxCount {
+            if filezillaCardList.count > maxCount {
                 break
             }
-            
         }
         
         return filezillaCardList
@@ -263,6 +286,53 @@ extension LanguageEngine{
         print("personCount = \(personCount), tenseCount = \(tenseCount)")
     }
     
+    func fillSingleFlashCard(isMultipleChoiceProblem: Bool)->FlashCard{
+        switch getSpecialVerbType(){
+        case .normal, .verbsLikeGustar, .auxiliaryVerbsGerunds, .auxiliaryVerbsInfinitives:
+            return fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: isMultipleChoiceProblem)
+        default:
+            return fillSingleFlashCardForDefectiveVerb(isMultipleChoiceProblem: isMultipleChoiceProblem)
+        }
+    }
+    
+    func fillSingleFlashCardForDefectiveVerb(isMultipleChoiceProblem: Bool)->FlashCard{
+        var tenseList = getTenseList()
+        var verbList = getFilteredVerbs()
+        verbList.shuffle()
+        tenseList.shuffle()
+        var personList = [Person.S3, .P3]
+        personList.shuffle()
+        var person = personList[0]
+        if getSpecialVerbType() == .weatherAndTime { person = .S3 }
+        
+        var personCount = 0
+        var tenseCount = 0
+        var fcp = FlashCard()
+        let randomVerb = verbList.randomElement()!
+        let targetPerson = personList.randomElement()!
+        let ps = createProblemForThisPerson(verb: randomVerb, person: targetPerson, isMultipleChoiceProblem: isMultipleChoiceProblem)
+        
+        
+        if getSpecialVerbType() == .weatherAndTime {
+            fcp = FlashCard(verb: randomVerb, tense: ps.tense, person: targetPerson,
+                            personString: "",
+                            answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
+                            answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
+                            answer5: ps.getAnswer(index:4), answer6: ps.getAnswer(index:5),
+                            correctAnswer: ps.correctAnswer, question: ps.question)
+        } else {
+            fcp = FlashCard(verb: randomVerb, tense: ps.tense, person: targetPerson,
+                            personString: ps.personString,
+                            answer1: ps.getAnswer(index:0), answer2: ps.getAnswer(index:1),
+                            answer3: ps.getAnswer(index:2), answer4: ps.getAnswer(index:3),
+                            answer5: ps.getAnswer(index:4), answer6: ps.getAnswer(index:5),
+                            correctAnswer: ps.correctAnswer, question: ps.question)
+        }
+            
+        return fcp
+    }
+    
+
     func fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: Bool)->FlashCard{
         var tenseList = getTenseList()
         var verbList = getFilteredVerbs()

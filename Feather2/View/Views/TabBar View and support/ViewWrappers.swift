@@ -125,55 +125,52 @@ struct VerbSeeWrapper: View {
             VStack{
                 Text("Verb Explore").font(.title2)
                 
-                if verbsExistForAll3Endings && languageViewModel.getStudyPackage().specialVerbType == .normal{
+                if verbsExistForAll3Endings && languageViewModel.getSpecialVerbType() == .normal{
                     NavigationLink(destination: ThreeVerbSimpleView(languageViewModel: languageViewModel))
                     {
                     Text("3 Verbs 1")
                     }.modifier(OtherBlueButtonModifier())
                 }
                 
-                if languageViewModel.getFilteredVerbs().count > 0 && languageViewModel.getStudyPackage().specialVerbType == .normal {
+                if languageViewModel.getFilteredVerbs().count > 0 && languageViewModel.getSpecialVerbType() == .normal {
                     NavigationLink(destination: VerbCubeDirectorView(languageViewModel: languageViewModel))
                     {
                     Text("Verb Cube")
                     }.modifier(OtherBlueButtonModifier())
                 }
                 
-                if languageViewModel.getFilteredVerbs().count > 0 && languageViewModel.getStudyPackage().specialVerbType == .normal {
+                if languageViewModel.getFilteredVerbs().count > 0 && !isDefective(){
                   
                     NavigationLink(destination: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", multipleVerbFlag: true))
                     {
                     Text("Verb Conjugation")
                     }.modifier(OtherBlueButtonModifier())
                 }
-                
-                NavigationLink(destination: RightWrongVerbView(languageViewModel: languageViewModel))
-                {
-                Text("Right and Wrong")
-                }.modifier(OtherBlueButtonModifier())
-                
+                if isDefective() {
+                    NavigationLink(destination: RightWrongVerbView(languageViewModel: languageViewModel))
+                    {
+                    Text("Right and Wrong")
+                    }.modifier(OtherBlueButtonModifier())
+                }
                 VStack{
-                    switch getSpecialVerbType(){                        
-                    case .verbsLikeGustar:
+                    if getSpecialVerbType() == .verbsLikeGustar {
                         NavigationLink(destination: VerbsLikeGustarView(languageViewModel: languageViewModel))
                         {
-                        Text("Exploree Verbs like Gustar")
+                        Text("Explore Verbs like Gustar")
                         }.modifier(OtherBlueButtonModifier())
-                    case .auxiliaryVerbsInfinitives, .auxiliaryVerbsGerunds:
+                    }
+                    else if  getSpecialVerbType() == .auxiliaryVerbsInfinitives || getSpecialVerbType() ==  .auxiliaryVerbsGerunds{
                         NavigationLink(destination: AuxiliaryPhraseView(languageViewModel: languageViewModel))
                         {
                         Text("Explore Aux Verbs + Inf")
                         }.modifier(OtherBlueButtonModifier())
-                    default:
+                    }
+                    else if getSpecialVerbType() == .normal{
                         NavigationLink(destination: NormalPhraseView(languageViewModel: languageViewModel, specialVerbType: languageViewModel.getSpecialVerbType()))
                         {
                         Text("Explore Normal Verbs")
                         }.modifier(OtherBlueButtonModifier())
-                        
                     }
-                    
-                    
-                    
                 }.onAppear{
                     verbsExistForAll3Endings = languageViewModel.computeVerbsExistForAll3Endings()
                     let svt = languageViewModel.getStudyPackage().specialVerbType
@@ -194,9 +191,18 @@ struct VerbSeeWrapper: View {
         let    svt = languageViewModel.getSpecialVerbType()
         return svt
     }
+    
+    func isDefective()->Bool{
+        switch languageViewModel.getSpecialVerbType(){
+        case .ThirdPersonOnly, .defective, .weatherAndTime, .haberHay: return true
+        default: return false
+        }
+    }
 }
 
+
 struct VerbLearnWrapper: View {
+
     @EnvironmentObject var languageViewModel: LanguageViewModel
     var frameWidth = CGFloat(110)
     var frameHeight = CGFloat(200)
@@ -205,67 +211,81 @@ struct VerbLearnWrapper: View {
             Color("BethanyNavalBackground")
                 .ignoresSafeArea()
             Image("FeatherInverted")
-//                .resizable()
-//                .scaledToFit()
+            //                .resizable()
+            //                .scaledToFit()
                 .ignoresSafeArea(.all)
                 .opacity(0.4)
             VStack{
                 Text("Verb Learn").font(.title2)
-                HStack{
-                    NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel))
-                    {
-                    Text("Mix and Match")
-                    }.modifier(SquareBlueButtonModifier())
-                    
-                    NavigationLink(destination: DragDropVerbSubjectView(languageViewModel: languageViewModel ))
-                    {
-                    Text("Drag and Drop")
-                    
-                    }.modifier(SquareBlueButtonModifier())
+                if !isDefective(){
+                    HStack{
+                        
+                        if languageViewModel.getFilteredVerbs().count > 0 && languageViewModel.getStudyPackage().specialVerbType == .normal {
+                            NavigationLink(destination: MixAndMatchView(languageViewModel: languageViewModel))
+                            {
+                            Text("Mix and Match")
+                            }.modifier(SquareBlueButtonModifier())
+                            
+                            NavigationLink(destination: DragDropVerbSubjectView(languageViewModel: languageViewModel ))
+                            {
+                            Text("Drag and Drop")
+                            
+                            }.modifier(SquareBlueButtonModifier())
+                        }
+                    }
                 }
-                HStack{
-                    NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveVerbs))
+                    HStack{
+                        if !isDefective(){
+                            NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveVerbs))
+                            {
+                            VStack{
+                                Text("Multiple Choice")
+                                Text("Subject vs Verb")
+                            }
+                            }.modifier(SquareBlueButtonModifier())
+                        }
+                        
+                        NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveTenses))
+                        {
+                        VStack{
+                            Text("Multiple Choice")
+                            Text("Subject vs Tense")
+                        }
+                        }.modifier(SquareBlueButtonModifier())
+                        
+                    }
+                    NavigationLink(destination: FlashCardsView(languageViewModel: languageViewModel))
                     {
                     VStack{
-                        Text("Multiple Choice")
-                        Text("Subject vs Verb")
+                        Text("FlashCards")
+                        Text("Quick Flash")
                     }
                     }.modifier(SquareBlueButtonModifier())
-
                     
-                    NavigationLink(destination: MultipleChoiceView(languageViewModel: languageViewModel, multipleChoiceType: .oneSubjectToFiveTenses))
-                    {
-                    VStack{
-                        Text("Multiple Choice")
-                        Text("Subject vs Tense")
-                    }
-                    }.modifier(SquareBlueButtonModifier())
-
+                    
+                    //                NavigationLink(destination: FeatherVerbStepView(languageViewModel: languageViewModel)){
+                    //                    Text("Feather Step")
+                    //                }.modifier(NavLinkModifier())
+                    //
+                    //                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
+                    //                    Text("Feather Step 2")
+                    //                }.modifier(NavLinkModifier())
                 }
-                NavigationLink(destination: FlashCardsView(languageViewModel: languageViewModel))
-                {
-                VStack{
-                    Text("FlashCards")
-                    Text("Quick Flash")
-                }
-                }.modifier(SquareBlueButtonModifier())
                 
-                
-//                NavigationLink(destination: FeatherVerbStepView(languageViewModel: languageViewModel)){
-//                    Text("Feather Step")
-//                }.modifier(NavLinkModifier())
-//
-//                NavigationLink(destination: FeatherVerbQuizMorphView(languageViewModel: languageViewModel)){
-//                    Text("Feather Step 2")
-//                }.modifier(NavLinkModifier())
             }
-            
+            .foregroundColor(Color("BethanyGreenText"))
+            .font(.headline)
+            .padding()
         }
-        .foregroundColor(Color("BethanyGreenText"))
-        .font(.headline)
-        .padding()
+        
+    func isDefective()->Bool{
+        switch languageViewModel.getSpecialVerbType(){
+        case .ThirdPersonOnly, .defective, .weatherAndTime, .haberHay: return true
+        default: return false
+        }
     }
 }
+
 
 struct VerbTestWrapper: View {
     @EnvironmentObject var languageViewModel: LanguageViewModel

@@ -26,25 +26,31 @@ enum SpanishSpecials: String, CaseIterable{
     case specialsAuxInfinitives = "Auxiliary - Infinitives"
     case specialsVerbsLikeGustar = "Verbs like Gustar"
     case specialsWeatherTime = "Weather and Time"
-    case specialsReflexives = "Reflexives"
+    case specials3rdPersonOnly = "3rd Person Only"
+    case specialsHaberHay = "Haber - Hay"
+    case specialsIdiomsWithHaber = "Verb Idioms - Haber"
+    case specialsIdiomsWithHacer = "Verb Idioms - Hacer"
+    case specialsIdiomsWithTener = "Verb Idioms - Tener"
+    case specialsIdiomsWithDar = "Verb Idioms - Dar"
+    case specialsIdiomsOther = "Verb Idioms - Other"
+    case specialsReflexivesOnly = "Reflexives - Only"
+    case specialsReflexivesBoth = "Reflexives - Both"
   
-    public func getInteger()->String {
-        switch self{
-        case .specialsAuxGerund: return "Special 1"
-        case .specialsAuxInfinitives: return "Special 2"
-        case .specialsVerbsLikeGustar: return "Special 3"
-        case .specialsWeatherTime: return "Special 4"
-        case .specialsReflexives: return "Special 5"
-        }
-    }
-    
     public func getChapterDescription()->String{
         switch self{
         case .specialsAuxGerund: return "Auxiliary - Gerund"
         case .specialsAuxInfinitives: return "Auxiliary - Infinitives"
         case .specialsVerbsLikeGustar: return "Verbs like Gustar"
         case .specialsWeatherTime: return "Weather and Time"
-        case .specialsReflexives: return "Reflexives"
+        case .specials3rdPersonOnly: return "3rd Person Only"
+        case .specialsHaberHay: return "Haber - Hay"
+        case .specialsReflexivesOnly: return "Reflexives - Only"
+        case .specialsReflexivesBoth: return "Reflexives - Both"
+        case .specialsIdiomsWithHaber: return "Verb Idioms - Haber"
+        case .specialsIdiomsWithHacer: return "Verb Idioms - Hacer"
+        case .specialsIdiomsWithTener: return "Verb Idioms - Tener"
+        case .specialsIdiomsWithDar: return "Verb Idioms - Dar"
+        case .specialsIdiomsOther: return "Verb Idioms - Other"
         }
     }
 }
@@ -255,7 +261,12 @@ extension LanguageEngine{
         
         let v2mGroupSpanishSpecialsAuxiliaryGerunds = VerbToModelGroup(chapter: "Specials", lesson: "Auxiliary - Gerunds",
                 verbToModelList :
-                    [VerbToModelStruct("andar"), VerbToModelStruct("seguir"), VerbToModelStruct("venir"), VerbToModelStruct("verse"), VerbToModelStruct("ir")],
+                    [VerbToModelStruct("andar"),
+                     VerbToModelStruct("seguir"),
+                     VerbToModelStruct("venir"),
+                     VerbToModelStruct("verse"),
+                     
+                     VerbToModelStruct("ir")],
                 tenseList: [.present, .preterite, .presentSubjunctive, .presentPerfect],
                 specialVerbType: .auxiliaryVerbsGerunds)
                fillAssociatedModelList(v2mGroupSpanishSpecialsAuxiliaryGerunds)
@@ -263,7 +274,16 @@ extension LanguageEngine{
         
         let v2mGroupSpanishSpecialsAuxiliaryInfinitives = VerbToModelGroup(chapter: "Specials", lesson: "Auxiliary - Infinitives",
                 verbToModelList :
-                    [VerbToModelStruct("tener que"), VerbToModelStruct("volver a"), VerbToModelStruct("acabar de"), VerbToModelStruct("quedar sin"), VerbToModelStruct("venir a")],
+                    [VerbToModelStruct("tener que"),
+                     VerbToModelStruct("tener ganas de"),
+                     VerbToModelStruct("haber de"),
+                     VerbToModelStruct("dar de"),
+                     VerbToModelStruct("volver a"),
+                     VerbToModelStruct("acabar de"),
+                     VerbToModelStruct("quedar sin"),
+                     VerbToModelStruct("tener miedo de"),
+                     VerbToModelStruct("tener gusto en"),
+                     VerbToModelStruct("venir a")],
                 tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
                 specialVerbType: .auxiliaryVerbsInfinitives)
                fillAssociatedModelList(v2mGroupSpanishSpecialsAuxiliaryInfinitives)
@@ -271,20 +291,130 @@ extension LanguageEngine{
         
         
         let v2mGroupSpanishSpecialsWeatherTime = VerbToModelGroup(chapter: "Specials", lesson: "Weather and Time",
-                verbToModelList :
-                    [VerbToModelStruct("llover"), VerbToModelStruct("anochecer"),],
-                tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
+                                                                  verbToModelList :
+                                                                    [VerbToModelStruct("amanacer"),
+                                                                     VerbToModelStruct("anochecer"),
+                                                                     VerbToModelStruct("atardecer"),
+                                                                     VerbToModelStruct("dar las doce"),
+                                                                     VerbToModelStruct("dar la hora"),
+                                                                     VerbToModelStruct("helar"),
+                                                                     VerbToModelStruct("granizar"),
+                                                                     VerbToModelStruct("llover"),
+                                                                     VerbToModelStruct("nevar"),
+                                                                     VerbToModelStruct("relampaguear"),
+                                                                     VerbToModelStruct("tronar"),
+                                                                    VerbToModelStruct("tener frio"),
+                                                                     VerbToModelStruct("hacer viento"),
+                                                                      VerbToModelStruct("hacer buen tiempo"),],
+                                                                  
+                                                                  tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
                 specialVerbType: .weatherAndTime)
                fillAssociatedModelList(v2mGroupSpanishSpecialsWeatherTime)
                v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsWeatherTime)
+
+        let v2mGroupSpanishSpecialsThirdPersonOnly = VerbToModelGroup(chapter: "Specials", lesson: "3rd Person Only",
+                                                                  verbToModelList :
+                                                                    [VerbToModelStruct("acaecer"),
+                                                                     VerbToModelStruct("acontecer"),
+                                                                     VerbToModelStruct("atañer"),
+                                                                     VerbToModelStruct("antonjarse"),
+                                                                     VerbToModelStruct("concernir"),
+                                                                     VerbToModelStruct("emmpecer"),
+                                                                     VerbToModelStruct("obstar"),
+                                                                     VerbToModelStruct("ocurrir"), ],
+                                                                  tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
+                                                                    specialVerbType: .ThirdPersonOnly)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsThirdPersonOnly)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsThirdPersonOnly)
+        
+        let v2mGroupSpanishSpecialsHaberHay = VerbToModelGroup(chapter: "Specials", lesson: "Haber - Hay",
+                                                                  verbToModelList :
+                                                                    [VerbToModelStruct("hay que"),
+                                                                     VerbToModelStruct("hay"), ],
+                                                               tenseList: [.present, .imperfect, .conditional, .future],
+                                                                    specialVerbType: .haberHay)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsHaberHay)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsHaberHay)
+        
+        let v2mGroupSpanishSpecialsVerbIdiomsHaber = VerbToModelGroup(chapter: "Specials", lesson: "Verb Idioms - Haber",
+                                                                  verbToModelList :
+                                                                    [VerbToModelStruct("haber de partir el inviernes"),
+                                                                     VerbToModelStruct("haber de partir el inviernes"),
+                                                                     VerbToModelStruct("haber que seguir trajando"),
+                                                                     VerbToModelStruct("haber"), ],
+                                                                      tenseList: [.present, .imperfect, .conditional, .presentSubjunctive, .presentPerfect],
+                                                                      specialVerbType: .haberHay)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsVerbIdiomsHaber)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsVerbIdiomsHaber)
+        
+        let v2mGroupSpanishSpecialsVerbIdiomsHacer = VerbToModelGroup(chapter: "Specials", lesson: "Verb Idioms - Hacer",
+                                                                  verbToModelList :
+                                                                    [
+                                                                     VerbToModelStruct("hacer el favor"),
+                                                                     VerbToModelStruct("hacer dos años"),
+                                                                     VerbToModelStruct("hacerse falta a"),
+                                                                     VerbToModelStruct("hacer un pregunta"), ],
+                                                                      tenseList: [.present, .preterite, .imperfect, .conditional, .presentSubjunctive],
+                                                                    specialVerbType: .normal)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsVerbIdiomsHacer)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsVerbIdiomsHacer)
+        
+        let v2mGroupSpanishSpecialsVerbIdiomsTener = VerbToModelGroup(chapter: "Specials", lesson: "Verb Idioms - Tener",
+                                                                  verbToModelList :
+                                                                    [VerbToModelStruct("tener sueño"),
+                                                                     VerbToModelStruct("tener cuidado"),
+                                                                     VerbToModelStruct("tener razón"),
+                                                                     ],
+                                                                      tenseList: [.present, .preterite, .imperfect, .conditional, .presentSubjunctive],
+                                                                    specialVerbType: .normal)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsVerbIdiomsTener)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsVerbIdiomsTener)
+        
+        let v2mGroupSpanishSpecialsVerbIdiomsDar = VerbToModelGroup(chapter: "Specials", lesson: "Verb Idioms - Dar",
+                                                                  verbToModelList :
+                                                                    [VerbToModelStruct("dar un paseo"),
+                                                                     VerbToModelStruct("dar de comer a los patos"),
+                                                                     VerbToModelStruct("darse prisa"),
+                                                                     
+                                                                     ],
+                                                                      tenseList: [.present, .preterite, .imperfect, .conditional, .presentSubjunctive],
+                                                                    specialVerbType: .normal)
+               fillAssociatedModelList(v2mGroupSpanishSpecialsVerbIdiomsDar)
+               v2MGroupManager.appendGroup(v2mGroupSpanishSpecialsVerbIdiomsDar)
         
         let v2mGroupSpanishReflexives = VerbToModelGroup(chapter: "Specials", lesson: "Reflexives",
                 verbToModelList :
-                    [VerbToModelStruct("casarse"), VerbToModelStruct("tenerse"),],
+                    [VerbToModelStruct("casarse"), VerbToModelStruct("tenerse"), VerbToModelStruct("darse prisa"), VerbToModelStruct("darse cuenta de"),],
                 tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
                 specialVerbType: .normal)
                fillAssociatedModelList(v2mGroupSpanishReflexives)
                v2MGroupManager.appendGroup(v2mGroupSpanishReflexives)
+        
+        let v2mGroupSpanishNonReflexives = VerbToModelGroup(chapter: "Specials", lesson: "Non-Reflexives",
+                                         verbToModelList :
+                                            [ VerbToModelStruct("aburrir"),
+                                              VerbToModelStruct("acercar"),
+                                             VerbToModelStruct("caer"),
+                                              VerbToModelStruct("encontrar"),
+                                             VerbToModelStruct("ir"),
+                                              VerbToModelStruct("levantar"),
+                                              VerbToModelStruct("llamar"),
+                                              VerbToModelStruct("negar"),
+                                              VerbToModelStruct("ocupar"),
+                                              VerbToModelStruct("perder"),
+                                              VerbToModelStruct("referir"),
+                                              VerbToModelStruct("retirar"),
+                                              VerbToModelStruct("reir"),
+                                              VerbToModelStruct("reunir"),
+                                              VerbToModelStruct("secar"),
+                                              VerbToModelStruct("volver"),
+                                              VerbToModelStruct("poner"),
+                                              VerbToModelStruct("quedar"),
+                                            ],
+                                           tenseList: [.present, .preterite, .imperative, .presentSubjunctive, .presentPerfect],
+                                           specialVerbType: .reflexive)
+        fillAssociatedModelList(v2mGroupSpanishNonReflexives)
+        v2MGroupManager.appendGroup(v2mGroupSpanishNonReflexives)
         
     }
     
@@ -323,10 +453,11 @@ extension LanguageEngine{
         fillAssociatedModelList(v2mGroupChuck1B)
         v2MGroupManager.appendGroup(v2mGroupChuck1B)
         
-        let v2mGroupChuck1B2 = VerbToModelGroup(chapter: "Extra 1B", lesson: "Regular reflexives",
+        let v2mGroupChuck1B2 = VerbToModelGroup(chapter: "Extra 1B", lesson: "Reflexives",
                                          verbToModelList :
-                                            [ VerbToModelStruct("encontrarse"),VerbToModelStruct("ponerse"),
-                                             VerbToModelStruct("sentirse"), VerbToModelStruct("levantarse"),
+                                            [ VerbToModelStruct("aburrirse"),
+                                              VerbToModelStruct("acostarse"),
+                                             VerbToModelStruct("enflaquecerse"), VerbToModelStruct("levantarse"),
                                              VerbToModelStruct("atreverse"), VerbToModelStruct("referirse")],
                                            tenseList: [.present, .preterite, .imperative, .presentSubjunctive, .presentPerfect],
                                            specialVerbType: .normal)

@@ -159,7 +159,7 @@ struct FlashCardsView: View {
     }
     
     func loadNewCards(languageViewModel: LanguageViewModel){
-        cards = languageViewModel.fillFilezillaFlashCardsWithProblemsOfMixedRandomTenseAndPerson(maxCount: 25)
+        cards = languageViewModel.fillFilezillaFlashCards(maxCount: 25)
         saveData()
         
 //        cards.removeAll()

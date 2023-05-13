@@ -221,37 +221,47 @@ struct SimpleVerbConjugation: View {
     }
     
     func setCurrentVerb(){
-        //        currentVerbPhrase = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
         currentTenseString = languageViewModel.getCurrentTense().rawValue
         getParticipleForThisTense()
-//        setSubjunctiveStuff()
         languageViewModel.createAndConjugateCurrentFilteredVerb()
         currentVerbString = languageViewModel.getCurrentFilteredVerb().getWordAtLanguage(language: languageViewModel.getCurrentLanguage())
         //extracts the core verb in presence of reflexives and/or verb phrases
         let result = VerbUtilities().analyzeSpanishWordPhrase(testString: currentVerbString)
         currentVerbModel = languageViewModel.findModelForThisVerbString(verbWord: result.verbWord)
         setPatternStuff()
-        //        var msm = languageViewModel.getMorphStructManager()
         vvm.removeAll()
+        var vs = ""
         let dos = languageViewModel.getDirectObjectStruct(specialVerbType: languageViewModel.getSpecialVerbType())
         let directObjectString = dos.objectString
         number = dos.objectNumber
         var gerund = languageViewModel.getGerundString(specialVerbType: languageViewModel.getSpecialVerbType())
         var infinitive = languageViewModel.getInfinitiveString(specialVerbType: languageViewModel.getSpecialVerbType())
         for i in 0..<6 {
-            var vs = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbPhrase, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
-           
-            print("vs = \(vs) + gerund \(gerund) + infinitive \(infinitive) + directObjectString \(directObjectString)")
-            vs += gerund
-            vs += infinitive
-            vs += " " + directObjectString
-//            print("vs = \(vs)")
-            if languageViewModel.getCurrentTense() == .imperative && i == 0 {
+            vs = ""
+            var tempStr = languageViewModel.getPersonString(personIndex: i, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbPhrase)
+            person[i] = tempStr
+            if languageViewModel.getSpecialVerbType() == .ThirdPersonOnly {
                 vs = ""
+                if i == 2 {
+                    vs = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbPhrase, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+                }
+            } else if languageViewModel.getSpecialVerbType() == .weatherAndTime {
+                vs = ""
+                if i == 2 || i == 5 {
+                    vs = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbPhrase, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+                }
+            }
+            else {
+                vs = languageViewModel.getVerbString(personIndex: i, number: number, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: currentVerbPhrase, dependentVerb: dependentVerb, residualPhrase: residualPhrase)
+                vs += gerund
+                vs += infinitive
+                vs += " " + directObjectString
+                if languageViewModel.getCurrentTense() == .imperative && i == 0 {
+                    vs = ""
+                    person[i] =  ""
+                }
             }
             vvm.append(vs)
-//            person[i] = subjunctiveWord + languageViewModel.getPersonString(personIndex: i, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: vvm[i])
-            person[i] = languageViewModel.getPersonString(personIndex: i, tense: languageViewModel.getCurrentTense(), specialVerbType: languageViewModel.getSpecialVerbType(), verbString: vvm[i])
         }
         isAnalyzed.toggle()
     }

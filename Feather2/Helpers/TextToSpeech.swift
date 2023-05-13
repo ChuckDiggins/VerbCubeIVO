@@ -12,7 +12,7 @@ import AVFoundation
 
 
 func textToSpeech(text: String, language: LanguageType ){
-    var utterance = AVSpeechUtterance(string: "")
+    var utterance = AVSpeechUtterance(string: "Hello")
     AVSpeechSynthesisVoice.speechVoices() // <--  fetch voice dependencies
     utterance = AVSpeechUtterance(string: text)
     switch language {
@@ -26,7 +26,7 @@ func textToSpeech(text: String, language: LanguageType ){
     default:
         utterance.voice = AVSpeechSynthesisVoice(language:  "es-US")
     }
-    utterance.rate = 0.25
-    let synthesizer = AVSpeechSynthesizer()
+    utterance.rate = 0.5
+//    let synthesizer = AVSpeechSynthesizer()
     synthesizer.speak(utterance)
 }

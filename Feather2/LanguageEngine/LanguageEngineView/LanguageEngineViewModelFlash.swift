@@ -27,6 +27,10 @@ extension LanguageViewModel{
         languageEngine.fillFilezillaFlashCardsWithProblemsOfMixedRandomTenseAndPerson(maxCount:maxCount)
     }
     
+    func fillFilezillaFlashCards(maxCount: Int)->[FilezillaCard]{
+        languageEngine.fillFilezillaFlashCards(maxCount:maxCount)
+    }
+    
     func fillFlashCardsForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: Bool){
         languageEngine.fillFlashCardsForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: isMultipleChoiceProblem)
     }
@@ -34,6 +38,11 @@ extension LanguageViewModel{
     func fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: Bool)->FlashCard{
         languageEngine.fillSingleFlashCardForProblemsOfMixedRandomTenseAndPerson(isMultipleChoiceProblem: isMultipleChoiceProblem)
     }
+
+    func fillSingleFlashCard(isMultipleChoiceProblem: Bool)->FlashCard{
+        languageEngine.fillSingleFlashCard(isMultipleChoiceProblem: isMultipleChoiceProblem)
+    }
+
 
 
     func getCurrentFlashCard()->FlashCard{
