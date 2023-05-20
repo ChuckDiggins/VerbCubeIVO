@@ -1195,7 +1195,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1233,7 +1233,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChuckDiggins.ReleaseFeather2;
 				PRODUCT_NAME = "Verbs of a Feather";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
