@@ -120,6 +120,7 @@ class LanguageEngine : ObservableObject, Equatable {
     var verbModelFilteredVerbList = [Verb]()
     var studyPackageFilteredVerbList = [Verb]()
     var currentVerbModel = RomanceVerbModel()
+    var reflexiveVerbManager = ReflexiveVerbManager()
     
     private var currentVerb = Verb()
     private var currentTense = Tense.present
@@ -284,6 +285,7 @@ class LanguageEngine : ObservableObject, Equatable {
         
         print("currentLanguage = \(currentLanguage.rawValue)")
         restoreV2MPackage()
+        fillReflexiveVerbLists()
 //        resetFeatherSentenceHandler()
     }
     
@@ -315,8 +317,10 @@ class LanguageEngine : ObservableObject, Equatable {
         languageString = currentLanguage.rawValue
         print("setNextLanguage: \(languageString): \(currentV2mChapter) \(currentV2mLesson), model \(currentVerbModelString)")
         restoreV2MPackage()
+        fillReflexiveVerbLists()
     }
     
+
     func loadPastParticiplesFromJsonVerbs(){
         let jm = jsonDictionaryManager
         let jvManager = jm.jsonVerbManager
@@ -1058,7 +1062,6 @@ class LanguageEngine : ObservableObject, Equatable {
         morphStructManager.set(index: person.getIndex(), ms: ms)
         
         let finalForm = morphStructManager.getFinalVerbForm(person: person)
-        
         return finalForm
     }
     

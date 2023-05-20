@@ -259,6 +259,7 @@ extension LanguageEngine{
         
         currentVerbModel = findModelForThisVerbString(verbWord: currentVerbModelString)
         print("restoreModel: currentVerbModelString = \(currentVerbModelString)")
+        setToVerbModelMode()
 //        setToVerbModelMode()
         trimFilteredVerbList(16)
     }

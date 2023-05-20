@@ -207,50 +207,6 @@ struct ExerciseDataManager{
         setArray(data)
     }
     
-    
-//    mutating func loadExploreImagesA(svt: SpecialVerbType){
-//        var idNum = 0
-//        var data = [ExerciseData]()
-//
-//        if hasSimpleTenses{
-//            data = [
-//                ExerciseData(id: 0, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
-//
-//                ExerciseData(id: 1, image: "EXPLOREVerbCube", studentLevel: "Intermediate", title: "Verb Cube", details: "The Verb Cube allows you to look at your active verb list in 3-dimensions: Verb, Tense, and Person.", active: true),
-//
-//                ExerciseData(id: 2, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
-//
-//                ExerciseData(id: 3, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
-//
-//                ExerciseData(id: 4, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
-//            ]
-//            idNum = 5
-//        } else {
-//            data = [
-//                ExerciseData(id: 0, image: "EXPLORE3Verbs", studentLevel: "Beginner", title: "3 Verbs View", details: "If your active verb list contains AR, ER and IR verbs, you can look at them together in 3 Verbs View.", active: true),
-//
-//                ExerciseData(id: 1, image: "EXPLORERightWrong", studentLevel: "All levels", title: "Right and Wrong", details: "Right and Wrong shows you the correct way a verb is conjugated next to the regular conjugation.  If they are different, the subject turns red.", active: true),
-//
-//                ExerciseData(id: 2, image: "EXPLOREVerbConjugation", studentLevel: "All levels", title: "Verb Conjugation", details: "This is the basic conjugation window for looking at your verbs, one at a time.  One tense at a time.  You can also go to the 'Show me this verb' and see conjugation one step at a time.", active: true),
-//
-//                ExerciseData(id: 3, image: "EXPLOREVerbMorphing", studentLevel: "All levels", title: "Verb Morphing", details: "Watch your verbs conjugated step-by-step.", active: true),
-//            ]
-//            idNum = 4
-//        }
-//        switch svt{
-//        case .verbsLikeGustar: data.append(
-//            ExerciseData(id: idNum, image: "EXPLOREGustar", studentLevel: "Beginner", title: "Explore Verbs Like Gustar", details: "Verbs like gustar conjugate in the indirect sense.  Instead of 'I like ice cream', verbs like gustar conjugate more like 'ice cream is pleasing to me'", active: true)
-//        )
-//        case .auxiliaryVerbsInfinitives: data.append(
-//            ExerciseData(id: idNum, image: "EXPLOREAuxiliary", studentLevel: "Beginner", title: "Explore Auxiliary Verbs", details: "Auxiliary verbs are used to create progressive and perfect tenses.  They are also combined with infinitives to create verb phrases, such as 'querer venir con'", active: true)
-//        )
-//        default: data.append(
-//            ExerciseData(id: idNum, image: "EXPLORENormal", studentLevel: "All levels", title: "Explore Normal Verbs", details: "Almost all Spanish verbs are 'normal'.  This means they follow the simple pattern of Subject-Verb.  This includes reflexive verbs and verb phrases.  Thus, 'darse con' is a normal verb.", active: true)
-//        )
-//        } //end of switch
-//        setArray(data)
-//    }
-//
     mutating func loadLearnImages(svt: SpecialVerbType){
         var data = [ExerciseData]()
         if svt == .defective || svt == .ThirdPersonOnly || svt == .haberHay || svt == .weatherAndTime{

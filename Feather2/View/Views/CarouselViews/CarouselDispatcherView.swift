@@ -153,9 +153,11 @@ struct NavStackCarouselDispatcherView: View {
                             {
                             Label("Tutorials", systemImage: "graduationcap")
                             }
+                            
                         }.font(.caption),
                     trailing:
                         HStack(spacing:0){
+                            
                             NavigationLink(destination: FindMyVerbDispatcher(languageViewModel: languageViewModel ))
                             {
                             Label("Find", systemImage: "magnifyingglass")

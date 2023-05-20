@@ -64,6 +64,7 @@ class LanguageViewModel : ObservableObject, Equatable {
         languageEngine.getModelVerbCountAt(id)
     }
     
+    
     func clearAllVerbCountsInCoreData(){
         languageEngine.clearAllVerbCountsInCoreData()
     }

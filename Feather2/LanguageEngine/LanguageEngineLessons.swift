@@ -384,7 +384,19 @@ extension LanguageEngine{
         
         let v2mGroupSpanishReflexives = VerbToModelGroup(chapter: "Specials", lesson: "Reflexives",
                 verbToModelList :
-                    [VerbToModelStruct("casarse"), VerbToModelStruct("tenerse"), VerbToModelStruct("darse prisa"), VerbToModelStruct("darse cuenta de"),],
+                    [VerbToModelStruct("aprovecharse"),
+                     VerbToModelStruct("burlarse"),
+                     VerbToModelStruct("casarse"),
+                     VerbToModelStruct("divertir"),
+                     VerbToModelStruct("enfermarse"),
+                     VerbToModelStruct("erguirse"),
+                     VerbToModelStruct("prepararse"),
+                     VerbToModelStruct("sentarse"),
+                     VerbToModelStruct("preocuparse"),
+                     VerbToModelStruct("tenerse"),
+                     VerbToModelStruct("darse prisa"),
+                     VerbToModelStruct("darse cuenta de"),
+                    ],
                 tenseList: [.present, .preterite, .presentSubjunctive, .presentProgressive],
                 specialVerbType: .normal)
                fillAssociatedModelList(v2mGroupSpanishReflexives)
