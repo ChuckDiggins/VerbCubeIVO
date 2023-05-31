@@ -20,11 +20,10 @@ struct ReflexivesView: View {
     //    @ObservedObject var reflexiveVerbManager : ReflexiveVerbManager
     @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
     @EnvironmentObject var router: Router
-    @Binding var selected: Bool
     @State private var currentLanguage = LanguageType.Agnostic
     @Environment(\.dismiss) private var dismiss
-    @State private var reflexiveVerbPairList = [ReflexiveVerbPair]()
-    @State private var currentVerbPair = ReflexiveVerbPair(Verb(), Verb())
+    @State private var reflexiveVerbPairList = [FeatherVerbPair]()
+    @State private var currentVerbPair = FeatherVerbPair(Verb(), Verb())
     @State private var spanishPhrase = ""
     @State var currentTenseString = ""
     @State var currentVerbString = ""
@@ -73,18 +72,23 @@ struct ReflexivesView: View {
         //            Color("BethanyNavalBackground")
         //                .ignoresSafeArea()
         //
-        ZStack{
-            ExitButtonView()
-            Text("")
-            VStack{
-                Button{
-                    changeReflexiveType()
-                } label: {
-                    Text(getReflexiveTypeString())
+        VStack{
+            ZStack{
+                ExitButtonView()
+                Text("")
+                VStack{
+                    Button{
+                        changeReflexiveType()
+                    } label: {
+                        Text(getReflexiveTypeString())
                         
-                }.frame(width: 300, height: 35, alignment: .center)
-                    .background(.red).foregroundColor(.yellow)
-                    .cornerRadius(10)
+                    }.frame(width: 300, height: 35, alignment: .center)
+                        .background(.red).foregroundColor(.yellow)
+                        .cornerRadius(10)
+                }
+            }
+            VStack{
+                
                 VStack{
                     //            Text("Spanish Reflexives").foregroundColor(Color("ChuckText1")).font(.title2)
                     Text("Current tense: \(currentTense.rawValue)")
@@ -415,12 +419,6 @@ struct ReflexivesView: View {
     func constructConjugateForm(person: Person, currentVerb: Verb)->String{
         
         let thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
-//        var pp = ""
-//        if currentTense.isProgressive(){
-//            pp = thisVerb.createDefaultGerund()
-//        } else if currentTense.isPerfectIndicative(){
-//            pp = thisVerb.createDefaultPastParticiple()
-//        }
         let vu = VerbUtilities()
         var rightPhrase = languageViewModel.createAndConjugateAgnosticVerb(language: currentLanguage, verb: currentVerb, tense: currentTense, person: person, isReflexive: isReflexive)
         rightPhrase = vu.removeLeadingOrFollowingBlanks(characterArray: rightPhrase)

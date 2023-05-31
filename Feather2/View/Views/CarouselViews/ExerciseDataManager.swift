@@ -8,11 +8,12 @@
 import SwiftUI
 
 enum ExerciseMode : String, Hashable, CaseIterable, Identifiable{
-    case Select
-    case Explore
-    case Learn
-    case Test
-    case SelectModel
+    case Select = "Select"
+    case Explore = "Explore"
+    case Learn = "Learn"
+    case Test = "Test"
+    case SelectModel  = "Select Model"
+    case SelfContained  = "Self-Contained"
     var id: String{
         self.rawValue
     }
@@ -106,6 +107,7 @@ struct ExerciseDataManager{
         case .Learn: loadLearnImages(svt: svt)
         case .Test:  loadTestImages()
         case .SelectModel: loadSelectImages(verbOrModelMode: verbOrModelMode)
+        case .SelfContained: loadContainedImages()
         }
     }
     
@@ -127,9 +129,9 @@ struct ExerciseDataManager{
                 ExerciseData(id: 1, image: "SELECTVerbModels", studentLevel: "All levels", title: "Verb Models", details: "Verb Models are a powerful way to learn how to conjugate ANY Spanish verb in any tense.  This shows you one verb model at a time with each of its associated verbs.", active: true),
                 
                 ExerciseData(id: 2, image: "SELECTShowCurrentVerbs", studentLevel: "All levels", title: "Show Current Verbs", details: "Current verbs are the verbs that are active for learning.", active: true)
-                ]
+            ]
             setArray(data)
-                
+            
         case .specialsMode:
             let data = [
                 ExerciseData(id: 0, image: "SELECTOptionsEggs", studentLevel: "Intermediate", title: "Extras", details: "These specials feature more advanced topics.", active: true),
@@ -236,19 +238,27 @@ struct ExerciseDataManager{
                 
                 ExerciseData(id: 3, image: "LEARNFlashCards", studentLevel: "Beginner", title: "Flash Cards", details: "Timed exercise.  Your current verbs and tenses are presented to you randomly one phrase at a time.  If you know the answer, push the card to the right.  To see the answer, click on the card.  If you don't know the answer, push the card to the left.", active: true)
             ]
-        
+            
         }
+        setArray(data)
+    }
     
-    setArray(data)
-}
-
-mutating func loadTestImages(){
-    let data = [
-        ExerciseData(id: 1, image: "TESTMultiple", studentLevel: "Beginner", title: "Multiple Choice Test", details: "You must push a button with the correct answer for each.  Answer 8 out of 10 correctly to pass.", active: true),
-        
-        ExerciseData(id: 2, image: "TESTFillInBlanks", studentLevel: "Intermediate", title: "Fill-in Blanks Test", details: "You must type in the correct answer for each problem.  Answer 8 out of 10 correctly to pass.", active: true),
-    ]
-    setArray(data)
-}
+    mutating func loadTestImages(){
+        let data = [
+            ExerciseData(id: 1, image: "TESTMultiple", studentLevel: "Beginner", title: "Multiple Choice Test", details: "You must push a button with the correct answer for each.  Answer 8 out of 10 correctly to pass.", active: true),
+            
+            ExerciseData(id: 2, image: "TESTFillInBlanks", studentLevel: "Intermediate", title: "Fill-in Blanks Test", details: "You must type in the correct answer for each problem.  Answer 8 out of 10 correctly to pass.", active: true),
+        ]
+        setArray(data)
+    }
+    
+    mutating func loadContainedImages(){
+        let data = [
+            ExerciseData(id: 1, image: "SC Reflexives", studentLevel: "Beginner", title: "Reflexive Verbs", details: "Reflexive verbs are verbs that refer to themselves.  They end in 'se'.  Sometimes, reflexive verbs have a very different meaning from their non-reflexive forms." , active: true),
+            
+            ExerciseData(id: 2, image: "SC Idioms", studentLevel: "Intermediate", title: "Verb Idioms", details: "Verb Idioms are verb phrases that have very special meanings.", active: true),
+        ]
+        setArray(data)
+    }
 }
 

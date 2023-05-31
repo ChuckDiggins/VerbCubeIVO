@@ -41,6 +41,8 @@
 		6E2D260C2916E7EA00D8F35E /* FlashzillaFlashCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2D260B2916E7EA00D8F35E /* FlashzillaFlashCardView.swift */; };
 		6E2D260E2916E84C00D8F35E /* FlashzillaCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2D260D2916E84C00D8F35E /* FlashzillaCardView.swift */; };
 		6E2D26102916E91000D8F35E /* EditFilezillaCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2D260F2916E91000D8F35E /* EditFilezillaCardsView.swift */; };
+		6E2FF8862A21390100887A75 /* LanguageEngineIdioms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2FF8852A21390100887A75 /* LanguageEngineIdioms.swift */; };
+		6E2FF8882A21392600887A75 /* LanguageEngineViewIdioms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2FF8872A21392600887A75 /* LanguageEngineViewIdioms.swift */; };
 		6E358DCF2964D7E200CC420A /* AuxiliaryPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E358DCE2964D7E200CC420A /* AuxiliaryPhraseView.swift */; };
 		6E358DD1296602D300CC420A /* NormalPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E358DD0296602D300CC420A /* NormalPhraseView.swift */; };
 		6E417484289EF0CA00EB5C00 /* TeachMeCommonControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */; };
@@ -215,6 +217,8 @@
 		6E2D260B2916E7EA00D8F35E /* FlashzillaFlashCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashzillaFlashCardView.swift; sourceTree = "<group>"; };
 		6E2D260D2916E84C00D8F35E /* FlashzillaCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashzillaCardView.swift; sourceTree = "<group>"; };
 		6E2D260F2916E91000D8F35E /* EditFilezillaCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFilezillaCardsView.swift; sourceTree = "<group>"; };
+		6E2FF8852A21390100887A75 /* LanguageEngineIdioms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineIdioms.swift; sourceTree = "<group>"; };
+		6E2FF8872A21392600887A75 /* LanguageEngineViewIdioms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageEngineViewIdioms.swift; sourceTree = "<group>"; };
 		6E358DCE2964D7E200CC420A /* AuxiliaryPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuxiliaryPhraseView.swift; sourceTree = "<group>"; };
 		6E358DD0296602D300CC420A /* NormalPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalPhraseView.swift; sourceTree = "<group>"; };
 		6E417483289EF0CA00EB5C00 /* TeachMeCommonControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeachMeCommonControls.swift; sourceTree = "<group>"; };
@@ -489,7 +493,6 @@
 			isa = PBXGroup;
 			children = (
 				6EA80F1827BDB27800D6061F /* LanguageEngine.swift */,
-				6E85CC242A13F54B00A931FA /* LanguageEngineReflexive.swift */,
 				6EDE94522815E45300C1A3DB /* LanguageEngineVerbModel.swift */,
 				6EDADC3028C9205800C117AD /* LanguageEngineFlash.swift */,
 				6E69297627D25E76003BCD71 /* LanguageEngineVerbCube.swift */,
@@ -498,6 +501,8 @@
 				6EE902C5294E1C4E005D9704 /* LanguageEngineLessons.swift */,
 				6E17837F2960866100427CFB /* LanguageEngineContextFree.swift */,
 				6ECB793129B39EE900101899 /* LanguageEngineVerbOrVerbModel.swift */,
+				6E85CC242A13F54B00A931FA /* LanguageEngineReflexive.swift */,
+				6E2FF8852A21390100887A75 /* LanguageEngineIdioms.swift */,
 			);
 			path = LanguageEngine;
 			sourceTree = "<group>";
@@ -704,6 +709,7 @@
 				6EE902C7294E234C005D9704 /* LanguageEngineViewVerbsToModel.swift */,
 				6E178381296087B700427CFB /* LanguageEngineViewContextFree.swift */,
 				6E85CC262A13F5BA00A931FA /* LanguageViewModelReflexive.swift */,
+				6E2FF8872A21392600887A75 /* LanguageEngineViewIdioms.swift */,
 			);
 			name = LanguageEngineView;
 			path = LanguageEngine/LanguageEngineView;
@@ -913,6 +919,7 @@
 				6E978AD8285925BA0085EA4D /* FeatherVerbStepView.swift in Sources */,
 				6E69297D27D2C6D1003BCD71 /* QuizCubeHandlerClass.swift in Sources */,
 				6E447C9F28A6F64D00528DD9 /* ButtonAnimationView.swift in Sources */,
+				6E2FF8882A21392600887A75 /* LanguageEngineViewIdioms.swift in Sources */,
 				6EDADC3128C9205800C117AD /* LanguageEngineFlash.swift in Sources */,
 				6E98F39629F4793200DAA97C /* SELECTLessonScreen.swift in Sources */,
 				6ECCD47727D900700049B9CA /* VerbMorphView.swift in Sources */,
@@ -1008,6 +1015,7 @@
 				6E447CA728AAA4A900528DD9 /* DisclosureGroupTeachMe.swift in Sources */,
 				6E05543B28762034007CE454 /* ModelVerbTenseView.swift in Sources */,
 				6E2174E3289857A60066C234 /* DisclosureGroupMain.swift in Sources */,
+				6E2FF8862A21390100887A75 /* LanguageEngineIdioms.swift in Sources */,
 				6ECCD47927D928790049B9CA /* ColorExtender.swift in Sources */,
 				6EE2B0C328319D6600E239CC /* BehavioralVerbView.swift in Sources */,
 				6E1783802960866100427CFB /* LanguageEngineContextFree.swift in Sources */,

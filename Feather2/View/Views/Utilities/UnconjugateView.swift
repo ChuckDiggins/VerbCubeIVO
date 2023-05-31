@@ -74,6 +74,9 @@ struct UnconjugateView: View {
                             hideKeyboard()
                         }
                     }
+                    .onChange(of: verbFormToUnconjugate){ _ in
+                        vtpList = [VTP]()
+                    }
                     //                    .onChange(){
                     //                        isAnalyzed = false
                     //                    }
@@ -235,8 +238,13 @@ struct UnconjugateView: View {
                 str0 = ""
             }
         }
+//        if vtp.conjugatedVerbForm.count > 0 {
+//            return str0 + subj + reflexivePronoun + vtp.conjugatedVerbForm
+//        }
+//        return str0 + subj + reflexivePronoun + verbFormToUnconjugate
+        
         if vtp.conjugatedVerbForm.count > 0 {
-            return str0 + subj + reflexivePronoun + vtp.conjugatedVerbForm
+            return str0 + subj + vtp.conjugatedVerbForm
         }
         return str0 + subj + reflexivePronoun + verbFormToUnconjugate
     }

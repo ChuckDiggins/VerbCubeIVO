@@ -9,35 +9,158 @@ import SwiftUI
 import Combine
 import JumpLinguaHelpers
 
+enum SpanishIdiomType :  String, CaseIterable {
+    case Hay,
+         Haber,
+         Hacer,
+         Tener,
+         Dar,
+         Echar,
+         Poner,
+         Misc1,
+         Misc2
+    
+    public func getString()->String {
+        switch self{
+        case .Hay:  return "Haber - Hay"
+        case .Haber:  return "Haber"
+        case .Hacer: return "Hacer"
+        case .Tener: return "Tener"
+        case .Dar: return "Dar"
+        case .Echar: return "Echar"
+        case .Poner: return "Poner"
+        case .Misc1: return "Misc 1"
+        case .Misc2: return "Misc 2"
+        }
+    }
+}
+
+var idiomHaberHayList =   [("hay que", "has to"),
+                           ("hay", "is")]
+var idiomHaberList =   [("haber de partir el inviernes", "be to leave on Friday"),
+                        ("haber de", "be about to")]
+var idiomHacerList =   [("hacerse falta a", "need" ),
+                        ("hacer el favor", "do a favor"),
+                        ("hacer dos años", "be two years old"),
+                        ("hacer un pregunta", "ask a question"),]
+var idiomTenerList =   [("tener sueño", "be sleepy"),
+                        ("tener cuidado", "be careful"),
+                        ("tener miedo", "be afraid"),
+                        ("tener razón", "be correct")]
+var idiomDarList =   [("dar un paseo", "take a walk"),
+                      ("darse cuenta de", "realize"),
+                      ("dar la mano", "shake hands"),
+                      ("darse prisa","hurry")]
+
+var idiomEcharList =   [("echar de menos a su amigo", "miss their friend"),
+                      ("echar una carta", "mail a letter"),
+                      ("echar con sueño", "sleep"),
+                      ("echar de ver","take notice"),
+                        ("echar por alto","exaggerate"),]
+
+var idiomPonerList =   [("ponerse", "become"),
+                      ("ponerse enfermo", "become sick"),
+                      ("poner la mesa", "set the table"),
+                        ("ponerse a", "stand"),
+                      ("ponerse en pie","stand")]
+
+var idiomMisc1List =   [("creer que sí", "think so"),
+                      ("cambiar de silla", "change seats"),
+                      ("convenir en escribirlo", "agree to write it"),
+                      ("cumplir con","fulfill"),
+                        ("dejar caer","drop"),
+                        ("oír hablar de","hear about"),
+                        ("perder cuidado","fulfill"),
+]
+
+var idiomMisc2List =   [("ponerse de acuerdo", "come to an agreement"),
+                      ("ser aficionado a", "be fond of"),
+                      ("ir de compras", "go shopping"),
+                      ("llegar a ser","become"),
+                        ("perder de vista","lose sight of"),
+]
+
+
+
+class VerbIdiomManager : ObservableObject {
+    var idiomHaberHayList = [Verb]()
+    var idiomHaberList = [Verb]()
+    var idiomHacerList = [Verb]()
+    var idiomTenerList = [Verb]()
+    var idiomDarList = [Verb]()
+    var idiomEcharList = [Verb]()
+    var idiomPonerList = [Verb]()
+    var idiomMisc1List = [Verb]()
+    var idiomMisc2List = [Verb]()
+    
+    func getIdiomList(_ type: SpanishIdiomType)->[Verb]{
+        switch type {
+        case .Hay:
+            return idiomHaberHayList
+        case .Haber:
+            return idiomHaberList
+        case .Hacer:
+            return idiomHacerList
+        case .Tener:
+            return idiomTenerList
+        case .Dar:
+            return idiomDarList
+        case .Echar:
+            return idiomEcharList
+        case .Poner:
+            return idiomPonerList
+        case .Misc1:
+            return idiomMisc1List
+        case .Misc2:
+            return idiomMisc2List
+        }
+    }
+    
+    func append(_ type: SpanishIdiomType, _ verb: Verb){
+        switch type {
+        case .Hay:   idiomHaberHayList.append(verb)
+        case .Haber: idiomHaberList.append(verb)
+        case .Hacer: idiomHacerList.append(verb)
+        case .Tener: idiomTenerList.append(verb)
+        case .Dar:   idiomDarList.append(verb)
+        case .Echar:   idiomEcharList.append(verb)
+        case .Poner:   idiomPonerList.append(verb)
+        case .Misc1:   idiomMisc1List.append(verb)
+        case .Misc2:   idiomMisc2List.append(verb)
+        }
+    }
+    
+}
 
 struct IdiomsView: View {
     @ObservedObject var languageViewModel: LanguageViewModel
     @ObservedObject var vmecdm: VerbModelEntityCoreDataManager
     @EnvironmentObject var router: Router
-    @Binding var selected: Bool
     @State private var currentLanguage = LanguageType.Agnostic
     @Environment(\.dismiss) private var dismiss
     @State private var spanishVerb = SpanishVerb()
     @State private var spanishPhrase = ""
     @State var currentTenseString = ""
     @State var currentVerbString = ""
+    @State private var idiomVerbList = [Verb]()
+    @State private var spanishVerbOnlyList = [Verb]()
+    @State private var currentVerb = Verb()
+    @State private var secondaryVerb = Verb()
+    @State private var verbPairList = [FeatherVerbPair]()
+    @State private var currentVerbPair = FeatherVerbPair(Verb(), Verb())
     @State var currentVerbPhrase = ""
     @State var newVerbPhrase = ""
     @State var tenseIndex = 0
     var tenseList = [Tense.present, .preterite, .imperfect, .conditional, .future, .presentSubjunctive,
                      .imperfectSubjunctiveRA, .presentPerfect, .presentProgressive]
-    @State private var verbList = [Verb]()
-    @State private var currentVerb = Verb()
-    @State private var currentVerbNumber = 1
     @State private var verbCount = 0
     @State var currentIndex = 0
     @State var currentTense = Tense.present
     @State var personString = ["","","","","",""]
     @State var verb1String = ["","","","","",""]
-    @State var currentVerbModel = RomanceVerbModel()
-    @State var modelLocked = false
-    @State var lockedModel = RomanceVerbModel()
-    @State var lockSymbol = ""
+    @State var verb2String  = ["","","","","",""]
+    @State var english1String = ["","","","","",""]
+    @State var english2String = ["","","","","",""]
     @State var showResidualPhrase = true
     @State var showReflexivePronoun = true
     @State var isReflexive = true
@@ -54,293 +177,240 @@ struct IdiomsView: View {
     @State var stemString = ""
     @State var orthoString = ""
     @State var userString = ""
-    
+    @State var idiomType  = SpanishIdiomType.Hacer
+    var frameHeight = CGFloat(20)
+    @State var englishSubjunctiveWord = ""
+    @State var spanishSubjunctiveWord = ""
+    @State var verbIdiomManager = VerbIdiomManager()
     @AppStorage("VerbOrModelMode") var verbOrModelModeString = "Lessons"
     @AppStorage("CurrentVerbModel") var currentVerbModelString = "encontrar"
     
     //@State var bAddNewVerb = false
     
     var body: some View {
-        //        ZStack{
-        //            Color("BethanyNavalBackground")
-        //                .ignoresSafeArea()
-        //
-        
         VStack{
-            HStack{
-                Button(action: {
-                    router.reset()
-                    dismiss()
-                }, label: {
-                    Image(systemName: "xmark")
-                        .foregroundColor(.white)
-                        .font(.title2)
-                        .padding(20)
-                })
-                Spacer()
-            }
-            Text("Spanish Dictionary").foregroundColor(Color("ChuckText1")).font(.title2)
-            HStack{
-                
-                TextField("🔍", text: $userString,
-                          onEditingChanged: { changed in
-                }){
+            ZStack{
+                ExitButtonView()
+                Text("")
+                VStack{
+                    Button{
+                        changeIdiomType()
+                    } label: {
+                        Text("Idiom: \(getIdiomString())")
+                        
+                    }.frame(width: 300, height: 25, alignment: .center)
+                        .background(.red).foregroundColor(.yellow)
+                        .cornerRadius(10)
                 }
-                .disableAutocorrection(true)
-
-                .modifier(NeumorphicTextfieldModifier())
-                .onChange(of: userString){ (value) in
-                    if userString.count > 0 {
-                        let verbIndex = findClosestVerbIndex(userString)
-                        if verbIndex > 0 {
-                            currentIndex = verbIndex
-                            currentVerb = verbList[currentIndex]
-                            showCurrentWordInfo()
-                        }
-                    }
-                }
-                .onSubmit(){
-                    let verbIndex = findClosestVerbIndex(userString)
-                    if verbIndex > 0 {
-                        currentIndex = verbIndex
-                        currentVerb = verbList[currentIndex]
-                        showCurrentWordInfo()
-                    }
-                    userString = ""
-                }
-            }
-            .padding()
-            Text("Current tense: \(currentTense.rawValue)")
-                .onTapGesture {
-                    getNextTense()
-                }.frame(width: 300, height: 35, alignment: .center)
-                .background(.yellow)
-                .foregroundColor(.black)
-                .cornerRadius(10)
-            HStack{
-                Button(action: {
-                    getPreviousVerbAtThisModel()
-                }){
-                    HStack{
-                        Label("", systemImage: "arrow.left")
-                        Text("Previous")
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(.pink)
-                    
-                }
-                
-                Spacer()
-                Text(spanishPhrase)
-                    .foregroundColor(Color("BethanyGreenText"))
-                    .frame(width: 120, height: 35, alignment: .center)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .onTapGesture(perform: {
-                        getNextVerbAtThisModel()
-                    })
-                Spacer()
-                
-                Button(action: {
-                    getNextVerbAtThisModel()
-                }){
-                    HStack{
-                        Text("  Next  ")
-                        Label("", systemImage: "arrow.right")
-                    }
-                    .tint(.pink)
-                    .buttonStyle(.bordered)
-                }
-                
-            }
-        }
-        
-        VStack {
-//            VStack{
-//                HStack{
-//                    Text(spanishPhrase)
-//                    Spacer()
-//                    Text("\(currentIndex+1) / \(verbList.count)")
-//                }
-//                .padding()
-//                .frame(width: 300, height: 30, alignment: .leading)
-//                .border(.red)
-//            }
-            ForEach((0...5), id:\.self) { personIndex in
-                HStack{
-                    Text(personString[personIndex])
-                        .frame(width: 100, height: 30, alignment: .trailing)
-                    Text(verb1String[personIndex])
-                        .padding()
-                        .frame(width: 250, height: 30, alignment: .leading)
-                        .background(matching[personIndex] ? Color("BethanyNavalBackground") : Color.red)
-                        .foregroundColor(matching[personIndex] ? Color("BethanyGreenText") : Color.black)
-                }.font(.system(size: 12))
             }
             VStack{
-                Button{
-                    showReflexivesOnly.toggle()
-                    modelLocked = false
-                    getNextVerbAtThisModel()
-                } label: {
-                    HStack{
-                        Text("Show reflexives only")
-                        Spacer()
-                        Label("", systemImage: showReflexivesOnly ? "lock" : "lock.open")
-                    }
-                    .padding()
-                    .font(.caption)
-                    .frame(width: 300, height: 30, alignment: .leading)
-                    .border(.red)
-                    .foregroundColor(showReflexivesOnly ? Color.black : Color("BethanyGreenText"))
-                    .background(showReflexivesOnly ? Color.yellow : Color("BethanyNavalBackground"))
-                }
-                
+                //            Text("Spanish Reflexives").foregroundColor(Color("ChuckText1")).font(.title2)
+                Text("Current tense: \(currentTense.rawValue)")
+                    .onTapGesture {
+                        getNextTense()
+                    }.frame(width: 300, height: 25, alignment: .center)
+                    .background(.yellow)
+                    .foregroundColor(.black)
+                    .cornerRadius(10)
                 HStack{
-                    Text("\(currentVerbModel.id).")
-                    Text("Model \(currentVerbModel.modelVerb)")
-                    if stemString.count > 0 { Text("(\(stemString))") }
-                    if orthoString.count > 0 { Text("(\(orthoString))")  }
+                    Button(action: {
+                        getPreviousVerb()
+                    }){
+                        HStack{
+                            Label("", systemImage: "arrow.left")
+                            Text("Previous")
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(.pink)
+                        
+                    }
+                    
                     Spacer()
-                    Label("", systemImage: modelLocked ? "lock" : "lock.open")
-                    if modelLocked {
-                        Button{
-                            languageViewModel.processVerbModel(vm: currentVerbModel)
-                            dismiss()
-                        } label: {
-                            Text("💚")
+                    HStack{
+                        HStack{
+                            Text(currentVerb.getWordAtLanguage(language: .Spanish))
+                            Text("-")
+                            Text("to \(currentVerb.getWordAtLanguage(language: .English))")
+                        }
+                        .padding(3)
+                        .foregroundColor(Color("BethanyGreenText"))
+                        .frame(width: 300, height: 25, alignment: .center)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .cornerRadius(10)
+                        .border(.green)
+                        
+                    }.onTapGesture(perform: {
+                        getNextVerb()
+                    })
+                    Spacer()
+                    Button(action: {
+                        getNextVerb()
+                    }){
+                        HStack{
+                            Text("  Next  ")
+                            Label("", systemImage: "arrow.right")
+                        }
+                        .tint(.pink)
+                        .buttonStyle(.bordered)
+                    }
+                }
+            }
+            VStack{
+                ScrollView {
+                    ForEach((0...5), id:\.self) { personIndex in
+                        HStack{
+                            HStack{
+                                Text(verb1String[personIndex]).frame(minWidth: 50, maxWidth: .infinity, minHeight: frameHeight)
+                                    .border(.yellow)
+                                Spacer()
+                                Text(english1String[personIndex]).frame(minWidth: 50, maxWidth: .infinity, minHeight: frameHeight)
+                                    .border(.red)
+                            }.font(.system(size: 12))
+                            HStack{
+                                HStack{
+                                    Text(verb2String[personIndex]).frame(minWidth: 50, maxWidth: .infinity, minHeight: frameHeight)
+                                        .border(.yellow)
+                                    Spacer()
+                                    Text(english2String[personIndex]).frame(minWidth: 50, maxWidth: .infinity, minHeight: frameHeight)
+                                        .border(.red)
+                                }.font(.system(size: 12))
+                            }
                         }
                     }
                 }
-                .padding()
-                .font(.caption)
-                .frame(width: 300, height: 30, alignment: .leading)
-                .border(.red)
-                .background(modelLocked ? .yellow : Color("BethanyNavalBackground"))
-                .foregroundColor(modelLocked ? .black : Color("BethanyGreenText"))
-                .onTapGesture(perform: {
-                    modelLocked.toggle()
-                })
-                Text("Verb \(currentIndex+1) of \(verbList.count) verbs")
-                Text("\(languageViewModel.findVerbsOfSameModel(targetID: currentVerbModel.id).count) verbs belong to \(currentVerbModel.modelVerb)")
             }
-            
-            
-        }.font(.system(size: 18))
-            .background(Color("BethanyNavalBackground"))
-            .foregroundColor(Color("BethanyGreenText"))
-            .onAppear(){
-                verbList = languageViewModel.getVerbList()
-                tenseIndex = 0
-                currentTense = tenseList[tenseIndex]
-                currentIndex = 0
-                currentLanguage = languageViewModel.getCurrentLanguage()
-                currentVerb = verbList[currentIndex]
-                verbCount = verbList.count
-                fillPersons()
-                showCurrentWordInfo()
-            }
-            .onTapGesture(count:2){
-                getNextVerbAtThisModel()
-            }
-            .gesture(DragGesture()
-                .onChanged { gesture in
-                    if self.isSwiping {
-                        self.startPos = gesture.location
-                        self.isSwiping.toggle()
-                    }
-//                    print("Swiped")
-                }
-                .onEnded { gesture in
-                    let xDist =  abs(gesture.location.x - self.startPos.x)
-                    let yDist =  abs(gesture.location.y - self.startPos.y)
-                    if self.startPos.y <  gesture.location.y && yDist > xDist {
-                        self.direction = "Down"
-                        self.color = Color.green.opacity(0.4)
-//                        getNextTense()
-                    }
-                    else if self.startPos.y >  gesture.location.y && yDist > xDist {
-                        self.direction = "Up"
-                        self.color = Color.blue.opacity(0.4)
-//                        getPreviousTense()
-                    }
-                    else if self.startPos.x > gesture.location.x + 10 && yDist < xDist {
-                        self.direction = "Left"
-                        self.color = Color.yellow.opacity(0.4)
-//                        getNextVerb()
-                        getNextVerbAtThisModel()
-                    }
-                    else if self.startPos.x < gesture.location.x + 10 && yDist < xDist {
-                        self.direction = "Right"
-                        self.color = Color.purple.opacity(0.4)
-//                        getPreviousVerb()
-                        getPreviousVerbAtThisModel()
-                    }
-                    self.isSwiping.toggle()
-//                    print("gesture here")
-                }
-            )
         Spacer()
+        }
+        .background(Color("BethanyNavalBackground"))
+        .foregroundColor(Color("BethanyGreenText"))
+        .onDisappear {
+            AppDelegate.orientationLock = .all // Unlocking the rotation when leaving the view
+        }
+        .onAppear(){
+            AppDelegate.orientationLock = UIInterfaceOrientationMask.landscapeLeft
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+            UINavigationController.attemptRotationToDeviceOrientation()
+            tenseIndex = 0
+            currentTense = tenseList[tenseIndex]
+            currentIndex = 0
+            currentLanguage = languageViewModel.getCurrentLanguage()
+            fillPersons()
+            verbIdiomManager = languageViewModel.getVerbIdiomManager()
+            idiomVerbList = verbIdiomManager.getIdiomList(.Hacer)
+            createVerbPairList()
+           
+            currentVerb = idiomVerbList[currentIndex]
+            verbCount = idiomVerbList.count
+            showCurrentWordInfo()
+        }
+        .onTapGesture(count:2){
+            getNextVerb()
+        }
+        .gesture(DragGesture()
+            .onChanged { gesture in
+                if self.isSwiping {
+                    self.startPos = gesture.location
+                    self.isSwiping.toggle()
+                }
+                //                    print("Swiped")
+            }
+            .onEnded { gesture in
+                let xDist =  abs(gesture.location.x - self.startPos.x)
+                let yDist =  abs(gesture.location.y - self.startPos.y)
+                if self.startPos.y <  gesture.location.y && yDist > xDist {
+                    self.direction = "Down"
+                    self.color = Color.green.opacity(0.4)
+                    //                        getNextTense()
+                }
+                else if self.startPos.y >  gesture.location.y && yDist > xDist {
+                    self.direction = "Up"
+                    self.color = Color.blue.opacity(0.4)
+                    //                        getPreviousTense()
+                }
+                else if self.startPos.x > gesture.location.x + 10 && yDist < xDist {
+                    self.direction = "Left"
+                    self.color = Color.yellow.opacity(0.4)
+                    //                        getNextVerb()
+                    getNextVerb()
+                }
+                else if self.startPos.x < gesture.location.x + 10 && yDist < xDist {
+                    self.direction = "Right"
+                    self.color = Color.purple.opacity(0.4)
+                    //                        getPreviousVerb()
+                    getPreviousVerb()
+                }
+                self.isSwiping.toggle()
+                //                    print("gesture here")
+            }
+        )
+        //        Spacer()
         
         //        }
     }
     
-//    func selectCurrentModel(){
-//        languageViewModel.computeSelectedVerbModels()
-//        languageViewModel.computeCompletedVerbModels()
-//
-//        vmecdm.setAllSelected(flag: false)
-//        languageViewModel.setCurrentVerbModel(model: currentVerbModel)
-//        vmecdm.setSelected(verbModelString: currentVerbModel.modelVerb, flag: true)
-//        //create an study package
-//        var verbModelList = [RomanceVerbModel]()
-//        verbModelList.append(currentVerbModel)
-//        var verbModelStringList = [String]()
-//        verbModelStringList.append(currentVerbModel.modelVerb)
-//        let sp = StudyPackageClass(name: currentVerbModel.modelVerb, verbModelStringList: verbModelStringList,
-//                                   tenseList: [.present, .preterite, .imperfect, .conditional, .presentSubjunctive, .imperative],
-//                                   chapter: "Verb model", lesson: currentVerbModel.modelVerb)
-//        sp.preferredVerbList = languageViewModel.findVerbsOfSameModel(targetID: currentVerbModel.id)
-////        languageViewModel.installStudyPackage(sp: sp)
-//        languageViewModel.setStudyPackage(sp: sp)
-//        print("DictionaryView: specialVerbType: \(sp.specialVerbType)")
-//
-//        languageViewModel.fillVerbCubeAndQuizCubeLists()
-//
-//        languageViewModel.resetFeatherSentenceHandler()
-//
-//        //set the AppStorage stuff
-//        languageViewModel.setToVerbModelMode()
-//
-//    }
-    
-    func setPatternStuff(){
-        let patternList = languageViewModel.getPatternsForThisModel(verbModel: currentVerbModel)
-        stemString = ""
-        orthoString = ""
-        for sps in patternList {
-            if sps.tense == currentTense {
-                if sps.pattern.isStemChangingSpanish() { stemString = sps.pattern.rawValue }
-                if sps.pattern.isSpellChangingSpanish() { orthoString = sps.pattern.rawValue }
-            }
+    func changeIdiomType(){
+        if idiomType == .Hay {
+            idiomType = .Haber
+        } else if idiomType == .Haber {
+            idiomType = .Hacer
+        } else if idiomType == .Hacer {
+            idiomType = .Tener
+        } else if idiomType == .Tener{
+            idiomType = .Dar
+        } else if idiomType == .Dar{
+            idiomType = .Echar
+        } else if idiomType == .Echar{
+            idiomType = .Poner
+        } else if idiomType == .Poner{
+            idiomType = .Misc1
+        } else if idiomType == .Misc1{
+            idiomType = .Misc2
+        } else if idiomType == .Misc2{
+            idiomType = .Haber
         }
+        currentIndex = 0
+        idiomVerbList = verbIdiomManager.getIdiomList(idiomType)
+        createVerbPairList()
     }
     
-    func findClosestVerbIndex(_ userString: String)->Int{
-        modelLocked = false
-        var verbIndex = 0
-        var verbString1 = ""
-        var verbString2 = ""
-        for index in 0 ..< verbList.count-1 {
-            verbIndex = index
-            verbString1 = verbList[index].getWordAtLanguage(language: currentLanguage)
-            verbString2 = verbList[index+1].getWordAtLanguage(language: currentLanguage)
-            if userString > verbString1 && userString < verbString2 {
-                return index+1
-            }
+    func createVerbPairList(){
+        var vu = VerbUtilities()
+        verbPairList.removeAll()
+        for verb in idiomVerbList{
+            var verbWords = vu.getListOfWords(characterArray: verb.getWordAtLanguage(language: currentLanguage))
+            let result = vu.analyzeSpanishWordPhrase(testString: verbWords[0])
+            let extractedVerb = languageViewModel.findVerbFromString(verbString: result.verbWord, language: currentLanguage)
+            print("primaryVerb: \(verb.getWordAtLanguage(language: currentLanguage)), secondaryVerb \(extractedVerb.getWordAtLanguage(language: .Spanish)), \(extractedVerb.getWordAtLanguage(language: .English)) ")
+            verbPairList.append(FeatherVerbPair(verb, extractedVerb))
         }
-        return verbIndex
+        currentIndex = 0
+        currentVerb = verbPairList[currentIndex].primaryVerb
+        secondaryVerb = verbPairList[currentIndex].secondaryVerb
+        verbCount = verbPairList.count
+        showCurrentWordInfo()
     }
+    
+    func getIdiomString()->String{
+        return idiomType.getString()
+    }
+    
+    func getPreviousVerb(){
+        currentIndex -= 1
+        if currentIndex < 0 {currentIndex = verbCount-1}
+        currentVerb = verbPairList[currentIndex].primaryVerb
+        secondaryVerb = verbPairList[currentIndex].secondaryVerb
+        showCurrentWordInfo()
+    }
+    
+    func getNextVerb(){
+        currentIndex += 1
+        if currentIndex >= verbCount {currentIndex = 0}
+        currentVerb = verbPairList[currentIndex].primaryVerb
+        secondaryVerb = verbPairList[currentIndex].secondaryVerb
+        showCurrentWordInfo()
+    }
+    
     
     func getNextTense(){
         tenseIndex += 1
@@ -358,119 +428,6 @@ struct IdiomsView: View {
         showCurrentWordInfo()
     }
     
-//    func getNextVerb(){
-//        currentIndex += 1
-//        if currentIndex >= verbCount {
-//            currentIndex = 0
-//        }
-//        currentVerb = verbList[currentIndex]
-//        showCurrentWordInfo()
-//    }
-//
-//    func getPreviousVerb(){
-//        currentIndex -= 1
-//        if currentIndex < 0 {currentIndex = verbCount-1}
-//        currentVerbNumber = currentIndex + 1
-//        currentVerb = verbList[currentIndex]
-//        showCurrentWordInfo()
-//    }
-//
-    func getPreviousVerbAtThisModel(){
-        var searchCount = 0
-        var modelFound = false
-        var reflexiveVerbFound = false
-        if modelLocked {
-            repeat {
-                searchCount += 1
-                currentIndex -= 1
-                if currentIndex < 0 {currentIndex = verbCount-1}
-                currentVerbNumber = currentIndex + 1
-                let thisVerb = verbList[currentIndex]
-                spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
-                let vu = VerbUtilities()
-                let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
-                let thisModel = languageViewModel.findModelForThisVerbString(verbWord: result.0)
-                if thisModel == currentVerbModel{
-                    currentVerb = verbList[currentIndex]
-                    showCurrentWordInfo()
-                    modelFound = true
-//                    print("Found: \(spanishPhrase) belongs to \(currentVerbModel.modelVerb)")
-                }
-            } while !modelFound && searchCount < verbList.count
-            
-        } else if showReflexivesOnly {
-            repeat {
-                searchCount += 1
-                currentIndex -= 1
-                if currentIndex < 0 {currentIndex = verbCount-1}
-                currentVerbNumber = currentIndex + 1
-                let thisVerb = verbList[currentIndex]
-                spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
-                let vu = VerbUtilities()
-                let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
-                if result.isReflexive {
-                    reflexiveVerbFound = true
-                    currentVerb = verbList[currentIndex]
-                    showCurrentWordInfo()
-                }
-            } while !reflexiveVerbFound  && searchCount < verbList.count
-        }
-        else {
-            currentIndex -= 1
-            if currentIndex < 0 {currentIndex = verbCount-1}
-            currentVerbNumber = currentIndex + 1
-            currentVerb = verbList[currentIndex]
-            showCurrentWordInfo()
-        }
-       
-    }
-    
-    func getNextVerbAtThisModel(){
-        var thisModel = RomanceVerbModel()
-        var searchCount = 0
-        var modelFound = false
-        var reflexiveVerbFound = false
-        if modelLocked {
-            repeat {
-                searchCount += 1
-                currentIndex += 1
-                if currentIndex >= verbCount { currentIndex = 0  }
-                currentVerbNumber = currentIndex + 1
-                let thisVerb = verbList[currentIndex]
-                spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
-                let vu = VerbUtilities()
-                let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
-                thisModel = languageViewModel.findModelForThisVerbString(verbWord: result.0)
-                if thisModel == currentVerbModel {
-                    currentVerb = verbList[currentIndex]
-                    showCurrentWordInfo()
-                    modelFound = true
-                }
-            } while !modelFound && searchCount < verbList.count
-        } else if showReflexivesOnly {
-            repeat {
-                searchCount += 1
-                currentIndex += 1
-                if currentIndex >= verbCount { currentIndex = 0  }
-                let thisVerb = verbList[currentIndex]
-                spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
-                let vu = VerbUtilities()
-                let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
-                if result.isReflexive {
-                    reflexiveVerbFound = true
-                    currentVerb = verbList[currentIndex]
-                    showCurrentWordInfo()
-                }
-            } while !reflexiveVerbFound && searchCount < verbList.count
-        }else {
-            currentIndex += 1
-            if currentIndex >= verbCount {currentIndex = 0}
-            currentVerb = verbList[currentIndex]
-            showCurrentWordInfo()
-        }
-       
-    }
-    
     
     func  fillPersons(){
         personString[0] = "yo"
@@ -483,43 +440,72 @@ struct IdiomsView: View {
     }
     
     func  showCurrentWordInfo(){
-        let thisVerb = currentVerb
+        var thisVerb = currentVerb
         spanishPhrase = thisVerb.getWordAtLanguage(language: .Spanish)
-//        print("showCurrentWordInfo: spanishPhrase = \(spanishPhrase)")
-        let vu = VerbUtilities()
-        let result = vu.analyzeSpanishWordPhrase(testString: spanishPhrase)
-        currentVerbModel = languageViewModel.findModelForThisVerbString(verbWord: result.0)
-        setPatternStuff()
-        isReflexive = result.3
-        residualPhrase = result.2
+        englishSubjunctiveWord = ""
+        spanishSubjunctiveWord = ""
+        if currentTense.isSubjunctive() {
+            spanishSubjunctiveWord = "que "
+            englishSubjunctiveWord = "that "
+        }
+        
         if spanishPhrase.count > 0 {
-            verb1String[0] = constructConjugateForm(person: .S1)
-            verb1String[1] = constructConjugateForm(person: .S2)
-            verb1String[2] = constructConjugateForm(person: .S3)
-            verb1String[3] = constructConjugateForm(person: .P1)
-            verb1String[4] = constructConjugateForm(person: .P2)
-            verb1String[5] = constructConjugateForm(person: .P3)
+            verb1String[0] = spanishSubjunctiveWord + personString[0] + " " + constructConjugateForm(verb: currentVerb, person: .S1)
+            verb1String[1] = spanishSubjunctiveWord + personString[1] + " " + constructConjugateForm(verb: currentVerb, person: .S2)
+            verb1String[2] = spanishSubjunctiveWord + personString[2] + " " + constructConjugateForm(verb: currentVerb, person: .S3)
+            verb1String[3] = spanishSubjunctiveWord + personString[3] + " " + constructConjugateForm(verb: currentVerb, person: .P1)
+            verb1String[4] = spanishSubjunctiveWord + personString[4] + " " + constructConjugateForm(verb: currentVerb, person: .P2)
+            verb1String[5] = spanishSubjunctiveWord + personString[5] + " " + constructConjugateForm(verb: currentVerb, person: .P3)
+            verb2String[0] = spanishSubjunctiveWord + personString[0] + " " + constructConjugateForm(verb: secondaryVerb, person: .S1)
+            verb2String[1] = spanishSubjunctiveWord + personString[1] + " " + constructConjugateForm(verb: secondaryVerb, person: .S2)
+            verb2String[2] = spanishSubjunctiveWord + personString[2] + " " + constructConjugateForm(verb: secondaryVerb, person: .S3)
+            verb2String[3] = spanishSubjunctiveWord + personString[3] + " " + constructConjugateForm(verb: secondaryVerb, person: .P1)
+            verb2String[4] = spanishSubjunctiveWord + personString[4] + " " + constructConjugateForm(verb: secondaryVerb, person: .P2)
+            verb2String[5] = spanishSubjunctiveWord + personString[5] + " " + constructConjugateForm(verb: secondaryVerb, person: .P3)
+        }
+        if thisVerb.getWordAtLanguage(language: currentLanguage).count > 0 {
+            english1String[0] = englishSubjunctiveWord + "I " + constructConjugateForm(language: .English, verb: currentVerb, tense: currentTense, person: .S1, currentVerb: thisVerb )
+            english1String[1] = englishSubjunctiveWord + "you " + constructConjugateForm(language: .English, verb: currentVerb, tense: currentTense, person: .S2, currentVerb: thisVerb )
+            english1String[2] = englishSubjunctiveWord + "she " + constructConjugateForm(language: .English, verb: currentVerb, tense: currentTense, person: .S3, currentVerb: thisVerb )
+            english1String[3] = englishSubjunctiveWord + "we " + constructConjugateForm(language: .English, verb: currentVerb, tense: currentTense, person: .P1, currentVerb: thisVerb )
+            english1String[4] = englishSubjunctiveWord + "you " + constructConjugateForm(language: .English, verb: currentVerb, tense: currentTense, person: .P2, currentVerb: thisVerb )
+            english1String[5] = englishSubjunctiveWord + "they " + constructConjugateForm(language: .English, verb: currentVerb, tense: currentTense, person: .P3, currentVerb: thisVerb )
+            english2String[0] = englishSubjunctiveWord + "I " + constructConjugateForm(language: .English, verb: secondaryVerb, tense: currentTense, person: .S1, currentVerb: secondaryVerb )
+            english2String[1] = englishSubjunctiveWord + "you " + constructConjugateForm(language: .English, verb: secondaryVerb, tense: currentTense, person: .S2, currentVerb: secondaryVerb )
+            english2String[2] = englishSubjunctiveWord + "she " + constructConjugateForm(language: .English, verb: secondaryVerb, tense: currentTense, person: .S3, currentVerb: secondaryVerb )
+            english2String[3] = englishSubjunctiveWord + "we " + constructConjugateForm(language: .English, verb: secondaryVerb, tense: currentTense, person: .P1, currentVerb: secondaryVerb )
+            english2String[4] = englishSubjunctiveWord + "you " + constructConjugateForm(language: .English, verb: secondaryVerb, tense: currentTense, person: .P2, currentVerb: secondaryVerb )
+            english2String[5] = englishSubjunctiveWord + "they " + constructConjugateForm(language: .English, verb: secondaryVerb, tense: currentTense, person: .P3, currentVerb: secondaryVerb )
+        } else {
+            english1String[0] = "..."
+            english1String[1] = "..."
+            english1String[2] = "..."
+            english1String[3] = "..."
+            english1String[4] = "..."
+            english1String[5] = "..."
+            english2String[0] = "..."
+            english2String[1] = "..."
+            english2String[2] = "..."
+            english2String[3] = "..."
+            english2String[4] = "..."
+            english2String[5] = "..."
         }
     }
     
     // - MARK: Conjugation here
     
-    func constructConjugateForm(person: Person)->String{
-        let thisVerb = languageViewModel.getRomanceVerb(verb: currentVerb)
-        var pp = ""
-        if currentTense.isProgressive(){
-            pp = thisVerb.createDefaultGerund()
-        } else if currentTense.isPerfectIndicative(){
-            pp = thisVerb.createDefaultPastParticiple()
-        }
+    func constructConjugateForm(verb: Verb, person: Person)->String{
+        let thisVerb = languageViewModel.getRomanceVerb(verb: verb)
         let vu = VerbUtilities()
-        var wrongPhrase = languageViewModel.conjugateAsRegularVerb(verb: currentVerb, tense: currentTense, person: person, isReflexive: isReflexive, residPhrase: residualPhrase) + pp
-        wrongPhrase = vu.removeLeadingOrFollowingBlanks(characterArray: wrongPhrase)
-        
-        var rightPhrase = languageViewModel.createAndConjugateAgnosticVerb(language: currentLanguage, verb: currentVerb, tense: currentTense, person: person, isReflexive: isReflexive)
+        var rightPhrase = languageViewModel.createAndConjugateAgnosticVerb(language: currentLanguage, verb: verb, tense: currentTense, person: person, isReflexive: isReflexive)
         rightPhrase = vu.removeLeadingOrFollowingBlanks(characterArray: rightPhrase)
-        matching[person.getIndex()] = wrongPhrase == rightPhrase
         return rightPhrase
+    }
+    
+    func constructConjugateForm(language: LanguageType, verb: Verb, tense: Tense, person: Person, currentVerb: Verb)->String{
+        var ansString = languageViewModel.createAndConjugateAgnosticVerb(language: language, verb: verb, tense: tense, person: person, isReflexive: false)
+        
+        return ansString
     }
     
 }

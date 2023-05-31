@@ -27,7 +27,7 @@ extension LanguageEngine{
                 var reflStr = str + "se"
                 let reflVerb = findVerbFromString(verbString: reflStr, language: getCurrentLanguage())
                 if reflVerb.word.count > 0 {
-                    reflexiveVerbManager.reflexiveList.append(ReflexiveVerbPair(verb, reflVerb))
+                    reflexiveVerbManager.reflexiveList.append(FeatherVerbPair(verb, reflVerb))
                 }
             }
         }
@@ -41,12 +41,12 @@ extension LanguageEngine{
                 var recipVerb = findVerbFromString(verbString: recipStr, language: getCurrentLanguage())
                 //if ref
                 if recipVerb.word.count > 0 {
-                    reflexiveVerbManager.reciprocalList.append(ReflexiveVerbPair(verb, recipVerb))
+                    reflexiveVerbManager.reciprocalList.append(FeatherVerbPair(verb, recipVerb))
                 } else {
                     recipStr = verb.spanish + "se"
                     let englishStr = verb.english + " each other"
                     recipVerb = Verb(spanish: recipStr, french: "",  english: englishStr)
-                    reflexiveVerbManager.reciprocalList.append(ReflexiveVerbPair(verb, recipVerb))
+                    reflexiveVerbManager.reciprocalList.append(FeatherVerbPair(verb, recipVerb))
                 }
             }
         }
@@ -59,7 +59,7 @@ extension LanguageEngine{
                 var reflStr = str + "se"
                 let reflVerb = findVerbFromString(verbString: reflStr, language: getCurrentLanguage())
                 if reflVerb.word.count > 0 {
-                    reflexiveVerbManager.normalReflexiveList.append(ReflexiveVerbPair(verb, reflVerb))
+                    reflexiveVerbManager.normalReflexiveList.append(FeatherVerbPair(verb, reflVerb))
                 }
             }
         }
@@ -70,7 +70,7 @@ extension LanguageEngine{
         for str in strList {
             let verb = findVerbFromString(verbString: str, language: getCurrentLanguage())
             if verb.word.count > 0 {
-                reflexiveVerbManager.onlyReflexiveList.append(ReflexiveVerbPair(nullVerb, verb))
+                reflexiveVerbManager.onlyReflexiveList.append(FeatherVerbPair(nullVerb, verb))
             }
         }
     }

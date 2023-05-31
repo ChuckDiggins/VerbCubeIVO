@@ -108,6 +108,7 @@ struct NavStackCarouselDispatcherView: View {
         ExerciseStruct(.Explore, Image("EXPLORE")),
         ExerciseStruct(.Learn, Image("LEARN")),
         ExerciseStruct(.Test, Image("TEST")),
+        ExerciseStruct(.SelfContained, Image("SELF-CONTAINED")),
     ]
     
     var body: some View {
@@ -217,6 +218,8 @@ struct NavStackCarouselDispatcherView: View {
                         //Test
                     case "Multiple Choice Test": CombinedAlert(languageViewModel: languageViewModel, flashMode: .MultipleChoice, shown: $multipleChoiceShown)
                     case "Fill-in Blanks Test": CombinedAlert(languageViewModel: languageViewModel, flashMode: .TextField, shown: $textEditorShown)
+                    case "Reflexive Verbs": ReflexivesView(languageViewModel: languageViewModel, vmecdm: vmecdm )
+                    case "Verb Idioms": IdiomsView(languageViewModel: languageViewModel, vmecdm: vmecdm)
                     default: SimpleVerbConjugation(languageViewModel: languageViewModel, verb: languageViewModel.getCurrentFilteredVerb(), residualPhrase: "", multipleVerbFlag: true)
                     }
                 })

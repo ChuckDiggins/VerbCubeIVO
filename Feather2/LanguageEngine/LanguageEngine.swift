@@ -121,6 +121,7 @@ class LanguageEngine : ObservableObject, Equatable {
     var studyPackageFilteredVerbList = [Verb]()
     var currentVerbModel = RomanceVerbModel()
     var reflexiveVerbManager = ReflexiveVerbManager()
+    var verbIdiomManager = VerbIdiomManager()
     
     private var currentVerb = Verb()
     private var currentTense = Tense.present
@@ -286,6 +287,7 @@ class LanguageEngine : ObservableObject, Equatable {
         print("currentLanguage = \(currentLanguage.rawValue)")
         restoreV2MPackage()
         fillReflexiveVerbLists()
+        fillVerbIdiomLists()
 //        resetFeatherSentenceHandler()
     }
     
@@ -1058,7 +1060,9 @@ class LanguageEngine : ObservableObject, Equatable {
             break
         }
         
-        let ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
+        var ms = bVerb.getMorphStruct(person: person)
+        
+        ms = bVerb.getConjugatedMorphStruct(tense: tense, person: person, conjugateEntirePhrase : true )
         morphStructManager.set(index: person.getIndex(), ms: ms)
         
         let finalForm = morphStructManager.getFinalVerbForm(person: person)
@@ -1583,13 +1587,24 @@ extension LanguageEngine{
                 for person in Person.all {
                     let ms = createConjugatedMorphStruct(verb: v, tense: tense, person: person)
                     conjugateForm = ms.finalVerbForm()
+                    
                     if conjugateForm == verbForm {
                         vtpList.append(VTP(verb: v, tense: tense, person: person, conjugatedVerbForm : ""))
-//                        print("\(count) verb forms were searched")
-//                        print("target form: \(verbForm): found: \(v.getWordAtLanguage(language: currentLanguage)), tense: \(tense.rawValue), person:\(person.rawValue)")
                     }
-                    count += 1
+                    
+                    var wordList = vu.getListOfWords(characterArray: conjugateForm)
+                    if wordList.count > 1 {
+                        //if reflexive verb and/or residual phrase, there will be multiple words.
+                        for conjStr in wordList {
+                            if conjStr == verbForm {
+                                vtpList.append(VTP(verb: v, tense: tense, person: person, conjugatedVerbForm : conjugateForm))
+                            }
+                        }
+                    }
+                    //                        print("\(count) verb forms were searched")
+                    //                        print("target form: \(verbForm): found: \(v.getWordAtLanguage(language: currentLanguage)), tense: \(tense.rawValue), person:\(person.rawValue)")
                 }
+                count += 1
             }
         }
         if vtpList.count > 0 {

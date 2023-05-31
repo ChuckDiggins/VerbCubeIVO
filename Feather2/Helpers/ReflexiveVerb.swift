@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import JumpLinguaHelpers
 
+
 var nonreflexiveVerbStringList = [
     "ir",
     "aburrir",
@@ -158,7 +159,7 @@ enum ReflexiveType :  String {
     }
 }
 
-struct ReflexiveVerbPair
+struct FeatherVerbPair
 {
     let primaryVerb : Verb
     var secondaryVerb : Verb
@@ -170,12 +171,12 @@ struct ReflexiveVerbPair
 }
 
 class ReflexiveVerbManager : ObservableObject {
-    var reflexiveList = [ReflexiveVerbPair]()
-    var onlyReflexiveList = [ReflexiveVerbPair]()
-    var normalReflexiveList = [ReflexiveVerbPair]()
-    var reciprocalList = [ReflexiveVerbPair]()
+    var reflexiveList = [FeatherVerbPair]()
+    var onlyReflexiveList = [FeatherVerbPair]()
+    var normalReflexiveList = [FeatherVerbPair]()
+    var reciprocalList = [FeatherVerbPair]()
     
-    func getReflexivePairList(_ type: ReflexiveType)->[ReflexiveVerbPair]{
+    func getReflexivePairList(_ type: ReflexiveType)->[FeatherVerbPair]{
         switch type {
         case .NonReflexive:
             return reflexiveList

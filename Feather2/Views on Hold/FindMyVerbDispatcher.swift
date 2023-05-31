@@ -33,11 +33,7 @@ struct FindMyVerbDispatcher: View {
                     Text("Find Verb Model")
                     }.modifier(NavLinkModifier())
                     
-                    NavigationLink(destination: ReflexivesView(languageViewModel: languageViewModel, vmecdm: vmecdm, selected: $selected ))
-                    {
-                    Text("Reflexive Verbs")
-                    }.modifier(NavLinkModifier())
-                    
+                
 //                    NavigationLink(destination: Dictionary3View(languageViewModel: languageViewModel ))
 //                    {
 //                    Text("Dictionary 3")
